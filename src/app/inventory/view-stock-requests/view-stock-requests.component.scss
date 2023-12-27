@@ -1,0 +1,21 @@
+.viewScreen{
+  background: var(--white);
+  margin: 15px 0;
+  padding: 15px;
+}
+
+.b-right {
+  float: right;
+}
+.tableStyleMain{ margin-top: 7px ;
+
+  th{
+    //padding: 10px; 
+    border-right: 1px #e2e3e3 solid; text-align: center;
+  }
+
+  td{
+    //padding: 10px; 
+    border-right: 1px #eceeee  solid; text-align: center;
+  }
+}

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <form [formGroup]="generaldetailsForm">
+    <div class="body_wrapper container-fluid">
+      <!-- Header Start -->
+      <app-header></app-header>
+      <!-- Header End -->
+      <div class="px-4">
+        <div class="row pt-4">
+          <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                  Home
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                  Setup
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/location">
+                  Locations
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page"
+                  routerLink="/setup/{{ id }}/editLocation">
+                  Location Setup
+                </li>
+                <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                  General Details
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-12">
+            <div class="d-flex align-items-center head-tag ">
+              <h4><i class="icon-arrow-left cursor-pointer" routerLink="/setup/{{id}}/editLocation"></i> Edit Location
+              </h4>
+            </div>
+
+          </div>
+          <div class="row col-12 ml-2 content">
+            <div class="col-12 col-sm-6">
+              <div class="formGroup">
+                <label>Name</label>
+                <span class="error-message">*</span>
+                <span class="error-message float-right"
+                  *ngIf="generaldetailsForm.controls.name.hasError('required') && generaldetailsForm.controls.name.touched">required</span>
+                <span class="error-message float-right"
+                  *ngIf="generaldetailsForm.controls.name.hasError('pattern')">Invalid Input</span>
+                <input type="text" placeholder="Name" class="form-control"
+                  [ngClass]="generaldetailsForm.controls.name.hasError('required') && generaldetailsForm.controls.name.touched || generaldetailsForm.controls.name.hasError('pattern') ? 'is-invalid' : ''"
+                  formControlName="name" />
+              </div>
+              <div class="formGroup">
+                <label>Address</label>
+                <span class="error-message">*</span>
+                <span class="error-message float-right" *ngIf="
+                  generaldetailsForm.controls.address.hasError('required') &&
+                  generaldetailsForm.controls.address.touched">required</span>
+                <input type="text" placeholder="Address" class="form-control"
+                  [ngClass]="generaldetailsForm.controls.address.hasError('required') && generaldetailsForm.controls.address.touched  ? 'is-invalid' : ''"
+                  formControlName="address" />
+              </div>
+              <div class="formGroup">
+                <label>Contact Number</label>
+                <span class="error-message">*</span>
+                <span class="error-message float-right" *ngIf="
+                  generaldetailsForm.controls.contactNumber.hasError('required') &&
+                  generaldetailsForm.controls.contactNumber.touched">required</span>
+                <span class="error-message float-right" *ngIf="
+                  generaldetailsForm.controls.contactNumber.hasError('pattern')">Invalid Contact Number</span>
+                <input type="text" placeholder="Contact Number" class="form-control"
+                  [ngClass]="generaldetailsForm.controls.contactNumber.hasError('required') && generaldetailsForm.controls.contactNumber.touched || generaldetailsForm.controls.contactNumber.hasError('pattern') ? 'is-invalid' : ''"
+                  formControlName="contactNumber" />
+              </div>
+              <div class="formGroup">
+                <label>Emails</label><span class="error-message">*</span><br>
+                <mat-hint style="font-size: 12px;">You can add multiple emails by hitting enter, Reports and other
+                  communication will send to these
+                  emails.</mat-hint>
+                <!-- <span class="error-message">*</span>
+                <span class="error-message float-right" *ngIf="
+                  generaldetailsForm.controls.email_id.hasError('required') &&
+                  generaldetailsForm.controls.email_id.touched">required</span>
+                <span class="error-message float-right" *ngIf="
+                  generaldetailsForm.controls.email_id.hasError('pattern')">Invalid Input</span>
+                <input matTooltip="Reports and other communications will be send to this email" type="text"
+                  placeholder="Email Address" class="form-control"
+                  [ngClass]="generaldetailsForm.controls.email_id.hasError('required') && generaldetailsForm.controls.email_id.touched || generaldetailsForm.controls.email_id.hasError('pattern') ? 'is-invalid' : ''"
+                  formControlName="email_id" /> -->
+                  <mat-form-field class="example-chip-list" appearance="outline" style="width:100%">
+                    <mat-label>Emails</mat-label>
+                    <mat-chip-grid #chipList1 aria-label="emails">
+                      <mat-chip-row *ngFor="let tag of emails" (removed)="remove(tag)">
+                        {{ tag }}
+                        <button matChipRemove>
+                          <mat-icon>cancel</mat-icon>
+                        </button>
+                      </mat-chip-row>
+                      <input placeholder="" [matChipInputFor]="chipList1"
+                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                        (matChipInputTokenEnd)="add($event)"  />
+                    </mat-chip-grid>
+                  </mat-form-field>
+              </div>
+              <div class="formGroup">
+                <label>Licence Number</label>
+                <input type="text" placeholder="licence Number" class="form-control" formControlName="licence_no" />
+              </div>
+              <div class="formGroup">
+                <label>Location Type</label>
+                <select class="form-control w-100" aria-label="Type" formControlName="type">
+                  <option value="0" >Sale</option>
+                  <option value="1" >Inventory</option>
+                  <option value="2">Sale With Inventory</option>
+                </select>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" formControlName="isPrimary" id="flexCheckChecked5" />
+                <label class="form-check-label" for="flexCheckChecked5">
+                  Is Primary
+                </label>
+              </div>
+              <div class="formGroup">
+
+                <mat-card appearance="outlined" style="height:400px">
+
+                  <img *ngIf="outletBannerNew;else altimage" src={{outletBannerNew}} class="img" />
+                  <ng-template #altimage>
+                    <img *ngIf="outletBanner;else noimage" src={{outletBanner}} class="img" />
+                    <ng-template #noimage>
+                      <img src="assets/images/outlet-banner.png" class="img" />
+                    </ng-template>
+                  </ng-template>
+
+                  <br><br>
+                  <input type="file" placeholder="please click here to upload" (change)="handleFileInput($event)" />
+                  <br>
+                  <span>Image size should be 300X200 px</span>
+
+                </mat-card>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6">
+              <div class="formGroup">
+                <label>Latitude</label>
+                <span class="error-message">*</span>
+                <span class="error-message float-right" *ngIf="
+                    generaldetailsForm.controls.latitude.hasError('required' ) &&
+                    generaldetailsForm.controls.latitude.touched">required</span>
+                <input type="number" class="form-control"
+                  [ngClass]="generaldetailsForm.controls.latitude.hasError('required') && generaldetailsForm.controls.latitude.touched ? 'is-invalid' : ''"
+                  placeholder="Latitude" formControlName="latitude" />
+              </div>
+              <div class="formGroup">
+                <label>Longitude</label>
+                <span class="error-message">*</span>
+                <span class="error-message float-right" *ngIf="
+                      generaldetailsForm.controls.longitude.hasError('required' ) &&
+                      generaldetailsForm.controls.longitude.touched">required</span>
+                <input type="number" class="form-control"
+                  [ngClass]="generaldetailsForm.controls.longitude.hasError('required') && generaldetailsForm.controls.longitude.touched  ? 'is-invalid' : ''"
+                  placeholder="Longitude" formControlName="longitude" />
+              </div>
+              <div class="formGroup">
+                <label>City</label>
+                <span class="error-message">*</span>
+                <span class="error-message float-right" *ngIf="
+                  generaldetailsForm.controls.city.hasError('required') &&
+                  generaldetailsForm.controls.city.touched">required</span>
+
+                <!-- <select class="custom-select w-100" [ngClass]="generaldetailsForm.controls.city.hasError('required') && generaldetailsForm.controls.city.touched ? 'is-invalid' : ''" aria-label="City" formControlName="city">
+                <option value="" disabled>City</option>
+                <option *ngFor="let i of cityArray" value="{{ i.id }}">
+                  {{ i.city }}
+                </option>
+              </select> -->
+                <input type="text" placeholder="City" class="form-control"
+                  [ngClass]="generaldetailsForm.controls.city.hasError('required') && generaldetailsForm.controls.city.touched || generaldetailsForm.controls.city.hasError('pattern') ? 'is-invalid' : ''"
+                  formControlName="city" />
+              </div>
+              <div class="formGroup">
+                <label>Currency</label>
+                <select class="form-control w-100" aria-label="Currency" formControlName="currency">
+                  <option value="" disabled>Currency</option>
+                  <option *ngFor="let i of currencyArray" value="{{ i.id }}">
+                    {{ i.currency }}
+                  </option>
+                </select>
+              </div>
+              <div class="formGroup">
+                <label>Country</label>
+                <select class="form-control w-100" aria-label="Country" formControlName="country">
+                  <option value="" disabled>Country</option>
+                  <option *ngFor="let i of countryArray" value="{{ i.id }}">
+                    {{ i.name }}
+                  </option>
+                </select>
+              </div>
+              
+              <div class="formGroup">
+                <div class="map" #mapElement></div>
+              </div>
+            </div>
+            <div class="row d-flex justify-content-end mt-4">
+              <button class="btn-setup-sucess float-right" style="margin-top: 5px;" (click)="updateLocation()">
+                <i class="icon-check mr-1"></i>Update
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </form>
+</body>
+
+</html>

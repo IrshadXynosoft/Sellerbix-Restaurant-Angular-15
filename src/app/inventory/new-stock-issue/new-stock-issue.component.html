@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body id="page_setup">
+    <!-- Body Wrapper Start -->
+    <form [formGroup]="stockIssuesForm">
+      <div class="body_wrapper container-fluid">
+        <!-- Header Start -->
+        <app-header></app-header>
+        <!-- Header End -->
+        <app-inventory-header></app-inventory-header>
+        <div class="px-4">
+          <div class="row pt-4">
+            <div class="bgSecMainAll">
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li
+                    class="breadcrumb-item cursor-pointer"
+                    routerLink="/home/walkin"
+                  >
+                    Home
+                  </li>
+                  <li
+                    class="breadcrumb-item cursor-pointer"
+                    aria-current="page"
+                    routerLink="/inventory"
+                  >
+                    Inventory
+                  </li>
+                  <li
+                    class="breadcrumb-item cursor-pointer"
+                    aria-current="page"
+                    routerLink="/inventory/stockIssues"
+                  >
+                    Stock Issue
+                  </li>
+                  <li
+                    class="breadcrumb-item active cursor-pointer"
+                    aria-current="page"
+                  >
+                    New Stock Issue
+                  </li>
+                </ol>
+              </nav>
+            </div>
+            <div class="col-12">
+              <div class="d-flex align-items-center head-tag cursor-pointer">
+                <h4 class="flex-gr-1">
+                  <i
+                    class="icon-arrow-left"
+                    routerLink="/inventory/stockIssues"
+                  ></i>
+                  New Stock Issue
+                </h4>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 row">
+            <div class="col-3">
+              <label>Issuing No/Ref</label>
+              <span class="error-message">*</span>
+              <span
+                class="error-message float-right"
+                *ngIf="
+                  stockIssuesForm.controls.stock_issuing_number.hasError(
+                    'required'
+                  ) && stockIssuesForm.controls.stock_issuing_number.touched
+                "
+                >required</span
+              >
+              <input
+                type="text"
+                class="form-control"
+                formControlName="stock_issuing_number"
+              />
+            </div>
+            <div class="col-3">
+              <label>Issuing Type</label>
+              <span class="error-message">*</span>
+              <span
+                class="error-message float-right"
+                *ngIf="
+                  stockIssuesForm.controls.issuing_type.hasError('required') &&
+                  stockIssuesForm.controls.issuing_type.touched
+                "
+                >required</span
+              >
+
+              <select class="form-control w-100" formControlName="issuing_type">
+                <option value="" selected>Select Issuing Type</option>
+                <option value="3">Purchase Return</option>
+                <option value="2">Expired</option>
+                <option value="1">Wasted</option>
+                <option value="4">ODS</option>
+              </select>
+            </div>
+            <div class="col-3">
+              <label>For Location</label>
+              <span class="error-message">*</span>
+              <span
+                class="error-message float-right"
+                *ngIf="
+                  stockIssuesForm.controls.branch_id.hasError('required') &&
+                  stockIssuesForm.controls.branch_id.touched
+                "
+                >required</span
+              >
+
+              <select class="form-control w-100" formControlName="branch_id">
+                <option *ngFor="let i of branchRecords" value="{{ i.id }}">
+                  {{ i.name }}
+                </option>
+              </select>
+            </div>
+            <div class="col-3">
+              <label>Comments</label>
+              <span class="error-message">*</span>
+              <span
+                class="error-message float-right"
+                *ngIf="
+                  stockIssuesForm.controls.comments.hasError('required') &&
+                  stockIssuesForm.controls.comments.touched
+                "
+                >required</span
+              >
+
+              <input
+                type="text"
+                formControlName="comments"
+                class="form-control"
+                placeholder="Enter Your Comments"
+              />
+            </div>
+          </div>
+          <div class="row col-12">
+            <div class="col-12">
+              <label>Issuing Items</label>
+              <span class="error-message">*</span><br />
+              <input
+                type="text"
+                class="form-control w-100"
+                placeholder="Search item by name, then hit enter to add"
+                [formControl]="suppliersData"
+                [matAutocomplete]="auto"
+                #autoInput
+                (keyup)="searchItem(autoInput.value)"
+              />
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option
+                  *ngFor="let option of options"
+                  [value]="option.name"
+                  [id]="option.id"
+                  (click)="itemSelected(option, autoInput)"
+                >
+                  {{ option.name }}
+                </mat-option>
+              </mat-autocomplete>
+            </div>
+          </div>
+
+          <div class="row col-12">
+            <div class="col-12" *ngIf="!isItemsSelected; else message">
+              <div class="not-found bordered">
+                <h3>Sorry :(</h3>
+                <p>No Items Selected</p>
+              </div>
+            </div>
+            <ng-template #message>
+              <table class="table tableStyleMain col-12 bordered mt-2">
+                <thead>
+                  <tr>
+                    <th scope="col">Sr. No.</th>
+                    <th scope="col">Item</th>
+                    <th scope="col">Stock On Hand</th>
+                    <th scope="col">Cost / Unit</th>
+                    <!-- <th scope="col">Unit Value</th> -->
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Total (QAR)</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    formArrayName="suppliersData"
+                    *ngFor="
+                      let item of supplierFormGroups.controls;
+                      let i = index
+                    "
+                  >
+                    <td>
+                      {{ i + 1 }}
+                    </td>
+                    <td>
+                      {{ itemName(i) }}
+                    </td>
+                    <td>
+                      {{ stockOnHand(i) }}
+                    </td>
+                    <td>
+                      {{ price(i) }}
+                    </td>
+                    <!--               
+              <td>
+                {{ unit(i) }}
+              </td> -->
+                    <td [formGroupName]="i">
+                      <span class="error-message">{{ errorMessage(i) }}</span>
+                      <div class="col-12 row">
+                        <div class="d-flex">
+                          <input
+                            type="text"
+                            class="form-control"
+                            style="width: 120px"
+                            placeholder="Qty"
+                            formControlName="qty"
+                            (input)="findTotal(i)"
+                          />
+                        </div>
+                        <div class="d-flex mt-2 ml-1">
+                          {{ measurementunit(i) }}
+                        </div>
+                      </div>
+                    </td>
+                    <td>{{ subTotal(i) }}</td>
+                    <td [formGroupName]="i">
+                      <i
+                        class="icon-trash mr-1 icon-red cursor-pointer"
+                        (click)="clearSupplier(i)"
+                      ></i>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="col-12 row mb-4">
+                <div class="col-12">
+                  <span class="float-right"
+                    >Total Amount {{ currency_symbol }}:<b>{{
+                      total_price
+                    }}</b></span
+                  >
+                </div>
+              </div>
+            </ng-template>
+          </div>
+          <div class="b-right">
+            <button
+              class="btn-setup-danger mr-2"
+              routerLink="/inventory/stockIssues"
+            >
+              Cancel
+            </button>
+            <button
+              class="btn-setup-sucess"
+              [disabled]="!stockIssuesForm.valid || stockIssuesForm.pristine"
+              (click)="process()"
+            >
+              Issue Stock
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </body>
+</html>

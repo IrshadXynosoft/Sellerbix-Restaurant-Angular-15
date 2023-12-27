@@ -1,0 +1,56 @@
+.mat-accordion .mat-expansion-panel .mat-expansion-panel-header{
+   
+    background-color: lavender;
+
+}
+::ng-deep .mat-expansion-panel-header
+{
+height: 45px !important;
+}
+.mat-accordion .mat-expansion-panel {
+  margin-bottom: .6rem;
+  margin-left: .6rem;
+  margin-right: .6rem;
+}
+.example-chip-list {
+    width: 100%;
+  }
+  .example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  .example-full-width {
+    width: 100%;
+  }
+  textarea {
+    height: 100px;
+  }
+  .mat-mdc-card {
+    background-color: rgb(224, 226, 231);
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    .img {
+      height: 100%;
+      width: 100%;
+    }
+  }
+  .mat-accordion .mat-expansion-panel .row
+  {
+    margin-top: .2rem;
+  }
+
+  .delete {
+    margin-left: 40%;
+    cursor: pointer;
+    color: white;
+  }
+
+  
+.delete_item_icon {
+	color: rgb(241, 26, 26);
+	cursor: pointer;
+	margin-top: 6px;
+  }

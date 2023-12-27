@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="content">
+        <div class="header">
+          <div class="row">
+            <div class="col-8 floatMainTab">
+              <h2>My Insights</h2>
+
+            </div>
+            <div class="col-4">
+              <h2 class="float-right">
+                {{user}}
+              </h2>
+            </div>
+          </div>
+          <!-- <div class="row">
+            <div class="col-12">
+              <span class="float-right">+971 85744 | shajeermhd@gmail.com</span>
+            </div>
+          </div> -->
+        </div>
+        <div class="row">
+          <div class="col-9">
+            <select class="form-control w-50" style="margin-top:20px;">
+              <option value="">
+                Select
+              </option>
+              <option value="{{staff.id}}" *ngFor="let staff of staffAllrecords" (click)="onChangeStaff(staff.id)">
+                {{staff.user.name}}
+              </option>
+            </select>
+          </div>
+          <div class="col-3">
+            <mat-hint>Business day</mat-hint>
+            <!-- <input class="form-control" [formControl]="dateChoosen" [matDatepicker]="releasedAtPicker"
+              (click)="releasedAtPicker.open()" pattern="dd/MM/YYYY">
+            <mat-datepicker-toggle style="margin-top: -55px;float:right" matSuffix [for]="releasedAtPicker">
+            </mat-datepicker-toggle>
+            <mat-datepicker #releasedAtPicker [touchUi]="true">
+            </mat-datepicker> -->
+            <select class="form-control w-100" (change)="filterReport($event)">
+              <option value="" >Select</option>
+              <option value="{{day.id}}" *ngFor="let day of businessdayRecords">{{day.name}}</option>
+            </select>
+          </div>
+        </div>
+        <!-- <div *ngIf="detailShownFlag"> -->
+        <div class="row" *ngIf="detailShownFlag">
+          <div class="col-3">
+            <mat-card appearance="outlined" class="card-details yellow">
+              <h2> {{currency_symbol}} {{staffOrders.cash_payments}}</h2>
+              <span>Cah payments</span>
+            </mat-card>
+          </div>
+          <div class="col-3">
+            <mat-card appearance="outlined" class="card-details green">
+              <h2> {{currency_symbol}} {{staffOrders.card_payments}}</h2>
+              <span>Card payments</span>
+            </mat-card>
+          </div>
+          <div class="col-3">
+            <mat-card appearance="outlined" class="card-details light-green">
+              <h2>{{staffOrders.unpaid_orders}} / {{currency_symbol}} {{staffOrders.unpaid_sum}}</h2>
+              <span>Unpaid Orders</span>
+            </mat-card>
+          </div>
+          <div class="col-3">
+            <mat-card appearance="outlined" class="card-details red">
+              <h2>{{staffOrders.paid_orders}} / {{currency_symbol}} {{staffOrders.paid_sum}}</h2>
+              <span>Paid Orders</span>
+            </mat-card>
+          </div>
+          <!-- <mat-card class="card-details light-orange">
+              <h2>18 / QR 550</h2>
+              <span>Total Orders</span>
+            </mat-card> -->
+        </div>
+        <div class="row" style="margin-top: 50px;">
+          <div class="col-8">
+            <div *ngIf="dataSource.data.length < 1 && detailShownFlag" class="not-found">
+              <h3>Sorry :(</h3>
+              <p>There's no Orders.</p>
+            </div>
+            <div class="tableStyleMain">
+              <table *ngIf="dataSource.data.length > 0 && detailShownFlag" mat-table [dataSource]="dataSource" matSort
+                class="mat-z8 ">
+                <ng-container matColumnDef="order_no">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Order no.
+                  </th>
+                  <td mat-cell *matCellDef="let element">{{ element.order_no }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="date">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Date & time
+                  </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.date }} {{element.time}}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="payment_status">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Payment Status
+                  </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.payment_status == 1 ? 'Paid' : 'Not paid' }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="payment_type">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Payment Type
+                  </th>
+                  <td mat-cell *matCellDef="let element">
+                    <div *ngFor="let i of element.invoice?.payment_types">
+                      <span>{{i.payment_name}}</span>
+                    </div>
+                    <span *ngIf="!element.invoice?.payment_types">-</span>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="amount">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Amount
+                  </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{element.amount}}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="paid_by">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Paid by
+                  </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{element.paid_by ? element.paid_by: '--'}}
+                  </td>
+                </ng-container>
+                <!-- <ng-container matColumnDef="staff">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                      Created by
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                      {{ element.staff}}
+                    </td>
+                  </ng-container> -->
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+              </table>
+              <mat-paginator [ngClass]="{ show: dataSource.data.length <= 0 }" [pageSize]="9"
+                [pageSizeOptions]="[2, 4, 6, 10, 20]">
+              </mat-paginator>
+            </div>
+            <button *ngIf="detailShownFlag" class="btn-setup-sucess commonBtnStyle" style="float: right;" (click)="settle()">Settle</button>
+          </div>
+          <div class="col-4" *ngIf="detailShownFlag">
+            <mat-card appearance="outlined" class="performance-card">
+              <h2>Over All Performance</h2>
+              <div id="chart">
+                <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [xaxis]="chartOptions.xaxis"
+                  [stroke]="chartOptions.stroke" [dataLabels]="chartOptions.dataLabels" [yaxis]="chartOptions.yaxis"
+                  [labels]="chartOptions.labels" [legend]="chartOptions.legend" [title]="chartOptions.title"
+                  [subtitle]="chartOptions.subtitle"></apx-chart>
+              </div>
+              <!-- <mat-card class="points-card">
+                <h3>0.00</h3>
+                <span>Tips Earned</span>
+              </mat-card> -->
+              <mat-card appearance="outlined" class="points-card">
+                <h3>{{staffOrders.points_earned}}</h3>
+                <span>Points Earned</span>
+              </mat-card>
+            </mat-card>
+          </div>
+        </div>
+        <!-- </div> -->
+        <div *ngIf="!detailShownFlag" class="row">
+          <div class="col-12">
+            <div class="not-found">
+              <h3>Sorry :(</h3>
+              <p>No data found.Please select a staff to see insights</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+  </div>
+</body>
+
+</html>

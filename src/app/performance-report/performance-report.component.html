@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+
+<body id="page_dashboard">
+
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper pt-2">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="container-fluid  align-items-start p-0">
+      <div class="page_title">
+        <div class="row align-items-center" style="margin-top:24px">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-8 col-xl-8 p-0">
+            <div class="title_inner d-flex">
+              <h1 class="d-flex align-items-center">Performance Report
+                <!--                            <span class="ml-4">$987.50</span>-->
+              </h1>
+              <!--                            <button type="button" class="btn"><a href="upload_item.html">Add New</a></button>-->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-0 d-flex">
+          <form class="search_box" style="margin-left: 2rem;">
+            <mat-form-field appearance="outline">
+              <mat-label>Month and Year</mat-label>
+              <input matInput [matDatepicker]="dp" (click)="dp.open()" [formControl]="dateFirst">
+              <mat-hint>MM/YYYY</mat-hint>
+              <mat-datepicker-toggle style="position:absolute;top:0;right:0;" matIconSuffix [for]="dp">
+              </mat-datepicker-toggle>
+              <mat-datepicker #dp startView="multi-year" (monthSelected)="setMonthAndYear($event, dp,1)"
+                panelClass="example-month-picker">
+              </mat-datepicker>
+            </mat-form-field>
+          </form>
+        </div>
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-0 d-flex">
+          <form class="search_box" style="width:50%;margin-left: .5rem;">
+            <mat-form-field appearance="outline">
+              <mat-label>Month and Year</mat-label>
+              <input matInput [matDatepicker]="dp2" (click)="dp2.open()" [formControl]="dateSecond">
+              <mat-hint>MM/YYYY</mat-hint>
+              <mat-datepicker-toggle style="position:absolute;top:0;right:0;" matIconSuffix [for]="dp2">
+              </mat-datepicker-toggle>
+              <mat-datepicker #dp2 startView="multi-year" (monthSelected)="setMonthAndYear($event, dp2,2)"
+                panelClass="example-month-picker">
+              </mat-datepicker>
+            </mat-form-field>
+          </form>
+        </div>
+      </div>
+      <div class="right-dasboard ">
+        <div class="total_box">
+          <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 " [ngClass]="dateSecond.value ? 'col-lg-6' : 'col-lg-12'">
+              <div
+                class="text_box orders_insights chart-area top-selling-items p-4 p-xl-5 pb-5  animate__animated animate__zoomIn wow"
+                data-wow-duration="1s">
+                <div id="chart" [ngStyle]="{'max-width': !dateSecond.value ? '100%' : '650px' }">
+                  <apx-chart [series]="comparisonGraphFirst.series" [chart]="comparisonGraphFirst.chart"
+                    [xaxis]="comparisonGraphFirst.xaxis" [dataLabels]="comparisonGraphFirst.dataLabels"
+                    [grid]="comparisonGraphFirst.grid" [stroke]="comparisonGraphFirst.stroke"
+                    [title]="comparisonGraphFirst.title"></apx-chart>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="dateSecond.value" class="col-12 col-sm-12 col-md-12 col-lg-6">
+              <div
+                class="text_box orders_insights chart-area top-selling-items p-4 p-xl-5 pb-5  animate__animated animate__zoomIn wow"
+                data-wow-duration="1s">
+                <div *ngIf="dateSecond.value; else noSecondGraphData" id="chart">
+                  <apx-chart [series]="comparisonGraphSecond.series" [chart]="comparisonGraphSecond.chart"
+                    [xaxis]="comparisonGraphSecond.xaxis" [dataLabels]="comparisonGraphSecond.dataLabels"
+                    [grid]="comparisonGraphSecond.grid" [stroke]="comparisonGraphSecond.stroke"
+                    [title]="comparisonGraphSecond.title"></apx-chart>
+                </div>
+                 <ng-template #noSecondGraphData>
+                  <div class="not-found">
+                    <h3>Sorry :(</h3>
+                    <p>Please select a date to show detailed comparison.</p>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="total_box">
+          <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
+              <div
+                class="chart-area py-5 py-sm-5 py-md-5 py-lg-5 px-5 d-flex align-items-center animate__animated animate__zoomIn wow"
+                data-wow-duration="1s">
+                <img src="assets/images/ic_energy.png" class="img-fluid">
+                <div class="text_box">
+                  <h3>Total Customers</h3>
+                  <h2>{{totalCustomers}}</h2>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
+              <div
+                class="chart-area py-5 py-sm-5 py-md-5  py-lg-5 px-lg-3 px-xl-5 px-5  d-flex align-items-center animate__animated animate__zoomIn wow"
+                data-wow-duration="1s">
+                <img src="assets/images/ic_Serving.png" class="img-fluid">
+                <div class="text_box">
+                  <h3>Premium Customers</h3>
+                  <h2>{{priorityCustomersArray.length}}</h2>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
+              <div
+                class="chart-area py-5 py-sm-5 py-md-5 py-lg-5 px-5  d-flex align-items-center animate__animated animate__zoomIn wow"
+                data-wow-duration="1s">
+                <img src="assets/images/ic_fastfood.png" class="img-fluid">
+                <div class="text_box">
+                  <h3>New Customers(last month)</h3>
+                  <h2>{{newCustomers}}</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="total_box">
+          <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-5">
+              <div
+                class="text_box orders_insights chart-area top-selling-items p-4 p-xl-5 pb-5  animate__animated animate__zoomIn wow"
+                data-wow-duration="1s">
+                <h3>Areawise statistics</h3>
+                <div id="chart2">
+                  <apx-chart [series]="donutchartOptions?.series" [chart]="donutchartOptions?.chart"
+                    [labels]="donutchartOptions?.labels" [responsive]="donutchartOptions?.responsive">
+                  </apx-chart>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-12 col-md-12 col-lg-4">
+              <div
+                class="text_box min-scroll chart-area top-selling-items p-4 p-xl-5 animate__animated animate__zoomIn wow"
+                data-wow-duration="1s">
+                <h3 style="margin-bottom: 15px;">Top Selling items</h3>
+                <div class="media w-100 d-flex align-items-start mb-3 animate__animated animate__fadeInUp wow"
+                  *ngFor="let items of topSellingArray">
+                  <div class="img_box center_img">
+                    <img *ngIf="items.image; else noimage" src='{{imageBasePath}}{{items.image}}' class="crop_img"
+                      alt="">
+                    <ng-template #noimage>
+                      <img class="crop_img" src="assets/images/no-image (1).jpg" />
+                    </ng-template>
+                  </div>
+                  <div class="media-body">
+                    <h5 style="text-transform: capitalize;" class="pb-1">{{items.name}}</h5>
+                    <h6>{{items.qty}} times</h6>
+                  </div>
+                </div>
+                <div *ngIf="topSellingArray.length <1" class="not-found">
+                  <h3>Sorry :(</h3>
+                  <p>There's no items.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-3">
+              <div
+                class="text_box min-scroll chart-area top-selling-items p-4 p-xl-5 animate__animated animate__zoomIn wow"
+                data-wow-duration="1s">
+                <h3 style="margin-bottom: 15px;">Priority Customers</h3>
+                <div class="media w-100 d-flex align-items-start mb-3 animate__animated animate__fadeInUp wow"
+                  *ngFor="let items of priorityCustomersArray">
+                  <div  class="media-body" style="margin-left:1rem;">
+                    <h5 style="text-transform:capitalize;" class="pb-1">{{items.customer_name ? items.customer_name : 'Unknown'}}</h5>
+                    <h6>{{items.orders}} orders</h6>
+                  </div>
+                </div>
+                <div *ngIf="topSellingArray.length <1" class="not-found">
+                  <h3>Sorry :(</h3>
+                  <p>There's no items.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="chart-area p-3 p-xl-4 animate__animated animate__zoomIn wow" data-wow-duration="1s">
+          <div class="row no-gutters align-items-center ">
+            <div class="col-12 col-sm-12 col-md-8 col-lg-12 col-xl-12">
+              <div class="menus pb-2">
+                <ul class="d-flex list-unstyled text-muted m-0">
+                  <li class="active">Customer chart</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div id="chart" style="margin-top:1.5rem">
+            <apx-chart [series]="CustomerchartOptions.series" [chart]="CustomerchartOptions.chart"
+              [dataLabels]="CustomerchartOptions.dataLabels" [plotOptions]="CustomerchartOptions.plotOptions"
+              [yaxis]="CustomerchartOptions.yaxis" [xaxis]="CustomerchartOptions.xaxis"
+              [fill]="CustomerchartOptions.fill" [title]="CustomerchartOptions.title"></apx-chart>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Body Wrapper End -->
+  <!-- Require Javascript End -->
+
+</body>
+
+
+<!-- Mirrored from hungerz.opuslab.works/dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 19 Jul 2021 13:59:21 GMT -->
+
+</html>

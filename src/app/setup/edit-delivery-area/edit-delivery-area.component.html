@@ -1,0 +1,55 @@
+<form [formGroup]="deliveryareaForm">
+  <div class="modal-wrapper">
+    <h1 mat-dialog-title>Edit Delivery Area</h1>
+    <div class="row ml-2 w-100">
+      <div class="col-12 col-sm-8">
+        <input id="pac-input" type="text" placeholder="  Search Here For Address or Place"
+          class="form-control mb-0 mr-2 bordered" />
+        <div class="map mt-2" #mapElement></div>
+        <button class="btn btn-warning btn-sm" (click)="deleteSelectedShape()">Clear Map Selection</button>
+        <span class="error-message float-right" *ngIf="!isAreaSelected">*Please mark delivery area </span>
+        <!-- <button class="btn btn-primary btn-sm" (click)="setSelection(null)">Clear Map Selection</button> -->
+      </div>
+      <div class="col-12 col-sm-4">
+        <div mat-dialog-content>
+          <label>Name</label>
+          <span class="error-message">*</span>
+          <span class="error-message float-right"
+            *ngIf="!deliveryareaForm.controls.name.valid && deliveryareaForm.controls.name.touched">*required</span>
+          <span class="error-message float-right" *ngIf="ErrorArray.name">
+            {{ ErrorArray.name }}</span>
+          <input type="text" class="form-control" placeholder="Name" formControlName="name" />
+          <label>Minimum Order Value ({{currency_symbol}})</label>
+          <span class="error-message">*</span>
+          <span class="error-message float-right"
+            *ngIf="!deliveryareaForm.controls.minvalue.valid && deliveryareaForm.controls.minvalue.touched">Invalid
+            input</span>
+          <input type="text" class="form-control" placeholder="Minimum Order Value" formControlName="minvalue" />
+          <label>Delivery Charge</label>
+          <span class="error-message float-right" *ngIf="
+                            deliveryareaForm.controls.delivery_charge.hasError('pattern')">Invalid Input</span>
+          <input type="text" placeholder="Delivery Charge" class="form-control" formControlName="delivery_charge" />
+          <label>Approximate Delivery Time (in minutes)</label>
+          <span class="error-message">*</span>
+          <span class="error-message float-right" *ngIf="
+                                          deliveryareaForm.controls.approximate_time.hasError('pattern')">Invalid
+            Input</span>
+          <span class="error-message float-right"
+            *ngIf="deliveryareaForm.controls.approximate_time.hasError('required' ) && deliveryareaForm.controls.approximate_time.touched">*required</span>
+          <input type="text" placeholder="Approximate Time" class="form-control" formControlName="approximate_time" />
+          <!-- <label>Drawing tools</label>
+                        <div class="row align-items-center">
+                            <div class="col-4"> <button class="btn-setup-danger" (click)="close()"></button></div>
+                            <div class="col-4"> <button class="btn-setup-danger" (click)="drawPolygon()"> <i class="zmdi zmdi-edit"></i></button></div>
+                            <div class="col-4"> <button class="btn-setup-danger" (click)="close()"><i class="zmdi zmdi-delete"></i></button></div>
+                        </div> -->
+        </div>
+      </div>
+
+    </div>
+    <div mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" [disabled]="!deliveryareaForm.valid" (click)="saveArea()">Update</button>
+    </div>
+  </div>
+</form>

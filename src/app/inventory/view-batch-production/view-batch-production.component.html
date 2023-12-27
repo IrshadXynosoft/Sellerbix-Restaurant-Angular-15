@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body id="page_setup">
+ 
+    <!-- Body Wrapper Start -->
+    <div class="body_wrapper container-fluid">
+         <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+
+      <div class="px-4">
+        <div class="row pt-4">
+        <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  routerLink="/home/walkin"
+                >
+                  Home
+                </li>
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  aria-current="page"
+                  routerLink="/inventory"
+                >
+                  Inventory
+                </li>
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  aria-current="page"
+                  routerLink="/inventory/batchProduction"
+                >
+                Batch Production
+                </li>
+                <li
+                  class="breadcrumb-item active cursor-pointer"
+                  aria-current="page"
+                >
+                  View Batch Production
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-12">
+            <div class="d-flex align-items-center head-tag ">
+              <h4 class="flex-gr-1"> <i class="icon-arrow-left cursor-pointer" (click)="back()"></i>Batch Pocess
+                {{ batchProcessedlist.batch_process_reference_no }}</h4>
+            </div>
+          </div>
+       
+        </div>
+        <div class="row">
+          <!-- <div class="col-12 col-md-3">
+            <label>Order No/Ref:</label>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="batchProcessedlist.batch_process_reference_no"
+              [disabled]="true"
+            />
+          </div> -->
+          <!-- <div class="col-12 col-md-3">
+              <label>Delivered To</label>
+              <input type="text" class="form-control" [(ngModel)]="branch"     [disabled]="true">
+            </div> -->
+        </div>
+        <table class="table tableStyleMain table-shadow  ">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Sub Recipe/Recipe</th>
+              <th scope="col">Cost/Unit ({{ currency_symbol }})</th>
+              <th scope="col">Stock On Hand</th>
+              <th scope="col">Processed Quantity</th>
+              <th scope="col">Total ({{ currency_symbol }})</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of showProcessList; let i = index">
+              <td>
+                {{ i + 1 }}
+              </td>
+              <td>
+                {{ item.name }}
+              </td>
+              <td>
+                {{ item.measurement_unit_name?item.cost_per_unit/item.measurement_unit_name:item.cost_per_unit }}
+              </td>
+              <td>
+                {{ item.stock_on_hand }}{{item.measurement_unit_name}}
+              </td>
+              <td>
+                {{ item.qty }}{{item.measurement_unit_name}}
+              </td>
+              <td>
+                {{ item.total }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="col-12 row mb-4">
+          <div class="col-12">
+            <span class="float-right"
+              >Total Amount {{ currency_symbol }}:<b>{{ total_price }}</b></span
+            >
+          </div>
+         
+        </div>
+        <div class="b-right">
+          <button class="btn-setup-danger btn-ht-custom mr-2" (click)="back()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

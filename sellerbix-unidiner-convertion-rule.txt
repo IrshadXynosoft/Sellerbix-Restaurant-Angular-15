@@ -1,0 +1,8 @@
+Change Icons
+=> Replace the icons from \src\assets\images\sellerbix or \src\assets\images\kwickify to the folder \src\assets\images
+=> Replace the Favicon from \src\assets\images\sellerbix (icons8-connect-256.png) icon to src\assets
+=> Replace color code in whole document
+	Unidiner => #00667c
+	Sellerbix => #00667c
+=> Change version and names from package.json file
+=> Change index.html

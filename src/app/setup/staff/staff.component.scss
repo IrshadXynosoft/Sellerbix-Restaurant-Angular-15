@@ -1,0 +1,157 @@
+/* Structure */
+.table {
+  border-collapse: unset !important;
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.mat-mdc-header-cell {
+  font-weight: bold;
+  font-size: medium;
+  color: rgb(20, 20, 20);
+}
+
+.mat-mdc-cell {
+  font-size: 15px;
+}
+
+.message {
+  font-size: 15px;
+  padding-top: 10%;
+  text-align: center;
+  font-style: italic;
+}
+
+.bg-card-grey {
+  color: grey;
+  text-align: center;
+  text-shadow: gray;
+  font-size: 0.8rem
+}
+
+.card {
+  background-color: rgb(247, 247, 252);
+  border-radius: 5px;
+  margin: 10px 0px;
+  border-width: 1px;
+  padding: 8px 8px 0px;
+  width: 12.5rem;
+
+}
+
+.mat-list-option:hover,
+.mat-list-option:focus,
+.mat-nav-list .mat-mdc-list-item:hover,
+.mat-nav-list .mat-mdc-list-item:focus,
+.mat-action-list .mat-list-item:hover,
+.mat-action-list .mat-list-item:focus {
+  background: none !important;
+}
+
+.mat-success {
+  background-color: rgb(87, 151, 87);
+  color: var(--white);
+}
+
+.positionFieldWrapper {
+  position: relative;
+  padding-left: 36px;
+  padding-right: 271px;
+
+  .positionFieldWrapperPos1 {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: var(--primary);
+    height: 100%;
+    width: 37px;
+    display: flex;
+    color: var(--white);
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px 0px 0px 6px;
+  }
+
+  .positionFieldWrapperPos2 {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 59%;
+    height: 100%;
+  }
+
+  select.form-control {
+    color: #495057 !important;
+    border: 1px solid #ced4da !important;
+    font-weight: 500 !important;
+    border-radius: 0px;
+    padding: 12px;
+    height: 46px;
+    width: 300px !important;
+    display: block;
+    margin-bottom: 0px;
+  }
+
+  .fieldInput {
+    height: 46px;
+    border-radius: 0px;
+    padding: 0 22px;
+    margin-bottom: 0;
+  }
+}
+
+.tableStyleMain {
+  margin-top: 7px;
+
+  th {
+    padding: 10px;
+    // border-right: 1px #e2e3e3 solid;
+    text-align: center;
+  }
+
+  td {
+    padding: 10px;
+    // border-right: 1px #eceeee solid;
+    text-align: center;
+  }
+}
+
+.btn-wrp-equal button {
+  width: 34px;
+  margin-bottom: 10px;
+  display: inline-block;
+  height: 34px;
+  border-radius: 50%;
+}
+
+.Pager2 {
+  float: right;
+  margin-top: 13px;
+
+  .page-item.active .page-link {
+    background-color: var(--primary) !important;
+    color: var(--white) !important;
+  }
+
+  .pagination .page-item .page-link {
+    margin: 0px;
+  }
+
+  .page-item {
+    border: 1px #ddd solid;
+  }
+}
+
+.show {
+  visibility: hidden;
+}
+
+.commonBtnStyle {
+  height: 35px;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 5px;
+}

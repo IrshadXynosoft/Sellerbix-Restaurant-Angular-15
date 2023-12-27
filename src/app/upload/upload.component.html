@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+
+<body id="page_items" class="upload_item">
+
+
+    <!-- Body Wrapper Start -->
+    <div class="body_wrapper ">
+            <!-- Header Start -->
+    <app-header></app-header>
+
+    <!-- Header End -->
+        <div class="row no-gutters ">
+            <!-- Left Sidebar Start -->
+            <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-2">
+                <div class="upload my-2 pt-md-2 px-1 pr-md-0 ">
+                    <a class="back-link d-none d-sm-none d-md-block pt-md-3 mb-md-5 px-3 " href="items.html"><i
+                            class="zmdi zmdi-arrow-left"></i> Back</a>
+
+                    <div class="row no-gutters mt-3 px-3">
+                        <div
+                            class="text-center  animate__animated animate__fadeInUp wow col-6 col-sm-6 col-md-12 mb-md-4 col-lg-10 px-1 pr-md-0">
+                            <div class="upload-box mx-auto">
+                                <label for="img" class="img m-0 active">
+                                    <i class="zmdi zmdi-image-alt"></i>
+                                    <input id="img" type="file">
+                                    <span>Upload <br> items image</span>
+                                </label>
+                            </div>
+                        </div>
+
+
+                        <div
+                            class="text-center  animate__animated animate__fadeInUp wow col-6 col-sm-6 col-md-12 mb-md-4  col-lg-10 px-1 pr-md-0">
+                            <div class="upload-box upload-video">
+                                <label for="video" class="m-0 video">
+                                    <i class="zmdi zmdi-videocam"></i>
+                                    <input id="video" type="file">
+                                    <span>Upload <br> items video</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-9 col-lg-9 col-xl-10  mt-2">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-6 col-lg-7">
+                        <div class="upload_an_items p-4">
+                            <h3 class="mt-0 mb-5">Upload an items</h3>
+                            <form>
+                                <div class="form-group  animate__animated animate__fadeInUp wow">
+                                    <label>Item Name</label>
+                                    <input type="text" class="form-control" placeholder="" required=""
+                                        value="Cream Pancake">
+                                </div>
+                                <div class="row mx-0  animate__animated animate__fadeInUp wow">
+                                    <div class="col-12 col-sm-12 col-md-12 px-0">
+                                        <div class="form-group">
+                                            <label>Item Code</label>
+                                            <input type="text" class="form-control" placeholder="" required=""
+                                                value="Cream Pancake">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-12 px-0">
+                                        <div class="form-group">
+                                            <label>Item Price (In $)</label>
+                                            <input type="text" class="form-control" placeholder="" required=""
+                                                value="19762">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group  animate__animated animate__fadeInUp wow">
+                                    <label>Choose Items Category</label>
+                                    <div class="select_box w-100 d-flex">
+                                        <select>
+                                            <option>Fast Foot</option>
+                                            <option>Dinner Foot</option>
+                                        </select>
+                                        <i class="zmdi zmdi-caret-down"></i>
+                                    </div>
+                                </div>
+
+                                <div class="form-group  animate__animated animate__fadeInUp wow">
+                                    <label>Item description</label>
+                                    <textarea rows="5" class="form-control py-1"></textarea>
+                                </div>
+                                <div class="form-group  animate__animated animate__fadeInUp wow">
+                                    <label>Add Ingredients (Separated by commas)</label>
+                                    <select class="form-control tokenizer" multiple="multiple">
+                                        <option selected="selected">Flour</option>
+                                        <option selected="selected">Sugar</option>
+                                        <option selected="selected">Baking powder</option>
+                                        <option selected="selected">Salt</option>
+                                        <option selected="selected">Egg</option>
+                                        <option selected="selected">Butter Milk</option>
+                                        <option selected="selected">Butter</option>
+                                        <option selected="selected">Vegetavle Oil</option>
+                                        <option selected="selected">Butter</option>
+                                    </select>
+                                </div>
+
+                                <div class="row  animate__animated animate__fadeInUp wow">
+                                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-4">
+                                        <div class="form-group">
+                                            <label>Serve for</label>
+                                            <div class="select_box w-100 d-flex">
+                                                <select>
+                                                    <option>2 People</option>
+                                                    <option>3 People</option>
+                                                    <option>4 People</option>
+                                                    <option>5 People</option>
+                                                </select>
+                                                <i class="zmdi zmdi-caret-down"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-4">
+                                        <div class="form-group">
+                                            <label>Cook time (in min)</label>
+                                            <input type="text" class="form-control" placeholder="" required=""
+                                                value="12">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-4">
+                                        <div class="form-group">
+                                            <label>Energy (in kcal)</label>
+                                            <input type="text" class="form-control" placeholder="" required=""
+                                                value="227">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-6 col-lg-5 second-box">
+
+                        <div class="upload_an_items p-4">
+                            <h3 class="mt-0 mb-5">Add Add-ons <small>(Optional)</small></h3>
+                            <form>
+                                <div class="row ">
+                                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-7">
+                                        <div class="form-group  animate__animated animate__fadeInUp wow">
+                                            <label>Add-ons</label>
+                                            <input type="text" class="form-control" placeholder="" required=""
+                                                value="Extra Cheese">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-5">
+                                        <div class="form-group  animate__animated animate__fadeInUp wow">
+                                            <label>Price (In $)</label>
+                                            <input type="text" class="form-control" placeholder="" required=""
+                                                value="22">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="animate__animated animate__fadeInUp wow" id="showmore"></div>
+                                <button
+                                    class=" animate__animated animate__fadeInUp wow btn btn-outline-primary col-12 col-sm-12 col-md-12 col-lg-12 col-xl-5"
+                                    type="button" id="addmore">
+                                    <span><i class="zmdi zmdi-plus"></i> Add More</span>
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="upload_an_items item_in_stock pt-4 mt-2  animate__animated animate__fadeInUp wow"
+                            data-wow-duration="1s">
+                            <div class="d-flex align-items-center px-4 pb-4">
+                                <h3 class="mb-0">Item in stock</h3>
+
+                                <div class="toggle_box align-items-center d-flex ml-auto">
+                                    <h4>Yes</h4>
+                                    <label class="switch mb-0">
+                                        <input type="checkbox">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <button type="file" class="btn py-2">Upload Items </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+
+</html>

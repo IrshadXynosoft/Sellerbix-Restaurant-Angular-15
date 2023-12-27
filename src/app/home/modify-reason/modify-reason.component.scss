@@ -1,0 +1,134 @@
+
+  .quantityDiv{
+    margin-top: 27px;
+    h3{
+      margin-bottom: 10px; font-size: 14px!important; text-transform: uppercase;
+  
+    }
+    .form-check {
+      position: relative;
+      display: inline-block;
+      padding-left: 34px;
+    }
+    .divPos {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    .form-check-input {
+      width: 20px !important;
+      cursor: pointer;
+      height: 20px !important;
+      position: static !important;
+      margin: 0 !important;
+    }
+    .borderdivMain {
+      border-bottom: 1px #ddd solid;
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+    .modal-wrapper .form-check-label {
+      margin-bottom: 0px;
+      font-size: 17px;
+      cursor: pointer;
+    }
+    .sp-ckbox {
+      color: var(--primary);
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 3px;
+      display: block;
+    }
+    .mat-icon.mat-warn {
+      color: #000;
+      background: none !important;
+    }
+    .btnCancelMain {
+      transition: 0.5s;
+      border-radius: 6px;
+      padding: 11px 19px;
+      color: #000;
+      font-size: 17px;
+      border: 1px #333 solid;
+      text-align: center;
+      background: var(--white) ;
+    }
+    .btnCancelMain:hover {
+      background: #eb1912;
+      color: var(--white) ;
+      border: 1px #eb1912 solid;
+    }
+    .addModifier {
+      transition: 0.5s;
+      border-radius: 5px;
+      padding: 10px;
+      color: var(--white) ;
+      font-size: 17px;
+      border: 1px #00667c solid;
+      text-align: center;
+      background: #00667c;
+      width: 200px;
+    }
+    .addModifier:hover {
+      background: #000;
+      color: var(--white) ;
+    }
+  }
+  
+  .txtMainPrice {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    padding-bottom: 55px;
+    margin-top: 21px;
+  
+    p {
+      margin-bottom: 0px;
+    }
+  }
+  .quantityDiv {
+    margin-top: 27px;
+    h3 {
+      margin-bottom: 10px;
+      font-size: 14px !important;
+      text-transform: uppercase;
+    }
+    .number {
+      margin: 10px auto 30px;
+      display: block;
+      position: relative;
+      max-width: 400px;
+  
+      .minus {
+        vertical-align: middle;
+        text-align: center;
+        font-size: 31px;
+        color: #00667c;
+        position: absolute;
+        left: 0;
+        top: 7px;
+      }
+      .plus {
+        vertical-align: middle;
+        text-align: center;
+        font-size: 31px;
+        color: #00667c;
+        position: absolute;
+        right: 0;
+        top: 4px;
+      }
+      input {
+        height: 34px;
+        width: 100%;
+  
+        text-align: center;
+        font-size: 20px;
+        border: none;
+        border-radius: 4px;
+        display: inline-block;
+        vertical-align: middle;
+        background: none;
+      }
+    }
+  }
+  

@@ -1,0 +1,58 @@
+<div class="modal-wrapper">
+  <form [formGroup]="taxForm">
+    <h2 mat-dialog-title>Add Charges</h2>
+    <mat-dialog-content>
+      <label>Name</label>
+      <span class="error-message">*</span>
+      <span class="error-message float-right"
+        *ngIf="taxForm.controls.tax_name.hasError('required' ) && taxForm.controls.tax_name.touched">Required</span>
+      <span class="error-message float-right" *ngIf="taxForm.controls.tax_name.hasError('pattern' )">Invalid
+        input</span>
+      <span class="error-message float-right" *ngIf="requestErrorArray">{{requestErrorArray.tax_name}}</span>
+      <input type="text" class="form-control"
+        [ngClass]="taxForm.controls.tax_name.hasError('required' ) && taxForm.controls.tax_name.touched || taxForm.controls.tax_name.hasError('pattern' ) || requestErrorArray.tax_name ? 'is-invalid' : ''"
+        placeholder="Name" formControlName="tax_name" />
+      <label>Tax Rate (%)</label>
+      <span class="error-message">*</span>
+      <span class="error-message float-right"
+        *ngIf="taxForm.controls.rate.hasError('required' ) && taxForm.controls.rate.touched">Required</span>
+      <span class="error-message float-right" *ngIf="taxForm.controls.rate.hasError('pattern' )">Invalid input</span>
+      <span class="error-message float-right" *ngIf="requestErrorArray">{{requestErrorArray.rate}}</span>
+      <input type="text" class="form-control"
+        [ngClass]="taxForm.controls.rate.hasError('required' ) && taxForm.controls.rate.touched || taxForm.controls.rate.hasError('pattern' ) || requestErrorArray.rate ? 'is-invalid' : ''"
+        placeholder="rate" formControlName="rate" />
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="1" id="flexCheckChecked" formControlName="is_default">
+        <label class="form-check-label" for="flexCheckChecked">
+          Default Tax
+        </label>
+      </div>
+      <label>Type</label>
+      <span class="error-message">*</span><br>
+      <mat-radio-group aria-label="Select an option" formControlName="type">
+        <mat-radio-button value="1" class="mr-4">Inclusive</mat-radio-button>
+        <mat-radio-button value="0">Exclusive</mat-radio-button>
+      </mat-radio-group>
+      <div class="row" *ngIf="Subs.length == 0">
+        <button class="btn-setup-sucess ml-2 mt-2" (click)="addOneMoreSub()">Add Split</button>
+      </div>
+      <div class="row" *ngFor="let group of Subs.controls; let index = index;" formArrayName="subs">
+        <div class="col-sm-12 col-md-5 col-lg-5" [formGroupName]='index'>
+          <mat-label>Name</mat-label>
+          <input class="form-control" type="text" formControlName="name">
+        </div>
+        <div class="col-sm-12 col-md-5 col-lg-5" [formGroupName]='index'>
+          <mat-label>Rate</mat-label>
+          <input class="form-control" type="text" formControlName="rate">
+        </div>
+        <span *ngIf="index == 0"><i (click)="addOneMoreSub()" class="zmdi zmdi-plus plus" aria-hidden="true"></i></span>
+        <span class="ml-2"><i (click)="deleteSub(index)" class="zmdi zmdi-minus min" aria-hidden="true"></i></span>
+      </div>
+    </mat-dialog-content>
+    <div mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" [disabled]="!taxForm.valid || taxForm.pristine"
+        (click)="addTax()">Submit</button>
+    </div>
+  </form>
+</div>

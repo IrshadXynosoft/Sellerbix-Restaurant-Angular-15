@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <form>
+    <div class="body_wrapper container-fluid">
+      <!-- Header Start -->
+      <app-header></app-header>
+      <!-- Header End -->
+      <div class="px-4">
+        <div class="row pt-4">
+          <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                  Home
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                  Setup
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/globalSettings">
+                  Global Settings
+                </li>
+                <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                  Online Branches
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-12">
+            <div class="d-flex align-items-center head-tag ">
+              <h4>
+                <i class="icon-arrow-left mr-1 cursor-pointer" (click)="back()"> </i> Online Branches
+              </h4>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-12 col-sm-4">
+
+            <p>Please select branches to show in web</p>
+
+            <div class="mt-2" *ngFor="let branch of branchRecords">
+              <mat-slide-toggle (change)="onChangeEvent($event,branch.id)" [checked]="isShowonWeb(branch.id)">
+                {{ branch.name}}</mat-slide-toggle>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+      </div>
+    </div>
+  </form>
+</body>
+
+</html>

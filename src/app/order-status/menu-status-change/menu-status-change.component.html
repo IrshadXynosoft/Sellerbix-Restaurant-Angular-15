@@ -1,0 +1,59 @@
+<div class="modal-wrapper">
+  <button mat-icon-button class="close-button">
+    <mat-icon class="close-icon" color="warn" (click)="close()">close</mat-icon>
+  </button>
+  <h2 mat-dialog-title>Change Menu Status</h2>
+  <mat-dialog-content>
+    <div class="row">
+      <div class="col-12 col-sm-12">
+        <input type="text" #menu class="form-control w-100" placeholder="Search Menu" (keyup)="doFilter(menu.value)" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <table mat-table [dataSource]="dataSource" matSort class="mat-z8 tableStyleMain">
+          <ng-container matColumnDef="index">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              #
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{dataSource.data.indexOf(element) + 1}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="ProductName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Name
+            </th>
+            <td mat-cell *matCellDef="let element" style="text-transform: capitalize;">
+              {{ element.name }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Status
+            </th>
+            <td mat-cell *matCellDef="let element">
+              <span *ngIf="element.status==1">Active</span>
+              <span *ngIf="element.status==0">Inactive</span>
+              <div>
+                <mat-slide-toggle [checked]="element.status == 1 ? true : false"
+                  (change)="statusChange($event,element.id)"></mat-slide-toggle>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+        <mat-paginator [ngClass]="{ show: dataSource.data.length <= 0 }" [pageSize]="10"
+          [pageSizeOptions]="[10, 50, 150, 200, 250]">
+        </mat-paginator>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button class="btn-setup-danger" mat-button mat-dialog-close>Close</button>
+  </mat-dialog-actions>
+</div>

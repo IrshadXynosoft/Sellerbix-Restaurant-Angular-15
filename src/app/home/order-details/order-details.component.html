@@ -1,0 +1,250 @@
+<div class="modal-wrapper">
+  <button mat-icon-button class="close-button" (click)="close()">
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+  </button>
+  <h2 mat-dialog-title>Order Details</h2>
+  <mat-dialog-content>
+    <div class="row">
+      <div class="col-12">
+        <div class="bordered">
+          <table class="table tableStyleMain">
+            <thead>
+              <tr>
+                <th scope="col">Order No:</th>
+                <th scope="col">Staff:</th>
+                <th scope="col" *ngIf="data.Orders.entity_id == '2'">Table:</th>
+                <th scope="col">Payment Status</th>
+                <th scope="col">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ data.Orders.order.order_number }}</td>
+                <td>
+                  {{
+                    data.Orders.order.assign_to?.name
+                      ? data.Orders.order.assign_to?.name
+                      : staff
+                  }}
+                </td>
+                <td *ngIf="data.Orders.entity_id == '2'">
+                  {{ data.Orders.order.table_name }}
+                </td>
+                <td *ngIf="data.Orders.payment_status; else elseblock">
+                  <div>Paid<br /></div>
+                </td>
+                <ng-template #elseblock>
+                  <td>Not paid</td>
+                </ng-template>
+                <td>{{ data.Orders.amount }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="bordered">
+          <table class="table tableStyleMain">
+            <thead>
+              <tr>
+                <th scope="col"><mat-checkbox (change)="selectAll($event)" [ngModel]="isAllSelected()"></mat-checkbox></th>
+                <th scope="col">Item Name</th>
+                <th scope="col">Item Note</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Price</th>
+                <th scope="col">Line Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of data.Orders.order.items">
+                <td><mat-checkbox class="mt-1" (change)="selectionChange($event,item.id)" [ngModel]="isSelected(item.id)"></mat-checkbox></td>
+                <td style="text-transform: capitalize">
+                  <span>{{ item.name }}</span>
+                  <div *ngIf="item.modifiers" class="col-12 combo-tree">
+                    <div class="tree">
+                      <ul
+                        class="tree-holder"
+                        *ngFor="let modifier of item.modifiers; let i = index"
+                      >
+                        <li *ngIf="modifiercheck(modifier.list)">
+                          <span
+                            ><i class="fa fa-folder-open"></i>
+                            {{ modifier.name }}</span
+                          >
+                          <ul *ngFor="let list of modifier.list">
+                            <li *ngIf="list.status">
+                              <span
+                                ><i class="fa fa-minus-square"></i
+                                >{{ list.modifier_list }} &nbsp;
+                                {{ currency_symbol }}{{ list.rate }}</span
+                              >
+                              <span
+                                style="text-transform: none"
+                                *ngIf="list.list_qty"
+                                >&nbsp; x{{ list.list_qty }}</span
+                              >
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </td>
+                <td>{{ item.note ? item.note : "--" }}</td>
+                <td>{{ item.qty }}</td>
+                <td>{{ item.price }} {{ currency_symbol }}</td>
+                <td>
+                  {{ item.total }} {{ currency_symbol }}
+                  <span *ngIf="item.is_utensil && item.is_return == false"
+                    ><button
+                      class="btn-setup-sucess float-right"
+                      (click)="returnUtensil(item)"
+                    >
+                      Return
+                    </button></span
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="d-flex br-btm pb-2 px-2">
+            <div class="flex-grow-1">Sub Total:</div>
+            <div>
+              {{ data.Orders.order.Cart?.subTotal }} {{ currency_symbol }}
+            </div>
+          </div>
+          <div
+            class="d-flex br-btm pb-2 px-2"
+            *ngIf="data.Orders.order.Cart?.tax > 0"
+          >
+            <div class="flex-grow-1">
+              {{ data.Orders?.order.applied_tax[0]?.name }} :
+            </div>
+            <div>{{ data.Orders.order.Cart?.tax }} {{ currency_symbol }}</div>
+          </div>
+          <div
+            class="d-flex br-btm pb-2 px-2"
+            *ngIf="data.Orders.order.Cart?.discount > 0"
+          >
+            <div class="flex-grow-1">Discount:</div>
+            <div>
+              {{ data.Orders.order.Cart?.discount }} {{ currency_symbol }}
+            </div>
+          </div>
+          <div
+            class="d-flex br-btm pb-2 px-2"
+            *ngIf="data.Orders.order.Cart?.otherCharge > 0"
+          >
+            <div class="flex-grow-1">Surcharges:</div>
+            <div>
+              {{ data.Orders.order.Cart?.otherCharge }} {{ currency_symbol }}
+            </div>
+          </div>
+          <div
+            class="d-flex br-btm pb-2 px-2"
+            *ngIf="data.Orders.order.coupon_array"
+          >
+            <div class="flex-grow-1">Coupon Applied:</div>
+            <div>
+              {{ data.Orders.order.coupon_array.applied_discount }}
+              {{ currency_symbol }}
+            </div>
+          </div>
+          <div
+            class="d-flex br-btm pb-2 px-2"
+            *ngIf="data.Orders.order.Cart?.loyalty_coupon"
+          >
+            <div class="flex-grow-1">Loyalty Coupon:</div>
+            <div>
+              {{
+                data.Orders.order.Cart?.loyalty_coupon?.applied_discount.toFixed(
+                  2
+                )
+              }}
+              {{ currency_symbol }}
+            </div>
+          </div>
+          <div
+            class="d-flex br-btm pb-2 px-2"
+            *ngIf="data.Orders.order.delivery_charge > 0"
+          >
+            <div class="flex-grow-1">Delivery Charge</div>
+            <div>
+              {{ data.Orders.order.delivery_charge }} {{ currency_symbol }}
+            </div>
+          </div>
+          <div class="d-flex pt-2 pb-2 px-2">
+            <div class="flex-grow-1">Total:</div>
+            <div>
+              <strong
+                >{{ data.Orders.order.Cart.amount }}
+                {{
+                  data.Orders.order.amount != "Not Paid" ? currency_symbol : ""
+                }}</strong
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="data.Orders.order.notes">
+      <div class="col-12">
+        <div class="bordered">
+          <h4 class="px-4">Order Note :</h4>
+          <h4 class="px-2">{{ data.Orders.order.notes }}</h4>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button
+      *ngIf="selectedIds.length > 0"
+      class="btn-setup-sucess commonBtnStyle print"
+      (click)="kotReprintSelected()"
+    >
+      Kot Reprint
+    </button>
+    <button
+      class="btn-setup-sucess commonBtnStyle bg-grey"
+      (click)="orderHistory()"
+    >
+      History
+    </button>
+    <button
+      *ngIf="data.Orders.status == 1 && data.Orders.entity_id != 5"
+      class="btn-setup-sucess commonBtnStyle modify"
+      (click)="editOrder()"
+    >
+      <i class="icon-edit mr-1 w-px-100"></i>Modify
+    </button>
+    <button class="btn-setup-sucess commonBtnStyle" [matMenuTriggerFor]="menu">
+      <i class="icon-print mr-1"></i>
+      Print
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="invoiceReprint()">
+        Invoice {{ data.Orders.inv_print_count == 0 ? "Print" : "Reprint" }}
+      </button>
+      <!-- <button mat-menu-item (click)="kotPrint()">
+        Kot Print
+      </button> -->
+      <button
+        *ngIf="branch_settings?.label_print == 1"
+        mat-menu-item
+        (click)="labelPrint()"
+      >
+        Label Print
+      </button>
+    </mat-menu>
+    <button
+      *ngIf="accept_payment == 'true'"
+      class="btn-setup-sucess commonBtnStyle modify"
+      (click)="makePayment()"
+    >
+      <i class="icon-money mr-1"></i>
+      Pay
+    </button>
+  </mat-dialog-actions>
+</div>

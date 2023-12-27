@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+  <!-- Header Start -->
+
+  <form [formGroup]="generaldetailsForm" enctype="multipart/form-data">
+    <div class="body_wrapper container-fluid">
+      <app-header></app-header>
+      <div class="px-4">
+        <div class="row pt-4">
+          <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                  Home
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                  Setup
+                </li>
+                <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                  Edit Tenant
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-12">
+            <div class="d-flex align-items-center head-tag ">
+              <h4><i class="icon-arrow-left cursor-pointer" routerLink="/setup"></i> Edit Tenant</h4>
+            </div>
+          </div>
+          <div class="row ml-2 w-100">
+            <div class="col-12 col-sm-4">
+                <label>Name</label>
+                <span class="error-message">*</span>
+                <span class="error-message float-right"
+                  *ngIf=" generaldetailsForm.controls.name.hasError( 'required' ) && generaldetailsForm.controls.name.touched  ">required</span>
+                <span class="error-message float-right"
+                  *ngIf="generaldetailsForm.controls.name.hasError('pattern')">invalid input</span>
+                <span class="error-message float-right">{{ errorArray.name }}</span>
+                <input type="text" placeholder="Name" class="form-control" formControlName="name" />
+
+                <label>Contact Number</label>
+                <span class="error-message">*</span>
+                <span class="error-message float-right" *ngIf="
+                  generaldetailsForm.controls.contactNumber.hasError('required' ) &&
+                  generaldetailsForm.controls.contactNumber.touched
+                ">required</span>
+                <span class="error-message float-right" *ngIf="
+                generaldetailsForm.controls.contactNumber.hasError(
+                  'pattern'
+                )">invalid input</span>
+                <input type="text" placeholder="Contact Number" class="form-control" formControlName="contactNumber" />
+                <!-- <label>Business Day End</label>
+                <span class="error-message ">*</span>
+                <span class="error-message float-right"
+                  *ngIf="!generaldetailsForm.controls.business.valid">required</span>
+                <input type="time" class="form-control" placeholder="Business Day End" formControlName="business" /> -->
+                <label>Country</label>
+                <input type="text" class="form-control" placeholder="Business Day End" formControlName="country" />
+                <!-- <select class="form-control w-100" aria-label="Country" formControlName="country" >
+                  <option value="" disabled>Country</option>
+                  <option *ngFor="let i of countryArray" value="{{ i.id }}">
+                    {{ i.name }}
+                  </option>
+                </select> -->
+                <label>Timezone</label>
+                <input type="text"  class="form-control mb-0 mr-2"  formControlName="timezone"/>
+                
+                <label>Website</label>
+                <input type="text"  class="form-control mb-0 mr-2" placeholder="Website" formControlName="website"/>
+
+                <label>Logo(Should be 300X300 pixels)</label>
+                <input type="file" id="file" formControlName="file" laceholder="please click here to upload" class="form-control"
+                  (change)="handleFileInput($event)" />
+
+                <div class="btn-padding">
+                  <button class="btn-setup-sucess" (click)="updateLocation()" [disabled]="
+                        !generaldetailsForm.valid 
+                      ">
+                    <i class="icon-check mr-1"></i>Update
+                  </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</body>
+
+</html>

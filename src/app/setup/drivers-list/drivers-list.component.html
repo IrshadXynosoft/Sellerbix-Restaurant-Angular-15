@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">Home</li>
+              <!-- <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                Setup
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/location">
+                Locations
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/{{ id }}/editLocation">
+                Location Setup
+              </li> -->
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/delivery_settings">
+                Delivery Settings
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">Drivers</li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1">
+              <i class="icon-arrow-left mr-1 cursor-pointer" (click)="back()"></i>Drivers
+            </h4>
+            <div class="d-flex">
+              <input type="text" class="form-control" placeholder="Search Drivers" #area
+                (keyup)="doFilter(area.value)" />
+            </div>
+            <div class="d-flex" style="padding-bottom: 15px; padding-left: 5px">
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <ng-template #message>
+        <p *ngIf="dataSource.data.length <= 0" class="message">
+          No Drivers Found. <br />
+
+        </p>
+      </ng-template>
+      <div class="col-12 tableStyleMain">
+        <table mat-table *ngIf="dataSource.data.length > 0; else message" [dataSource]="dataSource" matSort
+          class="mat-z8">
+          <ng-container matColumnDef="index">
+            <th mat-header-cell *matHeaderCellDef>
+              #
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{dataSource.data.indexOf(element) + 1}}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+          </ng-container>
+          <ng-container matColumnDef="commission">
+            <th mat-header-cell *matHeaderCellDef>Commission Value</th>
+            <td mat-cell *matCellDef="let element">{{ element.commission }}</td>
+          </ng-container>
+          <ng-container matColumnDef="commission_type">
+            <th mat-header-cell *matHeaderCellDef>Commission Type</th>
+            <td mat-cell *matCellDef="let element">{{ element.commission_type}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="delivery_area">
+            <th mat-header-cell *matHeaderCellDef>Delivery Area</th>
+            <td mat-cell *matCellDef="let element">{{ element.delivery_area }}</td>
+          </ng-container>
+          <ng-container matColumnDef="button">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let element">
+
+              <button class="btn-setup-sucess w-50" (click)="editDriver(element)">
+                <!-- <i _ngcontent-trm-c429="" class="zmdi zmdi-edit"></i> -->
+                Edit
+              </button>
+              <button class="btn-setup-sucess w-50 mt-2" (click)="settleDriverOrders(element.driver_id)">
+                <!-- <i _ngcontent-pms-c429="" class="zmdi zmdi-eye"></i> -->
+                Order Settlement
+              </button>
+              <button class="btn-setup-sucess w-50 mt-2" (click)="settleDriver(element.driver_id)">
+                <!-- <i _ngcontent-pms-c429="" class="zmdi zmdi-eye"></i> -->
+                Commission Settlement
+              </button>
+              <button class="btn-setup-sucess w-50 mt-2" (click)="showDetails(element.driver_id)">
+                <!-- <i _ngcontent-pms-c429="" class="zmdi zmdi-eye"></i> -->
+                Show History
+              </button>
+
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+        <mat-paginator [pageSize]="50" [pageSizeOptions]="[2, 4, 6, 10, 50]">
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

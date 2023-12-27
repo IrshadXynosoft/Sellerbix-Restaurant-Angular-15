@@ -1,0 +1,82 @@
+
+        <div class="modal-wrapper">
+          <h2 mat-dialog-title>Stock Receipt:
+            {{ receiptItem.receiving_number }}</h2>
+            <mat-dialog-content>
+              <div class="row">
+                <div class="col-12 col-md-3">
+                  <label>Receiving No/Ref:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="receiptItem.receiving_number"
+                    [disabled]="true"
+                  />
+                </div>
+                <div class="col-12 col-md-3">
+                  <label>Receiving Type</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="receivingType"
+                    [disabled]="true"
+                  />
+                </div>
+                <div class="col-12 col-md-3">
+                  <label>Comments</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="receiptItem.comments"
+                    [disabled]="true"
+                  />
+                </div>
+                <!-- <div class="col-12 col-md-3">
+                    <label>Delivered To</label>
+                    <input type="text" class="form-control" [(ngModel)]="branch"     [disabled]="true">
+                  </div> -->
+              </div>
+              <table class="table tableStyleMain bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Item</th>
+                    <th scope="col">Cost/Unit</th>
+                    <th scope="col">Processed Quantity</th>
+                    <th scope="col">Total ({{ currency_symbol }})</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of showProcessList; let i = index">
+                    <td>
+                      {{ i + 1 }}
+                    </td>
+                    <td>
+                      {{ item.name }}
+                    </td>
+                    <td>
+                      {{ item.cost_per_unit }}
+                    </td>
+                    <td>
+                      {{ item.qty }}
+                    </td>
+                    <td>
+                      {{ item.total }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="col-12 row mb-4">
+                <div class="col-12">
+                  <span class="float-right"
+                    >Total Amount {{ currency_symbol }}:<b>{{ receiptItem.total_amount }}</b></span
+                  >
+                </div>
+               
+              </div>
+            </mat-dialog-content>
+            <mat-dialog-actions>
+              <button class="btn-setup-danger mr-2" (click)="back()">Close</button>
+            </mat-dialog-actions>
+      </div>
+

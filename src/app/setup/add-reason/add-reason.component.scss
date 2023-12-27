@@ -1,0 +1,15 @@
+.inputTxtClass {
+  position: relative;
+  .form-control {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #000;
+    border-radius: 5px;
+    background-color: var(--white);
+    background-clip: padding-box;
+    border: 1px solid #ddd;
+  }
+}

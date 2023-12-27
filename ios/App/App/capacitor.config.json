@@ -1,0 +1,6 @@
+{
+	"appId": "com.unidiner.pos",
+	"appName": "Sellerbix",
+	"webDir": "dist/angular-build",
+	"bundledWebRuntime": false
+}

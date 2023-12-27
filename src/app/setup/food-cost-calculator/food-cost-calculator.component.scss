@@ -1,0 +1,157 @@
+// scss
+.food-cost-container {
+  // width: 210mm; /* A4 width */
+  // height: 297mm; /* A4 height */
+  .heading {
+    font-size: 26px;
+    font-weight: 600;
+    padding: 25px;
+    color: #fff;
+    background-color: rgb(97, 214, 97);
+    border-bottom: 0.5px solid grey;
+  }
+  .details {
+    padding: 15px;
+    // font-size: 16px;
+    // font-weight: 600;
+    margin-bottom: 5px;
+    .label {
+      display: inline-block;
+      width: 50%;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+    }
+
+    .value {
+      display: inline-block;
+      text-align: right;
+      width: 50%;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+    }
+  }
+
+  .primary {
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: 400;
+    color: #fff;
+    padding: 5px;
+    background-color: rgb(97, 198, 97);
+  }
+
+  .secondary {
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: 400;
+    color: #fff;
+    padding: 5px;
+    background-color: #a0cd44;
+  }
+
+  .utility {
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: 400;
+    color: #fff;
+    padding: 5px;
+    background-color: rgb(220, 171, 80);
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #ccc;
+  }
+
+  th,
+  td {
+    border: 0.5px solid grey;
+    padding: 4px;
+    text-align: left;
+    background-color: #fff;
+  }
+
+  th {
+    background-color: rgb(226, 226, 199);
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+  .blank {
+    height: 2rem;
+  }
+
+  .image {
+    background-color: #fff;
+    width: 100%;
+    height: 100%;
+    border: 1px dotted #000;
+    margin-left: -7px;
+  }
+  /* Responsive column classes for Flexbox grid */
+  .col-1 {
+    flex: 0 0 8.33%;
+    max-width: 8.33%;
+  }
+
+  .col-2 {
+    flex: 0 0 16.66%;
+    max-width: 16.66%;
+  }
+
+  .col-3 {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+
+  .col-4 {
+    flex: 0 0 33.33%;
+    max-width: 33.33%;
+  }
+
+  .col-5 {
+    flex: 0 0 41.66%;
+    max-width: 41.66%;
+  }
+
+  .col-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+
+  .col-7 {
+    flex: 0 0 58.33%;
+    max-width: 58.33%;
+  }
+
+  .col-8 {
+    flex: 0 0 66.66%;
+    max-width: 66.66%;
+  }
+
+  .col-9 {
+    flex: 0 0 75%;
+    max-width: 75%;
+  }
+
+  .col-10 {
+    flex: 0 0 83.33%;
+    max-width: 83.33%;
+  }
+
+  .col-11 {
+    flex: 0 0 91.66%;
+    max-width: 91.66%;
+  }
+
+  .col-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+#chart {
+  max-width: 350px;
+  margin: 10px;
+  padding: 0;
+}

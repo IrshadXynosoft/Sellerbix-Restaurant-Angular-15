@@ -1,0 +1,25 @@
+<div class="modal-wrapper">
+  <form [formGroup]="substituteForm">
+    <h2 mat-dialog-title>Add Substitutes</h2>
+    <mat-dialog-content>
+      <div class="row" *ngFor="let group of Subs.controls; let index = index;" formArrayName="subs">
+        <div class="col-sm-12 col-md-5 col-lg-5" [formGroupName]='index'>
+          <mat-label>Name</mat-label>
+          <input class="form-control" type="text" formControlName="name">
+        </div>
+        <div class="col-sm-12 col-md-5 col-lg-5" [formGroupName]='index'>
+          <mat-label>Rate</mat-label>
+          <input class="form-control" type="text" formControlName="rate">
+        </div>
+        <span *ngIf="index == 0"><i (click)="addOneMoreQuestion()" class="zmdi zmdi-plus plus"
+            aria-hidden="true"></i></span>
+        <span *ngIf="index!= 0"><i (click)="deleteQuestion(index)" class="zmdi zmdi-minus min"
+            aria-hidden="true"></i></span>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" [disabled]="!substituteForm.valid" (click)="save()">Submit</button>
+    </mat-dialog-actions>
+  </form>
+</div>

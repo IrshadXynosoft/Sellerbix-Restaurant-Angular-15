@@ -1,0 +1,33 @@
+#chart2 {
+    max-width: 380px;
+    margin: 25px auto;
+    padding: 0;
+  }
+ .btn-announcement {
+  background: var(--primary);
+  border-radius: 10px;
+  color: var(--white);
+  width: 6rem;
+  border: 0;
+  box-shadow: none !important;
+  position: relative;
+  font-weight: 500;
+  min-height: 39px;
+  position: absolute;
+  right: .5rem;
+ }
+
+ .tableStyleMain{ margin-top: 7px ;
+
+  th{
+    padding: 10px; border-right: 1px #e2e3e3 solid; text-align: center;
+  }
+
+  td{
+    padding: 10px; border-right: 1px #eceeee  solid; text-align: center;
+  }
+
+}
+table {
+  width: 100%;
+}

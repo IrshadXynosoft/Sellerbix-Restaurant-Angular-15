@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+    <!-- Body Wrapper Start -->
+    <div class=" container-fluid">
+            <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+        <!-- <h1 class="mainHeaderPos">Doha : invoice</h1> -->
+        <div class="row pt-4">
+            <div class="bgSecMainAll">
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                        Home
+                      </li>
+                      <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                        Setup
+                      </li>
+                      <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/location">
+                        Location
+                      </li>
+                      <li class="breadcrumb-item cursor-pointer" aria-current="page"
+                        routerLink="/setup/location/{{ id }}/printers">
+                        Printers
+                      </li>
+                      <li class="breadcrumb-item cursor-pointer" aria-current="page"
+                      routerLink="/setup/location/{{ id }}/printers/settings">
+                        Printer Settings
+                      </li>
+                      <li class="breadcrumb-item active" aria-current="page">
+                        {{currentBreadCrumb}}
+                      </li>
+
+                </ol>
+              </nav>
+            </div>
+            <div class="col-12">
+              <div class="d-flex align-items-center head-tag cursor-pointer">
+                <h4 class="flex-gr-1" routerLink="/setup/location/{{ id }}/printers/settings">  <i class="icon-arrow-left"></i>{{branchName}} : Invoice</h4>
+              </div>
+            </div>
+          </div>
+        <div class="posPrinterWrapper">
+
+            <div class="posPrinterWrapperPos">
+                <div class="span3">
+                    <span class="lead">Sample Preview</span>
+                    <div class="invoicePreview ">
+                        <div  *ngIf="isShowHeader">
+                           {{headerText}}
+                        </div>
+                        <div class="logo" *ngIf="isShowLogo">
+                            <h3>Logo</h3>
+                         </div>
+                        <span class="customerType" >{{title}}</span>
+                        <p class="txtContentWrapper"> <span class="callcenteer">Call Center</span>
+                            <strong class="trnLabel">{{label}}</strong> 35445
+                        </p>
+                        <div class="deliveryAddressInvoiceContainer" *ngIf="isShowDeliveryAddress">
+                            <div class="txtContentWrapperDiv">
+                                <p>***** DELIVER TO *****</p>
+                                <p>Jeremy Carlisle</p>
+                                <p>202-555-0105</p>
+                            </div>
+                            <p class="txtContentWrapper1">2824 Hillcrest Circle, Golden Valley<br>
+                                Minnesota 55427</p>
+                        </div>
+                        <div class="dineInInvoiceContent">
+                            <strong class="tableLabel">{{customer}}</strong> Jeremy Carlisle<br>
+                            <strong class="staffLabel">{{staff}}</strong> Karl
+                        </div>
+                        <div class="allDivRow">
+                            <div class="span6">
+                                9:47 am
+                            </div>
+                            <div class="span7">
+                                27-Dec-2012
+                            </div>
+                        </div>
+                        <div class=" receiptBorder">
+                            <div class="span9">
+                                {{item}}
+                            </div>
+                            <div class="span12">
+                                {{qty}}
+                            </div>
+                            <div class="span13 ">
+                                {{price}}
+                            </div>
+                        </div>
+                        <div class=" receiptBorder1">
+                            <div class="span9">
+                                <p> Sample Product 1</p>
+                                <p> Sample Product 2</p>
+                            </div>
+                            <div class="span12">
+                                <p> 1</p>
+
+                                <p>1</p>
+                            </div>
+                            <div class="span13 ">
+                                <p> 10.00</p>
+                                <p> 2.00</p>
+                            </div>
+                        </div>
+                        <ul class="priceNavmain">
+                            <li>
+                                <div>{{subTotal}}: </div><span>12.00</span>
+                            </li>
+                        </ul>
+                        <ul class="priceNavmain">
+                            <li>
+                                <div>{{toPayLabel}}: </div><span> <label>QAR</label>16.53</span>
+                            </li>
+                        </ul>
+                        <ul class="priceNavmain">
+                            <li>
+                                <div>{{surchargeLabel}}: </div><span>16.53</span>
+                            </li>
+                        </ul>
+                        <ul class="priceNavmain">
+                            <li>
+                                <div>{{AmountRecievedLabel}}: </div><span>100.00</span>
+                            </li>
+                        </ul>
+                        <ul class="priceNavmain">
+                            <li>
+                                <div>{{balanceLabel}}: </div><span> <label>QAR</label>83.47</span>
+                            </li>
+                        </ul>
+                       <div *ngIf="isShowFooter">
+                         {{footerText}}
+                       </div>
+                    </div>
+                </div>
+            </div>
+                    <div class="textFieldDivAll">
+                        <span>Template Name:
+                        </span>
+                        <input placeholder="Name" type="text" [(ngModel)]='name'>
+                    </div>
+                    <h2 class="generalHeader">General Settings</h2>
+                    <div class="textFieldDivAll">
+                        <span>Title Label:
+                        </span>
+                        <input placeholder="Invoice" type="text" [(ngModel)]='title'>
+                    </div>
+
+                    <div class="textFieldDivAll">
+                        <span>Invoice Number Label:
+                        </span>
+                        <input placeholder="INV#" type="text" [(ngModel)]="label">
+                    </div>
+                    <div class="textFieldDivAll">
+                        <span>Customer Label:
+                        </span>
+                        <input placeholder="Customer" type="text" [(ngModel)]="customer">
+                    </div>
+                    <div class="textFieldDivAll">
+                        <span>Served By Label:
+                        </span>
+                        <input placeholder="Staff" type="text" [(ngModel)]="staff">
+                    </div>
+                    <div class="textFieldDivAll">
+                        <span>Cancelled Order Label:
+                        </span>
+                        <input placeholder="Cancelled Order" type="text" [(ngModel)]="cancelledOrder">
+                    </div>
+
+                    <div class="showRadioBgSec">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <mat-checkbox class="example-margin" (change)="onShowLogo($event)" [(ngModel)]="isShowLogo" >Show Logo</mat-checkbox>
+                                <mat-checkbox class="example-margin" (change)="showModifiedItems($event)" [(ngModel)]="show_modified_items">Show Modified Items</mat-checkbox>
+      <mat-checkbox class="example-margin" (change)="showOrderNotes($event)" [(ngModel)]="show_order_notes">Show Order Notes</mat-checkbox>
+                                <mat-checkbox class="example-margin" (change)="showLoyality($event)" [(ngModel)]="show_loyality">Show Loyalty</mat-checkbox>
+
+                            </div>
+                            <div class="col-md-4">
+                                <mat-checkbox class="example-margin" (change)="onShowDeliveryAddress($event)" [(ngModel)]="isShowDeliveryAddress">Show Delivery Address</mat-checkbox>
+                                <mat-checkbox class="example-margin" (change)="showModifierandNotes($event)" [(ngModel)]="show_modifier_and_notes">Show Item Notes</mat-checkbox>
+                                <mat-checkbox class="example-margin" (change)="hasRunningOrderText($event)" [(ngModel)]="has_running_order_test">Has Running Order Text</mat-checkbox>
+                                <mat-checkbox class="example-margin" (change)="printLarger($event)" [(ngModel)]="print_larger">Print Larger</mat-checkbox>
+                            </div>
+                            <div class="col-md-4">
+                                <mat-checkbox class="example-margin" (change)="showPrice($event)" [(ngModel)]="show_price">Show Price</mat-checkbox>
+                                <mat-checkbox class="example-margin" (change)="showComboItems($event)" [(ngModel)]="show_combo_items">Show Combo Items</mat-checkbox>
+                                <mat-checkbox class="example-margin" (change)="printOnlyNewItems($event)" [(ngModel)]="print_only_new_items">Print Only New Items</mat-checkbox>
+                                <mat-checkbox class="example-margin" (change)="LabelPrinting($event)" [(ngModel)]="label_printing">Label Printing</mat-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                    <h2 class="generalHeader">Invoice Header Section</h2>
+                    <div class="textFieldDivAll">
+                        <span>Item:</span>
+                        <input placeholder="Item" type="text" [(ngModel)]="item">
+                    </div>
+                    <div class="textFieldDivAll">
+                        <span>Qty:</span>
+                        <input placeholder="Qty:" type="text" [(ngModel)]="qty">
+                    </div>
+                    <div class="textFieldDivAll">
+                        <span>Price : </span>
+                        <input placeholder="Price" type="text" [(ngModel)]="price">
+                    </div>
+                    <h2 class="generalHeader">Payment Section</h2>
+                    <div class="textFieldDivAll">
+                        <span>Show Breakdown: </span>
+                        <mat-checkbox class="example-margin" (change)="showBreakdown($event)">(Total, Subtotal, Taxes, etc.)</mat-checkbox>
+                    </div>
+                    <div class="textFieldDivAll">
+                        <span>Sub-Total Label:
+                        </span>
+                        <input placeholder="Sub-Total" type="text" [(ngModel)]="subTotal">
+                    </div>
+                    <div class="textFieldDivAll">
+                        <span>Tax Label:</span>
+                        <input placeholder="Tax" type="text" [(ngModel)]="taxLabel">
+                    </div>
+                    <div class="textFieldDivAll">
+                        <span>Surcharge Label:</span>
+                        <input placeholder="Tax" type="text" [(ngModel)]="surchargeLabel">
+                    </div>
+                    <div class="textFieldDivAll">
+                        <span>To Pay Label:
+                        </span>
+                        <input placeholder="Total" type="text" [(ngModel)]="toPayLabel">
+                    </div>
+                    <div class="textFieldDivAll">
+                        <span>Amount Received Label:
+                        </span>
+                        <input placeholder="Amount Received" type="text" [(ngModel)]="AmountRecievedLabel">
+                    </div>
+                    <div class="textFieldDivAll">
+                        <span>Balance Label:
+                        </span>
+                        <input placeholder="Balance" type="text" [(ngModel)]="balanceLabel">
+                    </div>
+                    <h2 class="generalHeader">Show Header Section</h2>
+                    <mat-checkbox class="example-margin" (change)="onShowHeader($event)" [(ngModel)]="isShowHeader"> Show Header</mat-checkbox>
+                    <div class="col-md-12">
+                        <textarea class="form-control" [(ngModel)]="headerText"></textarea>
+                    </div>
+                    <h2 class="generalHeader">Show Footer Section</h2>
+                    <mat-checkbox class="example-margin" (change)="onShowFooter($event)" [(ngModel)]="isShowFooter">Show Footer</mat-checkbox>
+                    <div class="col-md-12">
+                        <textarea class="form-control" [(ngModel)]="footerText"></textarea>
+                    </div>
+
+                    <ul class="bttnNavMain">
+                        <li><a class="saveBtnMain cursor-pointer" (click)="saveTemplate()">Save</a></li>
+                        <li><a class="cancelBtnMain cursor-pointer" (click)="cancel()">cancel</a></li>
+                    </ul>
+        </div>
+    </div>
+</body>
+
+</html>

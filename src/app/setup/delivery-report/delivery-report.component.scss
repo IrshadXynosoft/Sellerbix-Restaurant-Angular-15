@@ -1,0 +1,43 @@
+.b-right {
+    float: right;
+    background: var(--white);
+    padding: 10px;
+  }
+  .tableStyleMain{ margin-top: 7px ;
+
+    th{
+      padding: 10px; border-right: 1px #e2e3e3 solid; text-align: center;
+    }
+  
+    td{
+      padding: 10px; border-right: 1px #eceeee  solid; text-align: center;
+    }
+  }
+  .show {
+    visibility: hidden;
+  }
+  .not-found {
+    background: #d7d7d7;
+    padding: 15px;
+    margin-top: 20px;
+    h3 {
+      font-size: 30px;
+      color: #565656;
+      font-weight: 600;
+    }
+    p {
+      font-size: 16px;
+      color: #727070;
+      font-weight: 400;
+    }
+  }
+  .btn-wrp-equal button {
+    width: 34px;
+    margin-bottom: 10px;
+    display: inline-block;
+    height: 34px;
+    border-radius: 50%;
+  }
+  .summary-div{
+    padding: 2px; text-align: right;
+  }

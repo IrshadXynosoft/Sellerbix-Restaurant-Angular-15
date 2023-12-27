@@ -1,0 +1,79 @@
+.discount-card {
+  // width: 100px;
+  // height: 120px;
+  cursor: pointer;
+  background-color: var(--primary);
+  color: white;
+  text-align: center;
+  margin-bottom: 10px;
+  // border: 3px solid #d7d7d7;
+  h4 {
+    font-size: 14px !important;
+  }
+}
+.modal-wrapper h2 {
+  border-bottom: 1px solid #d7d7d7;
+  color: var(--primary);
+  font-size: 25px;
+  padding-bottom: 10px;
+}
+.active {
+  background-color: rgb(50, 179, 50);
+  color: white;
+}
+
+.close-button {
+  float: right;
+  top: -20px;
+  right: -20px;
+}
+
+.close-icon {
+  transition: 1s ease-in-out;
+}
+
+.close-icon:hover {
+  transform: rotate(180deg);
+}
+
+::ng-deep .icon-outside .close-button {
+  float: right;
+  top: -52px;
+  right: -52px;
+}
+
+::ng-deep .icon-outside .mat-mdc-dialog-container {
+  overflow: unset;
+}
+
+.card-disable {
+  pointer-events: none;
+  background-color: grey;
+}
+
+.box {
+  width: 15px;
+  height: 15px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+.grey {
+  background: grey;
+}
+.orange {
+  background: var(--primary);
+}
+.not-found {
+  background: #d7d7d7;
+  padding: 15px;
+  margin-top: 20px;
+  h3 {
+    font-size: 30px;
+    color: #565656;
+    font-weight: 600;
+  }
+  p {
+    font-size: 16px;
+    color: #727070;
+    font-weight: 400;
+  }
+}

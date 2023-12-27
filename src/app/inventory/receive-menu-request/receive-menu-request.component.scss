@@ -1,0 +1,39 @@
+.tableStyleMain{ margin-top: 7px ;
+
+    th{
+      padding: 10px; border-right: 1px #e2e3e3 solid; text-align: center;
+    }
+  
+    td{
+      padding: 10px; border-right: 1px #eceeee  solid; text-align: center;
+      border-bottom:1px #eceeee  solid; ;
+      background-color: #ffff;
+    }
+  
+  }
+  ::ng-deep input.mat-mdc-input-element { 
+    background-color: white; 
+    height: 40px;
+    width: 100%;
+	  border:1px solid #ced4da;
+   }
+   .searchno{
+    width: 700px;
+  margin: 10% auto;
+    margin-top: 20%;
+    margin-bottom: 10%;
+  text-align: center;
+  }
+  
+  .center{
+  display: block;
+  margin: 0 auto 30px;
+  
+  }
+  .b-right {
+    float: right;
+    padding-top: 1rem;
+  }
+  .table-shadow {
+    box-shadow: rgb(251, 175, 3) 0px 0px 0px 1px;
+  }

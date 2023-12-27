@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+    <!-- Body Wrapper Start -->
+    <form [formGroup]="newStockRequestForm">
+        <div class="body_wrapper container-fluid">
+            <!-- Header Start -->
+            <app-header></app-header>
+            <!-- Header End -->
+            <app-inventory-header></app-inventory-header>
+            <div class="px-4">
+                <div class="row pt-4">
+                    <div class="bgSecMainAll">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                                    Home
+                                </li>
+                                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/inventory">
+                                    Inventory
+                                </li>
+                                <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                                    Menu Requests
+                                </li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="col-12">
+                        <div class="d-flex align-items-center head-tag cursor-pointer">
+                            <h4 class="flex-gr-1"> <i class="icon-arrow-left" routerLink="/inventory/menuTransfer"></i>
+                                Menu Request Process</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-3">
+                        <label>Request No/Ref:</label>
+
+                        <input type="text" class="form-control" placeholder="Order No/Ref:"
+                            formControlName="stock_request_number" />
+                    </div>
+
+
+                    <div class="col-12 col-md-3">
+                        <label>Request From:</label>
+                        <input type="text" class="form-control" formControlName="from_branch" />
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <label>Request To:</label>
+                        <input type="text" class="form-control" formControlName="to_branch" />
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <label>Comments:</label>
+                        <input type="text" placeholder="Comments:" class="form-control" formControlName="comments" />
+                    </div>
+                </div>
+                
+                <table class="table tableStyleMain table-shadow">
+                    <thead>
+                        <tr>
+
+                            <th scope="col">Sr. No.</th>
+                            <th scope="col">Item</th>
+                            <th scope="col">Price ({{currency_symbol}})</th>
+                            <th scope="col">Available Stock</th>
+                            <th scope="col">Requested Quantity</th>
+                            <th scope="col">Sent Quantity</th>
+                            <th scope="col">Total ({{currency_symbol}})</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr formArrayName="MenuItemsData" *ngFor="
+              let item of supplierFormGroups.controls;
+              let i = index
+            ">
+                            <td>
+                                {{ i+1 }}
+                            </td>
+                            <td>
+                                {{ itemName(i) }}
+                            </td>
+
+                            <td>
+                                {{ price(i) }}
+                            </td>
+                            <td>
+                                {{ availableStock(i) }}
+                            </td>
+                            <td>
+                                {{ requestedQuantity(i) }}
+                            </td>
+                            <td [formGroupName]="i">
+                                <span class="error-message">{{errorMessage(i)}}</span>
+                                <div class="col-12 row">
+                                    <div class="d-flex">
+                                        <input type="text" class="form-control" style="width:120px" placeholder="Qty"
+                                            formControlName="qty" (input)="findTotal(i)" />
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ subTotal(i) }}</td>
+                            <td [formGroupName]="i">
+                                <button class="btn-setup-danger cust-pos-btn mt-2" (click)="clearMenuItem(i)">
+                                    <i class="icon-remove"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="col-12 row mb-4">
+                    <div class="col-12">
+                        <span class="float-right">Total Amount {{currency_symbol}}:<b>{{total_price}}</b></span>
+                    </div>
+
+                </div>
+                <div class="d-flex align-items-center justify-content-end mb-2">
+                    <button class="btn-setup-danger btn-ht-custom mr-2" (click)="back()">Cancel</button>
+                    <button class="btn-setup-sucess btn-ht-custom mr-2" (click)="processStockRequest()">
+                        Process Menu Request
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+
+</html>

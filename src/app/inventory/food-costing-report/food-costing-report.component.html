@@ -1,0 +1,367 @@
+<style>
+    @page {
+        size: 210mm 297mm;
+    }
+
+    /* output size */
+    body.receipt .sheet {
+        width: 210mm;
+        /* A4 width */
+        height: 297mm;
+        /* A4 height */
+    }
+
+    /* sheet size */
+    @media print {
+        body.receipt {
+            width: 210mm;
+        }
+    }
+</style>
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+    <!-- Body Wrapper Start -->
+
+    <div class="body_wrapper container-fluid">
+        <!-- Header Start -->
+        <app-header></app-header>
+        <!-- Header End -->
+        <div class="px-4">
+            <div class="row pt-4">
+                <div class="bgSecMainAll">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                                Home
+                            </li>
+                            <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/inventory">
+                                Inventory
+                            </li>
+
+                            <li class="breadcrumb-item active cursor-pointer" aria-current="page"
+                                routerLink="/inventory/reports">
+                                Reports
+                            </li>
+                            <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                                Food Costing Report
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="col-12">
+                    <div class="d-flex align-items-center head-tag ">
+                        <h4 class="flex-gr-1"> <i class="icon-arrow-left cursor-pointer"
+                                routerLink="/inventory/reports"></i>Food Costing Report</h4>
+                    </div>
+                </div>
+            </div>
+
+            <mat-tab-group (selectedTabChange)="tabClick($event)">
+                <mat-tab label="Recipes">
+                    <div class="row mt-2 col-12" style=" padding: 0px 40px 0px 10px !important; ">
+                        <div class="col-8">
+                            <input type="text" placeholder="Search Menu Item for cost report" aria-label="MenuItem"
+                                 [formControl]="menuItemData" [matAutocomplete]="auto" #autoInput
+                                (keyup)="itemFilter(autoInput.value)" class="form-control bordered w-100" />
+                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                                <mat-option *ngFor="let list_options of list_options"
+                                    [value]="list_options.name" [id]="list_options.id"
+                                    (click)="menuItemSelected(list_options,autoInput)">
+                                    {{ list_options.name }}
+                                </mat-option>
+
+                            </mat-autocomplete>
+                        </div>
+                        <div class="col-4">
+                            <button class="btn-setup-sucess" style="float: right;" (click)="getRecipeCosts(1)">
+                                <i class="icon-refresh mr-1"></i>Refresh</button>
+                            <button style="width: 120px;float: right;" *ngIf="recipeCostArray.length>0"
+                                class="btn-setup-sucess" [useExistingCss]="true" printSectionId="print-section"
+                                printTitle="Food Costing Report-Recipe" ngxPrint>
+                                <i class="icon-print mr-1"></i> Print
+                            </button>
+                        </div>
+                        <!-- <div class="col-2">
+                        
+                     </div>   -->
+                    </div>
+
+
+                    <div *ngIf="recipeCostArray.length <= 0; else showinrecipetable">
+                        <div class="row col-12">
+                            <div class="col-12">
+                                <div class="not-found bordered">
+                                    <h3>Sorry :(</h3>
+                                    <p>No Report available</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ng-template #showinrecipetable>
+                        <div class="row col-12" id="print-section" infinite-scroll
+                            [infiniteScrollDistance]="scrollDistance" [infiniteScrollUpDistance]="scrollUpDistance"
+                            [infiniteScrollThrottle]="throttle" (scrolled)="onScrollDown($event)">
+                            <div class=" col-6" *ngFor="let recipe of recipeCostArray; let i = index">
+                                <table class="tables">
+
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" scope="col" colspan="5">{{recipe.name}}
+                                            </th>
+                                            <th scope="col">Sales Price</th>
+                                            <th scope="col">{{recipe.sale_price}}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td scope="col" scope="col" colspan="5"></td>
+
+                                            <td>Tax</td>
+                                            <td>{{recipe.vat}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td scope="col" scope="col" colspan="5"></td>
+                                            <td>Net sales price
+                                            </td>
+                                            <td>{{recipe.net_sale_price}}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><b>Item Code</b></td>
+                                            <td><b>Article</b></td>
+                                            <td><b>Unit</b></td>
+                                            <td><b>Price/Unit</b></td>
+                                            <td><b>UOM</b></td>
+                                            <td><b>Items qnty</b> </td>
+                                            <td><b>value</b></td>
+                                        </tr>
+                                        <tr
+                                            *ngFor="let items of recipe.recipe_ingredient?recipe.recipe_ingredient:recipe.recipe_sub_recipe; let i = index">
+                                            <td>{{items.item_code}}
+                                            </td>
+                                            <td>{{items.name}}
+                                            </td>
+                                            <td>{{items.unit}}
+                                            </td>
+                                            <td>{{items.cost_per_unit}}
+                                            </td>
+                                            <td>{{items.measurement_unit_name}}
+                                            </td>
+                                            <td>{{items.item_qty}}
+                                            </td>
+                                            <td>{{items.item_cost}}
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td scope="col" colspan="5"></td>
+                                            <td>COST
+                                            </td>
+                                            <td>{{recipe.cos}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td scope="col" colspan="5"></td>
+                                            <td>waste %
+                                            </td>
+                                            <td>{{recipe.wastage_perc.toFixed(2)}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td scope="col" colspan="5"></td>
+                                            <td><b>COST total</b>
+                                            </td>
+                                            <td><b>{{recipe.total_cos}}</b>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td scope="col" colspan="5"></td>
+                                            <td><b>Margin</b>
+                                            </td>
+                                            <td><b>{{recipe.margin}}</b>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td scope="col" colspan="5"></td>
+                                            <td><b>COST in %</b>
+                                            </td>
+                                            <td style="color: red;"><b>{{recipe.cos_perc}}</b>
+                                            </td>
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </ng-template>
+                </mat-tab>
+
+                <mat-tab label="Sub Recipes">
+                    <button style="width: 120px;float: right;" *ngIf="recipeCostArray.length>0"
+                        class="btn-setup-sucess mt-2 mb-2" [useExistingCss]="true" printSectionId="print-section-sub"
+                        printTitle="Food Costing Report-Sub Recipe" ngxPrint>
+                        <i class="icon-print mr-1"></i>Print
+                    </button>
+                    <div *ngIf="subRecipeCostArray.length <= 0; else showingsubrecipetable">
+                        <div class="row col-12">
+                            <div class="col-12">
+                                <div class="not-found bordered">
+                                    <h3>Sorry :(</h3>
+                                    <p>No Report available</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ng-template #showingsubrecipetable>
+                        <div id="print-section-sub" infinite-scroll [infiniteScrollDistance]="scrollDistance1"
+                            [infiniteScrollUpDistance]="scrollUpDistance1" [infiniteScrollThrottle]="throttle1"
+                            (scrolled)="onScrollDownSubRecipe($event)">
+                            <div *ngFor="let sub_recipe of subRecipeCostArray; let i = index">
+                                <table class=" table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">{{sub_recipe.name}} </th>
+                                            <th scope="col"></th>
+                                            <th scope="col"></th>
+                                            <th scope="col"></th>
+                                            <th scope="col"></th>
+                                            <th scope="col"></th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><b>Item Code</b></td>
+                                            <td><b>Article</b></td>
+                                            <td><b>Unit</b></td>
+                                            <td><b>Price/Unit</b></td>
+                                            <td><b>UOM</b></td>
+                                            <td><b>Items qnty</b> </td>
+
+                                        </tr>
+                                        <tr *ngFor="let items of sub_recipe.sub_recipe_ingredient; let i = index">
+                                            <td>{{items.code}}
+                                            </td>
+                                            <td>{{items.ingredient_name}}
+                                            </td>
+                                            <td>{{items.unit}}
+                                            </td>
+                                            <td>{{items.item_cost}}
+                                            </td>
+
+                                            <td>{{items.measurement_unit_name}}
+                                            </td>
+                                            <td>{{items.item_qty}}
+                                            </td>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td><b>Yield
+                                                </b></td>
+                                            <td><b>{{sub_recipe.yield}}
+                                                </b></td>
+                                            <td></td>
+                                        </tr>
+
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </ng-template>
+                </mat-tab>
+                <!-- <mat-tab label="Categories">
+
+              <div style="text-align: center;">
+                <table class="table w-50" >
+                    <thead>
+                        <tr>
+                            <th scope="col" colspan="5"  >Hot Drinks	
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="background-color:#FCB504;"><b>Sr No
+                            </b></td>
+                            <td style="background-color:#FCB504;"><b>Menu Item
+                            </b></td>
+                            <td style="background-color:#FCB504;"><b>Costing
+                            </b></td>
+                            <td style="background-color:#FCB504;"><b>Selling Price
+                            </b></td>
+                            <td style="background-color:#FCB504;"><b>FC
+                            </b></td> 
+                           
+                        </tr>
+               
+                        <tr>
+                            <td>1
+                            </td>
+                            <td>Karak Small 6oz
+                           </td>
+                            <td><b>0.744
+                            </b>
+                            </td>
+                            <td><b>1</b>
+                            </td>
+                            <td><b>74</b>
+                            </td> 
+                        </tr>
+                        <tr>
+                            <td>2
+                            </td>
+                            <td>Karak Small 6oz
+                           </td>
+                            <td><b>0.744
+                            </b>
+                            </td>
+                            <td><b>1</b>
+                            </td>
+                            <td><b>74</b>
+                            </td> 
+                        </tr>
+                        <tr>
+                            <td>3
+                            </td>
+                            <td>Karak Small 6oz
+                           </td>
+                            <td><b>0.744
+                            </b>
+                            </td>
+                            <td><b>1</b>
+                            </td>
+                            <td><b>74</b>
+                            </td> 
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+          
+                </mat-tab> -->
+            </mat-tab-group>
+
+
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

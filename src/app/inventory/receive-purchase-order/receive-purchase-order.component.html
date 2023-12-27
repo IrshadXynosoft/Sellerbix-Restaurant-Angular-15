@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/inventory">
+                Inventory
+              </li>
+              <li class="breadcrumb-item  cursor-pointer" aria-current="page" routerLink="/inventory/purchaseOrders">
+                Purchase Order
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                Receive Purchase Order
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1"> <i class="icon-arrow-left cursor-pointer" (click)="back()"></i>Receive Order
+              {{ purchase_order_number }}</h4>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col-12 col-md-2">
+          <label>Order No/Ref</label>
+          <input type="text" class="form-control" [(ngModel)]="purchase_order_number" [disabled]="true" />
+        </div>
+        <div class="col-12 col-md-2">
+          <label>Ordered By</label>
+          <input type="text" class="form-control" [(ngModel)]="branch" [disabled]="true" />
+        </div>
+        <div class="col-12 col-md-2">
+          <label>Deliver To</label>
+          <input type="text" class="form-control" [(ngModel)]="branch" [disabled]="true" />
+        </div>
+        <div class="col-12 col-md-2">
+          <label>Comments</label>
+          <input type="text" class="form-control" [(ngModel)]="comments" [disabled]="true" />
+        </div>
+        <div class="col-12 col-md-2">
+          <label>Supplier</label>
+          <input type="text" class="form-control" [(ngModel)]="supplier_name" [disabled]="true" />
+        </div>
+      </div>
+
+      <form [formGroup]="newOrderForm">
+        <label>Invoice/Ref No:</label>
+        <input type="text" class="form-control" style="width:25%" placeholder="Reference Number"
+          formControlName="receive_purchase_order_number" />
+
+        <table class="table tableStyleMain bordered">
+          <thead>
+            <tr>
+              <th scope="col">Sr. No.</th>
+              <th scope="col">Item</th>
+              <th scope="col">Opening Balance</th>
+              <th scope="col">Prev.Supplier</th>
+              <th scope="col">Prev.Cost/Unit ({{currency_symbol}})</th>
+              <th scope="col">Unit Value</th>
+              <th scope="col">Ordered Quantity</th>
+              <th scope="col">Receiving Quantity</th>
+              <th scope="col">Supplier Price / Unit</th>
+              <th scope="col">Closing Balance</th>
+              <th scope="col">Total ({{currency_symbol}})</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr formArrayName="suppliersData" *ngFor="let item of supplierFormGroups.controls; let i = index">
+              <td>
+                {{ i + 1 }}
+              </td>
+              <td>
+                {{ itemName(i) }}<br>
+                <label> Update Cost Per Unit :
+                </label><br>
+                <div>
+                  <mat-radio-group aria-label="Select an option" (change)="onChangecostUnitType($event,i)">
+                    <mat-radio-button value="1" [checked]="true" class="radio-label">Existing</mat-radio-button>
+                    &nbsp;<mat-radio-button value="2" class="radio-label">Upcoming</mat-radio-button>
+                    &nbsp; <mat-radio-button value="3" class="radio-label">Average</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </td>
+              <td>
+                {{ stockOnHand(i) }}
+              </td>
+              <td>
+                {{ supplierName(i) }}
+              </td>
+              <td>{{cost(i)}}</td>
+              <td>
+                {{ unit(i) }}
+              </td>
+              <td>
+                {{ receivingQuantity(i) }}
+              </td>
+              <td [formGroupName]="i">
+                <span class="error-message">{{errorMessage(i)}}</span>
+
+                <div class="d-flex">
+                  <input type="text" class="form-control" style="width:120px" placeholder="Qty" formControlName="qty"
+                    (input)="findTotal(i)" /><span class="ml-1 mt-1"> {{measurementunit(i)}}</span>
+                </div>
+              </td>
+              <td [formGroupName]="i">
+                <span class="error-message float-right">{{errorMessageforPrice(i)}}</span>
+                <div class="d-flex">
+                  <input type="text" class="form-control w-90" placeholder="Price" formControlName="receiving_price"
+                    (input)=findTotal(i) /> <span class="ml-1 mt-1">{{currency_symbol}}/{{measurementunit(i)}}</span>
+                </div>
+              </td>
+              <td>{{closingBalance(i)}}</td>
+
+              <td>{{ subTotal(i) }}</td>
+
+            </tr>
+
+          </tbody>
+        </table>
+        <div class="col-12 row mb-4">
+          <div class="col-12">
+            <span class="float-right">Total Amount {{currency_symbol}}:<b>{{total_price}}</b></span>
+          </div>
+        </div>
+        <div class="d-flex align-items-center justify-content-end mb-2">
+          <button class="btn-setup-danger btn-ht-custom mr-2" (click)="back()">Cancel</button>
+          <button class="btn-setup-sucess btn-ht-custom" (click)="receivePurchaseOrder()">
+            <i class="icon-share mr-1"></i> Save and Receive
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+
+</html>

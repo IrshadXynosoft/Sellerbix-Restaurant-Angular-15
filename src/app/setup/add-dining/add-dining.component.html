@@ -1,0 +1,23 @@
+<form [formGroup]="addDiningForm">
+    <div class="modal-wrapper">
+        <h2 mat-dialog-title> {{data.operation =='edit' ? 'Update' : 'Add'}} Dine-In Area</h2>
+        <div mat-dialog-content>
+            <label>Name</label>
+            <span class="error-message ">*</span>
+            <span class="error-message float-right" *ngIf="addDiningForm.controls.name.hasError('required' ) && addDiningForm.controls.name.touched">required</span>
+            <span class="error-message float-right"  *ngIf="addDiningForm.controls.name.hasError('pattern' )">invalid input</span>    
+            <span class="error-message float-right" *ngIf="requestErrorArray" >{{requestErrorArray.name}}</span>
+            <input type="text" class="form-control" placeholder="Name" formControlName="name" />
+            <label>Sequence Number</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right" *ngIf="addDiningForm.controls.sequence_no.hasError('required' ) && addDiningForm.controls.sequence_no.touched">required</span>
+            <span class="error-message float-right"  *ngIf="addDiningForm.controls.sequence_no.hasError('pattern' )">invalid input</span>    
+            <span class="error-message float-right" *ngIf="requestErrorArray" >{{requestErrorArray.sequence_no}}</span>
+            <input type="text" class="form-control" placeholder="Sequence Number" formControlName="sequence_no" />
+        </div>
+        <div mat-dialog-actions>
+            <button class="btn-setup-danger mr-2"  (click)="close()">Cancel</button>
+            <button class="btn-setup-sucess" [disabled]="!addDiningForm.valid || addDiningForm.pristine" (click)="addDining()" >Submit</button>
+        </div>
+    </div>
+</form>

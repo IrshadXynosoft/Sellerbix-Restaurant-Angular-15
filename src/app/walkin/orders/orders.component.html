@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag">
+            <h2>
+              <span class="d-block order-h-2">Walk-In Orders:</span>
+              <!-- <span class="d-block order-h-2">{{today}} </span> -->
+            </h2>
+            <h2 style="padding-top: 20px;"><input type="text" style="border-color: var(--primary);"
+                placeholder="Search Order no & hit enter" class="form-control w-50" #Searchitem
+                (keyup.enter)="searchOrder(Searchitem.value)"
+                (keyup)="Searchitem.value == '' ? searchOrder(Searchitem.value) : null" />
+            </h2>
+            <button class="btn-setup-sucess mx-2" routerLink="/party_orders/new_order/list">
+              View Party Orders
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="orderRecords.length <= 0; else showtable">
+        <div class="row">
+          <div class="col-12">
+            <div class="not-found">
+              <h3>Sorry :(</h3>
+              <p>There's no Walkin orders yet at this moment.</p>
+              <p>Click on New Walk-In Order to add.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #showtable>
+        <mat-card appearance="outlined" class="card">
+          <div class="data-holder">
+            <div *ngIf="!orderNumber">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Total Orders:</th>
+                    <th scope="col">Paid Amount:</th>
+                    <th scope="col">Unpaid Amount:</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{orderRecords.length}}</td>
+                    <td>{{totalOrdersAmount != 0 ? totalOrdersAmount : 0.00}} {{currency_symbol}}</td>
+                    <td>{{totalUnpaid != 0 ? totalUnpaid : 0.00}} {{currency_symbol}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Order Number</th>
+                  <th scope="col">Amount ({{currency_symbol}})</th>
+                  <th scope="col">Payment Type</th>
+                  <th scope="col">Staff</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Time</th>
+                  <th scope="col">Payment Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let orders of orderRecords">
+                  <td (click)="details(orders)" class="cursor-pointer click-edit">
+                    <div>#{{orders.order_number}}</div>
+                    <div *ngIf="orders.order.customer_details">
+                      {{orders.order.customer_details.phone_number ? orders.order.customer_details.phone_number : orders.invoice?.customer_details?.phone_number }}
+                    </div>
+                    <div *ngIf="orders.order.customer_details">
+                      {{orders.order.customer_details.name ? orders.order.customer_details.name : orders.invoice?.customer_details?.name}}
+                    </div>
+                  </td>
+                  <td>{{orders.amount != "Not Paid" ? (orders.amount).toFixed(2) : orders.order.Total}}</td>
+                  <td *ngIf="orders.status==1;else type">Not Paid</td>
+                  <ng-template #type>
+                    <td>
+                      <div *ngFor="let payment of orders.invoice.payment_types">{{payment.payment_name}}:
+                        <strong>{{payment.amount}}</strong><br></div>
+                    </td>
+                  </ng-template>
+                  <td>{{staff}}</td>
+                  <td>{{orders.order.current_date}}</td>
+                  <td>{{timeCheck(orders.time)}}</td>
+                  <td *ngIf="orders.payment_status==1"><button class="btn-setup-sucess commonBtnStyle"
+                      style="background-color: white;border-color: white;color:black">Paid</button></td>
+                  <td *ngIf="orders.payment_status==0"><button [disabled]="accept_payment == 'false'"
+                      class="btn-setup-sucess w-px-100 commonBtnStyle" (click)="payOrder(orders)">Pay</button></td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </mat-card>
+      </ng-template>
+    </div>
+  </div>
+</body>
+
+</html>

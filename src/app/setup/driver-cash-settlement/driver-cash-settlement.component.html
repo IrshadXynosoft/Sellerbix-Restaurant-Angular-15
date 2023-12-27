@@ -1,0 +1,137 @@
+<div class="modal-wrapper">
+  <button mat-icon-button class="close-button" (click)="close()">
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+  </button>
+  <h2 mat-dialog-title>Commission Settlement</h2>
+
+  <div mat-dialog-content>
+    <form [formGroup]="settlementForm">
+      <div class="col-12 row">
+        <div class="col-lg-3">
+          <label>Search by</label>
+          <select class="form-control w-100" (change)="searchby($event)">
+            <option value=0 selected disabled>Select</option>
+            <option value=1>Date Period</option>
+            <option value=2>Specify Date</option>
+          </select>
+        </div>
+        <div class="col-lg-3" *ngIf="searchBySpecificDate">
+          <label>Date</label>
+          <span class="error-message">*</span>
+          <span class="error-message float-right"
+            *ngIf="settlementForm.controls.date.hasError('required') && settlementForm.controls.date.touched">
+            Required</span>
+          <input type="date" placeholder="Code" class="form-control" formControlName="date" />
+        </div>
+        <div class="col-lg-3" *ngIf="searchByPeriod">
+          <label>From Date</label>
+          <span class="error-message">*</span>
+          <span class="error-message float-right"
+            *ngIf="settlementForm.controls.fromDate.hasError('required') && settlementForm.controls.fromDate.touched">
+            Required</span>
+
+         <input type="date" placeholder="Code" [min]="minDate" [max]="todayDate" class="form-control"
+              formControlName="fromDate" />
+        </div>
+        <div class="col-lg-3" *ngIf="searchByPeriod">
+          <label>To Date</label>
+          <span class="error-message">*</span>
+          <span class="error-message float-right"
+            *ngIf="settlementForm.controls.toDate.hasError('required') && settlementForm.controls.toDate.touched">
+            Required</span>
+         <input type="date" placeholder="Code" [min]="minDate" [max]="todayDate" class="form-control"
+              formControlName="toDate" />
+          <span class="error-message float-right" *ngIf="settlementForm.errors">{{
+            settlementForm.errors.dates | json }}</span>
+        </div>
+        <div class="col-lg-3 " style="margin-top:2rem" *ngIf="searchByPeriod || searchBySpecificDate">
+          <button class="btn-setup-sucess" (click)="getsettlementDataByFilter()">
+            <i class="zmdi zmdi-eye mr-1"></i>View Data
+          </button>
+        </div>
+      </div>
+    </form>
+    <ng-template #nodata>
+      <span class="row">
+        <span class="not-found" style="width:90%">
+          <h3>Sorry :(</h3>
+          <p>There's no details available.</p>
+        </span>
+      </span>
+    </ng-template>
+
+    <div class="col-12 tableStyleMain">
+
+      <table mat-table *ngIf="dataSource.data.length > 0; else nodata" [dataSource]="dataSource" matSort class="mat-z8">
+        <ng-container matColumnDef="checkbox">
+          <th mat-header-cell *matHeaderCellDef>
+            <div>
+              <input type="checkbox" class="form-check-input" (change)="checkall($event)">
+            </div>
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <div>
+              <input type="checkbox" class="form-check-input"
+                (change)="selectedForSettlement($event,element.id,element)" [checked]="element.checked">
+            </div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="index">
+          <th mat-header-cell *matHeaderCellDef>
+            #
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{dataSource.data.indexOf(element) + 1}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="order_number">
+          <th mat-header-cell *matHeaderCellDef>Order Number</th>
+          <td mat-cell *matCellDef="let element">{{ element.order_number }}</td>
+        </ng-container>
+        <ng-container matColumnDef="commission_type">
+          <th mat-header-cell *matHeaderCellDef>Commission Type </th>
+          <td mat-cell *matCellDef="let element">{{ element.commission_type }}</td>
+        </ng-container>
+        <ng-container matColumnDef="commission_value">
+          <th mat-header-cell *matHeaderCellDef>Commission Value</th>
+          <td mat-cell *matCellDef="let element">{{ element.commission_value }}</td>
+        </ng-container>
+        <ng-container matColumnDef="date_time">
+          <th mat-header-cell *matHeaderCellDef>Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.date_time }}</td>
+        </ng-container>
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef>Amount ({{currency_symbol}})</th>
+          <td mat-cell *matCellDef="let element">{{ element.amount }}</td>
+        </ng-container>
+        <ng-container matColumnDef="button">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let element">
+
+            <button class="btn-setup-sucess" (click)="settle(element.id)">Settle</button>
+
+
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+
+      <mat-paginator [ngClass]="{ show: dataSource.data.length <= 0 }" [pageSize]="8"
+        [pageSizeOptions]="[2, 4, 6, 10, 20]">
+      </mat-paginator>
+    </div>
+    <div>
+      <span class="float-right mb-2 mt-2" *ngIf="totalAmount>0">
+        Total Amount: {{totalAmount}} {{currency_symbol}}
+      </span>
+    </div>
+  </div>
+
+  <div mat-dialog-actions>
+    <span class="float-right mb-2 mt-2" *ngIf="settled_array.length>0"> <button class="btn-setup-sucess"
+        (click)="settleAll()">Settle All</button><br>
+    </span>
+
+  </div>
+</div>

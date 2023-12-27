@@ -1,0 +1,214 @@
+<!-- <style>
+  @page {
+    size: 58mm 100mm
+  }
+
+  /* output size */
+  body.receipt .sheet {
+    width: 58mm;
+    height: 100mm
+  }
+
+  /* sheet size */
+  @media print {
+    body.receipt {
+      width: 58mm
+    }
+  }
+
+  /* fix for Chrome */
+
+</style> -->
+<!-- /opening stock,closing stock,on hand qty -->
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+  <!-- Body Wrapper Start -->
+
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/callcenter">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/accounts">
+                Accounts
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page" (click)="back()">
+                Reports
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+               Business Day Stock Report
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1"> <i class="icon-arrow-left cursor-pointer" (click)="back()"></i> Business Day Stock Report</h4>
+          
+          </div>
+        </div>
+      </div>
+      <form [formGroup]="daybookForm">
+        <div class="row">
+          <div class="col-lg-5">
+            <label>Search by business day</label>
+            <select class="form-control w-100" (change)="filterReport($event)" formControlName="searchBy">
+              <option value="" disabled>Select</option>
+              <option value="{{day.id}}" *ngFor="let day of businessdayRecords">{{day.name}}</option>
+            </select>
+          </div>
+          <div class="col-lg-7" style="margin-top:2rem;">
+            <button class="btn-setup-sucess" style="float: right;" (click)="generateReport()">
+              <i class="icon-save mr-1"></i>Generate Report
+            </button>
+
+          </div>
+        </div>
+      </form>
+      <div class="col-12 tableStyleMain table">
+        <!-- <div *ngIf="dataSource.data.length <= 0; else showtable">
+          <div class="row">
+            <div class="col-12">
+              <div class="not-found bordered">
+                <h3>Sorry :(</h3>
+                <p>No Report available</p>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <div id="print-section" class="container modal-height">
+            <div class="header">
+              <h3>{{branch_name}}</h3>
+              <h3>Stock On Hand Report</h3>
+              <h5>Printed by {{staff}} at {{today_date}}</h5>
+              <div class="date" *ngIf="finishedGoods.length>0">
+                <h5><strong>Finished Goods</strong></h5>
+              </div>
+            </div>
+            <div *ngFor="let data of finishedGoods">
+              <div class="summary">
+                <h3>{{data.category_name}}</h3>
+              </div>
+              <div class="content">
+                <div class="row ">
+                  <div class="col-4">
+                    <h5><strong>Item</strong></h5>
+                  </div>
+                  <div class="col-4">
+                    <h5><strong>Opening Qty</strong></h5>
+                  </div>
+                  <div class="col-4">
+                    <h5><strong>On Hand</strong></h5>
+                  </div>
+                </div>
+                <div class="row" *ngFor="let items of data.items">
+                  <div class="col-4">
+                    <h5>{{items.item_name}}</h5>
+                  </div>
+                  <div class="col-4">
+                    <h5 [ngClass]="!qtyCheck(items.stock?items.stock.business_day_opening_qty:0) ? 'negative_qty' : ''">{{items.stock?items.stock.business_day_opening_qty:0}} {{items.stock?.measurement_unit_name}}</h5>
+                  </div>
+                  <div class="col-4">
+                    <h5 [ngClass]="!qtyCheck(items.stock?items.stock.on_hand_qty:0) ? 'negative_qty' : ''">{{items.stock?items.stock.on_hand_qty:0}} {{items.stock?.measurement_unit_name}}</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="header mt-2">
+              <div class="date" *ngIf="ingredients.length>0">
+                <h5><strong>Ingredients/Sub Recipe</strong></h5>
+              </div>
+            </div>
+            <div *ngFor="let data of ingredients">
+              <div class="summary">
+                <h3>{{data.ingredient_category_name}}</h3>
+              </div>
+              <div class="content">
+                <div class="row ">
+                  <div class="col-4">
+                    <h5><strong>Item</strong></h5>
+                  </div>
+                  <div class="col-4">
+                    <h5><strong>Opening Qty</strong></h5>
+                  </div>
+                  <div class="col-4">
+                    <h5><strong>On Hand</strong></h5>
+                  </div>
+                </div>
+                <div class="row" *ngFor="let ingredient of data?.ingredient">
+                  <div class="col-4">
+                    <h5>{{ingredient.ingredient_name}}</h5>
+                  </div>
+                  <div class="col-4">
+                    <h5 [ngClass]="!qtyCheck(ingredient.stock?ingredient.stock.business_day_qty:0) ? 'negative_qty' : ''">{{ingredient.stock?ingredient.stock.business_day_qty:0}} {{ingredient.stock?.measurement_unit_name}}</h5>
+                  </div>
+                  <div class="col-4">
+                    <h5 [ngClass]="!qtyCheck(ingredient.stock?ingredient.stock.on_hand_qty:0) ? 'negative_qty' : ''">{{ingredient.stock?ingredient.stock.on_hand_qty:0}} {{ingredient.stock?.measurement_unit_name}}</h5>
+                  </div>
+                </div>
+                <div class="row" *ngFor="let subrecipe of data?.sub_recipe">
+                  <div class="col-4">
+                    <h5>{{subrecipe?.sub_recipe_name}}</h5>
+                  </div>
+                  <div class="col-4">
+                    <h5 [ngClass]="!qtyCheck(subrecipe.stock?subrecipe.stock.business_day_qty:0) ? 'negative_qty' : ''">{{subrecipe.stock?subrecipe.stock.business_day_qty:0}} {{subrecipe.stock?.measurement_unit_name}}</h5>
+                  </div>
+                  <div class="col-4">
+                    <h5 [ngClass]="!qtyCheck(subrecipe.stock?subrecipe.stock.on_hand_qty:0) ? 'negative_qty' : ''">{{subrecipe.stock?subrecipe.stock.on_hand_qty:0}} {{subrecipe.stock?.measurement_unit_name}}</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+      
+            <div class="header mt-2" *ngIf="batchProcessed.length>0">
+              <div class="date">
+                <h5><strong>Recipe</strong></h5>
+              </div>
+            </div>
+            <div class="content" *ngIf="batchProcessed.length>0">
+              <div class="row">
+                <div class=" col-4">
+                  <h5><strong>Item</strong></h5>
+                </div>
+                <div class="col-4">
+                  <h5><strong>Opening Qty</strong></h5>
+                </div>
+                <div class="col-4">
+                  <h5><strong>On Hand</strong></h5>
+                </div>
+              </div>
+              <div class="row" *ngFor="let item of batchProcessed">
+                <div class="col-4">
+                  <h5>{{item.recipe_name}}</h5>
+                </div>
+                <div class="col-4">
+                  <h5 [ngClass]="!qtyCheck(item.business_day_qty) ? 'negative_qty' : ''">{{item.business_day_qty}} </h5>
+                </div>
+                <div class="col-4">
+                  <h5 [ngClass]="!qtyCheck(item.stock_on_hand) ? 'negative_qty' : ''">{{item.stock_on_hand}}</h5>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <h5 style="text-align: center;margin-top: 5px;font-size: 15px;">--End--</h5>
+              </div>
+            </div>
+          </div>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+
+</html>

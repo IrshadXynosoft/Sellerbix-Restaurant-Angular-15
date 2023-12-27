@@ -1,0 +1,104 @@
+<div class="modal-wrapper">
+  <form [formGroup]="bannerForm">
+    <h2 mat-dialog-title>Add Banner</h2>
+    <div mat-dialog-content class="min-scroll">
+      <div class="col-12 row">
+        <div class="col-md-7">
+          <label>Caption</label>
+          <span class="error-message">*</span>
+          <span class="error-message float-right" *ngIf="
+              bannerForm.controls.name.hasError('required') &&
+              bannerForm.controls.name.touched
+            ">Required</span>
+
+          <span class="error-message float-right" *ngIf="ErrorArray.name">
+            {{ ErrorArray.name }}</span>
+          <input type="text" class="form-control" [ngClass]="bannerForm.controls.name.hasError('required') &&
+          bannerForm.controls.name.touched || ErrorArray.name ? 'is-invalid' : ''" placeholder="Name"
+            formControlName="name" />
+              <mat-slide-toggle class="mt-2 mb-3 mr-2" labelPosition="before" formControlName="status">Status</mat-slide-toggle><br>
+          <label>Ads Category </label>
+          <span class="error-message">*</span>
+          <select class="custom-select w-100" [ngClass]="bannerForm.controls.category_header_id.hasError('required') &&
+          bannerForm.controls.category_header_id.touched || ErrorArray.category_header_id ? 'is-invalid' : ''" formControlName="category_header_id"
+            (change)="categoryHeaderChange($event)">
+            <option value="" disabled>Select</option>
+            <option *ngFor="let i of categoryRecords" value="{{ i.id }}">
+              {{ i.name }}
+            </option>
+          </select>
+          <label>Link Type</label>
+          <span class="error-message">*</span>
+          <mat-radio-group aria-label="Select an option" class="example-radio-group" formControlName="linktype"
+            (change)="typeSelected($event.value)">
+            <mat-radio-button value="1" class="example-radio-button">Product</mat-radio-button>
+            <mat-radio-button value="2" class="example-radio-button">Category</mat-radio-button>
+            <mat-radio-button value="3" class="example-radio-button">Section</mat-radio-button>
+          </mat-radio-group>
+          <div *ngIf="bannerForm.value['linktype'] !=3 && bannerForm.value['linktype']" class="form-control w-100 mr-1">
+            <input type="text" placeholder="Enter Item Name" matInput [formControl]="list_autocomplete"
+              [matAutocomplete]="auto" />
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="itemSelected($event.option.id)">
+              <mat-option *ngFor="
+                    let list_options of filteredOptions
+                      | async
+                  " [value]="list_options.name" [id]="list_options.id">
+                {{ list_options.name }}
+              </mat-option>
+            </mat-autocomplete>
+          </div>
+          <label>Link</label>
+          <span class="error-message">*</span>
+          <input type="text" class="form-control" [ngClass]="bannerForm.controls.link.hasError('required') &&
+          bannerForm.controls.link.touched || ErrorArray.link ? 'is-invalid' : ''" placeholder="Link" formControlName="link" />
+        </div>
+        <div class="col-md-5">
+          <span>{{imageSize}}</span>
+          <mat-card appearance="outlined">
+            <img *ngIf="ImageBaseData; else noimage" src="{{ ImageBaseData }}" class="img" />
+            <ng-template #noimage>
+              <img src="assets/images/no-image (1).jpg" class="img" />
+            </ng-template>
+            <br /><br />
+            <input type="file" id="file" formControlName="file" placeholder="please click here to upload"
+              class="form-control" [ngClass]="bannerForm.controls.file.hasError('required') &&
+              bannerForm.controls.file.touched ? 'is-invalid' : ''" (change)="handleFileInput($event)" />
+
+            <span class="error-message float-right" *ngIf="errorMessage">{{
+              errorMessage
+            }}</span>
+          </mat-card>
+        </div>
+      </div>
+      <div class="col-12 row">
+        <div class="col-lg-6">
+          <label>From Date</label>
+          <span class="error-message">*</span>
+          <span class="error-message float-right"
+            *ngIf="bannerForm.controls.fromDate.hasError('required') && bannerForm.controls.fromDate.touched">
+            Required</span>
+
+          <input type="date"  class="form-control"
+            formControlName="fromDate" />
+        </div>
+        <div class="col-lg-6">
+          <label>To Date</label>
+          <span class="error-message">*</span>
+          <span class="error-message float-right"
+            *ngIf="bannerForm.controls.toDate.hasError('required') && bannerForm.controls.toDate.touched">
+            Required</span>
+          <input type="date" class="form-control"
+            formControlName="toDate" />
+          <span class="error-message float-right" *ngIf="bannerForm.errors">{{
+            bannerForm.errors.dates | json }}</span>
+        </div>
+      </div>
+    </div>
+    <div mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" [disabled]="!bannerForm.valid || bannerForm.pristine" (click)="addCategories()">
+        Submit
+      </button>
+    </div>
+  </form>
+</div>

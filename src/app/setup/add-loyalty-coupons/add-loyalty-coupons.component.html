@@ -1,0 +1,137 @@
+<div class="modal-wrapper">
+  <form [formGroup]="couponForm">
+    <h2 mat-dialog-title *ngIf="!data.id">Add Coupon</h2>
+    <h2 mat-dialog-title *ngIf="data.id">Edit Coupon</h2>
+    <mat-dialog-content>
+      <div class="row">
+        <div class="col-4">
+          <div class="formGroup">
+            <label>Coupon Code</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="couponForm.controls.coupon_code.hasError('required' ) && couponForm.controls.coupon_code.touched">Required</span>
+            <input type="text" class="form-control"
+              [ngClass]="couponForm.controls.coupon_code.hasError('required' ) && couponForm.controls.coupon_code.touched ? 'is-invalid' : ''"
+              placeholder="Coupon Code" formControlName="coupon_code" />
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="formGroup">
+            <label>Min Order Value</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="couponForm.controls.minimum_order_value.hasError('required' ) && couponForm.controls.minimum_order_value.touched">required</span>
+            <span class="error-message float-right"
+              *ngIf="couponForm.controls.minimum_order_value.hasError('pattern' )">Invalid Input</span>
+            <input type="text" class="form-control"
+              [ngClass]="couponForm.controls.minimum_order_value.hasError('required' ) && couponForm.controls.minimum_order_value.touched || couponForm.controls.minimum_order_value.hasError('pattern' ) ? 'is-invalid' : ''"
+              placeholder="Minimum Cart Amount" formControlName="minimum_order_value" />
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="formGroup">
+            <label>Max No.of Coupons Issued</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="couponForm.controls.no_of_coupons_issued.hasError('required' ) && couponForm.controls.no_of_coupons_issued.touched">required</span>
+            <span class="error-message float-right"
+              *ngIf="couponForm.controls.no_of_coupons_issued.hasError('pattern' )">Invalid Input</span>
+            <input type="text" class="form-control"
+              [ngClass]="couponForm.controls.no_of_coupons_issued.hasError('required' ) && couponForm.controls.no_of_coupons_issued.touched || couponForm.controls.no_of_coupons_issued.hasError('pattern' ) ? 'is-invalid' : ''"
+              placeholder="Maximum Number of Coupons Issued" formControlName="no_of_coupons_issued" />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4">
+          <label>Select Loyalty Group</label>
+          <!-- <span class="error-message">*</span>
+          <span class="error-message float-right"
+            *ngIf="addmenuForm.controls.category_id.hasError('required' ) && addmenuForm.controls.category_id.touched">required</span> -->
+          <mat-select formControlName="loyalty_groups" multiple class="form-control w-100">
+            <mat-option *ngFor="let group of loyaltyGroups" [value]="group.id">{{group.name}}
+            </mat-option>
+          </mat-select>
+        </div>
+        <div class="col-4">
+          <div class="formGroup">
+            <label>Discount Type</label>
+
+            <select class="form-control w-100" aria-label="Discount Type" formControlName="discount_type">
+              <option [value]="1">Percentage</option>
+              <option [value]="0">Value</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="formGroup">
+            <label>Discount Value</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="couponForm.controls.discount_value.hasError('required' ) && couponForm.controls.discount_value.touched">required</span>
+            <span class="error-message float-right"
+              *ngIf="couponForm.controls.discount_value.hasError('pattern' )">Invalid Input</span>
+            <input type="text" class="form-control"
+              [ngClass]="couponForm.controls.discount_value.hasError('required' ) && couponForm.controls.discount_value.touched || couponForm.controls.discount_value.hasError('pattern' ) ? 'is-invalid' : ''"
+              placeholder="Discount Amount" formControlName="discount_value" />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <div class="formGroup">
+            <label>Coupon Valid From Date</label>
+            <!-- <span class="error-message">*</span>
+                      <span class="error-message float-right" *ngIf="couponForm.controls.valid_from_date.hasError('required' ) && couponForm.controls.valid_from_date.touched">required</span> -->
+            <input type="date" [min]="todayDate" class="form-control" placeholder="Coupon Valid From Date"
+              formControlName="valid_from_date" />
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="formGroup">
+            <label>Coupon Valid Until Date</label>
+            <!-- <span class="error-message">*</span>
+                    <span class="error-message float-right" *ngIf="couponForm.controls.valid_to_date.hasError('required' ) && couponForm.controls.valid_to_date.touched">required</span> -->
+            <input type="date" [min]="todayDate" class="form-control" placeholder="Coupon Valid To Date"
+              formControlName="valid_to_date" />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <div class="formGroup">
+            <label>Coupon Valid From Time</label>
+            <!-- <span class="error-message">*</span>
+                        <span class="error-message float-right" *ngIf="couponForm.controls.start_time.hasError('required' ) && couponForm.controls.start_time.touched">required</span> -->
+            <input type="time" class="form-control" placeholder="Coupon Valid From TIme" formControlName="start_time"
+              min='01:30:01' max='02:30:02' />
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="formGroup">
+            <label>Coupon Valid Until Time</label>
+            <!-- <span class="error-message">*</span>
+                         <span class="error-message float-right" *ngIf="couponForm.controls.end_time.hasError('required' ) && couponForm.controls.end_time.touched">required</span> -->
+            <input type="time" class="form-control" placeholder="Coupon Valid To Time" formControlName="end_time"
+              min='01:30:01' max='02:30:02' />
+            <span class="error-message float-right" *ngIf="couponForm.errors">{{
+                            couponForm.errors.dates | json }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="formGroup">
+            <label>Description</label>
+            <textarea type="text" placeholder="Description" formControlName="description" class="form-control"
+              rows="4"></textarea>
+          </div>
+        </div>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" [disabled]="!couponForm.valid" (click)="addCoupon()">Submit</button>
+    </mat-dialog-actions>
+  </form>
+</div>

@@ -1,0 +1,88 @@
+.b-right {
+  float: right;
+  background: var(--white);
+  padding: 10px;
+}
+
+.show {
+  visibility: hidden;
+}
+
+.btn-wrp-equal button {
+  width: 34px;
+  margin-bottom: 10px;
+  display: inline-block;
+  height: 34px;
+  border-radius: 50%;
+}
+.summary-div {
+  padding: 2px;
+  text-align: right;
+}
+.card {
+  margin-bottom: 5px;
+  height: 100%;
+  padding: 0 !important;
+}
+table {
+  width: 100%;
+}
+.combo-tree {
+  .tree-holder {
+    margin-left: -45px;
+    font-size: 12px;
+  }
+  .tree li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0px 0px 0 10px;
+    position: relative;
+    border-bottom: none;
+  }
+  .tree li::before,
+  .tree li::after {
+    content: "" !important;
+    left: -25px !important;
+    position: absolute !important;
+    right: auto !important;
+  }
+  .tree li::before {
+    border-left: 1px solid #999 !important;
+    bottom: 50px !important;
+    height: 100% !important;
+    top: 0 !important;
+    width: 1px !important;
+  }
+  .tree li::after {
+    border-top: 1px solid #999 !important;
+    height: 20px !important;
+    top: 10px !important;
+    width: 15px !important;
+  }
+  .tree li span {
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    display: inline-block;
+    text-decoration: none;
+  }
+  .tree li.parent_li > span {
+    cursor: pointer;
+  }
+  .tree > ul > li::before,
+  .tree > ul > li::after {
+    border: 0 !important;
+  }
+  .tree li:last-child::before {
+    height: 10px !important;
+  }
+  .tree li.parent_li > span:hover,
+  .tree li.parent_li > span:hover + ul li span {
+    background: #eee;
+    border: 1px solid #94a0b4;
+    color: #000;
+  }
+  .sub-modifier {
+    margin-left: -15px;
+  }
+}

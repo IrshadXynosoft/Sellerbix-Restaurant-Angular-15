@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body id="page_setup">
+    <!-- Body Wrapper Start -->
+    <div class="body_wrapper container-fluid">
+      <!-- Header Start -->
+      <app-header></app-header>
+      <!-- Header End -->
+      <div class="px-4">
+        <div class="row pt-4">
+          <div class="col-12 filter">
+            <ul>
+              <li
+                [ngClass]="tabActive == 'All' ? 'active' : ''"
+                (click)="getOrderdetails(1)"
+              >
+                All <span *ngIf="tabActive == 'All'">({{ totalCount }})</span>
+              </li>
+              <li
+                (click)="runningOrders(1)"
+                [ngClass]="tabActive == 'Running' ? 'active' : ''"
+              >
+                Running
+                <span *ngIf="tabActive == 'Running'">({{ totalCount }})</span>
+              </li>
+              <li
+                (click)="completedOrders(1)"
+                [ngClass]="tabActive == 'Completed' ? 'active' : ''"
+              >
+                Completed
+                <span *ngIf="tabActive == 'Completed'">({{ totalCount }})</span>
+              </li>
+
+              <!-- <li (click)="refundOrders(1)" [ngClass]="tabActive == 'Refund' ? 'active' : ''">
+              Refund <span *ngIf="tabActive == 'Refund'">({{totalCount}})</span>
+            </li> -->
+              <li
+                [ngClass]="tabActive == 'Entity' ? 'active' : ''"
+                matTooltip="Choose Entity"
+                [matMenuTriggerFor]="entity"
+              >
+                Entity
+                <span *ngIf="tabActive == 'Entity'"
+                  >({{ entityName }} - {{ totalCount }})</span
+                ><i class="ml-1 icon-caret-down"></i>
+              </li>
+              <mat-menu #entity="matMenu">
+                <button mat-menu-item (click)="entityOrders(1, 'Walkin', 0, 1)">
+                  Walkin
+                </button>
+                <button mat-menu-item (click)="entityOrders(2, 'Dinein', 0, 1)">
+                  Dinein
+                </button>
+                <button
+                  mat-menu-item
+                  (click)="entityOrders(3, 'Takeaway', 0, 1)"
+                >
+                  Takeaway
+                </button>
+                <button
+                  mat-menu-item
+                  (click)="entityOrders(3, 'Delivery', 1, 1)"
+                >
+                  Delivery
+                </button>
+
+                <button
+                  mat-menu-item
+                  *ngFor="let entity of entityRecords"
+                  (click)="entityOrders(entity.id, entity.name, 0, 1)"
+                >
+                  {{ entity.name }}
+                </button>
+              </mat-menu>
+              <li
+                [matMenuTriggerFor]="cancelled"
+                [ngClass]="
+                  tabActive == 'Void' || tabActive == 'Refund' ? 'active' : ''
+                "
+              >
+                Cancelled<span
+                  *ngIf="tabActive == 'Void' || tabActive == 'Refund'"
+                  >({{ tabActive == "Void" ? "Void -" : "Refund -" }}
+                  {{ totalCount }})</span
+                ><i class="ml-1 icon-caret-down"></i>
+              </li>
+              <mat-menu #cancelled="matMenu">
+                <button mat-menu-item (click)="voidOrders(1)">Void</button>
+                <button mat-menu-item (click)="refundOrders(1)">Refund</button>
+              </mat-menu>
+            </ul>
+            <input
+              type="text"
+              placeholder="Search Order No. & Hit Enter"
+              class="form-control input"
+              #Searchitem
+              (keyup.enter)="searchOrder(Searchitem.value)"
+              (keyup)="
+                Searchitem.value == '' ? searchOrder(Searchitem.value) : null
+              "
+            />
+            <button
+              class="button"
+              [matMenuTriggerFor]="otherOrders"
+              matTooltip="Other Orders"
+            >
+              ...
+            </button>
+            <mat-menu #otherOrders="matMenu">
+              <button mat-menu-item routerLink="/dinein/tableReservations">
+                Reservations
+              </button>
+              <button mat-menu-item routerLink="/party_orders/new_order/list">
+                Party Orders
+              </button>
+            </mat-menu>
+            <button
+              class="button refresh"
+              matTooltip="Reload"
+              (click)="reload()"
+            >
+              <i class="icon-refresh mr-1"></i>Refresh
+            </button>
+          </div>
+        </div>
+        <div *ngIf="orderRecords.length <= 0; else showtable">
+          <div class="row">
+            <div class="col-12">
+              <div class="not-found">
+                <h3>Sorry :(</h3>
+                <p>There are no orders yet at this moment.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #showtable>
+          <!-- <div class="inline-loader" *ngIf="customPreLoader"><img src="assets/loader.gif"> </div> -->
+          <!-- <mat-card class="card" > -->
+          <div
+            class="bordered"
+            infinite-scroll
+            [infiniteScrollDistance]="scrollDistance"
+            [infiniteScrollUpDistance]="scrollUpDistance"
+            [infiniteScrollThrottle]="throttle"
+            (scrolled)="onScrollDown($event)"
+          >
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Order Number</th>
+                  <th scope="col">Amount ({{ currency_symbol }})</th>
+                  <th scope="col">Payment Type</th>
+                  <th scope="col">Date & time</th>
+                  <th scope="col">Type</th>
+                  <!-- <th scope="col">Driver</th> -->
+                  <th scope="col">Status</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let orders of orderRecords; let orderindex = index">
+                  <td
+                    (click)="details(orders)"
+                    class="cursor-pointer click-edit"
+                  >
+                    <div>#{{ orders.order_number }}</div>
+                    <div
+                      *ngIf="orders.order.customer_details"
+                      style="text-transform: capitalize"
+                    >
+                      {{
+                        orders.order.customer_details.name
+                          ? orders.order.customer_details.name
+                          : orders.invoice?.customer_details?.name
+                      }}
+                    </div>
+                    <div *ngIf="orders.order.customer_details">
+                      {{
+                        orders.order.customer_details.phone_number
+                          ? orders.order.customer_details.phone_number
+                          : orders.invoice?.customer_details?.phone_number
+                      }}
+                    </div>
+                  </td>
+                  <td>
+                    {{
+                      orders.amount != "Not Paid"
+                        ? orders.amount.toFixed(2)
+                        : orders.order.Total
+                    }}
+                    <div *ngIf="orders.order.advance_paid">
+                      Advance Paid - {{ orders.order.advance_paid }}
+                    </div>
+                  </td>
+                  <td
+                    *ngIf="
+                      orders.payment_status == 1 || orders.invoice.credit_flag;
+                      else notpaid
+                    "
+                  >
+                    <div *ngFor="let payment of orders.invoice.payment_types">
+                      {{ payment.payment_name }}:
+                      <strong>{{ payment.amount }}</strong
+                      ><br />
+                    </div>
+                  </td>
+                  <ng-template #notpaid>
+                    <td>Unpaid</td>
+                  </ng-template>
+                  <td>
+                    {{ dayCheck(orders.order.current_date) }} &nbsp;
+                    {{ timeCheck(orders.time) }}
+                  </td>
+                  <td>
+                    {{ orders.entity_name }}
+                    <div *ngIf="orders.entity_id == 2">
+                      <strong class="capital"
+                        >{{ orders.dining_name }} -
+                        {{ orders.dining_table_name }}</strong
+                      >
+                    </div>
+                    <div *ngIf="orders.entity_id == 5 || orders.entity_id == 3">
+                      <span *ngIf="orders.order_type == 0">(Take Away)</span>
+                      <span *ngIf="orders.order_type == 1">(Delivery)</span>
+                      <span *ngIf="orders.order_type == 2"
+                        >(Dine in -
+                        {{ timeCheck(orders.order.dinein_time) }})</span
+                      >
+                    </div>
+                    <div *ngIf="orders.driver_order?.driver_otp">
+                      OTP: {{ orders.driver_order?.driver_otp }}
+                    </div>
+                  </td>
+                  <td
+                    *ngIf="
+                      (orders.entity_id == 5 && orders.order_type == 1) ||
+                        (orders.entity_id == 3 && orders.order_type == 1);
+                      else nostatus
+                    "
+                  >
+                    <button
+                      class="bg-driverstatus-{{
+                        orders.driver_order?.driver_status || orders.status
+                      }} w-px-100 commonBtnStyle"
+                    >
+                      <span
+                        *ngIf="
+                          orders.driver_order &&
+                          orders.driver_order?.driver_status == 1
+                        "
+                        >Unassigned</span
+                      >
+                      <span
+                        *ngIf="
+                          orders.driver_order &&
+                          orders.driver_order?.driver_status == 2
+                        "
+                        >Assigned</span
+                      >
+                      <span
+                        *ngIf="
+                          orders.driver_order &&
+                          orders.driver_order?.driver_status == 3
+                        "
+                      >
+                        Driver Accepted
+                      </span>
+                      <span
+                        *ngIf="
+                          orders.driver_order &&
+                          orders.driver_order?.driver_status == 4
+                        "
+                      >
+                        Delivered
+                      </span>
+                      <span
+                        *ngIf="orders.driver_order && orders.status == 4"
+                        class="bg-status-{{ orders.status }}"
+                        >Cancelled
+                      </span>
+                      <span
+                        *ngIf="
+                          orders.driver_order &&
+                          orders.driver_order.driver_status == 5
+                        "
+                        >Not delivered
+                      </span>
+                      <span *ngIf="orders.status == 4">Void</span>
+                      <span *ngIf="orders.status == 6">Refunded</span>
+                    </button>
+                  </td>
+                  <ng-template #nostatus>
+                    <td>
+                      <button
+                        class="bg-status-{{
+                          orders.status
+                        }} w-px-100 commonBtnStyle"
+                      >
+                        <span *ngIf="orders.status == 1">Running </span>
+                        <span *ngIf="orders.status == 2">Completed</span>
+                        <span *ngIf="orders.status == 4">Voided</span>
+                        <span *ngIf="orders.status == 7">Merged</span>
+                        <span *ngIf="orders.status == 6">Refunded</span>
+                      </button>
+                    </td>
+                  </ng-template>
+                  <td
+                    *ngIf="
+                      orders.status == 4 ||
+                        orders.status == 6 ||
+                        orders.status == 7;
+                      else payPrint
+                    "
+                  >
+                    {{
+                      orders.status == 4 || orders.status == 6
+                        ? "Cancelled"
+                        : "Merged"
+                    }}
+                  </td>
+                  <ng-template #payPrint>
+                    <td>
+                      <div class="actions">
+                        <button
+                          *ngIf="
+                            orders.payment_status == 0 &&
+                            accept_payment == 'true'
+                          "
+                          class="btn-setup-sucess commonBtnStyle"
+                          (click)="payOrder(orders)"
+                          matTooltip="Pay"
+                        >
+                          <i class="icon-money"></i>
+                        </button>
+
+                        <button
+                          class="btn-orange commonBtnStyle print"
+                          [matMenuTriggerFor]="menu"
+                          matTooltip="Print"
+                        >
+                          <i class="icon-print"></i>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                          <button mat-menu-item (click)="reprint(orders)">
+                            Invoice Print
+                          </button>
+                          <!-- <button mat-menu-item (click)="KOTreprint(orders)">Kot Print</button> -->
+                          <button
+                            *ngIf="branch_settings.label_print == 1"
+                            mat-menu-item
+                            (click)="labelPrint(orders)"
+                          >
+                            Label Print
+                          </button>
+                        </mat-menu>
+                        <!-- <button
+                        *ngIf="(orders.entity_id == 5 && orders.order_type ==1 && orders.driver_order?.driver_status == 1) || (orders.entity_id == 3 && orders.order_type ==1 && orders.driver_order?.driver_status == 1)"
+                        class="btn-setup-sucess commonBtnStyle" (click)="orderReady(orders)">Ready</button> -->
+                      </div>
+                    </td>
+                  </ng-template>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- </mat-card> -->
+          <!-- <mat-card class="card" > -->
+          <div *ngIf="!orderNumber">
+            <div class="bordered">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Total Orders</th>
+                    <th scope="col">Paid Amount</th>
+                    <th scope="col">Unpaid Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{ orderRecords.length }}</td>
+                    <td>
+                      {{ totalOrdersAmount != 0 ? totalOrdersAmount : 0.0 }}
+                      {{ currency_symbol }}
+                    </td>
+                    <td>
+                      {{ totalUnpaid != 0 ? totalUnpaid : 0.0 }}
+                      {{ currency_symbol }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- </mat-card> -->
+        </ng-template>
+      </div>
+    </div>
+  </body>
+</html>

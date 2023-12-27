@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <app-inventory-header></app-inventory-header>
+
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/inventory">
+                Inventory
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/inventory/inventoryMovement">
+                Inventory Movements
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                Inventory Transfer
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag cursor-pointer">
+            <h4 class="flex-gr-1"> <i class="icon-arrow-left" routerLink="/inventory/inventoryMovement"></i>Inventory
+              Transfer</h4>
+          </div>
+        </div>
+      </div>
+
+      <mat-tab-group (selectedTabChange)="tabClick($event)">
+        <mat-tab label="Inventory Items Requested">
+          <ng-template #viewmessage>
+            <div class="row">
+              <div class="col-12">
+                <div class="not-found bordered">
+                  <h3>Sorry :(</h3>
+                  <p>There's no Requested requests at this moment.</p>
+
+                </div>
+              </div>
+            </div>
+          </ng-template>
+          <div class="col-12 ">
+            <table mat-table *ngIf="dataSourceForReceived.data.length > 0; else viewmessage"
+              [dataSource]="dataSourceForReceived" matSort class="mat-z8 tableStyleMain table w-100 bordered">
+              <ng-container matColumnDef="index">
+                <th mat-header-cell *matHeaderCellDef>#</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ dataSourceForReceived.data.indexOf(element) + 1 }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="stock_request_number">
+                <th mat-header-cell *matHeaderCellDef>Request Number</th>
+                <td mat-cell *matCellDef="let element">{{ element.stock_request_number }}</td>
+              </ng-container>
+              <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef>Requsted Date</th>
+                <td mat-cell *matCellDef="let element">{{ element.date|date }}</td>
+              </ng-container>
+              <ng-container matColumnDef="staff">
+                <th mat-header-cell *matHeaderCellDef>Created By</th>
+                <td mat-cell *matCellDef="let element">{{ element.staff_name }}</td>
+              </ng-container>
+              <ng-container matColumnDef="location">
+                <th mat-header-cell *matHeaderCellDef>From Location</th>
+                <td mat-cell *matCellDef="let element">{{ element.from_branch_name }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="button">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let element">
+                
+                  <button class="btn-setup-sucess commonBtnStyle" [matMenuTriggerFor]="menuPO"
+                    *ngIf="element.action_status==0">Actions</button>
+                  <mat-menu #menuPO="matMenu">
+                    <button mat-menu-item (click)="viewRequestDetail(element.id)">View</button>
+                    <button mat-menu-item
+                      (click)="acceptRequestDetail(element.id,element.stock_request_number)">Accept</button>
+                    <button mat-menu-item
+                      (click)="deleteRequestDetail(element.id,element.stock_request_number)">Reject</button>
+                  </mat-menu>
+                  <button class="btn-setup-sucess commonBtnStyle" [matMenuTriggerFor]="menuPO1"
+                    *ngIf="element.action_status==1">Actions</button>
+                  <mat-menu #menuPO1="matMenu">
+                    <button mat-menu-item (click)="viewRequestDetail(element.id)">View</button>
+                    <button mat-menu-item
+                    (click)="receiveRequest(element.id)">
+                    Process</button>
+                  
+                  </mat-menu>
+                  <span *ngIf="element.action_status==2" style="color: red;">Rejected</span>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsForReceived"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsForReceived"></tr>
+            </table>
+            <mat-paginator [ngClass]="{ show: dataSourceForReceived.data.length <= 0 }" [pageSize]="50"
+              [pageSizeOptions]="[2, 4, 6, 10, 20]">
+            </mat-paginator>
+          </div>
+        </mat-tab>
+        <mat-tab label="Inventory Items Processed">
+          <ng-template #viewProcessedmessage>
+            <div class="row">
+              <div class="col-12">
+                <div class="not-found bordered">
+                  <h3>Sorry :(</h3>
+                  <p>There's no Processed requests at this moment.</p>
+
+                </div>
+              </div>
+            </div>
+          </ng-template>
+          <div class="col-12 ">
+            <table mat-table *ngIf="dataSourceForProcessed.data.length > 0; else viewProcessedmessage"
+              [dataSource]="dataSourceForProcessed" matSort class="mat-z8 tableStyleMain table w-100 bordered">
+              <ng-container matColumnDef="index">
+                <th mat-header-cell *matHeaderCellDef>#</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ dataSourceForProcessed.data.indexOf(element) + 1 }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="stock_request_number">
+                <th mat-header-cell *matHeaderCellDef>Requst Number</th>
+                <td mat-cell *matCellDef="let element">{{ element.stock_request_number }}</td>
+              </ng-container>
+              <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef>Requsted Date</th>
+                <td mat-cell *matCellDef="let element">{{ element.date|date }}</td>
+              </ng-container>
+              <ng-container matColumnDef="staff">
+                <th mat-header-cell *matHeaderCellDef>Created By</th>
+                <td mat-cell *matCellDef="let element">{{ element.staff_name }}</td>
+              </ng-container>
+              <ng-container matColumnDef="location">
+                <th mat-header-cell *matHeaderCellDef>From Location</th>
+                <td mat-cell *matCellDef="let element">{{ element.from_branch_name }}</td>
+              </ng-container>
+              <ng-container matColumnDef="button">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td class="btn-wrp-equal" mat-cell *matCellDef="let element">
+                  <button class="btn-setup-sucess" (click)="viewRequestDetail(element.id)">
+                    <i _ngcontent-trm-c429="" class="zmdi zmdi-eye"></i>
+                  </button>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsForProcessed"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsForProcessed"></tr>
+            </table>
+            <mat-paginator [ngClass]="{ show: dataSourceForProcessed.data.length <= 0 }" [pageSize]="50"
+              [pageSizeOptions]="[2, 4, 6, 10, 20]">
+            </mat-paginator>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</body>
+
+</html>

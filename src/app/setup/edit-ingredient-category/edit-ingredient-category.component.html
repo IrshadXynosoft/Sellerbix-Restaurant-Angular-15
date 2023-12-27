@@ -1,0 +1,26 @@
+<div class="modal-wrapper">
+  <form [formGroup]="categoryForm">
+    <h2 mat-dialog-title>Ingredient Category</h2>
+    <div mat-dialog-content>
+      <label>Ingredient Category Name</label>
+      <span class="error-message">*</span>
+      <span class="error-message float-right"
+        *ngIf="categoryForm.controls.name.hasError('required') && categoryForm.controls.name.touched">
+        Required</span>
+      <span class="error-message float-right" *ngIf="categoryForm.controls.name.hasError('maxlength')">
+        You have reached your maximum limit of characters allowed</span>
+      <span class="error-message float-right" *ngIf="categoryForm.controls.name.hasError('pattern')">
+        Invalid input</span>
+      <span class="error-message float-right" *ngIf="categoryErrorArray.name">
+        {{categoryErrorArray.name}}</span>
+      <input type="text" class="form-control" placeholder="Name" 
+      [ngClass]="categoryForm.controls.name.hasError('required' ) && categoryForm.controls.name.touched || categoryForm.controls.name.hasError('pattern' ) || categoryErrorArray.name ? 'is-invalid' : ''"
+      formControlName="name" />
+      
+    </div>
+    <div mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess"  [disabled]="!categoryForm.valid || categoryForm.pristine" (click)="editCategoryIngredient()">Update</button>
+    </div>
+  </form>
+</div>

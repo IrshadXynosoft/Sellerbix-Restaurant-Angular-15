@@ -1,0 +1,134 @@
+.dinein-hd {
+  ul {
+    list-style: none;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    li {
+      margin-right: 15px;
+      cursor: pointer;
+    }
+    .active {
+      background: var(--primary);
+      color: var(--white);
+      padding: 5px 10px;
+    }
+  }
+}
+.dinein-select {
+  ul {
+    list-style: none;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    li {
+      margin-right: 15px;
+    }
+  }
+
+  .tag-scn {
+    display: block;
+    text-align: center;
+    span {
+      padding: 2px 9px;
+      border-radius: 50%;
+      color: var(--white);
+    }
+  }
+  .tag-green {
+    span {
+      background: #75ca75;
+    }
+  }
+  .tag-grey {
+    span {
+      background: #888;
+    }
+  }
+  .tag-yellow {
+    span {
+      background: var(--primary);
+    }
+  }
+}
+.dinein-inner-selection {
+  .select-tag-scn {
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    margin-right: 10px;
+    font-size: 24px;
+    padding: 0;
+    width: 110px;
+    .down-ar-scn {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+    }
+  }
+  .select-tag-green {
+    background: #75ca75;
+    .down-ar-scn {
+      background: #7edc7e;
+    }
+  }
+  .select-tag-grey {
+    background: #888;
+    .down-ar-scn {
+      background: #a8a4a4;
+    }
+  }
+  .select-tag-yellow {
+    background: var(--primary);
+    .down-ar-scn {
+      background: #d2ac55;
+    }
+  }
+  .dine-scn-content {
+    width: 100%;
+    //   height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .close-scn {
+    position: absolute;
+    right: 10px;
+    top: 0px;
+    z-index: 9;
+  }
+  .drp-content {
+    ul {
+      background: #9c9898;
+      width: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      list-style: none;
+      padding: 10px;
+      font-size: 12px;
+      height: 100%;
+      line-height: 20px;
+    }
+  }
+}
+
+.not-found {
+  background: #d7d7d7;
+  padding: 15px;
+  margin-top: 20px;
+  h3 {
+    font-size: 30px;
+    color: #565656;
+    font-weight: 600;
+  }
+  p {
+    font-size: 16px;
+    color: #727070;
+    font-weight: 400;
+  }
+}

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="row col-12" style="padding-top:15px;">
+      <!-- <div class="col-12"> -->
+        <div class="col-4">
+          <h1><strong>Wallet: &nbsp;{{currency_symbol}} {{ walletAmount }}</strong>&nbsp;&nbsp;
+          <i class="zmdi zmdi-plus-square" style="cursor:pointer;" matTooltip="Add Upfront Amount" (click)="addUpfrontAmount()"></i></h1>
+        </div>
+      <div class="col-2">
+        <span>{{ processingResponseStr }}</span>
+      </div>
+      <div class="col-6" style="text-align:end;" >
+        <button mat-flat-button style="width:150px;margin-right: 4px;" (click)="getOrders()" class="btn-setup-sucess">
+          <i class="zmdi zmdi-refresh mr-2"></i>Refresh
+        </button>
+        <button mat-flat-button style="width:150px;" class="btn-setup-sucess" (click)="reports()">
+          Reports
+        </button>
+      </div>
+      <!-- </div> -->
+    </div>
+    <div class="row col-12 pt-4 header">
+      <div class="col-2">
+        <h2>Orders</h2>
+      </div>
+      <div class="col-2">
+        <span>{{newOrders.length}} tasks,last updated {{currentTime}}</span>
+      </div>
+      <div class="col-2">
+        <h2>For Pickup</h2>
+      </div>
+      <div class="col-2">
+        <span>{{pickupOrders.length}} tasks,last updated {{currentTime}}</span>
+      </div>
+      <div class="col-2">
+        <h2>Delivering</h2>
+      </div>
+      <div class="col-2">
+        <span>{{deliveringOrders.length}} tasks,last updated {{currentTime}}</span>
+      </div>
+    </div>
+    <div class="row col-12">
+      <div class="col-4">
+        <div class="content">
+          <div *ngIf="newOrders.length <= 0; else shownewOrders">
+            <div class="row">
+              <div class="col-12">
+                <div class="not-found">
+                  <h3>Sorry :(</h3>
+                  <p>There's no data yet at this moment.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ng-template #shownewOrders>
+            <div class="orderBorderMain" *ngFor="let orders of newOrders">
+              <div class="flexMainBorderOrder">
+                <div>
+                  <h4>Order #{{orders.order_number}}</h4>
+                  <p>{{currency_symbol}} {{orders.order?.Total}}</p>
+                  <p>Ref no: {{orders.ref_number}}</p>
+                </div>
+                <div>
+                  <ul>
+                    <li>
+                      <p> <button *ngIf="orders.order_request == 0" (click)="makeOrderRequest(orders)">
+                          <label><i class="zmdi zmdi-account-o mr-2"></i></label>
+                          Request Driver
+                        </button>
+                        <button *ngIf="orders.order_request == 1">
+                          <label><i class="zmdi zmdi-account-o mr-2"></i></label>
+                          Requested
+                        </button>
+                      </p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="content">
+          <div *ngIf="pickupOrders.length <= 0; else showpickup">
+            <div class="row">
+              <div class="col-12">
+                <div class="not-found">
+                  <h3>Sorry :(</h3>
+                  <p>There's no data yet at this moment.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ng-template #showpickup>
+            <div class="orderBorderMain" *ngFor="let orders of pickupOrders">
+              <div class="flexMainBorderOrder">
+                <div>
+                  <h4>Order #{{orders.order_no}}</h4>
+                  <p>{{currency_symbol}} {{orders.amount.toFixed(2)}}</p>
+                  <p>Ref No: {{orders.ref_no}}</p>
+                  <strong style="color:var(--primary)" *ngIf="orders.driver_status == 1">OTP : {{orders.driver_otp}}</strong>
+                </div>
+                <div>
+                  <ul>
+                    <li>
+                      <p> <button *ngIf="orders.status == 0" (click)="assignDriver(orders)">
+                          <label><i class="zmdi zmdi-account-o mr-2"></i></label>
+                          Assign Driver
+                        </button>
+                        <button *ngIf="orders.status != 0"
+                          (click)="orders.driver_status == 0 ? assignDriver(orders) : ''">
+                          {{orders.driver_status == 0 ? 'Re-request' : 'Accepted'}}
+                        </button>
+                      </p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="content">
+          <div *ngIf="deliveringOrders.length <= 0; else showdelivering">
+            <div class="row">
+              <div class="col-12">
+                <div class="not-found">
+                  <h3>Sorry :(</h3>
+                  <p>There's no data yet at this moment.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ng-template #showdelivering>
+            <div class="orderBorderMain" *ngFor="let orders of deliveringOrders">
+              <div class="flexMainBorderOrder">
+                <div>
+                  <h4>Order #{{orders.order_no}}</h4>
+                  <p>{{currency_symbol}} {{orders.amount.toFixed(2)}}</p>
+                  <p>Ref No: {{orders.ref_no}}</p>
+                  <strong style="color:var(--primary)" *ngIf="orders.driver_status == 1">OTP : {{orders.driver_otp}}</strong>
+                </div>
+                <div>
+                  <ul>
+                    <li>
+                      <p>
+                        <button>
+                          <label>
+                            <i class="zmdi zmdi-account-o mr-2"></i>
+                          </label>
+                          Track
+                        </button>
+                      </p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

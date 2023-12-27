@@ -1,0 +1,20 @@
+<div class="modal-wrapper">
+  <button mat-icon-button class="close-button" (click)="close()">
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+  </button>
+  <h2 mat-dialog-title>Category Delete Confirmation</h2>
+
+  <mat-dialog-content>
+    <form [formGroup]="deleteForm">
+      <label>Supervisor password</label>
+      <span class="error-message float-right">*</span>
+      <input type="password" class="form-control" formControlName="password" />
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <div class="text-right button-sec">
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" (click)="deleteConfirm()">Yes,Confirm</button>
+    </div>
+  </mat-dialog-actions>
+</div>

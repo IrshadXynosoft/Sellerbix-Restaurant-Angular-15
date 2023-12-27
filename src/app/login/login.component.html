@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+
+<body id="page_sign_in">
+    <div class="container-fluid px-0 px-md-3 px-lg-4">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-5 col-lg-5">
+                <div class="logo_box mx-auto text-center">
+                    <img src="assets/images/logo.png" class="img-fluid">
+                </div>
+                <div class="home-banner mx-auto text-center">
+                    <img src="assets/images/img_signin.png" class="img-fluid">
+                </div>        
+            </div>
+
+            <div class="col-12 col-sm-12 col-md-7 col-lg-7">
+                <form class="col-12 col-lg-10 mx-auto" [formGroup]="loginForm">
+                    <div class="form-inner w-100">
+                        <div class="col-12 col-md-12 col-lg-9 col-xl-9  m-auto px-4">
+                            <h2>Login to your Account</h2>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">User name</label>
+                                <input type="text" class="form-control" formControlName="email" placeholder="Enter Email address">
+                                <span class="error-message" *ngIf="!loginForm.controls.email.valid && loginForm.controls.email.touched">Enter valid email address</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Enter Password</label>
+                                <input type="password" class="form-control" formControlName="password" placeholder="Enter password">
+                                <span class="error-message" *ngIf="!loginForm.controls.password.valid && loginForm.controls.password.touched">Enter your password</span>
+                            </div>
+
+                            <button mat-stroked-button type="submit"  class="btn rounded-pill" (click)="login()">Login</button>
+
+                            
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

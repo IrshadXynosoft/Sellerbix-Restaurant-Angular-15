@@ -1,0 +1,27 @@
+<div class="commonModalMakinDiv">
+    <div class="dialog-container">
+        <div class="modal-wrapper">
+            <h1 mat-dialog-title>Delete</h1>
+        </div>
+        <div mat-dialog-content>
+            <form [formGroup]="cancelForm">
+                <p>Are you sure to delete {{data.name}}?</p>
+                <div class="formGroup">
+                    <label>Password *</label>
+                    <input type="password" class="form-control" formControlName="password" />
+                    <span class="error-message" *ngIf="
+            cancelForm.controls.password.hasError('required') &&
+            cancelForm.controls.password.touched
+          ">
+                        Required</span>
+                </div>
+            </form>
+        </div>
+        <div class="d-flex modal-btn-footer b-right divMainall" mat-dialog-action>
+            <button class="btn-setup-danger commonBtnStyle  mr-2" (click)="cancel()">Cancel</button>
+            <button class="btn-setup-sucess commonBtnStyle" (click)="confirm()">Ok</button>
+        </div>
+    </div>
+
+
+</div>

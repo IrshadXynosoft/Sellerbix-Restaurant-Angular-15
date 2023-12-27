@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- <h2 mat-dialog-title> Available Tables</h2> -->
+
+<body id="page_setup">
+
+  <!-- Body Wrapper Start -->
+  <!-- <mat-dialog-content> -->
+    <div class="body_wrapper container-fluid" style="padding-top: 70px;">
+  <!-- Header Start -->
+  <app-header></app-header>
+  <!-- Header End -->
+      <div class="px-4">
+        <div class="row dinein-select br-btm">
+          <div class="col-lg-4">
+            <div>
+              <label>SELECT TABLE:</label>
+              <select class="form-control w-100" (change)="diningSelected($event)">
+                <option *ngFor="let i of diningSectionRecords" value="{{ i.dinning_section_id }}">
+                  {{ i.dinning_section }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <!-- <div *ngIf="availableTableArray.length <= 0; else showtable">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="not-found">
+                                <h3>Sorry :(</h3>
+                                <p>There's no available tables here.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+        <!-- <ng-template #showtable> -->
+        <div class="row dinein-inner-selection m-0 mt-3">
+          <span *ngFor="let table of availableTableArray">
+            <div *ngIf="!table.orders" class="select-tag-scn cursor-pointer select-tag-green" (click)="moveTable(table.table_id)">
+              <div class="dine-scn-content" >{{table.name}}</div>
+            </div>
+          </span>
+
+        </div>
+        <!-- </ng-template> -->
+      </div>
+    </div>
+  <!-- </mat-dialog-content> -->
+</body>
+
+</html>

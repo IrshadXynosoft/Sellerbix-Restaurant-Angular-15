@@ -1,0 +1,42 @@
+.order-h-1 {
+  font-weight: 300;
+  font-size: 14px;
+  color: #565656;
+}
+.order-h-2 {
+  font-weight: 600;
+  font-size: 22px;
+}
+.click-edit {
+  background-color: var(--primary);
+  border: 1px solid #f8f9fd;
+  color: var(--white);
+}
+.not-found {
+  background: #d7d7d7;
+  padding: 15px;
+  margin-top: 20px;
+  h3 {
+    font-size: 30px;
+    color: #565656;
+    font-weight: 600;
+  }
+  p {
+    font-size: 16px;
+    color: #727070;
+    font-weight: 400;
+  }
+}
+.card {
+  margin-bottom: 10px;
+  height: 100%;
+  padding: 0 !important;
+}
+.actions {
+  display: flex;
+  flex-wrap: nowrap;
+
+  button{
+    width: 100% !important;
+  }
+}

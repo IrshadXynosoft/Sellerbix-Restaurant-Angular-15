@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag mt-2">
+            <h2>
+              <span class="d-block order-h-2">Order Details</span>
+              <!-- <span class="d-block order-h-2">{{today}} </span> -->
+            </h2>
+          </div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="row">
+          <div class="col-12">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Order No:</th>
+                  <th scope="col">Order Note</th>
+                  <th scope="col">Customer Name</th>
+                  <th scope="col">Contact Number</th>
+                  <th scope="col">Address</th>
+                  <th scope="col">Staff:</th>
+                  <th scope="col">Payment Status</th>
+                  <th scope="col">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1451</td>
+                  <td>bhjbhj</td>
+                  <td>
+                    jhgjhg </td>
+                  <td>
+                    hgf
+                  </td>
+                  <td>
+                    <div>---</div>
+                    <!-- <div *ngIf="data.Orders.order?.store_pickup == false">{{data.Orders.driver_order?.customer_delivery_location?.building_or_villa ? data.Orders.driver_order?.customer_delivery_location?.building_or_villa : '---'}}</div> -->
+                    <div>Building/Villa :
+                      jhkjh </div>
+                    <div>Street :
+                      kjhjh </div>
+                    <div>LandMark :
+                      jhj </div>
+                  </td>
+                  <td>jb</td>
+                  <!-- <td *ngIf="data.Orders.payment_status;else elseblock">
+                      <div>Paid<br></div>
+                    </td>
+                    <ng-template #elseblock>
+                      <td>Not paid</td>
+                    </ng-template> -->
+                  <td>jkhj</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- <div class="col-6">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Amount</th>
+                      <th scope="col">Collected</th>
+                      <th scope="col">Returned</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{{data.Orders.amount}}</td>
+                      <td>{{data.Orders.invoice.amount_received}}</td>
+                      <td>{{data.Orders.invoice.balance_amount}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div> -->
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Item Name</th>
+                  <th scope="col">Item Note</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Line Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <span>Falooda</span>
+                    <div class="col-12 combo-tree">
+                      <div class="tree">
+                        <ul class="tree-holder">
+                          <li>
+                            <span><i class="fa fa-folder-open"></i>fdd</span>
+                            <ul>
+                              <li>
+                                <span><i class="fa fa-minus-square"></i>fsgg&nbsp;
+                                  51 </span>
+                              </li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </td>
+                  <td>--</td>
+                  <td>1</td>
+                  <td>100</td>
+                  <td>15
+                    <!-- <span ><button class="btn-setup-sucess float-right"
+                          >Return</button></span> -->
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="d-flex br-btm pb-2">
+              <div class="flex-grow-1">Sub Total:</div>
+              <div>15</div>
+            </div>
+            <div class="d-flex br-btm pb-2">
+              <div class="flex-grow-1">Tax Amount:</div>
+              <div>12</div>
+            </div>
+            <div class="d-flex br-btm pb-2">
+              <div class="flex-grow-1">Discount:</div>
+              <div>12</div>
+            </div>
+            <!-- <div class="d-flex br-btm pb-2" *ngIf="data.Orders.order.Cart?.otherCharge>0">
+                <div class="flex-grow-1">Surcharges:</div>
+                <div>{{data.Orders.order.Cart?.otherCharge}} {{currency_symbol}}</div>
+              </div>
+              <div class="d-flex br-btm pb-2" *ngIf="data.Orders.order.coupon_array">
+                <div class="flex-grow-1">Coupon Applied:</div>
+                <div>{{data.Orders.order.coupon_array.applied_discount}} {{currency_symbol}}</div>
+              </div>
+              <div class="d-flex br-btm pb-2" *ngIf="data.Orders.order.delivery_charge>0">
+                <div class="flex-grow-1">Delivery Charge</div>
+                <div>{{data.Orders.order.delivery_charge}} {{currency_symbol}}</div>
+              </div> -->
+            <div class="d-flex br-btm pt-2 pb-2">
+              <div class="flex-grow-1">Total:</div>
+              <div><strong>14
+                  5</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="margin-top: 15px;">
+        <div class="col-12 tab_section">
+          <mat-tab-group>
+            <mat-tab label="Order history">
+              <!-- <ng-template #message>
+                <p *ngIf="runningOrders.length <= 0" class="message">
+                  No items ordered yet.</p>
+              </ng-template> -->
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Order Number</th>
+                    <th scope="col">Date and Time </th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col"> Status</th>
+                    <!-- <th scope="col"> Agent</th> -->
+                    <th scope="col"> </th>
+                    <th scope="col"> </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td><strong>125</strong></td>
+                    <td>145</td>
+                    <td><span>Take Away</span>
+                    </td>
+                    <td>12</td>
+                    <td>
+                      Running
+                    </td>
+                    <!-- <td>{{i.staff_name}}</td> -->
+                    <td> cvvc</td>
+
+                  </tr>
+                </tbody>
+              </table>
+            </mat-tab>
+            <mat-tab label="Invoice history">
+                <!-- <ng-template #message>
+                  <p *ngIf="runningOrders.length <= 0" class="message">
+                    No items ordered yet.</p>
+                </ng-template> -->
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Order Number</th>
+                      <th scope="col">Date and Time </th>
+                      <th scope="col">Type</th>
+                      <th scope="col">Amount</th>
+                      <th scope="col"> Status</th>
+                      <!-- <th scope="col"> Agent</th> -->
+                      <th scope="col"> </th>
+                      <th scope="col"> </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td><strong>125</strong></td>
+                      <td>145</td>
+                      <td><span>Take Away</span>
+                      </td>
+                      <td>12</td>
+                      <td>
+                        Running
+                      </td>
+                      <!-- <td>{{i.staff_name}}</td> -->
+                      <td> cvvc</td>
+  
+                    </tr>
+                  </tbody>
+                </table>
+              </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</body>
+
+</html>

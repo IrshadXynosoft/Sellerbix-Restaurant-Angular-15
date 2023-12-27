@@ -1,0 +1,95 @@
+.text-font {
+    font-size: large;
+  }
+  .radio-container {
+    margin-right: 15px;
+    display: inline-block;
+  }
+  .example-full-width {
+    width: 100%;
+  }
+  .label-align {
+    text-align: right;
+  }
+  
+  .label-center {
+    text-align: center;
+  }
+  ::ng-deep input.mat-mdc-input-element {
+    background-color: white;
+    height: 40px;
+    width: 90%;
+    border: 1px solid #ced4da;
+  }
+  .message {
+    font-size: 15px;
+  
+    padding-top: 10%;
+    text-align: center;
+    font-style: italic;
+  }
+  .prf-scn {
+    background: var(--white);
+    margin: 15px 0;
+    padding: 15px;
+  
+    h4 {
+      font-size: 18px;
+      font-weight: 400;
+      color: #565656;
+    }
+  }
+  
+  .tableStyleMain {
+    margin-top: 7px;
+  
+    th, td {
+      // padding: .75rem;
+      // vertical-align: top;
+      // border: 1px #e2e3e3 solid;
+      text-align: center;
+    }
+  
+    // td {
+    //   padding: 10px;
+    //   border-right: 1px #eceeee solid;
+    //   text-align: center;
+    // }
+    .searchinventory {
+      margin-bottom: 30px;
+      margin-top: 30px;
+      background-color: lightgray;
+      padding: px;
+      padding-top: 20px;
+    }
+  }
+  // .table{
+
+    //box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    // box-shadow: rgba(143, 148, 135, 0.3) 0px 0px 0px 3px;
+   
+  // }
+  h3{
+    color: #de5d1d;
+  }
+  .note{
+    color: gray;
+    font-size: 12px;
+    margin-left: 10px;
+  }
+  .ex-label{
+    font-size:12px ;
+    color: gray;
+  }
+  .cost-div{
+    text-align: center;
+    height: 50px;
+    background-color: #e2e3e3;
+    align-content: center;
+    display: grid;
+  }
+  .unit-space {
+    margin-left: 5px;
+    margin-top: 5px;
+  }
+  

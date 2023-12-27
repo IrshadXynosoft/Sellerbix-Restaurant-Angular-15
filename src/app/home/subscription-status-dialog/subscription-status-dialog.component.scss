@@ -1,0 +1,27 @@
+.btn-new {
+  color: black;
+  border: 1px solid black;
+  padding: 5px 10px;
+  width: 100%;
+}
+.content {
+  background: var(--white);
+  padding: 40px;
+  width: 100%;
+  max-width: 500px;
+  min-width: 200px;
+  border-radius: 10px;
+  text-align: center;
+  // height: 500px;
+  // padding-top:5rem;
+}
+
+.content header h1 {
+  font-size: 230%;
+  margin-top: 0;
+}
+
+.content section {
+  color: var(--p-color);
+  font-size: 15px;
+}

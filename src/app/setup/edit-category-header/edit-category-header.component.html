@@ -1,0 +1,58 @@
+<div class="modal-wrapper modal-ht-custom">
+  <form [formGroup]="categoryForm">
+    <h2 mat-dialog-title>Edit Ads Category</h2>
+    <div mat-dialog-content>
+      <label>Name</label>
+      <span class="error-message">*</span>
+      <span class="error-message float-right"
+        *ngIf="categoryForm.controls.name.hasError('required' ) && categoryForm.controls.name.touched">required</span>
+
+      <span class="error-message float-right" *ngIf="ErrorArray.name">
+        {{ ErrorArray.name }}</span>
+      <select class="form-control w-100" formControlName="name">
+        <option value="left banner">left banner</option>
+        <option value="right banner">right banner</option>
+        <option value="top banner">top banner</option>
+      </select>
+      <div class="row">
+        <div class="col-12 col-sm-6">
+          <label>From</label>
+          <span class="error-message">*</span>
+          <span class="error-message float-right"
+            *ngIf="categoryForm.controls.dateFrom.hasError('required' ) && categoryForm.controls.dateFrom.touched">Required</span>
+          <input type="date" [min]="todayDate" class="form-control"
+            [ngClass]="categoryForm.controls.dateFrom.hasError('required' ) && categoryForm.controls.dateFrom.touched ? 'is-invalid' : ''"
+            placeholder="From" formControlName="dateFrom" />
+        </div>
+        <div class="col-12 col-sm-6">
+          <label>Until</label>
+          <span class="error-message">*</span>
+          <span class="error-message float-right"
+            *ngIf="categoryForm.controls.dateTo.hasError('required' ) && categoryForm.controls.dateTo.touched">Required</span>
+          <input type="date" [min]="todayDate" class="form-control"
+            [ngClass]="categoryForm.controls.dateTo.hasError('required' ) && categoryForm.controls.dateTo.touched  || categoryForm.errors ? 'is-invalid' : ''"
+            placeholder="Until" formControlName="dateTo" />
+        </div>
+      </div>
+      <span class="error-message" *ngIf="categoryForm.errors ">{{ categoryForm.errors.dates | json }}</span>
+      <!-- <div class="row">
+         <div class="col-12 col-sm-6">
+             <label>From</label>
+             <input type="time" class="form-control"  min='01:30:01' max='02:30:02' placeholder="From" formControlName="timeFrom"   />
+         </div>
+         <div class="col-12 col-sm-6">
+             <label>Until</label>
+             <input type="time" class="form-control" min='01:30:01' max='02:30:02' placeholder="Until" formControlName="timeTo" />
+         </div>
+     </div>
+     <span class="error-message" *ngIf="categoryForm.errors ">{{ categoryForm.errors?.time | json }}</span> -->
+      <label>Description</label>
+      <textarea class="form-control" placeholder="Description" formControlName="description"></textarea>
+    </div>
+    <div mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" [disabled]="!categoryForm.valid || categoryForm.pristine"
+        (click)="updateCategories()">Submit</button>
+    </div>
+  </form>
+</div>

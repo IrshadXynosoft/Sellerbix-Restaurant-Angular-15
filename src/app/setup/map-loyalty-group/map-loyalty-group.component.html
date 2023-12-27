@@ -1,0 +1,34 @@
+  <div class="modal-wrapper">
+    <h2 mat-dialog-title>Add Customers To Loyalty Group</h2>
+    <mat-dialog-content>
+      <div class="row">
+        <div class="col-12">
+          <input type="text" placeholder="Search Here For Customer Mobile Number" class="form-control" #contactNumber
+            (keyup)="searchContactNumber(contactNumber.value)" [matAutocomplete]="auto" #autoInput />
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+            <mat-option (click)="customerSelected(list_options,autoInput)" *ngFor="let list_options of customerArray"
+              [value]="list_options.contact_no" [id]="list_options.id">
+              {{list_options.contact_no +'-'+ list_options.name }}
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+      <div class="row" *ngIf="customerData.length>0">
+        <div clss="col-12" style="margin-left: 1rem;">
+          <h4>Selected Customers</h4>
+          <mat-chip-listbox #chipList aria-label="areas">
+            <mat-chip-option *ngFor="let data of customerData" (removed)="remove(data)">
+              {{ data.name }}
+              <button matChipRemove>
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-option>
+          </mat-chip-listbox>
+        </div>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" (click)="addCustomers()">Submit</button>
+    </mat-dialog-actions>
+  </div>

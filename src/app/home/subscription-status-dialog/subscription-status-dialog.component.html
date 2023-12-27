@@ -1,0 +1,16 @@
+<div class="modal-wrapper">
+  <div class="content">
+    <div>
+      <img class="crop_img" *ngIf="data.result.flag == 1" style="padding-bottom:2rem;width: 135px;"
+        src="assets/images/warning3.png" />
+      <img class="crop_img" *ngIf="data.result.flag == 2" style="padding-bottom:2rem;width: 135px;"
+        src="assets/images/close2.png" />
+    </div>
+    <h1 style="font-weight:bold;">Your subscription expires soon</h1>
+    <p>
+      {{data.result.msg}}
+    </p>
+    <p style="text-align: center;">
+      <button style="width: 140px;height:45px;" class="btn-orange" (click)="close()">Renew Later</button></p>
+  </div>
+</div>

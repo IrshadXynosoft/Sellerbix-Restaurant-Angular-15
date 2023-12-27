@@ -1,0 +1,69 @@
+<p>export-discount works!</p>
+<div class="modal-wrapper">
+  <mat-dialog-content>
+    <div id="myTableElementId" class="pdfData min-scroll">
+      <div class="row col-12">
+        <div class="col-3">
+          <strong>Date :</strong> {{currentDay()}}<br>
+          <strong>Time :</strong> {{currentTime()}}
+        </div>
+        <div class="col-6" style="text-align: center;">
+          <span style="font-size: 24px;"><strong>{{branchName}}</strong></span><br>
+          <span style="font-size: 18px;"><strong>Discounts Report</strong></span>
+        </div>
+      </div>
+      <div class="row col-12">
+        <h4 style="margin-top:35px;margin-bottom:25px;margin-left:15px;"><strong>Report Period :
+            {{data.datePeriod}}</strong></h4>
+      </div>
+      <div *ngIf="orderDiscounts.length>0">
+        <div class="center">
+          <h4><strong> Order Discounts</strong></h4>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Discount Name</th>
+              <th scope="col">Count</th>
+              <th scope="col">Amount ({{currency_symbol}})</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let i of orderDiscounts let index = index">
+              <td>{{i.name}}</td>
+              <td>{{i.count}}</td>
+              <td>{{i.amount}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="itemDiscounts.length>0">
+        <div class="center">
+          <h4><strong> Item Discounts</strong></h4>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Discount Name</th>
+              <th scope="col">Count</th>
+              <th scope="col">Amount ({{currency_symbol}})</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let i of itemDiscounts let index = index">
+              <td>{{i.name}}</td>
+              <td>{{i.count}}</td>
+              <td>{{i.amount}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </mat-dialog-content>
+  <div mat-dialog-actions class="text-right button-sec">
+    <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+    <!-- <button class="btn-setup-sucess" (click)="downloadPdf()">Download
+    </button> -->
+  </div>
+</div>

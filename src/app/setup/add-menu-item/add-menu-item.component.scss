@@ -1,0 +1,100 @@
+.mat-accordion .mat-expansion-panel .mat-expansion-panel-header {
+  background-color: lavender;
+
+  .mat-panel-title {
+    color: white;
+  }
+}
+
+.form-check-label {
+  font-size: 14px;
+  cursor: pointer;
+}
+.form-check {
+  padding-left: 26px;
+}
+.form-check-input {
+  position: absolute;
+  margin-top: 0;
+  cursor: pointer;
+  margin-left: 0;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+}
+::ng-deep .mat-expansion-panel-header {
+  height: 3rem !important;
+}
+/*   TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version.*/
+/*   TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version.*/
+.mat-checkbox-inner-container {
+  height: 20px !important;
+  width: 20px !important;
+}
+.mat-mdc-tab-header {
+  margin-bottom: 10px;
+}
+.mat-accordion .mat-expansion-panel {
+  margin-bottom: 0.6rem;
+  margin-left: 0.6rem;
+  margin-right: 0.6rem;
+}
+.example-chip-list {
+  width: 100%;
+}
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+.mat-mdc-card {
+  background-color: rgb(224, 226, 231);
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  .img {
+    height: 100%;
+    width: 100%;
+  }
+}
+h5 {
+  color: grey;
+  a {
+    color: steelblue;
+  }
+}
+textarea {
+  height: 100px;
+}
+
+.table-responsive {
+  display: block !important;
+  overflow-x: auto !important;
+  width: 100% !important;
+}
+.mat-accordion .mat-expansion-panel .row {
+  margin-top: 0.2rem;
+}
+
+//   ::ng-deep .mat-input-element::placeholder{
+//     color: white;
+// }
+
+.custom-tooltip-blue {
+  background-color: #0c6a9e;
+  color: red;
+}
+
+.delete_item_icon {
+  color: rgb(241, 26, 26);
+  cursor: pointer;
+  margin-top: 6px;
+}
+::ng-deep .mat-mdc-option-pseudo-checkbox.mat-pseudo-checkbox-checked {
+  background-color: var(--primary);
+}

@@ -1,0 +1,68 @@
+<div class="modal-wrapper">
+    <button mat-icon-button class="close-button" (click)="close()">
+      <mat-icon class="close-icon" color="warn">close</mat-icon>
+    </button>
+    <h2 mat-dialog-title>Commercial Invoice Details</h2>
+    <mat-dialog-content>
+      <div class="row">
+        <div class="col-12">
+          <div *ngIf="data.Orders == undefined ; else showtable">
+            <div class="not-found">
+              <h3>Sorry :(</h3>
+              <p>There's no invoices.</p>
+            </div>
+          </div>
+          <ng-template #showtable>
+            <button class="btn-setup-danger float-right" style="margin-bottom: 5px;" *ngIf="data.flag == 'edit'" (click)="deleteInvoice()">Delete
+              Invoices</button>
+            <table class="tableStyleMain table">
+              <thead>
+                <tr>
+                  <th scope="col">Order Number</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Time</th>
+                  <th scope="col">Amount({{currency_symbol}})</th>
+                  <th scope="col" *ngIf="data.flag == 'edit'"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of data.Orders">
+                  <td>
+                    <span>{{item.order_no}}</span>
+  
+                  </td>
+                  <td>{{item.date| date}}</td>
+                  <td>{{item.time}}</td>
+                  <td>{{item.amount}}</td>
+                  <td *ngIf="data.flag == 'edit'">
+                    <mat-checkbox (change)="selectedInvoice($event,item)" [checked]="true"></mat-checkbox>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="d-flex pt-2">
+              <div class="flex-grow-1">Paid Amount:</div>
+              <div><strong>{{data.amount_received}} ({{currency_symbol}})</strong></div>
+            </div>
+            <div class="d-flex pt-2">
+              <div class="flex-grow-1">Balance to pay:</div>
+              <div><strong>{{balance_amount}} ({{currency_symbol}})</strong></div>
+            </div>
+            <div class="d-flex br-btm pt-2">
+              <div class="flex-grow-1">Total:</div>
+              <div><strong>{{totalAmount}} ({{currency_symbol}})</strong></div>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+  
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <div class="text-right pt-2" *ngIf="data.flag == 'edit' && data.Orders != undefined">
+        <button class="btn-setup-sucess" (click)="removeInvoices()">
+          Save
+        </button>
+      </div>
+    </mat-dialog-actions>
+  </div>
+  

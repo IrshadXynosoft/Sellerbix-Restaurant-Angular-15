@@ -1,0 +1,36 @@
+<form [formGroup]="addPaymentMethodForm">
+  <div class="modal-wrapper">
+    <h2 mat-dialog-title>Add Payment Method</h2>
+    <div mat-dialog-content>
+      <label>Payment Type Name</label>
+      <span class="error-message">*</span>
+      <span class="error-message float-right"
+        *ngIf="addPaymentMethodForm.controls.name.hasError('required' ) && addPaymentMethodForm.controls.name.touched">Required</span>
+      <span class="error-message float-right" *ngIf="addPaymentMethodForm.controls.name.hasError('pattern' )">invalid
+        input</span>
+      <span class="error-message float-right" *ngIf="ErrorArray.name">
+        {{ ErrorArray.name }}</span>
+      <input type="text" class="form-control"
+        [ngClass]="addPaymentMethodForm.controls.name.hasError('required' ) && addPaymentMethodForm.controls.name.touched ? 'is-invalid' : ''"
+        placeholder="Add Payment" formControlName="name" />
+      <label>Secondary Name</label>
+      <input type="text" class="form-control" placeholder="Secondary Name" formControlName="secondary_name" />
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="1" id="reference" formControlName="is_web">
+        <label class="form-check-label" for="flexCheckChecked">
+          Allow on Web
+        </label>
+      </div>
+      <!-- <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="1" id="reference" formControlName="reference">
+        <label class="form-check-label" for="flexCheckChecked">
+            Reference:
+        </label>
+      </div> -->
+    </div>
+    <div mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" (click)="addPaymenttype()">Submit</button>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body id="page_setup">
+
+
+    <!-- Body Wrapper Start -->
+    <div class="body_wrapper container-fluid">
+          <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+        <app-inventory-header></app-inventory-header>
+        <div class="px-4">
+          <div class="row pt-4">
+            <div class="bgSecMainAll">
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li
+                    class="breadcrumb-item cursor-pointer"
+                    routerLink="/home/walkin"
+                  >
+                    Home
+                  </li>
+                  <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/inventory">
+                    Inventory
+                  </li>
+                  
+                  <li class="breadcrumb-item active cursor-pointer" aria-current="page"
+                    routerLink="/inventory">
+                    Reports
+                  </li>
+                  <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                    Stock Issue Report
+                  </li>
+                </ol>
+              </nav>
+            </div>
+            <div class="col-12">
+              <div class="d-flex align-items-center head-tag cursor-pointer">
+                <h4 class="flex-gr-1" >
+                  <i class="icon-arrow-left" routerLink="/inventory"></i> Stock Issue Report
+                </h4>
+              </div>
+            </div>
+          </div>
+          <div class="row col-12">
+            <div class="row pt-3 col-12">
+              <div class="col-12 col-lg-6">
+                <h2 class="p-2 flex-gr-1">Stock Issue Report</h2>
+              </div>
+            </div>
+            
+          </div>
+          <form [formGroup]="generateReportForm">
+            <div class="row col-12 ">
+    
+              <div class="col-lg-3">
+                <label>Issuing Type</label>
+                <span class="error-message">*</span>
+                <span
+                  class="error-message float-right"
+                  *ngIf="
+                  generateReportForm.controls.issuing_type.hasError('required') &&
+                  generateReportForm.controls.issuing_type.touched
+                  "
+                  >required</span
+                >
+  
+                <select
+                  class="form-control w-100"
+                  formControlName="issuing_type"
+                 
+                >
+                  <option value="" selected>Select Issuing Type</option>
+                  <option value="3">Purchase Return</option>
+                  <option value="2">Expired</option>
+                  <option value="1">Wasted</option>
+                  <option value="4">ODS</option>
+                </select>
+    
+              </div>
+              <div class="col-lg-3">
+                <label>Location</label>
+                <select class="form-control m-0 mr-2 w-100" formControlName="branch_id">
+                  <option value="" disabled> Select</option>
+                  <option *ngFor="let i of branchRecords" value="{{ i.id }}">
+                    {{ i.name }}
+                  </option>
+                </select>
+              </div>
+    
+    
+              <div class="col-lg-3" style="margin-top:2rem">
+                <button class="btn-setup-sucess" (click)="generateReport()">
+                  <i class="icon-save mr-1"></i>Generate Report
+                </button>
+              </div>
+            </div>
+            <div class="col-12 row">
+              <div class="col-lg-3">
+                <label>Search by</label>
+                <select class="form-control w-100" formControlName="searchBy" (change)="searchby($event)">
+                  <option value=0>Current Date</option>
+                  <option value=1>Date Period</option>
+                  <option value=2>Specify Date</option>
+                </select>
+              </div>
+              <div class="col-lg-3" *ngIf="searchBySpecificDate">
+                <label>Date</label>
+                <span class="error-message">*</span>
+                <span class="error-message float-right"
+                  *ngIf="generateReportForm.controls.fromDate.hasError('required') && generateReportForm.controls.fromDate.touched">
+                  Required</span>
+                <input type="date" placeholder="Code" class="form-control" formControlName="date" />
+              </div>
+              <div class="col-lg-3" *ngIf="searchByPeriod">
+                <label>From Date</label>
+                <span class="error-message">*</span>
+                <span class="error-message float-right"
+                  *ngIf="generateReportForm.controls.fromDate.hasError('required') && generateReportForm.controls.fromDate.touched">
+                  Required</span>
+    
+               <input type="date" placeholder="Code" [min]="minDate" [max]="todayDate" class="form-control"
+              formControlName="fromDate" />
+              </div>
+              <div class="col-lg-3" *ngIf="searchByPeriod">
+                <label>To Date</label>
+                <span class="error-message">*</span>
+                <span class="error-message float-right"
+                  *ngIf="generateReportForm.controls.toDate.hasError('required') && generateReportForm.controls.toDate.touched">
+                  Required</span>
+               <input type="date" placeholder="Code" [min]="minDate" [max]="todayDate" class="form-control"
+              formControlName="toDate" />
+                <span class="error-message float-right" *ngIf="generateReportForm.errors">{{
+                  generateReportForm.errors.dates | json }}</span>
+              </div>
+    
+            </div>
+          </form>
+          <ng-template #viewmessage>
+            <div class="row">
+              <div class="col-12">
+                <div class="not-found">
+                  <h3>Sorry :(</h3>
+                  <p>There's no issued items at this moment.</p>
+                  
+                </div>
+              </div>
+            </div>
+          </ng-template>
+          <div class="col-12 ">
+            <table
+              mat-table
+              *ngIf="dataSource.data.length > 0; else viewmessage"
+              [dataSource]="dataSource"
+              matSort
+              class="tableStyleMain w-100"
+            >
+              <ng-container matColumnDef="index">
+                <th mat-header-cell *matHeaderCellDef>#</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ dataSource.data.indexOf(element) + 1 }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="stock_issuing_number">
+                <th mat-header-cell *matHeaderCellDef>Issue Number</th>
+                <td mat-cell *matCellDef="let element">{{ element.stock_issuing_number }}</td>
+              </ng-container>
+              <ng-container matColumnDef="issuing_type">
+                <th mat-header-cell *matHeaderCellDef>Issuing Type</th>
+                <td mat-cell *matCellDef="let element">{{ element.issuing_type }}</td>
+              </ng-container>
+              <ng-container matColumnDef="staff">
+                <th mat-header-cell *matHeaderCellDef>Created By</th>
+                <td mat-cell *matCellDef="let element">{{ element.staff }}</td>
+              </ng-container>
+              <ng-container matColumnDef="location">
+                <th mat-header-cell *matHeaderCellDef>Location</th>
+                <td mat-cell *matCellDef="let element">{{ element.location }}</td>
+              </ng-container>
+              <ng-container matColumnDef="button">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td class="btn-wrp-equal" mat-cell *matCellDef="let element">
+                  <button
+                    class="btn-setup-sucess"
+                    (click)="viewDetailIssue(element.id)"
+                  >
+                    <i _ngcontent-trm-c429="" class="zmdi zmdi-eye"></i>
+                  </button>
+                  
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+            <mat-paginator
+              [ngClass]="{ show: dataSource.data.length <= 0 }"
+              [pageSize]="50"
+              [pageSizeOptions]="[2, 4, 6, 10, 20]"
+            >
+            </mat-paginator>
+          </div>
+        </div>
+      </div>
+
+  </body>
+</html>

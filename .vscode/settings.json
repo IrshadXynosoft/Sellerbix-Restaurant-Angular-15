@@ -1,0 +1,9 @@
+{
+  "editor.fontSize": 12,
+  "angular-formatter.attributeOrder": [
+    "#",
+    "*",
+    "[",
+    "("
+  ]
+}

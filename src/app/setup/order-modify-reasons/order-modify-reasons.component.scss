@@ -1,0 +1,54 @@
+table {
+    width: 100%;
+  }
+  
+  .mat-mdc-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+  .mat-mdc-header-cell{
+    font-weight:bold;
+    font-size: medium;
+    color: rgb(20, 20, 20);
+  }
+  .mat-mdc-cell {
+    font-size: 15px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+  }
+  .not-found {
+    background: #d7d7d7;
+    padding: 15px;
+    margin-top: 20px;
+    h3 {
+      font-size: 30px;
+      color: #565656;
+      font-weight: 600;
+    }
+    p {
+      font-size: 16px;
+      color: #727070;
+      font-weight: 400;
+    }
+  }
+  .btn-wrp-equal button {
+    width: 34px;
+    margin-bottom: 10px;
+    display: inline-block;
+    height: 34px;
+    border-radius: 50%;
+  }
+  .tableStyleMain{ margin-top: 7px ;
+
+    th{
+      padding: 10px; border-right: 1px #e2e3e3 solid; text-align: center;
+    }
+  
+    td{
+      padding: 10px; border-right: 1px #eceeee  solid; text-align: center;
+    }
+  
+  }
+  .show {
+    visibility: hidden;
+  }

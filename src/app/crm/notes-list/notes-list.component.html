@@ -1,0 +1,15 @@
+<h1 mat-dialog-title>Notes</h1>
+<div mat-dialog-content>
+    <ng-template #message>
+        <p *ngIf="!notesList" class="message">
+          No Notes yet.
+      </ng-template>
+      <div *ngIf="notesList; else message">
+        <div  *ngFor="let i of notesList;let index=index" >
+            <p><span>{{index+1}} .</span>{{i.message}}</p>
+         </div>
+      </div> 
+</div>
+<div mat-dialog-actions>
+    <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+</div>

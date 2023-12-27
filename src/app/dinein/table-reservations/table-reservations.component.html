@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row dinein-hd fixed-div">
+        <div class="col-lg-8">
+          <ul>
+            <li (click)="allTables()">
+              All Tables
+            </li>
+            <li (click)="runningOrders()">
+              Running Orders
+            </li>
+            <li (click)="completedOrders()">
+              Completed Orders
+            </li>
+            <li (click)="tableReservations()" class="active">
+              Reservations
+            </li>
+          </ul>
+        </div>
+        <div class="col-lg-4 col-4">
+          <button class="refresh commonBtnStyle w-50 float-right" (click)="reload()">
+            <i class="icon-refresh mr-1"></i>Reload</button>
+        </div>
+      </div>
+      
+      <div *ngIf="reservationRecords.length <= 0; else showtable" style="margin-top: 70px;">
+        <div class="row">
+          <div class="col-12">
+            <div class="not-found bordered">
+              <h3>Sorry :(</h3>
+              <p>There's no Reservations yet at this moment.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #showtable>
+
+        <div class="bordered" style="margin-top: 70px;">
+            <table class="table tableStyleMain">
+              <thead>
+                <tr>
+                  <th scope="col">Customer Name</th>
+                  <th scope="col">Booking Date</th>
+                  <th scope="col">Booking Time</th>
+                  <th scope="col">Dining</th>
+                  <th scope="col">Pax number</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let reservation of reservationRecords">
+                  <td>
+                    <div class="capital">{{reservation.customer_name}}</div>
+                  </td>
+                  <td>{{reservation.booking_date}}</td>
+                  <td>{{reservation.booking_time}}</td>
+                  <td class="capital">{{reservation.branch_dining_name}}{{reservation.branch_dining_table_name ? '- ' + reservation.branch_dining_table_name : ''}}</td>
+                  <td>{{reservation.no_of_pax}}</td>
+                  <td *ngIf="reservation.status==1">
+                    <button class="btn-setup-sucess commonBtnStyle" style="margin-bottom: 5px;"
+                      (click)="conformReservation(reservation.branch_dining_table_id,reservation)">
+                      Confirm
+                    </button>
+                    <button class="modify commonBtnStyle" style="margin-bottom: 5px;"
+                      (click)="modifyreservation(reservation.reservation_id)">
+                      Modify
+                    </button>
+                  </td>
+                  <td *ngIf="reservation.status==2">
+                    <h3><strong>Order Confirmed</strong></h3>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</body>
+
+</html>

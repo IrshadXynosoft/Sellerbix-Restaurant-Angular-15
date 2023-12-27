@@ -1,0 +1,29 @@
+<form [formGroup]="addcomboForm">
+    <div class="modal-wrapper">
+        <h2 mat-dialog-title>Add Combo</h2>
+        <div mat-dialog-content>
+        <label>Combo</label>
+        <select class="form-control w-100" formControlName="combo">
+          <option value="">Select Combo</option>
+          <option ></option>
+        </select>
+        <span class="error-message" *ngIf="!addcomboForm.controls.combo.valid && addcomboForm.controls.combo.touched">*required</span>
+
+        <p>Group Limits</p>
+        <div class="row">
+        <div class="col-12">
+            <select class="form-control w-100" formControlName="product_name">
+                <option value="">Select Product</option>
+                <option ></option>
+              </select>
+              <span class="error-message" *ngIf="!addcomboForm.controls.product_name.valid && addcomboForm.controls.product_name.touched">*required</span>
+
+        </div>
+        </div>
+    </div>
+        <div mat-dialog-actions>
+            <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+            <button class="btn-setup-sucess"  [disabled]="!addcomboForm.valid || addcomboForm.pristine" (click)="submit()">Upload</button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+
+<body id="page_settings">
+
+
+    <!-- Body Wrapper Start -->
+    <div class="body_wrapper container-fluid">
+            <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                <div class="card p-3 p-xl-4">
+                    <h3 class="px-2 px-sm-2 px-lg-3">Settings</h3>
+                    <form class="px-2 px-sm-2 px-lg-3">
+                        <div class="row pb-5 animate__animated animate__fadeInUp wow">
+                            <div class="col-12 col-sm-5 col-md-3 col-lg-4 col-xl-3 pb-3 pb-sm-0">
+                                <div class="img_box center_img">
+                                    <img src="assets/images/rs_1.png" class="crop_img">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-7 col-md-4 col-lg-8">
+                                <div class="d-flex info pt-2">
+                                    <i class="zmdi zmdi-info-outline d-block text-white"></i>
+                                    <p>Logo Should have in <br>1:1 ratio for better viewing <br> experience.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group animate__animated animate__fadeInUp wow">
+                            <label>Restaurant Name</label>
+                            <input type="text" class="form-control" value="Hungerz Restro">
+                        </div>
+                        <div class="form-group animate__animated animate__fadeInUp wow">
+                            <label>Restaurant Phone Number</label>
+                            <input type="text" class="form-control" value="+1 987 987 6322">
+                        </div>
+                        <div class="form-group animate__animated animate__fadeInUp wow">
+                            <label>Restaurant Email Address</label>
+                            <input type="email" class="form-control" value="mail2italianfood@gmail.com">
+                        </div>
+
+                        <h3 class="pt-4">Bank Details</h3>
+
+                        <div class="form-group animate__animated animate__fadeInUp wow">
+                            <label>Account Number</label>
+                            <input type="text" class="form-control" value="1234 5678 9120 1234">
+                        </div>
+
+                        <div class="form-group animate__animated animate__fadeInUp wow">
+                            <label>Account Name</label>
+                            <input type="text" class="form-control" value="Bank of New York">
+                        </div>
+                        <div class="form-group animate__animated animate__fadeInUp wow">
+                            <label>Bank Code</label>
+                            <input type="text" class="form-control" value="BANK1245">
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                <div class="card p-3 p-xl-4">
+                    <h3 class="px-2 px-sm-2 px-lg-3">Restaurant Timings</h3>
+                    <form class="px-2 px-sm-2 px-lg-3">
+                        <div class="row animate__animated animate__fadeInUp wow">
+                            <div class="col-12 col-lg-6 col-md-6 col-sm-12 my-0">
+                                <div class="form-group">
+                                    <label>Opening Time</label>
+                                    <div class="select_box d-flex">
+                                        <input mb-0 class="form-control" placeholder="Select Opening Time"
+                                            id="opening-time" value="10:00 am">
+                                        <i class="zmdi zmdi-time" style="font-size: 1.3rem; top: 10px;"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-lg-6 col-md-6 col-sm-12 my-0">
+                                <div class="form-group">
+                                    <label>Closing Time</label>
+                                    <div class="select_box d-flex">
+                                        <input mb-0 class="form-control" placeholder="Select Closing Time"
+                                            id="closing-time" value="10:00 pm">
+                                        <i class="zmdi zmdi-time" style="font-size: 1.3rem; top: 10px;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card pt-3 pt-xl-4">
+                    <h3 class="px-2 px-sm-2 px-lg-3 mx-xl-4 pb-4">Restaurant Location</h3>
+                    <div class="map_box">
+                        <div class="page_title">
+                            <div class="row  mx-0">
+                                <form class="search_box col-11 mx-auto px-0">
+                                    <div class="form-group d-flex">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text"><i class="zmdi zmdi-search"></i></div>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="Search location">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="mapouter">
+                            <div class="gmap_canvas"><iframe width="100%" height="500" id="gmap_canvas"
+                                    src="https://maps.google.com/maps?q=2880%20Broadway,%20New%20York&amp;t=&amp;z=15&amp;ie=UTF8&amp;iwloc=&amp;output=embed"
+                                    frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe><br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card order_color_setting p-3 p-xl-4">
+                    <h3 class="px-2 px-sm-2 px-lg-3">Order Color Setting</h3>
+                    <form class="px-2 px-sm-2 px-lg-3">
+                        <div class="form-group d-flex align-items-center animate__animated animate__fadeInUp wow">
+                            <label>Green</label>
+                            <div class="select_box w-100 d-flex">
+                                <div class="select_box d-flex">
+                                    <input mb-0 class="form-control" value="3:00 min">
+                                    <i class="zmdi zmdi-time" style="font-size: 1.3rem; top: 10px;"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group d-flex align-items-center animate__animated animate__fadeInUp wow">
+                            <label>Yellow</label>
+                            <div class="select_box w-100 d-flex">
+                                <div class="select_box d-flex">
+                                    <input mb-0 class="form-control" value="5:30 min">
+                                    <i class="zmdi zmdi-time" style="font-size: 1.3rem; top: 10px;"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group d-flex align-items-center animate__animated animate__fadeInUp wow">
+                            <label>Red</label>
+                            <div class="select_box w-100 d-flex">
+                                <div class="select_box d-flex">
+                                    <input mb-0 class="form-control" value="8:30 min">
+                                    <i class="zmdi zmdi-time" style="font-size: 1.3rem; top: 10px;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <button type="submit"
+                    class="btn rounded-pill py-3 col-12 col-sm-10 col-md-6 col-lg-6 col-xl-4 ml-auto d-block">Submit</button>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+
+<!-- Mirrored from hungerz.opuslab.works/setting.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 19 Jul 2021 13:59:27 GMT -->
+
+</html>

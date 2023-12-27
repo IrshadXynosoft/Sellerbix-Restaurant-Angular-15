@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body id="page_setup">
+    <!-- Header Start -->
+    <app-header>
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css"
+      />
+    </app-header>
+    <!-- Header End -->
+
+    <!-- Body Wrapper Start -->
+    <div class="body_wrapper container-fluid">
+      <div class="px-4">
+        <div class="row pt-4">
+          <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  routerLink="/home/walkin"
+                >
+                  Home
+                </li>
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  aria-current="page"
+                  routerLink="/inventory"
+                >
+                  Inventory
+                </li>
+                <li
+                  class="breadcrumb-item active cursor-pointer"
+                  aria-current="page"
+                >
+                 Inventory Movements
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-12">
+            <div class="d-flex align-items-center head-tag cursor-pointer">
+              <h4 class="flex-gr-1" >
+                <i class="icon-arrow-left" routerLink="/inventory"></i>Inventory Movements
+              </h4>
+            </div>
+          </div>
+     
+      </div>
+      <div class="row pt-4">
+        <div
+          class="col-12 col-sm-3 com-md-3 cursor-pointer"
+          (click)="inventoryRequest()"
+        >
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn">
+              <i class="zmdi zmdi-edit"></i>
+              <p matTooltip="Request Ingredient/sub recipe/Finished Goods to another branches">Inventory Request</p>
+            </div>
+          </div>
+        </div>
+    
+        <div
+          class="col-12 col-sm-3 com-md-3 cursor-pointer"
+          (click)="inventoryTransfer()"
+        >
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn">
+              <i class="zmdi zmdi-swap"></i>
+              <p matTooltip="Process inventory items requested from another branches">Inventory Transfer</p>
+            </div>
+          </div>
+        </div>
+
+        <div
+        class="col-12 col-sm-3 com-md-3 cursor-pointer"
+        (click)="menuRequest()"
+      >
+        <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+          <div class="text-center card-inner-scn">
+            <i class="zmdi zmdi-edit"></i>
+            <p matTooltip="Request Recipes to another branches">Menu Request</p>
+          </div>
+        </div>
+      </div>
+      
+      <div
+      class="col-12 col-sm-3 com-md-3 cursor-pointer"
+      (click)="menuTransfer()"
+    >
+      <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+        <div class="text-center card-inner-scn">
+          <i class="zmdi zmdi-swap"></i>
+          <p matTooltip="Process Recipes requested from another branches">Menu Transfer</p>
+        </div>
+      </div>
+    </div>
+      </div>
+      </div>
+    </div>
+  </body>
+</html>

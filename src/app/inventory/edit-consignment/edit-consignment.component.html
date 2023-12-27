@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <form [formGroup]="newOrderForm">
+    <div class="body_wrapper container-fluid">
+      <!-- Header Start -->
+      <app-header></app-header>
+      <!-- Header End -->
+      <div class="px-4">
+        <div class="row pt-4">
+          <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                  Home
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/inventory">
+                  Inventory
+                </li>
+                <li class="breadcrumb-item  cursor-pointer" aria-current="page" routerLink="/inventory/purchaseOrders">
+                  Purchase Order
+                </li>
+                <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                  New Purchase Order
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-12">
+            <div class="d-flex align-items-center head-tag ">
+              <h4 class="flex-gr-1"> <i class="icon-arrow-left cursor-pointer" (click)="back()"></i>Edit Purchase Order
+              </h4>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="row">
+            <div class="col-12 col-md-3">
+              <label>Order No/Ref:</label>
+              <span class="error-message">*</span>
+              <input type="text" class="form-control" placeholder="Order No/Ref:"
+                formControlName="purchase_order_number" />
+            </div>
+  
+            <div class="col-12 col-md-3">
+              <label>Due Date:</label>
+              <span class="error-message">*</span>
+              <input type="date" [min]="todayDate"
+              class="form-control" formControlName="due_date" />
+            </div>
+            <div class="col-12 col-md-3">
+              <label>Comments:</label>
+              <input type="text" placeholder="Comments:" class="form-control" formControlName="comments" />
+            </div>
+            <div class="col-12 col-md-3">
+              <label>Branch Selected:</label>
+              <input type="text" class="form-control" formControlName="branch_selected"  />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <label>Supplier/Item </label>
+              <span class="error-message">*</span>
+              <br>
+              <input type="text" placeholder="Search inventory item by name, then hit enter to add" (keyup)="searchItemAutocomplete(autoInput.value)"
+                aria-label="Suppliers"  [formControl]="suppliersData" [matAutocomplete]="auto" #autoInput class="form-control bordered w-100"/>
+<!--                 
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let option of itemList" [value]="option.label" [id]="option.value"
+                  (click)="itemSelected(option, autoInput)">
+                  {{ option.label }}
+                </mat-option>
+              </mat-autocomplete> -->
+
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-optgroup *ngFor="let group of itemList" [label]="group.name">
+                  <mat-option *ngFor="let option of group.options" [value]="option"  (click)="itemSelected(option, autoInput)">
+                    {{option.label}}
+                  </mat-option>
+                </mat-optgroup>
+              </mat-autocomplete>
+            </div>
+            <!-- <div class="col-12 col-md-3">
+              <label>Send to supplier:</label>
+              <span class="error-message">*</span>
+
+              <span class="error-message float-right" *ngIf="
+                    newOrderForm.controls.supplier_id.hasError('required') && newOrderForm.controls.supplier_id.touched">required</span>
+              <div class="row ml-1">
+                <select class="form-control" formControlName="supplier_id">
+                  <option value="" selected>Select</option>
+                  <option *ngFor="let i of supplierArrays" value="{{ i.id }}">
+                    {{ i.name }}
+                  </option>
+                </select>
+                <i class="icon-plus ml-1 mt-2 cursor-pointer" matTooltip="Add Supplier" (click)="addSuppliers()"></i>
+              </div>
+            </div> -->
+            <div class="col-12 col-md-3">
+              <button class="btn-setup-sucess bg-grey" style="margin-top: 1.8rem" (click)="getReOrderLevel()">
+                Get reorder level items
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <!-- <div class="col-12" *ngIf="!isItemsSelected; else message">
+              <div class="not-found bordered">
+                <h3>Sorry :(</h3>
+                <p>No Items Added.</p>
+              </div>
+            </div>
+            <ng-template #message> -->
+
+              <table class="table tableStyleMain bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">Sr. No.</th>
+                    <th scope="col">Item</th>
+                    <th scope="col">Stock On Hand</th>
+                    <th scope="col">Supplier</th>
+                    <th scope="col">Price / Unit</th>
+                    <th scope="col">Unit</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Total ({{ currency_symbol }})</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr formArrayName="suppliersData" *ngFor="
+                        let item of supplierFormGroups.controls;
+                        let i = index
+                      ">
+                    <td>
+                      {{ i + 1 }}
+                    </td>
+                    <td>
+                      {{ itemName(i) }}
+                    </td>
+                    <td>
+                      {{ stockOnHand(i) }}
+                    </td>
+                    <td >
+                      {{ supplierName(i) }} 
+                    </td>
+                   
+                    <td>
+                      {{ price(i) }}
+                    </td>
+                    <td>
+                      {{ unit(i) }}
+                    </td>
+                    <td [formGroupName]="i">
+                      <span class="error-message">{{errorMessage(i)}}</span>
+                      <div class="col-12 row">
+                        <div class="d-flex">
+                          <input type="text" class="form-control" style="width:90px" placeholder="Qty"
+                            formControlName="qty" (input)="findTotal(i)" />
+                        </div>
+                        <div class="d-flex mt-2 ml-1">
+                          {{measurementunit(i)}}
+                        </div>
+                      </div>
+                    </td>
+                    <td>{{ subTotal(i) }}</td>
+                    <td [formGroupName]="i">
+                      <i class="icon-trash mr-1 icon-red cursor-pointer" (click)="clearSupplier(i)"></i>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+
+              <div class="col-12 row mb-4">
+                <div class="col-12">
+                  <span class="float-right">Total Amount {{ currency_symbol }}:<b>{{ total_price }}</b></span>
+                </div>
+
+              </div>
+            <!-- </ng-template> -->
+          </div>
+          <div>
+            <div class="d-flex align-items-center justify-content-end m-2 ">
+              <button class="btn-setup-danger btn-ht-custom mr-2" (click)="back()">
+                Cancel
+              </button>
+              <button class="btn-setup-sucess btn-ht-custom bg-grey mr-2" (click)="savePurchaseOrder(0)"
+                >
+                Update
+              </button>
+              <button class="btn-setup-sucess btn-ht-custom" (click)="saveandSendPurchaseOrder()"
+                >
+                <i class="icon-share mr-1"></i> Update and Send
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</body>
+
+</html>

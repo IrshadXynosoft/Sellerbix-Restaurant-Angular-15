@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/callcenter">
+                Home
+              </li>
+
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page" (click)="back()">
+                Reports
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                Unpaid Order Report
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1"> <i class="icon-arrow-left cursor-pointer" routerLink="/setup/reports"></i>Unpaid
+              Order
+              Report</h4>
+          </div>
+        </div>
+      </div>
+      <form [formGroup]="unpaidIndividualReport">
+        <div class="row">
+
+          <!-- <div class="col-lg-3">
+            <label>Staff</label>
+            <select class="form-control w-100" formControlName="staff">
+              <option value=0>All</option>
+              <option *ngFor="let staff of staffRecords" value="{{ staff.id }}">
+                {{ staff.user.name }}
+              </option>
+            </select>
+
+          </div> -->
+          <!-- <div class="col-lg-3">
+            <label>Status</label>
+            <select class="form-control w-100" formControlName="status">
+              <option value="0" selected>All</option>
+              <option value="1">
+                Running
+              </option>
+              <option value="2">
+                Completed
+              </option>
+              <option value="3">
+                Cancelled
+              </option>
+              <option value="4">
+                Delivered
+              </option>
+            </select>
+          </div> -->
+          <div class="col-lg-3">
+            <label>Search by</label>
+            <select class="form-control w-100" formControlName="searchBy" (change)="searchby($event)">
+              <option value=0>Current Date</option>
+              <option value=1>Date Period</option>
+              <option value=2>Specify Date</option>
+            </select>
+          </div>
+          <div class="col-lg-3" *ngIf="searchBySpecificDate">
+            <label>Date</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="unpaidIndividualReport.controls.fromDate.hasError('required') && unpaidIndividualReport.controls.fromDate.touched">
+              Required</span>
+            <input type="date" placeholder="Code" class="form-control" formControlName="date" />
+          </div>
+          <div class="col-lg-3" *ngIf="searchByPeriod">
+            <label>From Date</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="unpaidIndividualReport.controls.fromDate.hasError('required') && unpaidIndividualReport.controls.fromDate.touched">
+              Required</span>
+
+            <input type="date" placeholder="Code" class="form-control" [min]="minDate" [max]="todayDate"
+              formControlName="fromDate" />
+          </div>
+          <div class="col-lg-3" *ngIf="searchByPeriod">
+            <label>To Date</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="unpaidIndividualReport.controls.toDate.hasError('required') && unpaidIndividualReport.controls.toDate.touched">
+              Required</span>
+            <input type="date" placeholder="Code" class="form-control" [min]="minDate" [max]="todayDate"
+              formControlName="toDate" />
+            <span class="error-message float-right" *ngIf="unpaidIndividualReport.errors">{{
+              unpaidIndividualReport.errors.dates | json }}</span>
+          </div>
+          <div class="col-lg-3" style="margin-top:2rem">
+            <button class="btn-setup-sucess" (click)="generateReport()">
+              <i class="icon-save mr-1"></i>Generate Report
+            </button>
+          </div>
+        </div>
+        <!-- <div class="col-12 row"> -->
+
+
+        <!-- </div> -->
+      </form>
+      <div class="col-12 tableStyleMain table">
+        <div *ngIf="dataSource.data.length <= 0; else showtable">
+          <div class="row">
+            <div class="col-12">
+              <div class="not-found bordered">
+                <h3>Sorry :(</h3>
+                <p>No Report available</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ng-template #showtable>
+          <div class="row">
+            <div class="col-12">
+              <button class="btn-setup-sucess float-right mb-2" (click)="exportExcel()">Export to Excel</button>
+            </div>
+          </div>
+          <table *ngIf="dataSource.data.length > 0" mat-table [dataSource]="dataSource" matSort matTableExporter
+            #exporter="matTableExporter" class="tableStyleMain table bordered">
+            <ng-container matColumnDef="index">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                #
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{dataSource.data.indexOf(element) + 1}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="order_no">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Order No
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.order_no }}</td>
+            </ng-container>
+
+            <!-- <ng-container matColumnDef="entity_name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Entity
+                </th>
+                <td mat-cell *matCellDef="let element">{{ element.entity_name }}</td>
+              </ng-container> -->
+            <!-- <ng-container matColumnDef="customer_number">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Location
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.customer_number }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="customer_name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Staff
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.customer_name }}
+                </td>
+              </ng-container> -->
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Date
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.date| date }}</td>
+            </ng-container>
+            <ng-container matColumnDef="time">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Time
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.time }}</td>
+            </ng-container>
+            <ng-container matColumnDef="amount">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Amount({{currency_symbol}})
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.amount }}</td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Status
+              </th>
+              <td mat-cell *matCellDef="let element">
+                <div *ngIf="element.status == 1">Running</div>
+                <div *ngIf="element.status == 2">Completed</div>
+                <div *ngIf="element.status == 3">Cancelled</div>
+                <div *ngIf="element.status == 4">Delivered</div>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="button">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td class="btn-wrp-equal" mat-cell *matCellDef="let element">
+                <button class="btn-setup-sucess" matTooltip="View Order Details"
+                  (click)="viewDetails(element.orderDetails)">
+                  <i _ngcontent-pms-c429="" class="zmdi zmdi-eye"></i>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </ng-template>
+        <div class="row summary-div" *ngIf="dataSource.data.length>0">
+          <div class="col-10">
+            <span>Total ({{currency_symbol}})</span>
+          </div>
+          <div class="col-2">
+            <span><b>{{this.totalAmount}}</b></span>
+          </div>
+        </div>
+        <mat-paginator [ngClass]="{ show: dataSource.data.length <= 0 }" [pageSize]="50"
+          [pageSizeOptions]="[2, 4, 6, 10, 50]">
+        </mat-paginator>
+      </div>
+
+
+    </div>
+
+  </div>
+
+</body>
+
+</html>

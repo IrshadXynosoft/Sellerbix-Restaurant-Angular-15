@@ -1,0 +1,40 @@
+<div class="modal-wrapper">
+  <form [formGroup]="voidReasonForm">
+    <h2 mat-dialog-title *ngIf="data.action != 'removeitem'">You are voiding this Order</h2>
+    <h2 mat-dialog-title *ngIf="data.action == 'removeitem'">You are modifying this Order</h2>
+    <div mat-dialog-content>
+      <div *ngIf="data.action != 'removeitem'">
+        <label>Reason:</label>
+        <span class="error-message float-right">*</span>
+        <select class="form-control w-100" formControlName="reason">
+          <option value="">Reason For Cancellation</option>
+          <option *ngFor="let reason of modifierRecords" value="{{reason.id}}">{{reason.reason}}</option>
+        </select>
+      </div>
+      <div *ngIf="data.action=='removeitem'">
+        <label>Reason:</label>
+        <span class="error-message float-right">*</span>
+        <select class="form-control w-100" formControlName="modifyreason">
+          <option value="" disabled>Reason</option>
+          <option *ngFor="let reason of Records" value="{{reason.id}}">{{reason.reason}}</option>
+        </select>
+      </div>
+      <label>Inventory Status:</label>
+      <span class="error-message float-right">*</span>
+      <select class="form-control w-100" formControlName="inventory_status">
+        <option value="">Select</option>
+        <option value="1">Return to inventory</option>
+        <option value="2">Wasted</option>
+      </select>
+      <div>
+        <label>Supervisor password</label>
+        <span class="error-message float-right">*</span>
+        <input type="password" class="form-control" formControlName="password" />
+      </div>
+    </div>
+    <div mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" (click)="voidOrder()">Ok</button>
+    </div>
+  </form>
+</div>

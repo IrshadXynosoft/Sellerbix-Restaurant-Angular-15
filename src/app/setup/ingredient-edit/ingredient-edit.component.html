@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <form [formGroup]="addIngredientForm">
+    <div class="body_wrapper container-fluid">
+      <!-- Header Start -->
+      <app-header></app-header>
+      <!-- Header End -->
+      <div class="px-4">
+        <div class="row pt-4">
+          <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                  Home
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                  Setup
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/inventorySetup">
+                  Inventory Setup
+                </li>
+
+                <li class="breadcrumb-item cursor-pointer" aria-current="page"
+                  routerLink="/setup/inventorySetup/subrecipes">
+                  Ingredient
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-12">
+            <div class="d-flex align-items-center head-tag">
+              <h4 class="flex-gr-1">
+                <i class="icon-arrow-left mr-2 cursor-pointer" (click)="back()"></i>Edit Ingredient
+              </h4>
+            </div>
+          </div>
+        </div>
+        <div class="row col-12 prf-scn bordered">
+          <div class="col-md-4">
+           <h4>General Details</h4>
+            <div>
+              <div>
+                <label>Name</label>
+                <span class="error-message">*</span>
+                <span class="error-message float-right" *ngIf="
+                    addIngredientForm.controls.name.hasError('required') &&
+                    addIngredientForm.controls.name.touched
+                  ">
+                  Required</span>
+                <span class="error-message float-right" *ngIf="addIngredientForm.controls.name.hasError('maxlength')">
+                  You have reached your maximum limit of characters
+                  allowed</span>
+                <span class="error-message float-right" *ngIf="addIngredientForm.controls.name.hasError('pattern')">
+                  Invalid input</span>
+                <span class="error-message float-right" *ngIf="ErrorArray.name">
+                  {{ ErrorArray.name }}</span>
+                <input type="text" placeholder="Name" class="form-control" formControlName="name" [ngClass]="addIngredientForm.controls.name.hasError('required' ) && 
+                  addIngredientForm.controls.name.touched || 
+                  addIngredientForm.controls.name.hasError('pattern' ) || 
+                  ErrorArray.name ? 'is-invalid' : ''" />
+              </div>
+              <div>
+                <label>Category</label>
+
+                <span class="error-message">*</span>
+
+                <span class="error-message float-right" *ngIf="
+                    addIngredientForm.controls.ingredient_category_id.hasError(
+                      'required'
+                    ) &&
+                    addIngredientForm.controls.ingredient_category_id.touched
+                  ">
+                  Required</span>
+                <div class="row ml-1">
+                  <select class="custom-select form-control" style="width:90%;" formControlName="ingredient_category_id" [ngClass]="addIngredientForm.controls.ingredient_category_id.hasError('required' ) && 
+                  addIngredientForm.controls.ingredient_category_id.touched  ? 'is-invalid' : ''">
+                    <option value="">Select Category</option>
+                    <option *ngFor="let category of categoryArray" value="{{ category.id }}">
+                      {{ category.name }}
+                    </option>
+                  </select>
+
+                  <i class="icon-plus cursor-pointer ml-2 mt-2 " matTooltip="Add Category" (click)="addCategory()"></i>
+                </div>
+
+              </div>
+            </div>
+            <div>
+              <div>
+                <label>Code</label>
+                <span class="error-message float-right" *ngIf="addIngredientForm.controls.code.hasError('pattern')">
+                  Invalid input</span>
+                <input type="text" placeholder="Code" class="form-control" [ngClass]="addIngredientForm.controls.code.hasError('pattern' ) && 
+                  addIngredientForm.controls.code.touched  ? 'is-invalid' : ''" formControlName="code" />
+              </div>
+              <div>
+                <label>Measurement Unit</label>
+                <span class="error-message">*</span>
+
+                <span class="error-message float-right" *ngIf="
+                    addIngredientForm.controls.measurement_unit_id.hasError(
+                      'required'
+                    ) && addIngredientForm.controls.measurement_unit_id.touched
+                  ">
+                  Required</span>
+                <div class="row ml-1">
+                  <select class="custom-select" style="width:90%;" formControlName="measurement_unit_id" [ngClass]="addIngredientForm.controls.measurement_unit_id.hasError('required' ) && 
+                  addIngredientForm.controls.measurement_unit_id.touched  ? 'is-invalid' : ''"
+                    (change)="measurementChanged($event)">
+                    <option value="">Select Unit </option>
+                    <option *ngFor="let unit of measurementArray" value="{{ unit.id }}">
+                      {{ unit.name }}
+                    </option>
+                  </select>
+                  <i class="icon-plus ml-2 mt-2 cursor-pointer" matTooltip="Add Measurement Unit"
+                    (click)="addMeasurementUnit()"></i>
+                  <span class="note">NB : Please select a lowest measurement Unit</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <label>Description</label>
+              <textarea class="form-control" placeholder="Description" formControlName="description"
+                rows="5"></textarea>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <h4>Purchase Details</h4>
+            <div class="row">
+              <div class="col-5">
+                <label>Supplier Purchase Unit</label>
+                <span class="error-message">*</span>
+                <span class="error-message float-right" *ngIf="
+                    addIngredientForm.controls.buying_unit.hasError(
+                      'required'
+                    ) && addIngredientForm.controls.buying_unit.touched
+                  ">
+                  Required</span>
+                <span class="error-message float-right" *ngIf="
+                    addIngredientForm.controls.buying_unit.hasError('pattern')
+                  ">
+                  Invalid input</span>
+                <input type="text" placeholder="Box/Bundle" class="form-control" [ngClass]="addIngredientForm.controls.buying_unit.hasError('required' ) && 
+                  addIngredientForm.controls.buying_unit.touched || 
+                  addIngredientForm.controls.buying_unit.hasError('pattern' )  ? 'is-invalid' : ''"
+                  formControlName="buying_unit" />
+              </div>
+              <div class="col-3" style="margin-top: 40px">
+                <input class="form-check-input" type="checkbox" value="" id="has_sub_unit"
+                  formControlName="has_sub_unit" />
+                <label class="form-check-label" for="has_sub_unit">
+                  Has Sub Unit
+                </label>
+              </div>
+              <div class="col-4">
+                <label class="ex-label">Supplier Purchase Unit</label>
+
+                <input type="text" placeholder="Box" class="form-control" [disabled]="true" />
+              </div>
+            </div>
+            <div class="row" *ngIf="this.addIngredientForm.value['has_sub_unit'] == true">
+              <div class="col-5">
+                <label>Supplier Purchase Sub Unit</label>
+                <span class="error-message">*</span>
+                <span class="error-message float-right" *ngIf="addIngredientForm.controls.buying_sub_unit.touched &&
+                    !addIngredientForm.value['buying_sub_unit'] &&
+                    this.addIngredientForm.value['has_sub_unit'] == true
+                  ">
+                  Required</span>
+                <span class="error-message float-right" *ngIf="
+                    addIngredientForm.controls.buying_sub_unit.hasError(
+                      'pattern'
+                    )
+                  ">
+                  Invalid input</span>
+                <input type="text" placeholder="Packet/Bottle" class="form-control" [ngClass]="addIngredientForm.controls.buying_sub_unit.hasError('required' ) && 
+                  addIngredientForm.controls.buying_sub_unit.touched || 
+                  addIngredientForm.controls.buying_sub_unit.hasError('pattern' )  ? 'is-invalid' : ''"
+                  formControlName="buying_sub_unit" />
+              </div>
+              <div class="col-3"></div>
+              <div class="col-4">
+                <label class="ex-label">Supplier Purchase Sub Unit</label>
+                <input type="text" placeholder="Packet" class="form-control" [disabled]="true" />
+              </div>
+            </div>
+            <div class="row" *ngIf="this.addIngredientForm.value['has_sub_unit'] == true">
+              <div class="col-5">
+                <label
+                  *ngIf="!this.addIngredientForm.value['buying_unit'] || !this.addIngredientForm.value['buying_sub_unit']">1
+                  Supplier Purchase Sub Unit</label>
+                <label
+                  *ngIf="this.addIngredientForm.value['buying_unit'] && this.addIngredientForm.value['buying_sub_unit']">
+                  How many/much {{addIngredientForm.value["buying_sub_unit"] }} in 1
+                  {{addIngredientForm.value["buying_unit"] }}</label>
+                <span class="error-message">*</span>
+                <span class="error-message float-right" *ngIf="
+                    !addIngredientForm.value['unit_equals_sub_unit'] &&
+                    this.addIngredientForm.value['has_sub_unit'] == true &&
+                    addIngredientForm.controls.unit_equals_sub_unit.touched
+                  ">
+                  Required</span>
+                <span class="error-message float-right" *ngIf="
+                    addIngredientForm.value['unit_equals_sub_unit'] &&
+                    addIngredientForm.controls.unit_equals_sub_unit.hasError(
+                      'pattern'
+                    ) &&
+                    addIngredientForm.controls.unit_equals_sub_unit.touched
+                  ">
+                  invalid Input</span>
+                <input type="text" class="form-control" formControlName="unit_equals_sub_unit" [ngClass]="addIngredientForm.controls.unit_equals_sub_unit.hasError('required' ) && 
+                  addIngredientForm.controls.unit_equals_sub_unit.touched || 
+                  addIngredientForm.controls.unit_equals_sub_unit.hasError('pattern' )  ? 'is-invalid' : ''"
+                  (keyup)="findTotalQty()" />
+              </div>
+
+              <div class="col-3" style="margin-top: 40px">
+                <label *ngIf="this.addIngredientForm.value['has_sub_unit'] == true">{{
+                  this.addIngredientForm.value["buying_sub_unit"]
+                  }}</label>
+                <label *ngIf="
+                    this.addIngredientForm.value['has_sub_unit'] == false
+                  ">{{ measurementUnit }}</label>
+              </div>
+              <div class="col-4">
+                <label class="ex-label">How many/much Packets in 1 Box</label>
+                <input type="text" class="form-control" placeholder="10 Packet" [disabled]="true" />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-5">
+                <label
+                  *ngIf="!this.addIngredientForm.value['buying_unit'] &&  this.addIngredientForm.value['has_sub_unit'] == false">1
+                  Supplier Purchase Unit</label>
+                <label *ngIf="
+                    this.addIngredientForm.value['has_sub_unit'] == false && this.addIngredientForm.value['buying_unit']
+                  "> How many/much {{measurementUnit}} in 1 {{this.addIngredientForm.value["buying_unit"]}} </label>
+                <label
+                  *ngIf="this.addIngredientForm.value['has_sub_unit'] == true && this.addIngredientForm.value['buying_sub_unit']">
+                  How many/much {{measurementUnit}} in 1 {{ this.addIngredientForm.value["buying_sub_unit"] }}</label>
+                <label
+                  *ngIf="this.addIngredientForm.value['has_sub_unit'] == true && this.addIngredientForm.value['buying_unit'] && !this.addIngredientForm.value['buying_sub_unit']">
+                  1 Supplier Purchase Unit</label>
+                <label
+                  *ngIf="this.addIngredientForm.value['has_sub_unit'] == true && !this.addIngredientForm.value['buying_unit'] && !this.addIngredientForm.value['buying_sub_unit']">
+                  1 Supplier Purchase Unit</label>
+                <span class="error-message">*</span>
+                <span class="error-message float-right" *ngIf="
+                    addIngredientForm.controls.unit_equals_measurement_unit.hasError(
+                      'required'
+                    ) &&
+                    addIngredientForm.controls.unit_equals_measurement_unit
+                      .touched
+                  ">
+                  Required</span>
+                <span class="error-message float-right" *ngIf="
+                    addIngredientForm.value['unit_equals_measurement_unit'] &&
+                    addIngredientForm.controls.unit_equals_measurement_unit.hasError(
+                      'pattern'
+                    ) &&
+                    addIngredientForm.controls.unit_equals_measurement_unit
+                      .touched
+                  ">
+                  invalid Input</span>
+                <input type="text" class="form-control" [ngClass]="addIngredientForm.controls.unit_equals_measurement_unit.hasError('required' ) && 
+                  addIngredientForm.controls.unit_equals_measurement_unit.touched || 
+                  addIngredientForm.controls.unit_equals_measurement_unit.hasError('pattern' )  ? 'is-invalid' : ''"
+                  formControlName="unit_equals_measurement_unit" (keyup)="findTotalQty()" />
+              </div>
+              <div class="col-3" style="margin-top: 40px">
+                <label>{{ measurementUnit }}</label>
+              </div>
+              <div class="col-4">
+                <label class="ex-label">How many/much Kg in 1 Packet</label>
+                <input type="text" class="form-control" placeholder="10 Kg (measurement unit)" [disabled]="true" />
+              </div>
+            </div>
+            <div class="row" *ngIf="this.addIngredientForm.value['has_sub_unit'] == true">
+              <div class="col-5">
+                <label>{{ totalQty }} </label>
+              </div>
+              <div class="col-3"></div>
+              <div class="col-4">
+                <label class="ex-label"> 1 Box = 10 Packet = 100 Kg </label>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-5">
+                <label>Net {{ measurementUnit }}</label>
+                <span class="error-message">*</span>
+                <span class="error-message float-right" *ngIf="
+                    addIngredientForm.controls.net_unit.hasError(
+                      'required'
+                    ) && addIngredientForm.controls.net_unit.touched
+                  ">
+                  Required</span>
+                <span class="error-message float-right" *ngIf="
+                    addIngredientForm.value['net_unit'] &&
+                    addIngredientForm.controls.net_unit.hasError('pattern') &&
+                    addIngredientForm.controls.net_unit.touched
+                  ">
+                  invalid Input</span>
+                <input type="text" placeholder="Net" class="form-control" [ngClass]="addIngredientForm.controls.net_unit.hasError('required' ) && 
+                  addIngredientForm.controls.net_unit.touched || 
+                  addIngredientForm.controls.net_unit.hasError('pattern' )  ? 'is-invalid' : ''"
+                  formControlName="net_unit" (keyup)="findCostPerUnit()" />
+                <label></label>
+              </div>
+              <div class="col-3"></div>
+              <div class="col-4">
+                <label class="ex-label">Net in Measurement Unit</label>
+                <input type="text" placeholder="Purchased Net Quantity" class="form-control" [disabled]="true" />
+                <label></label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row searchinventory col-12 prf-scn bordered">
+          <div class="col-md-12 ">
+            <h4>Suppliers<span class="error-message">*</span> &nbsp;&nbsp; <i class="icon-plus ml-2 mt-2 cursor-pointer"
+                matTooltip="Add Supplier" (click)="addSuppliers()"></i>
+            </h4>
+            <!-- 
+            <span class="error-message float-right" *ngIf="!validationSupplier">
+              Required</span> -->
+
+              <input type="text" placeholder="Search suppliers, then hit enter to add" aria-label="Suppliers"
+              [formControl]="suppliersData" [matAutocomplete]="auto" #autoInput class="bordered form-control w-100"
+             [ngClass]="!validationSupplier ? 'is-invalid' : ''" (keyup)="searchSupplier(autoInput.value)" />
+            <mat-autocomplete #auto="matAutocomplete" >
+              <mat-option *ngFor="let option of options" [value]="option.name" [id]="option.id" (click)="supplierSelected(option,autoInput)">
+                {{ option.name }}
+              </mat-option>
+            </mat-autocomplete>
+
+            <div *ngIf="isSupplierAdded(); else showtable">
+              <div class="row">
+                <div class="col-12">
+                  <div class="not-found bordered">
+                    <h3>Sorry :(</h3>
+                    <p>No Suppliers Added
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ng-template #showtable>
+              <table class="table tableStyleMain">
+                <thead>
+                  <tr>
+                    <th scope="col w-50">Supplier Name</th>
+                    <th scope="col">Price ({{ currency_symbol }})</th>
+                    <th scope="col">Default</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr formArrayName="suppliersData" *ngFor="
+                      let item of supplierFormGroups.controls;
+                      let i = index
+                    ">
+                    <td>
+                      {{ supplierName(i) }}
+                    </td>
+                    <td [formGroupName]="i">
+                      <span class="error-message float-right">{{
+                        errorMessage(i)
+                        }}</span>
+                      <div class="row">
+                        <input type="text" class="form-control ml-2" style="width:350px"
+                          placeholder="Supplier Buying Price(Inclusive of tax)" formControlName="price"
+                          (keyup)="findCostPerUnit()" />
+                      </div>
+                    </td>
+                  <td [formGroupName]="i">
+                    <input type="checkbox" class="form-check-input"
+                   formControlName="is_default" (change)="checkboxChanged(i)"/>
+                  </td>
+
+                    <td [formGroupName]="i">
+                      <i class="icon-trash mr-1 icon-red cursor-pointer" (click)="clearSupplier(i)"></i>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </ng-template>
+            <div class="col-12 cost-div">
+              Cost Per Measurement Unit ({{ currency_symbol }}):{{ costPerUnit }}
+            </div>
+          </div>
+          <div class="col-md-12">
+            <h4>Inventory<span class="error-message">*</span></h4>
+            <span class="error-message float-right" *ngIf="!validationForOpeningBalance">
+              Required</span>     
+
+             
+            <table class="table tableStyleMain">
+              <thead>
+                <tr>
+                  <th scope="col" class="col-3">Location</th>
+                  <th scope="col" class="col-3">Opening Balance</th>
+                  <th scope="col" class="col-3">Reorder Level</th>
+                  <th scope="col" class="col-3">Track Inventory?</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr formArrayName="locationData" *ngFor="
+                      let item of locationPricesFormGroups.controls;
+                      let i = index
+                    ">
+                  <td class="col-3">{{ branchname(i) }}</td>
+                  <td [formGroupName]="i" class="col-3">
+                    {{ showOpeningBalance(i) }} {{ measurementUnit }}
+                  </td>
+                  <td [formGroupName]="i" class="col-3">
+                    <span class="error-message float-right">{{
+                      errorMessageReorder_qty(i)
+                      }}</span>
+                      <div class="d-flex">
+                          <input type="text" placeholder="" class="form-control w-50" formControlName="reorder_qty" /><span class="unit-space">{{ measurementUnit }}</span>
+                      </div>
+                   </td>
+                  <td [formGroupName]="i" class="col-3">
+                    <div class="form-check">
+                      <input class="form-check-input m-2" type="checkbox" value="" id="flexCheckCheckedt" checked
+                        formControlName="is_track_inventory" />
+                      <label class="form-check-label" for="flexCheckCheckedt">
+                      </label>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <div class="d-flex justify-content-end mb-4">
+              <button class="btn-setup-danger mr-2" (click)="back()">
+                Cancel
+              </button>
+              <button class="btn-setup-sucess" (click)="saveIngredient()">
+                <i class="icon-save mr-1"></i>Update
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</body>
+
+</html>

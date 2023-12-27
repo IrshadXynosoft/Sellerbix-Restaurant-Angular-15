@@ -1,0 +1,81 @@
+  <!-- <div class="modal-wrapper">
+    <h2 mat-dialog-title>Select Driver</h2>
+    <div mat-dialog-content>
+      <input type="text" placeholder="Enter driver name" class="form-control w-100" [formControl]="list_autocomplete"
+        [matAutocomplete]="auto" />
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="driverSelected($event.option.id)">
+        <mat-option *ngFor="
+              let driverRecords of filteredOptions
+                | async
+            " [value]="driverRecords.name" [id]="driverRecords.id">
+          {{ driverRecords.name }}
+        </mat-option>
+      </mat-autocomplete>
+    </div>
+    <div mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" (click)="submit()">Submit</button>
+    </div>
+  </div> -->
+
+
+  <!--  -->
+  <div class="modal-wrapper">
+    <button mat-icon-button class="close-button" (click)="close()">
+      <mat-icon class="close-icon" color="warn">close</mat-icon>
+    </button>
+    <h2 mat-dialog-title>Select Driver</h2>
+    <mat-dialog-content>
+      <div class="row float-right">
+        <div class="reload ">
+          <button class="btn-setup-sucess commonBtnStyle" (click)="reload()">
+            <i class="icon-refresh mr-1"></i>Reload</button>
+        </div>
+      </div>
+      <div class="row  w-100">
+        <div class="col-12 col-sm-8">
+          <div class="map" #mapElement></div>
+          <!-- <span class="error-message float-right" *ngIf="!isAreaSelected">*Please mark delivery area </span> -->
+        </div>
+        <div class="col-12 col-sm-4 min-scroll">
+          <div class="row" *ngFor="let driver of driverRecords">
+            <mat-card appearance="outlined" (click)="driverSelected(driver.driver_id)" class="driver-card"
+              [ngClass]="driver.driver_id == selectedDriver ? 'my-checkfield-selected' : ''">
+              <!-- <div>{{driver.driver_name}}</div>
+              <div>Total orders :{{driver.total_assigned_order ? driver.total_assigned_order : '--'}}</div>
+              <div>Commision : {{driver.commision_type ? driver.commision_type : '--'}}</div> -->
+              <div class="row">
+                <!-- <div class="col-2">
+                  <img *ngIf="!driver.image_url" src="assets/images/user-icon.jpg" />
+                  <img *ngIf="driver.image_url" src="{{imageBasePath + driver.image_url}}" />
+                </div> -->
+                <div class="col-12">
+                  <div class=" text-left content-card">
+                    <span><b>{{driver.driver_name}}</b></span>
+                    <span>{{driver.contact_no}} </span>
+                    <!-- <span>Commision : {{driver.commision_rate}}
+                      {{driver.commision_type == 'Percentage' ? '%' : currency_symbol}}</span> -->
+                    <!-- </div> -->
+                    <!-- </div>
+                <div class="col-6"> -->
+                    <!-- <div class="text-left content-card"> -->
+                    <span>Total Orders : {{driver.total_assigned_order}}</span>
+                    <span>Distance : {{driver.distance_away}} km</span>
+                    <span>Last Updated : {{driver.last_updated_time ? driver.last_updated_time : '--'}}</span>
+                  </div>
+                </div>
+              </div>
+            </mat-card>
+          </div>
+          <div class="not-found" *ngIf="driverRecords.length < 1">
+            <h3>Sorry :(</h3>
+            <p>There's no drivers available.</p>
+          </div>
+        </div>
+      </div>
+    </mat-dialog-content>
+    <div mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" (click)="submit()">Submit</button>
+    </div>
+  </div>

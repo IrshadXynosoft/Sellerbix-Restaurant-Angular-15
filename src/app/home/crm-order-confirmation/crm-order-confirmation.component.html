@@ -1,0 +1,110 @@
+<div class="modal-wrapper">
+  <button mat-icon-button class="close-button" (click)="close()">
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+  </button>
+  <h2 mat-dialog-title style="text-align: center;">Order Confirmation <br>
+    <h3>Please confirm the order below to be delivered:</h3>
+  </h2>
+  <mat-dialog-content>
+    <div class="row">
+      <div class="col-lg-7" [ngClass]="data.customEntityFlag ? 'col-lg-12' : ''">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Item Name</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Price</th>
+              <th scope="col">Line Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of data.items">
+              <td>
+                <span>{{item.name}}</span>
+                <div *ngIf="item.modifiers" class="col-12 combo-tree">
+                  <div class="tree">
+                    <ul class="tree-holder" *ngFor="let modifier of item.modifiers">
+                      <li *ngIf="modifiercheck(modifier.list)">
+                        <span><i class="fa fa-folder-open"></i>{{modifier.name}}</span>
+                        <ul *ngFor="let list of modifier.list">
+                          <li *ngIf="list.status">
+                            <span><i class="fa fa-minus-square"></i>{{list.modifier_list}}&nbsp;
+                              {{currency_symbol}}{{list.rate}}</span>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </td>
+              <td>{{item.qty}}</td>
+              <td>{{item.orginal_price}}</td>
+              <td>{{item.total}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="d-flex br-btm pb-2" *ngIf="data.Cart.subTotal">
+          <div class="flex-grow-1">Sub Total:</div>
+          <div>{{data.Cart.subTotal}} {{currency_symbol}}</div>
+        </div>
+        <div class="d-flex br-btm pb-2" *ngIf="data.Cart?.tax>0">
+          <div class="flex-grow-1">Tax Amount:</div>
+          <div>{{data.Cart?.tax}} {{currency_symbol}}</div>
+        </div>
+        <div class="d-flex br-btm pb-2" *ngIf="data.Cart.otherCharge != 0">
+          <div class="flex-grow-1">Surcharges:</div>
+          <div>{{data.Cart.otherCharge}} {{currency_symbol}}</div>
+        </div>
+        <div class="d-flex br-btm pb-2" *ngIf="data.Cart.discount != 0">
+          <div class="flex-grow-1">Discount:</div>
+          <div>{{data.Cart.discount}} {{currency_symbol}}</div>
+        </div>
+        <div class="d-flex br-btm pb-2" *ngIf="data.Cart.loyaltyCoupon">
+          <div class="flex-grow-1">Loyalty Coupon:</div>
+          <div>{{data.Cart.loyaltyCoupon}} {{currency_symbol}}</div>
+        </div>
+        <div class="d-flex br-btm pt-2 pb-2">
+          <div class="flex-grow-1">Total:</div>
+          <div><strong>{{data.total}} {{currency_symbol}}</strong></div>
+        </div>
+      </div>
+      <div class="col-lg-5" *ngIf="!data.customEntityFlag">
+        <h1 style="text-align: center; font-weight: bold; padding: 10px; text-transform: capitalize;">
+          {{data.customerDetails.customer_name}}</h1>
+        <h4 *ngIf="pickupFlag" style="color: var(--primary);padding: 15px;"><span
+            class="material-icons size">front_hand</span>&nbsp;&nbsp; pickup from restaurant</h4>
+        <div *ngIf="!pickupFlag">
+          <span *ngIf="data.customerDetails.locationDetails.building_or_villa"> <br> Building:
+            {{data.customerDetails.locationDetails.building_or_villa}}</span>
+
+          <span *ngIf="data.customerDetails.locationDetails.street"> <br> Street:
+            {{data.customerDetails.locationDetails.street}}</span>
+          <!-- <span *ngIf="data.customerDetails.locationDetails.flat_number"> <br> Zone: {{data.customerDetails.locationDetails.flat_number}}</span> -->
+          <span *ngIf="data.customerDetails.locationDetails.delivery_area"> <br> Area:
+            {{data.customerDetails.locationDetails.delivery_area}}</span>
+          <span *ngIf="data.customerDetails.locationDetails.country_name"> <br> Country:
+            {{data.customerDetails.locationDetails.country_name}}</span>
+
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <!-- <div class="text-left p-4">
+        <button class="btn-setup-sucess" >
+          <i class="icon-time mr-1"></i>Referral
+        </button>
+        <button class="btn-setup-sucess bg-grey" >
+            <i class="icon-time mr-1"></i>Schedule
+          </button>
+      </div> -->
+    <div class="text-right button-sec">
+      <button class="btn-setup-sucess commonBtnStyle"
+        style="position:absolute;left:1.5rem;background: var(--primary) !important; border-color: var(--primary);"
+        (click)="confirmWithPrint()">Confirm & Print
+      </button>
+      <!-- <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button> -->
+      <button class="btn-setup-sucess commonBtnStyle" (click)="confirm()">Confirm</button>
+    </div>
+  </mat-dialog-actions>
+</div>

@@ -1,0 +1,25 @@
+<div class="modal-wrapper">
+  <form [formGroup]="modifierForm">
+    <h2 mat-dialog-title>Edit Modifier</h2>
+    <div mat-dialog-content>
+      <label>Name</label>
+      <span class="error-message">*</span>
+      <span class="error-message float-right"
+        *ngIf="modifierForm.controls.name.hasError('required' ) && modifierForm.controls.name.touched">required</span>
+      <span class="error-message float-right" *ngIf="modifierForm.controls.name.hasError('pattern' )">invalid
+        input</span>
+      <span class="error-message float-right" *ngIf="ErrorArray.name">
+        {{ ErrorArray.name }}</span>
+      <input type="text" class="form-control"
+        [ngClass]="modifierForm.controls.name.hasError('required' ) && modifierForm.controls.name.touched || modifierForm.controls.name.hasError('pattern' ) || ErrorArray.name ? 'is-invalid' : ''"
+        placeholder="Name" formControlName="name" />
+      <label>Secondary Name</label>
+      <input type="text" class="form-control" placeholder="Secondary Name" formControlName="secondary_name" />
+    </div>
+    <div mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" [disabled]="!modifierForm.valid || modifierForm.pristine"
+        (click)="editModifier()">Update</button>
+    </div>
+  </form>
+</div>

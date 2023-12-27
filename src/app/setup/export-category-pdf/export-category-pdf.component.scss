@@ -1,0 +1,39 @@
+h4 {
+  font-size: 20px;
+
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pdfData {
+
+  table,
+  .table {
+    thead {
+      background: none;
+
+      th {
+        border-bottom: 3px solid black;
+      }
+    }
+
+    td,
+    th {
+      border-top: none;
+      background: none;
+    }
+  }
+  tr:last-child {
+    font-weight: bold;
+  }
+  .min-scroll {
+    height: 320px;
+    overflow-y: scroll;
+  }
+
+  margin-top: 22px;
+}

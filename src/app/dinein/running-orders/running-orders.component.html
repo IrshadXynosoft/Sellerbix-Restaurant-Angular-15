@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body id="page_setup">
+    <!-- Body Wrapper Start -->
+    <div class="body_wrapper container-fluid">
+      <!-- Header Start -->
+      <app-header></app-header>
+      <!-- Header End -->
+      <div class="px-4">
+        <div class="row dinein-hd fixed-div">
+          <div class="col-lg-8">
+            <ul>
+              <li (click)="allTables()">All Tables</li>
+              <li (click)="runningOrders()" class="active">Running Orders</li>
+              <li (click)="completedOrders()">Completed Orders</li>
+              <li (click)="tableReservations()">Reservations</li>
+            </ul>
+          </div>
+          <div class="col-lg-2 col-2">
+            <button
+              *ngIf="selectedOrders.length > 1"
+              class="primary commonBtnStyle"
+              (click)="mergeOrders()"
+            >
+              Merge
+            </button>
+          </div>
+          <div class="col-lg-2 col-2">
+            <button class="refresh commonBtnStyle" (click)="reload()">
+              <i class="icon-refresh mr-1"></i>Reload
+            </button>
+          </div>
+        </div>
+        <div
+          *ngIf="runningOrderRecords.length <= 0; else showtable"
+          style="margin-top: 70px"
+        >
+          <div class="row">
+            <div class="col-12">
+              <div class="not-found bordered">
+                <h3>Sorry :(</h3>
+                <p>There's no running orders yet at this moment.</p>
+                <button class="btn-setup-sucess" routerLink="/dinein">
+                  <i class="icon-plus mr-1"></i>Start Order Here
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ng-template #showtable>
+          <div
+            class="bordered"
+            infinite-scroll
+            [infiniteScrollDistance]="scrollDistance"
+            [infiniteScrollUpDistance]="scrollUpDistance"
+            [infiniteScrollThrottle]="throttle"
+            (scrolled)="onScrollDown($event)"
+            style="margin-top: 70px"
+          >
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Order Number</th>
+                  <th scope="col">Table Name</th>
+                  <th scope="col">Amount ({{ currency_symbol }})</th>
+                  <th scope="col">Payment Type</th>
+                  <th scope="col">Date & time</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Actions</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let orders of runningOrderRecords">
+                  <td
+                    class="cursor-pointer click-edit"
+                    (click)="showDetails(orders)"
+                  >
+                    <div>#{{ orders.order_number }}</div>
+                    <div *ngIf="orders.order.customer_details.phone_number">
+                      {{ orders.order.customer_details.phone_number }}
+                    </div>
+                    <div *ngIf="orders.order.customer_details.name">
+                      {{ orders.order.customer_details.name }}
+                    </div>
+                  </td>
+                  <td>
+                    <strong class="capital"
+                      >{{ orders.dining_name }} -
+                      {{ orders.dining_table_name }}</strong
+                    >
+                  </td>
+                  <td>
+                    {{
+                      orders.amount != "Not Paid"
+                        ? orders.amount.toFixed(2)
+                        : orders.order.Total
+                    }}
+                  </td>
+                  <td
+                    *ngIf="
+                      orders.payment_status == 1 || orders.invoice.credit_flag;
+                      else notpaid
+                    "
+                  >
+                    <div *ngFor="let payment of orders.invoice.payment_types">
+                      {{ payment.payment_name }}:
+                      <strong>{{ payment.amount }}</strong
+                      ><br />
+                    </div>
+                  </td>
+                  <ng-template #notpaid>
+                    <td>Unpaid</td>
+                  </ng-template>
+                  <td>
+                    {{ dayCheck(orders.order.current_date) }} &nbsp;
+                    {{ timeCheck(orders.time) }}
+                  </td>
+                  <td>
+                    <button class="commonBtnStyle running">Running</button>
+                  </td>
+                  <td>
+                    <div class="actions">
+                      <button
+                        class="commonBtnStyle print mr-1"
+                        matTooltip="print"
+                        [matMenuTriggerFor]="menu"
+                      >
+                        <i class="icon-print"></i>
+                      </button>
+                      <mat-menu #menu="matMenu">
+                        <button
+                          mat-menu-item
+                          (click)="Invoicereprint(orders.order_id)"
+                        >
+                          Invoice Print
+                        </button>
+                        <!-- <button mat-menu-item (click)="reprint(orders.order_id)">Kot Print</button> -->
+                      </mat-menu>
+                      <button
+                        matTooltip="Pay"
+                        *ngIf="
+                          orders.payment_status == 0 && accept_payment == 'true'
+                        "
+                        class="btn-setup-sucess commonBtnStyle"
+                        (click)="makepayment(orders)"
+                      >
+                        <i class="icon-money"></i>
+                      </button>
+                    </div>
+                  </td>
+                  <td>
+                    <mat-checkbox
+                      (change)="checkboxChange($event, orders)"
+                    ></mat-checkbox>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="bordered">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Total Orders</th>
+                  <th scope="col">Paid Amount</th>
+                  <th scope="col">Unpaid Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{ totalCount }}</td>
+                  <td>
+                    {{ totalOrdersAmount != 0 ? totalOrdersAmount : 0.0 }}
+                    {{ currency_symbol }}
+                  </td>
+                  <td>
+                    {{ totalUnpaid != 0 ? totalUnpaid : 0.0 }}
+                    {{ currency_symbol }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </body>
+</html>

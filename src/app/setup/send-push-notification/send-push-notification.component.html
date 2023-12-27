@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                Setup
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/location">
+                Locations
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/{{ id }}/editLocation">
+                Location Setup
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page"
+                routerLink="/setup/location/{{ id }}/online">
+                Online Portal Setup
+              </li>
+
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                Send push notification
+              </li>
+            </ol>
+          </nav>
+        </div>
+
+
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1 ">
+              <i class="icon-arrow-left mr-1 cursor-pointer" (click)="back()"></i>Send push notification
+            </h4>
+            <div class="d-flex">
+              <input type="text" class="form-control" placeholder="Search" #history (keyup)="doFilter(history.value)" />
+            </div>
+            <div class="d-flex" style="padding-bottom: 15px; padding-left: 5px">
+              <button class="btn-setup-sucess" (click)="sendNotification()">
+                <i class="icon-plus mr-1"></i> Send Notification
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #message>
+        <div class="row">
+          <div class="col-12">
+            <div class="not-found">
+              <h3>Sorry :(</h3>
+              <p>There's no history yet at this moment.</p>
+              <p>Click <a (click)="sendNotification()" style="color: var(--primary);cursor: pointer;">here</a> to add.
+              </p>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+      <div class="col-12 tableStyleMain">
+        <table mat-table *ngIf="dataSource.data.length > 0; else message" [dataSource]="dataSource" matSort
+          class="mat-z8">
+          <ng-container matColumnDef="index">
+            <th mat-header-cell *matHeaderCellDef>
+              #
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{dataSource.data.indexOf(element) + 1}}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef>Title</th>
+            <td mat-cell *matCellDef="let element">{{ element.title }}</td>
+          </ng-container>
+          <ng-container matColumnDef="message">
+            <th mat-header-cell *matHeaderCellDef>Message</th>
+            <td mat-cell *matCellDef="let element">{{ element.message}}</td>
+          </ng-container>
+          <ng-container matColumnDef="delivered_count">
+            <th mat-header-cell *matHeaderCellDef>Delivered Count</th>
+            <td mat-cell *matCellDef="let element">{{ element.delivered_count ? element.delivered_count : '--'}}</td>
+          </ng-container>
+          <ng-container matColumnDef="resend_count">
+            <th mat-header-cell *matHeaderCellDef>Resend Count</th>
+            <td mat-cell *matCellDef="let element">{{ element.resend_count ? element.resend_count : '--'}}</td>
+          </ng-container>
+          <ng-container matColumnDef="created_at">
+            <th mat-header-cell *matHeaderCellDef>Created on</th>
+            <td mat-cell *matCellDef="let element">{{ dayCheck(element.created_at)}}</td>
+          </ng-container>
+          <ng-container matColumnDef="updated_at">
+            <th mat-header-cell *matHeaderCellDef>Delivered on</th>
+            <td mat-cell *matCellDef="let element">{{ dayCheck(element.updated_at)}}</td>
+          </ng-container>
+          <ng-container matColumnDef="buttons">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let element">
+              <button class="btn-setup-sucess commonBtnStyle" (click)="editNotification(element.id)">
+                Edit
+              </button>
+              <button class="btn-setup-danger commonBtnStyle" (click)="deleteNotification(element.id, element.title)">
+                Delete
+              </button>
+              <button class="btn-setup-sucess commonBtnStyle" (click)="sendResendNotification(element)">
+                {{element.delivered_count == 0 ? 'Send' : 'Resend'}}
+              </button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+        <mat-paginator [ngClass]="{ show: dataSource.data.length <= 0 }" [pageSize]="50"
+          [pageSizeOptions]="[2, 4, 6, 10, 20]">
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

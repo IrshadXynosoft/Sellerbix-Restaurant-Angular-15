@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body id="page_setup">
+ 
+
+    <!-- Body Wrapper Start -->
+    <div class="body_wrapper container-fluid">
+         <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+      <div class="px-4">
+        <div class="row pt-4">
+          <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                  Home
+                </li>
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  aria-current="page"
+                  routerLink="/setup"
+                >
+                  Setup
+                </li>
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  aria-current="page"
+                  routerLink="/setup/globalSettings"
+                >
+                  Global Settings
+                </li>
+                <li
+                  class="breadcrumb-item active cursor-pointer"
+                  aria-current="page"
+                >
+                  Combo Sections
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-12">
+            <div class="d-flex align-items-center head-tag">
+              <h4 class="flex-gr-1" >
+                <i class="icon-arrow-left mr-1 cursor-pointer" (click)="back()"></i>Combo Sections
+              </h4>
+              <button class="btn-setup-sucess" (click)="addComboSection()">
+                <i class="icon-plus mr-1"></i>Add Combo Section
+              </button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Sequence No</th>
+                <th scope="col">Allows Skip</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let i of comborecords">
+                <td>{{ i.name }}</td>
+                <td>{{ i.sequence_number }}</td>
+                <td>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      [(ngModel)]="i.is_allow_skip"
+                      id="flexCheckChecked"
+                      checked
+                    />
+                    <label class="form-check-label" for="flexCheckChecked">
+                    </label>
+                  </div>
+                </td>
+                <td>
+                  <button
+                    class="btn-setup-sucess mr-1"
+                    (click)="
+                      editComboSection(
+                        i.id,
+                        i.name,
+                        i.sequence_number,
+                        i.is_allow_skip
+                      )
+                    "
+                  >
+                    <i class="icon-pencil mr-1"></i>Edit
+                  </button>
+                  <button
+                    class="btn-setup-danger"
+                    (click)="deletecombo(i.id, i.name)"
+                  >
+                    <i class="icon-trash mr-1"></i>Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <form [formGroup]="newOrderForm">
+    <div class="body_wrapper container-fluid">
+        <!-- Header Start -->
+  <app-header></app-header>
+  <!-- Header End -->
+      <div class="px-4">
+        <div class="row pt-4">
+          <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                  Home
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/inventory">
+                  Inventory
+                </li>
+                <li class="breadcrumb-item  cursor-pointer" aria-current="page" routerLink="/inventory/purchaseOrders">
+                  Purchase Order
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                  Edit Purchase Order
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-12">
+            <div class="d-flex align-items-center head-tag">
+              <h4 class="flex-gr-1"> <i class="icon-arrow-left cursor-pointer" (click)="back()"></i> Edit Purchase Order</h4>
+            </div>
+          </div>
+        </div>
+       
+        <div class="row">
+          <div class="col-12 col-md-3">
+            <label>Order No/Ref:</label>
+            <span class="error-message">*</span>
+            <input type="text" class="form-control" placeholder="Order No/Ref:"
+              formControlName="purchase_order_number" />
+          </div>
+
+          <div class="col-12 col-md-3">
+            <label>Due Date:</label>
+            <span class="error-message">*</span>
+            <input type="date" [min]="todayDate"
+            class="form-control" formControlName="due_date" />
+          </div>
+          <div class="col-12 col-md-3">
+            <label>Comments:</label>
+            <input type="text" placeholder="Comments:" class="form-control" formControlName="comments" />
+          </div>
+          <div class="col-12 col-md-3">
+            <label>Branch Selected:</label>
+            <input type="text" class="form-control" formControlName="branch_selected"  />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <label>Supplier/Item </label>
+            <span class="error-message">*</span>
+            <input type="text" placeholder="Search inventory item by name or supplier, then hit enter to add"
+              aria-label="Suppliers" matInput [formControl]="suppliersData" [matAutocomplete]="auto" #autoInput />
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name" [id]="option.id"
+                (click)="itemSelected(option, autoInput)">
+                {{ option.name }}
+              </mat-option>
+            </mat-autocomplete>
+          </div>
+          <!-- <div class="col-12 col-md-3">
+            <label>Supplier Selected:</label>
+            <input type="text" class="form-control" formControlName="supplier_selected"  />
+          </div> -->
+          <div class="col-12 col-md-3 float-right">
+            <button class="btn-setup-sucess bg-grey" style="margin-top: 2rem" (click)="getReOrderLevel()">
+              Get reorder level items
+            </button>
+          </div>
+        </div>
+
+        <table class="table tableStyleMain table-shadow">
+          <thead>
+            <tr>
+              <th scope="col">Sr. No.</th>
+              <th scope="col">Item</th>
+              <th scope="col">Stock On Hand</th>
+              <th scope="col">Prev.Supplier</th>
+              <th scope="col">Price / Unit</th>
+              <th scope="col">Unit</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Total ({{ currency_symbol }})</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr formArrayName="suppliersData" *ngFor="let item of supplierFormGroups.controls; let i = index">
+              <td>
+                {{ i + 1 }}
+              </td>
+              <td>
+                {{ itemName(i) }}
+              </td>
+              <td>
+                {{ stockOnHand(i) }}
+              </td>
+              <td>
+                {{ supplierName(i) }}
+              </td>
+              <td>
+                {{ price(i) }}
+              </td>
+              <td>
+                {{ unit(i) }}
+              </td>
+              <td [formGroupName]="i">
+                <span class="error-message">{{errorMessage(i)}}</span>
+                <div class="col-12 row">
+                 <div class="d-flex">
+                     <input type="text" class="form-control" style="width:120px" placeholder="Qty"
+                            formControlName="qty" (input)="findTotal(i)" />
+                    </div>
+                    <div class="d-flex mt-2 ml-1">
+                        {{measurementunit(i)}}
+                    </div>
+              </div>
+              </td>
+              <td>{{ subTotal(i) }}</td>
+              <td [formGroupName]="i">
+                <button class="btn-setup-danger cust-pos-btn mt-2" (click)="clearSupplier(i)">
+                  <i class="icon-remove"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="col-12 row mb-4">
+          <div class="col-12">
+           <span class="float-right">Total Amount {{currency_symbol}}:<b>{{total_price}}</b></span>
+          </div>
+         </div>
+        <div class="d-flex align-items-center justify-content-end mb-2">
+          <button class="btn-setup-danger btn-ht-custom mr-2" (click)="back()">
+            Cancel
+          </button>
+          <button class="btn-setup-sucess btn-ht-custom bg-grey mr-2" (click)="savePurchaseOrder(0)">
+            Save
+          </button>
+          <button class="btn-setup-sucess btn-ht-custom" (click)="saveandSendPurchaseOrder()">
+            <i class="icon-share mr-1"></i> Save and Send
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</body>
+
+</html>

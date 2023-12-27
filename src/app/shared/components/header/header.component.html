@@ -1,0 +1,169 @@
+<!-- Header Start -->
+<header id="header" class="animate__animated animate__fadeInDown wow"
+  [className]="isMenuOpened ? 'active' : 'in-active'" data-wow-duration=".5s">
+  <nav class="navbar align-items-center" style="flex-wrap: unset">
+    <div class="nav-item ml-lg-2 ml-xl-0 logo" style="min-width: fit-content">
+      <a class="navbar-brand nav-link px-0" href="javascript:void(0)" (click)="backToDashboard()">
+        <img src="assets/images/logo.png" class="img-fluid" />
+      </a>
+    </div>
+    <div class="nav-inner ml-5 pl-4 w-100">
+      <ul class="navbar-nav d-flex align-items-center w-100">
+        <ng-container *ngFor="let menu of menuList">
+          <li class="nav-item show-only-large-devices align-items-center" *ngIf="menu.is_sidemenu === 0">
+            <a class="nav-link" href="javascript:void(0)" (click)="menuOnClick(menu.menu_url, menu.page)">
+              <i class="mr-2" [ngClass]="menu.menu_icon"></i>
+              {{ menu.menu_name }}
+              <i *ngIf="menu.sub_menu" class="icon-caret-down butnnDropMain" (click)="menuName(menu.menu_name)"></i>
+            </a>
+
+            <div *ngIf="menu.sub_menu">
+              <div class="sub-orders" (click)="walkInOrders(submenu.menu_url)" *ngFor="let submenu of menu.sub_menu">
+                {{ submenu.menu_name }}
+              </div>
+            </div>
+          </li>
+        </ng-container>
+      </ul>
+    </div>
+    <!-- <div class="nav-inner ml-5 pl-4 w-100">
+      <ul class="navbar-nav d-flex align-items-center w-100" >
+
+        <li [ngClass]="selected == 1 ?'nav-item show-only-large-devices active' : 'nav-item show-only-large-devices'">
+          <a class="nav-link" href="javascript:void(0)"><i class="zmdi zmdi-assignment"></i>
+            <span (click)="backToHome()" class="mr-2">Walk-In</span><span (click)="walkInDropdown()"><i
+                class="icon-caret-down"></i></span>
+          </a>
+          <div class="sub-orders" *ngIf="walkInDropdownTag" (click)="walkInOrders()">
+            Walk-in Orders
+          </div>
+        </li>
+
+        <li class="nav-item show-only-large-devices">
+          <a class="nav-link" href="javascript:void(0)" (click)="backToHome()"
+            ><i class="zmdi zmdi-assignment"></i>POS</a
+          >
+        </li>
+        <li  [ngClass]="selected == 2 ?'nav-item show-only-large-devices active' : 'nav-item show-only-large-devices'">
+          <a class="nav-link" href="javascript:void(0)" (click)="crm()"><i class="icon-phone mr-2"></i>CRM</a>
+
+        </li>
+        <li [ngClass]="selected == 3 ?'nav-item show-only-large-devices active' : 'nav-item show-only-large-devices'">
+          <a class="nav-link" href="javascript:void(0)" (click)="dinein()"><i class="icon-food mr-2"></i>Dinein</a>
+        </li>
+        <li [ngClass]="selected == 4 ?'nav-item show-only-large-devices active' : 'nav-item show-only-large-devices'">
+          <a class="nav-link" href="javascript:void(0)" (click)="transaction()"><i
+              class="zmdi zmdi-collection-text"></i>Transaction</a>
+        </li>
+        <li [ngClass]="selected == 5 ?'nav-item show-only-large-devices active' : 'nav-item show-only-large-devices'">
+          <a class="nav-link" href="javascript:void(0)" (click)="booking()"><i
+              class="zmdi zmdi-airline-seat-recline-extra"></i> Booking</a>
+        </li>
+
+        <li [ngClass]="selected == 6 ?'nav-item show-only-large-devices active' : 'nav-item show-only-large-devices'">
+          <a class="nav-link" href="javascript:void(0)" (click)="orderStatus()"><i class="zmdi zmdi-hourglass-alt"></i>
+            Orders Status</a>
+        </li>
+        <li [ngClass]="selected == 7 ?'nav-item show-only-large-devices active' : 'nav-item show-only-large-devices'">
+          <a class="nav-link" href="javascript:void(0)" (click)="setup()"><i class="zmdi zmdi-settings"></i> Setup</a>
+        </li>
+        <li [ngClass]="selected == 8 ?'nav-item show-only-large-devices active' : 'nav-item show-only-large-devices'">
+          <a class="nav-link" href="javascript:void(0)" (click)="inventory()"><i
+              class="zmdi zmdi-menu"></i>Inventory</a>
+        </li>
+        <li class="nav-item profile_img ml-auto" type="button" id="menu" (click)="menu()">
+          <div class="dropdown">
+            <span>
+              <i class="zmdi zmdi-menu"></i>
+              <i class="zmdi zmdi-close"></i>
+            </span>
+            <a class="img_box center_img">
+              <img src="assets/images/rs_1.png" class="crop_img" />
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div> -->
+    <div *ngIf="drawer_status == 'true'" class="nav-item ml-lg-2 ml-xl-0 logo" style="min-width: fit-content"
+      matTooltip="Open Cash Drawer">
+      <a class="navbar-brand nav-link px-0">
+        <button mat-flat-button style="line-height: 29px !important" color="accent" (click)="openDrawer()">
+          <i class="zmdi zmdi-money-box zmdi-hc-lg"></i>Open Drawer
+        </button>
+        <!-- <i class="zmdi zmdi-money-box zmdi-hc-2x mdc-text-red"></i> -->
+      </a>
+    </div>
+    <!-- <div class="nav-item ml-lg-2 ml-xl-0 logo" style="min-width: fit-content" matTooltip="Edit Profile">
+      <a class="navbar-brand nav-link px-0" href="javascript:void(0)" (click)="profile()">
+        <i class="zmdi zmdi-account-box-o  zmdi-hc-2x mdc-text-red"></i>
+      </a>
+    </div>
+    <div class="nav-item ml-lg-2 ml-xl-0 logo" style="min-width: fit-content" matTooltip="Logout">
+      <a class="navbar-brand nav-link px-0" href="javascript:void(0)" (click)="logout()">
+        <i class="zmdi zmdi-square-right zmdi-hc-2x mdc-text-red"></i>
+      </a>
+    </div> -->
+    <div class="nav-item ml-lg-2 ml-xl-0 logo" style="min-width: fit-content" matTooltip="Logout">
+      <a class="navbar-brand px-0" href="javascript:void(0)" (click)="logout()">
+        <i class="zmdi-hc-2x zmdi zmdi-open-in-new"></i>
+      </a>
+    </div>
+    <div class="nav-item ml-lg-2 ml-xl-0 logo" style="min-width: fit-content" matTooltip="Menu">
+      <a class="navbar-brand px-0" href="javascript:void(0)" (click)="menu()">
+        <i class="zmdi-hc-2x" [ngClass]="!isMenuOpened ? 'zmdi zmdi-menu' : 'zmdi zmdi-close'"></i>
+      </a>
+    </div>
+  </nav>
+
+  <div class="right-side-menu">
+    <div class="menu-inner">
+      <ul class="align-items-center w-100">
+        <li class="nav-item">
+          <a class="nav-link" href="javascript:void(0)" (click)="profile()"><i
+              class="zmdi zmdi-account-box-o"></i>Update Profile</a>
+        </li>
+        <li class="nav-item" *ngFor="let menu of menuList" [ngClass]="{ active: currentURL == menu.menu_url }">
+          <a *ngIf="menu.is_sidemenu == 1" class="nav-link" href="javascript:void(0)"
+            (click)="menuOnClick(menu.menu_url, menu.page)"><i [ngClass]="menu.menu_icon"></i>
+            {{ menu.menu_name }}
+          </a>
+        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link" href="javascript:void(0)" (click)="driverPoolOrders()"><i
+              class="zmdi zmdi-account-box-o"></i>Driver pool Orders
+            </a>
+        </li> -->
+        <li class="nav-item">
+          <a class="nav-link" href="javascript:void(0)" (click)="performanceReport()"><i
+              class="zmdi zmdi-assignment"></i> Performance Report</a>
+        </li>
+        <li class="nav-item" *ngIf="customer_support">
+          <a class="nav-link" href="javascript:void(0)" (click)="customerSupport()">
+            <i class="zmdi zmdi-headset-mic"></i>Customer support
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="javascript:void(0)">
+            <mat-slide-toggle [labelPosition]="labelPosition" [(ngModel)]="printOfflineStatus"
+              (change)="printOffline()"><span class="font-apple">Offline Print</span></mat-slide-toggle>
+          </a>
+        </li>
+      </ul>
+      <div class="busy-mode" *ngIf="showBusyStatus == 'true'">
+        <a class="nav-link" style="position: absolute; color: var(--primary)">
+          <mat-slide-toggle [labelPosition]="labelPosition" [(ngModel)]="busyModeCheck" (change)="busyMode()"><span
+              class="font-apple">Online busy mode</span></mat-slide-toggle>
+          <p>
+            By enabling the busy mode, you can stop the orders that come in
+            through online platforms such as Mobile Apps / Websites. When it
+            gets very crowded and you can't keep up with the orders coming in,
+            you can also pause the store temporarily. Keep in mind that not all
+            channels except Online delivery Apps/Websites support busy mode.
+          </p>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+<div class="header_spacebar"></div>
+<!-- Header End -->

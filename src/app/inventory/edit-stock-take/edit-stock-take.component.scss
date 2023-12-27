@@ -1,0 +1,70 @@
+.searchinventory {
+  margin-bottom: 30px;
+  margin-top: 30px;
+  background-color: lightgray;
+  padding: px;
+  padding-top: 20px;
+}
+.bttnNavMain {
+  margin: 29px 0 30px;
+  padding: 0 154px;
+  list-style: none;
+
+  li {
+    display: inline-block;
+    margin-right: 10px;
+  }
+  .saveBtnMain {
+    display: block;
+    width: 100px;
+    background-color: #5bb75b;
+    text-align: center;
+    border-radius: 5px;
+    padding: 10px;
+    color: var(--white);
+    text-decoration: none;
+    text-transform: capitalize;
+  }
+  .cancelBtnMain {
+    width: 100px;
+    background-color: #f5f5f5;
+    text-align: center;
+    border-radius: 5px;
+    display: block;
+    padding: 10px;
+    color: #333;
+    text-decoration: none;
+    text-transform: capitalize;
+  }
+}
+.lead {
+  margin-bottom: 6px;
+  font-size: 21px;
+  font-weight: normal;
+  display: block;
+}
+
+.tableStyleMain {
+  margin-top: 7px;
+
+  th {
+    //padding: 10px;
+    //border-right: 1px #e2e3e3 solid;
+    text-align: center;
+  }
+
+  td {
+    //padding: 10px;
+    //border-right: 1px #eceeee solid;
+    text-align: center;
+    background-color: #ffff;
+  }
+}
+tr
+{
+  border-bottom: 1px #eceeee solid;
+}
+tr:last-child
+{
+   border-bottom: none;
+}

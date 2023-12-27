@@ -1,0 +1,14 @@
+<div class="modal-wrapper">
+  <button mat-icon-button class="close-button" (click)="close()">
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+  </button>
+  <h2 mat-dialog-title>{{data.name}}</h2>
+  <mat-dialog-content>
+    <h3 style="text-align: center;">{{data.note}}</h3>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <div class="text-right button-sec">
+      <button class="btn-setup-danger cancelBtn" (click)="close()">Cancel</button>
+    </div>
+  </mat-dialog-actions>
+</div>

@@ -1,0 +1,85 @@
+<form [formGroup]="supplierForm">
+  <div class="modal-wrapper">
+    <h2 mat-dialog-title>Edit Supplier</h2>
+    <div mat-dialog-content>
+      <label>Name</label>
+      <span class="error-message">*</span>
+      <span class="error-message float-right" *ngIf="
+            supplierForm.controls.name.hasError('required') &&
+            supplierForm.controls.name.touched
+          ">
+        Required</span>
+      <span class="error-message float-right" *ngIf="supplierForm.controls.name.hasError('maxlength')">
+        You have reached your maximum limit of characters allowed</span>
+      <span class="error-message float-right" *ngIf="supplierForm.controls.name.hasError('pattern')">
+        Invalid input</span>
+      <span class="error-message float-right" *ngIf="supplierErrorArray.name">
+        {{ supplierErrorArray.name }}</span>
+      <input type="text" class="form-control" placeholder="Name"
+        [ngClass]="supplierForm.controls.name.hasError('required' ) && supplierForm.controls.name.touched || supplierForm.controls.name.hasError('pattern' ) || supplierErrorArray.name ? 'is-invalid' : ''"
+        formControlName="name" />
+      <label>Code</label>
+      <span class="error-message">*</span>
+      <span class="error-message float-right" *ngIf="
+            supplierForm.controls.code.hasError('required') &&
+            supplierForm.controls.code.touched
+          ">
+        Required</span>
+      <span class="error-message float-right" *ngIf="supplierErrorArray.code">
+        {{ supplierErrorArray.code }}</span>
+      <input type="text" class="form-control" [ngClass]="supplierForm.controls.code.hasError('required' ) && 
+      supplierForm.controls.code.touched || 
+      supplierErrorArray.code ? 'is-invalid' : ''" placeholder="Code" formControlName="code" />
+      <label>Email</label>
+      <span class="error-message">*</span>
+      <span class="error-message float-right" *ngIf="
+            supplierForm.controls.email.hasError('required') &&
+            supplierForm.controls.email.touched
+          ">
+        Required</span>
+      <span class="error-message float-right" *ngIf="supplierForm.controls.email.hasError('pattern')">
+        Invalid email address</span>
+      <span class="error-message float-right" *ngIf="supplierErrorArray.email">
+        {{ supplierErrorArray.email }}</span>
+      <input type="text" class="form-control" [ngClass]="supplierForm.controls.email.hasError('required' ) && 
+                   supplierForm.controls.email.touched || supplierForm.controls.email.hasError('pattern' ) || 
+                   supplierErrorArray.email ? 'is-invalid' : ''" placeholder="Email" formControlName="email" />
+      <label>Contact Number</label>
+      <span class="error-message">*</span>
+      <span class="error-message float-right" *ngIf="
+            supplierForm.controls.contact_no.hasError('required') &&
+            supplierForm.controls.contact_no.touched
+          ">
+        Required</span>
+      <span class="error-message float-right" *ngIf="supplierForm.controls.contact_no.hasError('pattern')">
+        Invalid Contact Number</span>
+      <span class="error-message float-right" *ngIf="supplierErrorArray.contact_no">
+        {{ supplierErrorArray.contact_no }}</span>
+      <input type="text" class="form-control" placeholder="Contact Number" [ngClass]="supplierForm.controls.contact_no.hasError('required' ) && 
+      supplierForm.controls.contact_no.touched || supplierForm.controls.contact_no.hasError('pattern' ) || 
+      supplierErrorArray.contact_no ? 'is-invalid' : ''" formControlName="contact_no" />
+      <label>Address 1</label>
+      <span class="error-message">*</span>
+      <span class="error-message float-right" *ngIf="
+            supplierForm.controls.address1.hasError('required') &&
+            supplierForm.controls.address1.touched
+          ">
+        Required</span>
+      <span class="error-message float-right" *ngIf="supplierErrorArray.address1">
+        {{ supplierErrorArray.address1 }}</span>
+      <input type="text" class="form-control" placeholder="Address1" 
+      [ngClass]="supplierForm.controls.address1.hasError('required' ) && 
+                   supplierForm.controls.address1.touched || supplierForm.controls.address1.hasError('pattern' ) || 
+                   supplierErrorArray.address1 ? 'is-invalid' : ''"
+      formControlName="address1" />
+      <span class="error-message float-right" *ngIf="supplierErrorArray.address2">
+        {{ supplierErrorArray.Address2 }}</span>
+      <label>Address 2</label>
+      <input type="text" class="form-control" placeholder="Address2" formControlName="address2" />
+    </div>
+    <div mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" (click)="EditSupplier()" [disabled]="!supplierForm.valid">Update</button>
+    </div>
+  </div>
+</form>

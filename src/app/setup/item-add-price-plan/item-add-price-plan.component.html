@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+  <!-- Header Start -->
+  <app-header></app-header>
+  <!-- Header End -->
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/callcenter">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                Setup
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/location">
+                Locations
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/{{ id }}/editLocation">
+                Location Setup
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page"
+                routerLink="/setup/location/{{ id }}/menuManagement">
+                Menu Management
+              </li>
+              <li class="breadcrumb-item cursor-pointer"
+                routerLink="/setup/location/{{ id }}/menuManagement/pricePlan" aria-current="page">
+                Price Plan
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                {{editData?.operation == 'edit' ? 'Update' : 'Add'}} Price Plan
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1"><i class="icon-arrow-left cursor-pointer" (click)="back()"></i> Price Plan </h4>
+            <div class="d-flex">
+              <input type="text" class="form-control" placeholder="Search" #menu (keyup)="doFilter(menu.value)" />
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="row col-12">
+        <div class="col-5">
+          <label>Name <i>*</i></label>
+          <input type="text" [formControl]="name" class="form-control" placeholder="Name" />
+     
+        </div>
+        <div class="col-5">
+          <label>Description</label>
+          <textarea type="text" [formControl]="description" class="form-control" placeholder="Description" rows="1"></textarea>
+        </div>
+        <div class="col-2" >
+          <button *ngIf="editData?.operation != 'edit'" class="btn-setup-sucess w-px-100" 
+            (click)="save()">Save
+          </button>
+          <button *ngIf="editData?.operation == 'edit'" class="btn-setup-sucess w-px-100" 
+            (click)="update()">Update
+          </button>
+        </div>
+      </div>
+      <div class="row col-12">
+       <div class="col-12">
+        <label>Search Items <i>*</i></label>
+        <input type="text" placeholder="Search Items, then hit enter to add" class="form-control m-0 w-100" #item
+          (keyup)="searchItem(item.value)"  [formControl]="menuItemData" [matAutocomplete]="auto" />
+
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+          <mat-option *ngFor="let list_options of menuItemArray" [value]="list_options.item_name" [id]="list_options.item_id"
+            (click)="menuItemSelected(list_options,item)">
+            {{list_options.item_name}}
+          </mat-option>
+        </mat-autocomplete>
+       </div>
+
+      </div>
+      <ng-template #message>
+        <div class="row px-4">
+          <div class="col-12">
+            <div class="not-found bordered">
+              <h3>Sorry :(</h3>
+              <p>There's no Items</p>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+
+      <table class="tableStyleMain bordered table mt-3" mat-table *ngIf="dataSource.data.length > 0; else message"
+        [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="index">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              #
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{dataSource.data.indexOf(element) + 1}}
+            </td>
+          </ng-container>
+        <ng-container matColumnDef="item_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+          <td mat-cell *matCellDef="let element">{{ element.item_name }}</td>
+        </ng-container>
+        <ng-container matColumnDef="category_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+          <td mat-cell *matCellDef="let element">{{ element.category_name }}</td>
+        </ng-container>
+        <ng-container matColumnDef="default_rate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Price ({{currency_symbol}})</th>
+          <td mat-cell *matCellDef="let element">{{ element.default_rate }}</td>
+        </ng-container>
+        <ng-container matColumnDef="rate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>B2B Price  ({{currency_symbol}})</th>
+          <td mat-cell *matCellDef="let element">
+            <input type="text" #inputValue class="form-control" placeholder="B2B Price" [value]="element.rate"
+              (keyup)="priceCheck(inputValue.value,element)" />
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+      <mat-paginator [pageSize]="50" [ngClass]="{ show: dataSource.data.length <= 0 }"
+        [pageSizeOptions]="[2, 4, 6, 10, 20]">
+      </mat-paginator>
+
+    </div>
+  </div>
+</body>
+
+</html>

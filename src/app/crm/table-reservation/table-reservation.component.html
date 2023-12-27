@@ -1,0 +1,118 @@
+<form [formGroup]="tableReservationForm">
+  <div class="modal-wrapper">
+    <h2 mat-dialog-title>Reservation Details</h2>
+    <div mat-dialog-content>
+
+      <!-- <div>
+        <label>{{data.customer_name}}</label>-
+        <label>{{data.customer_contact_no}}</label>
+       </div>
+        -->
+      <div class="row mt-2">
+        <div class="col-4">
+          <label>Booking Date</label>
+          <span class="error-message">*</span>
+        </div>
+        <div class="col-8">
+          <input class="form-control" [formControl]="dateChoosen" [min]="todayDate"
+            (dateChange)="DatetimeSelected()" [matDatepicker]="releasedAtPicker" (click)="releasedAtPicker.open()"
+            pattern="mm/DD/YYYY">
+          <mat-datepicker-toggle style="margin-top: -38px;float:right" matSuffix [for]="releasedAtPicker">
+          </mat-datepicker-toggle>
+          <mat-datepicker #releasedAtPicker [touchUi]="true">
+          </mat-datepicker>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-4">
+          <label>Booking Time</label>
+          <span class="error-message">*</span>
+        </div>
+        <div class="col-8">
+          <span class="error-message float-right"
+            *ngIf="tableReservationForm.controls.time.hasError('required' ) && tableReservationForm.controls.time.touched">required</span>
+          <input class="form-control" type="time" min='01:30:01' max='02:30:02' formControlName="time"
+            (input)="DatetimeSelected()">
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-4">
+          <label>Branch</label>
+          <span class="error-message">*</span>
+        </div>
+        <div class="col-8">
+          <span class="error-message float-right"
+            *ngIf="tableReservationForm.controls.branch_id.hasError('required' ) && tableReservationForm.controls.branch_id.touched">required</span>
+          <select class="form-control w-100" formControlName="branch_id" (change)="getAvailableTables()">
+            <option value="" > Select</option>
+            <option *ngFor="let i of branchRecords" value="{{ i.id }}">
+              {{ i.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-4">
+          <label>Floor</label>
+          <span class="error-message">*</span>
+        </div>
+        <div class="col-8">
+          <span class="error-message float-right"
+            *ngIf="tableReservationForm.controls.floor_id.hasError('required' ) && tableReservationForm.controls.floor_id.touched">required</span>
+          <select class="form-control w-100" formControlName="floor_id" (change)="floorSelected($event)">
+            <option value="" > Select</option>
+            <option *ngFor="let i of floorRecords" value="{{ i.id }}">
+              {{ i.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-4">
+          <label>Table Number</label>
+          <span class="error-message">*</span>
+        </div>
+        <div class="col-8">
+          <span class="error-message float-right"
+            *ngIf="tableReservationForm.controls.table_id.hasError('required' ) && tableReservationForm.controls.table_id.touched">required</span>
+          <select class="form-control w-100" aria-label="Table Number" formControlName="table_id">
+            <option value="" > Select</option>
+            <option *ngFor="let i of tableRecords" value="{{ i.id }}">
+              {{ i.table_name }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-4">
+          <label>Pax Number</label>
+          <span class="error-message">*</span>
+        </div>
+        <div class="col-8">
+          <span class="error-message float-right"
+            *ngIf="tableReservationForm.controls.paxNumber.hasError('required' ) && tableReservationForm.controls.paxNumber.touched">required</span>
+          <span class="error-message float-right"
+            *ngIf="tableReservationForm.controls.paxNumber.hasError('pattern' )">invalid input</span>
+          <!-- <span class="error-message float-right"  *ngIf="tableReservationForm.controls.paxNumber.hasError('maxLength' )">Maximum limit exceeded</span>  -->
+          <input class="form-control" type="text" formControlName="paxNumber">
+        </div>
+      </div>
+
+      <div class="row mt-2">
+        <div class="col-4">
+          <label>Reservation Notes</label>
+        </div>
+        <div class="col-8">
+          <textarea type="text" placeholder="Reservation Notes" class="form-control" formControlName="notes"
+            rows="4"></textarea>
+        </div>
+      </div>
+
+
+    </div>
+    <div mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" (click)="addReservation()">Add</button>
+    </div>
+  </div>
+</form>

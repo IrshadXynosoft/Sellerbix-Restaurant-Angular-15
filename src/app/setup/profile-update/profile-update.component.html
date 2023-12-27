@@ -1,0 +1,125 @@
+<form [formGroup]="profileForm">
+  <div class="modal-wrapper">
+    <h2 mat-dialog-title>Update Profile</h2>
+    <div mat-dialog-content>
+      <label>Name</label>
+      <span class="error-message">*</span>
+      <span
+        class="error-message float-right"
+        *ngIf="
+          profileForm.controls.name.hasError('required') &&
+          profileForm.controls.name.touched
+        "
+      >
+        Required</span
+      >
+      <span
+        class="error-message float-right"
+        *ngIf="profileForm.controls.name.hasError('maxlength')"
+      >
+        You have reached your maximum limit of characters allowed</span
+      >
+      <span
+        class="error-message float-right"
+        *ngIf="profileForm.controls.name.hasError('pattern')"
+      >
+        Invalid input</span
+      >
+      <span class="error-message float-right" *ngIf="supplierErrorArray.name">
+        {{ supplierErrorArray.name }}</span
+      >
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Name"
+        formControlName="name"
+      />
+     
+      <label>Email</label>
+      <span class="error-message">*</span>
+      <span
+        class="error-message float-right"
+        *ngIf="
+          profileForm.controls.email.hasError('required') &&
+          profileForm.controls.email.touched
+        "
+      >
+        Required</span
+      >
+      <span
+        class="error-message float-right"
+        *ngIf="profileForm.controls.email.hasError('pattern')"
+      >
+        Invalid email address</span
+      >
+      <span class="error-message float-right" *ngIf="supplierErrorArray.email">
+        {{ supplierErrorArray.email }}</span
+      >
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Email"
+        formControlName="email"
+      />
+      <label>Contact Number</label>
+      <span class="error-message">*</span>
+      <span
+        class="error-message float-right"
+        *ngIf="
+          profileForm.controls.contact_no.hasError('required') &&
+          profileForm.controls.contact_no.touched
+        "
+      >
+        Required</span
+      >
+      <span
+        class="error-message float-right"
+        *ngIf="profileForm.controls.contact_no.hasError('pattern')"
+      >
+        Invalid Contact Number</span
+      >
+      <span
+        class="error-message float-right"
+        *ngIf="supplierErrorArray.contact_no"
+      >
+        {{ supplierErrorArray.contact_no }}</span
+      >
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Contact Number"
+        formControlName="contact_no"
+      />
+      <label>Old Password</label>
+      
+      <input
+        type="password"
+        class="form-control"
+        placeholder="Old Password"
+        formControlName="old_password"
+      />
+     
+      <label>New Password</label>
+      <input
+        type="password"
+        class="form-control"
+        placeholder="New Password"
+        formControlName="new_password"
+      />
+     
+      <input type="file" placeholder="please click here to upload" 
+      (change)="handleFileInputRegular($event)" />
+    </div>
+    
+    <div mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button
+      [disabled]="!profileForm.valid || profileForm.pristine"
+        class="btn-setup-sucess"
+        (click)="supplierSubmit()"
+      >
+        Submit
+      </button>
+    </div>
+  </div>
+</form>

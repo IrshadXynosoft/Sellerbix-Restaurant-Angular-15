@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                Setup
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/location">
+                Locations
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/{{ id }}/editLocation">
+                Location Setup
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page"
+                routerLink="/setup/location/{{ id }}/menuManagement">
+                Menu Management
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                Utensils
+              </li>
+            </ol>
+          </nav>
+        </div>
+
+
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1 ">
+              <i class="icon-arrow-left mr-1 cursor-pointer" (click)="back()"></i>Utensils
+            </h4>
+            <div class="d-flex">
+              <input type="Utensils" class="form-control" placeholder="Search Utensils" #Utensils
+                (keyup)="doFilter(Utensils.value)" />
+            </div>
+            <div class="d-flex" style="padding-bottom: 15px; padding-left: 5px">
+              <button class="btn-setup-sucess" (click)="addUtensils()">
+                <i class="icon-plus mr-1"></i> Add Utensils
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #message>
+        <div class="row">
+          <div class="col-12">
+            <div class="not-found">
+              <h3>Sorry :(</h3>
+              <p>There's no Utensils yet at this moment.</p>
+              <p>Click <a (click)="addUtensils()" style="color: var(--primary);cursor: pointer;">here</a> to add
+                Utensils. </p>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+      <div class="col-12 tableStyleMain">
+        <table mat-table *ngIf="dataSource.data.length > 0; else message" [dataSource]="dataSource" matSort
+          class="mat-z8">
+          <ng-container matColumnDef="index">
+            <th mat-header-cell *matHeaderCellDef>
+              #
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{dataSource.data.indexOf(element) + 1}}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+          </ng-container>
+          <ng-container matColumnDef="selling_price">
+            <th mat-header-cell *matHeaderCellDef>Selling Price ({{currency_symbol}})</th>
+            <td mat-cell *matCellDef="let element">{{ element.selling_price }}</td>
+          </ng-container>
+          <ng-container matColumnDef="total_qty">
+            <th mat-header-cell *matHeaderCellDef>Total Quantity</th>
+            <td mat-cell *matCellDef="let element">{{ element.total_qty }}</td>
+          </ng-container>
+          <ng-container matColumnDef="remaining_qty">
+            <th mat-header-cell *matHeaderCellDef>Remaining Quantity</th>
+            <td mat-cell *matCellDef="let element">{{ element.remaining_qty }}</td>
+          </ng-container>
+          <ng-container matColumnDef="damaged_qty">
+            <th mat-header-cell *matHeaderCellDef>Damaged Quantity</th>
+            <td mat-cell *matCellDef="let element">{{ element.damaged_qty }}</td>
+          </ng-container>
+          <ng-container matColumnDef="button">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td class="btn-wrp-equal" mat-cell *matCellDef="let element">
+
+              <button class="btn-setup-sucess" matTooltip="Edit" (click)="editUtensils(element.id)">
+                <i _ngcontent-trm-c429="" class="zmdi zmdi-edit"></i>
+              </button>
+              <!-- <button
+                class="btn-setup-danger"
+                (click)="deleteUtensils(element.id, element.name)"
+              >
+              <i _ngcontent-trm-c429="" class="zmdi zmdi-delete"></i>
+              </button> -->
+
+
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+        <mat-paginator [ngClass]="{ show: dataSource.data.length <= 0 }" [pageSize]="50"
+          [pageSizeOptions]="[2, 4, 6, 10, 50]">
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

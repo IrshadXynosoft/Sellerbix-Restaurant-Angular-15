@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <form [formGroup]="deliverychargeform">
+      <div class="px-4">
+        <div class="row pt-4">
+          <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                  Home
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                  Setup
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/location">
+                  Locations
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page"
+                  routerLink="/setup/{{ id }}/editLocation">
+                  Location Setup
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page"
+                  routerLink="/setup/location/{{ id }}/online">
+                  Online Portal Setup
+                </li>
+
+                <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                  Delivery Charge
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-12">
+            <div class="d-flex align-items-center head-tag">
+              <h4 class="flex-gr-1"><i class="icon-arrow-left cursor-pointer" (click)="back()"></i>Delivery Charge</h4>
+
+            </div>
+          </div>
+        </div>
+        <div class="mb-2">
+          <label>Delivery Charge Type</label>
+          <span class="error-message">*</span>
+          <span class="error-message float-right" *ngIf="
+              deliverychargeform.controls.delivery_charge_type.hasError('required') &&
+              deliverychargeform.controls.delivery_charge_type.touched">required</span>
+        </div>
+        <div class="mb-2">
+
+          <mat-radio-group aria-label="Select an option" (change)="changeRadio($event)"
+            formControlName="delivery_charge_type">
+            <mat-radio-button value='fixed' [checked]="deliverychargeform.value['delivery_charge_type'] == 'fixed'">
+              <label class="form-check-label" for="exampleRadios6">
+                Fixed Charge
+              </label>
+            </mat-radio-button>
+
+            <mat-radio-button value='delivery'
+              [checked]="deliverychargeform.value['delivery_charge_type'] == 'delivery'">
+              <label class="form-check-label" for="exampleRadios6">
+                Delivery Area Wise
+              </label>
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <div class="inputdiv" *ngIf="deliverychargeform.value['delivery_charge_type'] == 'fixed'">
+          <label>Delivery Charge ({{currency_symbol}})</label>
+          <span class="error-message">*</span>
+          <span class="error-message float-right" *ngIf="
+                deliverychargeform.controls.delivery_charge.hasError('required') &&
+                deliverychargeform.controls.delivery_charge.touched">required</span>
+          <span class="error-message float-right" *ngIf="
+            deliverychargeform.controls.delivery_charge.hasError('pattern')">Invalid Input</span>
+          <input type="text" placeholder="Delivery Charge" class="form-control" formControlName="delivery_charge" />
+
+        </div>
+        <div class="inputdiv" *ngIf="deliverychargeform.value['delivery_charge_type'] == 'fixed'">
+          <label>Minimum Cart Amount ({{currency_symbol}})</label>
+          <span class="error-message">*</span>
+          <span class="error-message float-right" *ngIf="
+              deliverychargeform.controls.min_cart_value.hasError('required') &&
+              deliverychargeform.controls.min_cart_value.touched">required</span>
+          <span class="error-message float-right" *ngIf="
+              deliverychargeform.controls.min_cart_value.hasError('pattern')">Invalid Input</span>
+          <input type="text" placeholder="Minimum cart amount" class="form-control" formControlName="min_cart_value" />
+        </div>
+        <div class="inputdiv" *ngIf="deliverychargeform.value['delivery_charge_type'] == 'delivery'">
+          <p>Click <a (click)="gotoDeliveryArea()" style="color: var(--primary);cursor: pointer;">here</a> to Delivery
+            Area. </p>
+
+        </div>
+
+      </div>
+      <button *ngIf="deliverychargeform.value['delivery_charge_type'] == 'fixed' " class="btn-setup-sucess"
+        style="margin-top: 5px;margin-left: 23px;" (click)="saveSettings()"
+        [disabled]="!deliverychargeform.value['delivery_charge'] || !deliverychargeform.value['min_cart_value']">
+        <i class="icon-check mr-1"></i>Save
+      </button>
+      <button *ngIf="deliverychargeform.value['delivery_charge_type'] == 'delivery' " class="btn-setup-sucess"
+        style="margin-top: 5px;margin-left: 23px;" (click)="saveSettings()">
+        <i class="icon-check mr-1"></i>Save
+      </button>
+    </form>
+
+  </div>
+</body>
+
+</html>

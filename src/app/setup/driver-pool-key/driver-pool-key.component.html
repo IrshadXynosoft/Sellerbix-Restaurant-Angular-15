@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">Home</li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                Setup
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/addons">
+                Add-Ons
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                Driver Pool
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag">
+            <h4 class="flex-gr-1"><i class="icon-arrow-left cursor-pointer" routerLink="/setup/addons"></i> Driver Pool
+            </h4>
+
+          </div>
+          <div class="content">
+            <form [formGroup]="keyForm">
+              <div class="formGroup" *ngIf="keyFlag">
+                <label><i class="zmdi zmdi-key mr-1"></i>Driver Pool Key :</label>
+                <input type="text" class="form-control" formControlName="getKey" />
+              </div>
+              <div class="formGroup" *ngIf="!keyFlag">
+                <mat-tab-group>
+                  <mat-tab label="Enter Key">
+                    <label style="margin-top:15px;"><i class="zmdi zmdi-key mr-1"></i>Enter Branch Key To Update</label>
+                    <input type="text" class="form-control" placeholder="please enter branch key"
+                      formControlName="updatingKey" />
+                    <div class="divMainall">
+                      <button class="addModifier" (click)="validate()">Validate</button>
+                    </div>
+                  </mat-tab>
+                  <mat-tab label="Login To Driver Pool">
+                    <h2 style="margin-top:15px;">Enter Email & Password for Driver Pool Login</h2>
+                    <label><i class="zmdi zmdi-email-open mr-1"></i>Email</label>
+                    <input type="text" class="form-control" placeholder="Email" formControlName="email" />
+                    <label><i class="zmdi zmdi-key mr-1"></i>Password</label>
+                    <input type="password" class="form-control" placeholder="password" formControlName="password" />
+                    <div class="divMainall">
+                      <button class="addModifier" (click)="login()">Login</button>
+                    </div>
+                  </mat-tab>
+                </mat-tab-group>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</body>
+
+</html>

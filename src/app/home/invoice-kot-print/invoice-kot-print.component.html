@@ -1,0 +1,112 @@
+<div class="modal-wrapper">
+  <div id="print-section" class="container modal-height">
+    <div class="header">
+      <img *ngIf="printFlag.logo == 'true'" src="assets/images/no-image (1).jpg" />
+      <h3>{{printHeader.hotelName}}</h3>
+      <h5 *ngIf="printHeader.storeId">Store :{{printHeader.storeId}}</h5>
+      <h5 *ngIf="printHeader.address">{{printHeader.address}}</h5>
+      <h5 *ngIf="printHeader.city">{{printHeader.city}}</h5>
+      <h5 *ngIf="printHeader.phone">{{printHeader.phone}}</h5>
+      <br>
+      <h5 *ngIf="printHeader.licenceNo">{{printHeader.licenceNo}}</h5>
+      <h5 *ngIf="printHeader.taxNo">{{printHeader.taxNo}}<br></h5>
+      <div class="strong">
+        <h4 *ngIf="printLabels.heading">{{printLabels.heading}}</h4>
+        <h4 *ngIf="printHeader.refNumber">{{printHeader.refNumber}}</h4>
+        <h4 class="text-left" *ngIf="printHeader.billNo">{{printHeader.billNo}}</h4>
+        <h4 class="text-left" *ngIf="printHeader.orderType">{{printHeader.orderType}}</h4>
+        <p *ngIf="printHeader.customerName">Customer: {{printHeader.customerName}}</p>
+        <p *ngIf="printHeader.customerPhone" style="margin-bottom: 3px;">Phone: {{printHeader.customerPhone}}</p>
+      </div>
+    </div>
+    <div class="date">
+      <h4 *ngIf="printHeader.dateOfReceipt">Date of Receipt: {{printHeader.dateOfReceipt}}</h4>
+    </div>
+    <div class="row items" style="border-top:1px dashed">
+      <div class="col-1">
+        <h4>SL</h4>
+      </div>
+      <div class="col-5">
+        <h4>Item</h4>
+      </div>
+      <div class="col-2">
+        <h4>Qty</h4>
+      </div>
+      <div class="col-2">
+        <h4>Price</h4>
+      </div>
+      <div class="col-2">
+        <h4>Total</h4>
+      </div>
+    </div>
+    <div class="row items" style="border-bottom:1px dashed">
+      <div class="col-1">
+        <h4>رقم</h4>
+      </div>
+      <div class="col-5">
+        <h4>الصنف</h4>
+      </div>
+      <div class="col-2">
+        <h4>العدد</h4>
+      </div>
+      <div class="col-2">
+        <h4>السعر</h4>
+      </div>
+      <div class="col-2">
+        <h4>المجموع</h4>
+      </div>
+    </div>
+    <div class="row items" *ngFor="let items of printItems;let i = index">
+      <div class="col-1">
+        <h5>{{i+1}}</h5>
+      </div>
+      <div class="col-5">
+        <h5>{{items.itemName}}</h5>
+        <h4 *ngIf="items.secItemName">{{items.secItemName}}</h4>
+        <div *ngIf="items.isaddons == 'true'">
+          <p *ngFor="let addons of items.addons">{{addons.modifier_name}}&nbsp;- {{addons.modifier_price}}
+            &nbsp;*{{addons.modifier_qty}}</p>
+        </div>
+        <h5 *ngIf="items.itemNote">{{items.itemNote}}</h5>
+      </div>
+      <div class="col-2">
+        <h5>{{items.quantity}}</h5>
+      </div>
+      <div class="col-2">
+        <h5>{{items.itemAmount}}</h5>
+      </div>
+      <div class="col-2">
+        <h5>{{items.rate}}</h5>
+      </div>
+    </div>
+    <div class="row total" [style.border-top]="i == 0 ? '1px dashed' : ''"
+      [style.border-bottom]="i == printPaymentSummary.length - 1 ? '1px dashed' : ''"
+      *ngFor="let payment of printPaymentSummary;let i = index">
+      <div class="col-9">
+        <h5>{{payment.key}}:</h5>
+      </div>
+      <div class="col-3">
+        <h4>{{payment.value}}</h4>
+      </div>
+    </div>
+    <div class="footer">
+      <div *ngIf="printBillSummary" style="margin-bottom: 3px">
+        <h4 *ngFor="let bill of printBillSummary">{{bill.key}} : {{bill.value}} </h4>
+      </div>
+      <h4 *ngIf="printHeader.orderNote">{{printHeader.orderNote}}</h4>
+      <h4 *ngIf="printFlag.qrcode == 'true'">{{printFlag.qrcode}}</h4>
+      <h4 *ngIf="printFlag.website">{{printFlag.website}}</h4>
+      <h4 style="margin-top:3px;" *ngIf="printSettings.thankYouNote">{{printSettings.thankYouNote}}</h4>
+    </div>
+
+  </div>
+  <div style="margin-top:8px;text-align: center;">
+    <button class="btn-setup-danger mr-2" style="width:100px" (click)="close()">Cancel</button>
+    <!-- <button [useExistingCss]="true"  printSectionId="print-section" ngxPrint
+      class="btn-setup-sucess" style="width:100px"> <i class="icon-print mr-1"></i>Print</button> -->
+      <button styleSheetFile="assets/css/print/invoice-kot-print.css" printSectionId="print-section" class="btn-setup-sucess"  style="width:100px"
+      ngxPrint>Print</button>
+  </div>
+
+  
+</div>

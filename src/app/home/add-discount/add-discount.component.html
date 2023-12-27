@@ -1,0 +1,78 @@
+<div class="modal-wrapper">
+  <button mat-icon-button class="close-button" (click)="close()">
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+  </button>
+  <h2 mat-dialog-title>Add Discount</h2>
+  <mat-dialog-content>
+    <mat-tab-group animationDuration="0ms">
+      <mat-tab label="Value">
+        <div class="row discount-card-holder" *ngIf="valueDiscount.length > 0; else novalueorder">
+          <div class="col-sm-4 mt-2" *ngFor="let discount of valueDiscount">
+            <mat-card appearance="outlined" class="discount-card" (click)="addingDiscount(discount)">
+              {{ discount.rate }}
+              <span class="float-right" *ngIf="discount.is_discount_on_total_amount == 1">
+                <h3 style="position: absolute; top: 0px; right: 5px">*</h3>
+              </span>
+              <span *ngIf="discount.discount_type == 'percentage'; else value">%</span>
+              <ng-template #value>
+                <span>{{ currency_symbol }}</span>
+              </ng-template>
+              <br />
+              <h4>{{ discount.name }}</h4>
+            </mat-card>
+          </div>
+        </div>
+
+        <ng-template #novalueorder>
+          <div class="not-found">
+            <h3>Sorry :(</h3>
+            <p>There's no value discounts available.</p>
+          </div>
+        </ng-template>
+      </mat-tab>
+      <mat-tab label="Percentage">
+        <div class="row discount-card-holder" *ngIf="percentageDiscount.length > 0; else nopercentage">
+          <div class="col-sm-4 mt-2" *ngFor="let discount of percentageDiscount">
+            <mat-card appearance="outlined" class="discount-card" (click)="addingDiscount(discount)">
+              {{ discount.rate }}
+              <span class="float-right" *ngIf="discount.is_discount_on_total_amount == 1">
+                <h3 style="position: absolute; top: 0px; right: 5px">*</h3>
+              </span>
+              <span *ngIf="discount.discount_type == 'percentage'; else value">%</span>
+              <ng-template #value>
+                <span>{{ currency_symbol }}</span>
+              </ng-template>
+              <br />
+              <h4>{{ discount.name }}</h4>
+            </mat-card>
+          </div>
+        </div>
+
+        <ng-template #nopercentage>
+          <div class="not-found">
+            <h3>Sorry :(</h3>
+            <p>There's no percentage discounts available.</p>
+          </div>
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
+    <div class="container">
+      <div class="col">
+        <div class="row">
+          <div class="box grey"></div>
+          <div style="padding-left: 5px">Disabled</div>
+          &nbsp;&nbsp;&nbsp;
+          <div class="box orange"></div>
+          <div style="padding-left: 5px">Active</div>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <span *ngIf="percentageDiscount.length > 0 || valueDiscount.length > 0">*Applied on Total
+    </span>
+    <!-- <div class="text-right button-sec">
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+    </div> -->
+  </mat-dialog-actions>
+</div>

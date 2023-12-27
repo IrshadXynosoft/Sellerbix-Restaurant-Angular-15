@@ -1,0 +1,107 @@
+.close-button {
+  float: right;
+  top: -20px;
+  right: -20px;
+  background: #ffff !important;
+}
+
+.close-icon {
+  transition: 1s ease-in-out;
+}
+
+::ng-deep .icon-outside .close-button {
+  float: right;
+  top: -52px;
+  right: -52px;
+}
+
+::ng-deep .icon-outside .mat-mdc-dialog-container {
+  overflow: unset;
+}
+.close-button {
+  float: right;
+  top: -18px;
+}
+
+.btnCancelMain {
+  transition: 0.5s;
+  border-radius: 6px;
+  padding: 11px 19px;
+  color: var(--white);
+  font-size: 17px;
+  border: 1px #d50b0b solid;
+  text-align: center;
+  background: #d50b0b;
+}
+.btnCancelMain {
+  transition: 0.5s;
+  border-radius: 6px;
+  padding: 11px 19px;
+  color: #000;
+  font-size: 17px;
+  border: 1px #333 solid;
+  text-align: center;
+  background: var(--white);
+}
+.btnCancelMain:hover {
+  background: #eb1912;
+  color: var(--white);
+  border: 1px #eb1912 solid;
+}
+.addModifier {
+  transition: 0.5s;
+  border-radius: 6px;
+  padding: 11px 19px;
+  color: var(--white);
+  font-size: 17px;
+  border: 1px #2bb26e solid;
+  text-align: center;
+  background: #2bb26e;
+}
+.addModifier:hover {
+  background: var(--white);
+  color: #000;
+}
+.divMainall {
+  margin: 0 28px;
+  float: right;
+  width: 100%;
+}
+.mat-mdc-dialog-actions {
+  min-height: 52px;
+
+  width: 100%;
+  background: #f2f2f2;
+  padding: 10px 0px;
+  margin: 0 auto;
+  text-align: right;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 100;
+}
+.mat-mdc-dialog-content {
+  padding: 0 24px 55px;
+}
+/* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
+/* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
+.mat-mdc-list-base .mat-mdc-list-item .mat-list-item-content {
+  padding-left: 21px !important;
+}
+.commonModalMakinDiv {
+  .mat-icon.mat-warn {
+    color: #000;
+    background: none !important;
+  }
+  h1 {
+    color: var(--primary);
+    font-size: 36px;
+    padding-bottom: 18px;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+}
+
+.capital {
+  text-transform: capitalize !important;
+}

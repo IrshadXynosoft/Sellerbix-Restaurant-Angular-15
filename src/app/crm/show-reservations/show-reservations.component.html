@@ -1,0 +1,31 @@
+<div class="modal-wrapper">
+    <h2 mat-dialog-title>Reservations</h2>
+    <mat-dialog-content>
+      <table class="tableStyleMain w-100">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Booking Date</th>
+            <th scope="col">Booking Time</th>
+            <th scope="col">Reservation Data</th>
+          </tr>
+        </thead>
+        <tbody >
+        
+          <tr *ngFor="let item of data.reservationList;let i=index;">
+            <td>{{i+1}}</td>
+            <td>{{item.booking_date | date: 'dd-MM-yyyy'}}</td>
+            <td>{{item.booking_time}}</td>
+            <td>{{item.Floor_name}}-{{item.table_name}}</td>
+            
+          </tr>
+      
+        </tbody>
+      </table>
+    </mat-dialog-content>
+   
+    <mat-dialog-actions>
+    <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+  </mat-dialog-actions>
+  </div>
+  

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+   <!-- Body Wrapper Start -->
+   <div class="body_wrapper container-fluid">
+      <!-- Header Start -->
+      <app-header></app-header>
+      <!-- Header End -->
+      <div class="px-4">
+         <div class="row pt-4">
+            <div class="bgSecMainAll">
+               <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                     <li class="breadcrumb-item cursor-pointer" routerLink="/callcenter">
+                        Home
+                     </li>
+                     <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/accounts">
+                        Accounts
+                     </li>
+                     <li class="breadcrumb-item active cursor-pointer" aria-current="page" (click)="back()">
+                        Reports
+                     </li>
+                     <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                        Daybook Summary
+                     </li>
+                  </ol>
+               </nav>
+            </div>
+            <div class="col-12">
+               <div class="d-flex align-items-center head-tag ">
+                  <h4 class="flex-gr-1"> <i class="icon-arrow-left cursor-pointer" (click)="back()"></i>Daybook Summary
+                  </h4>
+                  <button styleSheetFile="assets/css/print/daily-report-print.css" printSectionId="print-section"
+                     ngxPrint *ngIf="daybookRecords" class="btn-setup-sucess" style="width:100px">Print</button>
+               </div>
+            </div>
+         </div>
+         <form [formGroup]="daybookForm">
+            <div class="row">
+               <div class="col-lg-2"></div>
+               <div class="col-lg-8">
+                  <label>Search by business day</label>
+                  <select class="form-control w-100" (change)="filterReport($event)" formControlName="searchBy">
+                     <option value="" disabled>Select</option>
+                     <option value="{{day.id}}" *ngFor="let day of businessdayRecords">{{day.name}}</option>
+                  </select>
+               </div>
+               <div class="col-lg-2"></div>
+            </div>
+         </form>
+         <div id="print-section">
+            <div *ngIf="!daybookRecords; else showtable">
+               <div class="row">
+                  <div class="col-lg-2"></div>
+                  <div class="col-lg-8">
+                     <div class="not-found bordered">
+                        <h3>Sorry :(</h3>
+                        <p>No Report available</p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <ng-template #showtable>
+               <div class="row">
+                  <div class="col-lg-2"></div>
+                  <div class="col-lg-8" id="print-section">
+                     <table class="tables">
+                        <thead *ngIf="arrayDataCheck(daybookRecords.sale_summary)">
+                           <tr>
+                              <th scope="col" scope="col" colspan="3">Sale Summary
+                              </th>
+                           </tr>
+                        </thead>
+                        <thead *ngIf="arrayDataCheck(daybookRecords.sale_summary)">
+                           <tr>
+                              <td> <b>Name</b></td>
+                              <td style="font-weight:700;">Count</td>
+                              <td style="font-weight:700;"><span style="float: right;margin-right: 10px;">Total
+                                    ({{currency_symbol}})</span>
+                              </td>
+                           </tr>
+                        </thead>
+                        <tbody *ngIf="arrayDataCheck(daybookRecords.sale_summary)">
+                           <tr *ngFor="let sale of daybookRecords.sale_summary">
+                              <td *ngIf="sale.total!=0 || sale.count!=0"><b>{{sale.name}}</b></td>
+                              <td *ngIf="sale.total!=0 || sale.count!=0">{{sale.count}}
+                              </td>
+                              <td *ngIf="sale.total!=0 || sale.count!=0"><span
+                                    style="float: right;margin-right: 10px;">{{sale.total.toFixed(2)}}</span></td>
+                           </tr>
+                        </tbody>
+                        <thead *ngIf="daybookRecords.entity_order.length > 0">
+                           <tr>
+                              <th scope="col" scope="col" colspan="3">Entity Orders
+                              </th>
+                           </tr>
+                        </thead>
+                        <thead *ngIf="arrayDataCheck(daybookRecords.entity_order)">
+                           <tr>
+                              <td> <b>Name</b></td>
+                              <td style="font-weight:700;">Count</td>
+                              <td style="font-weight:700;"><span style="float: right;margin-right: 10px;">Total
+                                    ({{currency_symbol}})</span>
+                              </td>
+                           </tr>
+                        </thead>
+                        <tbody *ngIf="arrayDataCheck(daybookRecords.entity_order)">
+                           <tr *ngFor="let sale of daybookRecords.entity_order">
+                              <td *ngIf="sale.total!=0 || sale.count!=0"><b>{{sale.name}}</b><br>
+                             <div *ngIf="sale.name==='Call Center'" style="text-align: left;margin-left: 15px;">
+                              <span ><b>Take Away</b></span>
+                              <br><span ><b>Delivery</b></span>
+                             </div>
+                              </td>
+                              <td *ngIf="sale.total!=0 || sale.count!=0"><span>{{sale.count}}
+                                 <div *ngIf="sale.name==='Call Center'" >
+                                 <span >{{sale.take_away.count}}</span>
+                                 <br><span >{{sale.delivery.count}}</span>
+                              </div></span>
+                                 
+                              </td>
+                              <td *ngIf="sale.total!=0 || sale.count!=0"><span
+                                    style="float: right;margin-right: 10px;">{{sale.total.toFixed(2)}}
+                                    <div *ngIf="sale.name==='Call Center'">
+                                    <span >{{sale.take_away.amount.toFixed(2)}}</span>
+                                      <br><span >{{sale.delivery.amount.toFixed(2)}}</span>
+                                     </div></span>
+                                 </td>
+                           </tr>
+
+                        </tbody>
+                        <thead *ngIf="arrayDataCheck(daybookRecords.collection_summary)">
+                           <tr>
+                              <th scope="col" scope="col" colspan="3"> Cash/Card Collection Summary
+                              </th>
+                           </tr>
+                        </thead>
+                        <tbody *ngIf="daybookRecords.collection_summary.length > 0 ">
+                           <tr *ngFor="let collection of daybookRecords.collection_summary">
+                              <td *ngIf="collection.amount !=0"><b>{{collection.name}} <span
+                                       *ngIf="collection.sign && collection.sign !='null'">({{collection.sign}})</span></b>
+                              </td>
+                              <td scope="col" scope="col" colspan="2" *ngIf="collection.amount !=0"><span
+                                    style="float: right;margin-right: 10px;">{{collection.amount}}</span>
+                              </td>
+                           </tr>
+                        </tbody>
+                        <thead *ngIf="arrayDataCheck(daybookRecords.receipts_summary)">
+                           <tr>
+                              <th scope="col" scope="col" colspan="3"> Receipts Summary
+                              </th>
+                           </tr>
+                        </thead>
+                        <thead *ngIf="arrayDataCheck(daybookRecords.receipts_summary)">
+                           <tr>
+                              <td> <b>Name</b></td>
+                              <td style="font-weight:700;">Count</td>
+                              <td style="font-weight:700;"><span style="float: right;margin-right: 10px;">Total
+                                    ({{currency_symbol}})</span>
+                              </td>
+                           </tr>
+                        </thead>
+                        <tbody *ngIf="arrayDataCheck(daybookRecords.receipts_summary)">
+                           <tr *ngFor="let sale of daybookRecords.receipts_summary">
+                              <td *ngIf="sale.amount!=0 || sale.count!=0"><b>{{sale.name}}</b></td>
+                              <td *ngIf="sale.amount!=0 || sale.count!=0">{{sale.count}}
+                              </td>
+                              <td *ngIf="sale.amount!=0 || sale.count!=0"><span
+                                    style="float: right;margin-right: 10px;">{{sale.amount.toFixed(2)}}</span></td>
+                           </tr>
+                        </tbody>
+                        <thead *ngIf="arrayDataCheck(daybookRecords.receipts)">
+                           <tr>
+                              <th scope="col" scope="col" colspan="3"> Receipts
+                              </th>
+                           </tr>
+                        </thead>
+                        <thead *ngIf="arrayDataCheck(daybookRecords.receipts)">
+                           <tr>
+                              <td> <b>Name</b></td>
+                              <td style="font-weight:700;">Count</td>
+                              <td style="font-weight:700;"><span style="float: right;margin-right: 10px;">Total
+                                    ({{currency_symbol}})</span>
+                              </td>
+                           </tr>
+                        </thead>
+                        <tbody *ngIf="arrayDataCheck(daybookRecords.receipts)">
+                           <tr *ngFor="let sale of daybookRecords.receipts">
+                              <td *ngIf="sale.amount!=0 || sale.count!=0"><b>{{sale.name}}</b></td>
+                              <td *ngIf="sale.amount!=0 || sale.count!=0">{{sale.count}}
+                              </td>
+                              <td *ngIf="sale.amount!=0 || sale.count!=0"><span
+                                    style="float: right;margin-right: 10px;">{{sale.amount}}</span></td>
+                           </tr>
+                        </tbody>
+                        <thead
+                           *ngIf="daybookRecords.payments_summary.length > 0 && arrayDataCheck(daybookRecords.payments_summary)">
+                           <tr>
+                              <th scope="col" scope="col" colspan="3"> Payment Summary
+                              </th>
+                           </tr>
+                        </thead>
+                        <thead *ngIf="arrayDataCheck(daybookRecords.payments_summary)">
+                           <tr>
+                              <td> <b>Name</b></td>
+                              <td style="font-weight:700;">Count</td>
+                              <td style="font-weight:700;"><span style="float: right;margin-right: 10px;">Total
+                                    ({{currency_symbol}})</span>
+                              </td>
+                           </tr>
+                        </thead>
+                        <tbody *ngIf="arrayDataCheck(daybookRecords.payments_summary)">
+                           <tr *ngFor="let sale of daybookRecords.payments_summary">
+                              <td *ngIf="sale.amount!=0 || sale.count!=0"><b>{{sale.name}}</b></td>
+                              <td *ngIf="sale.amount!=0 || sale.count!=0">{{sale.count}}
+                              </td>
+                              <td *ngIf="sale.amount!=0 || sale.count!=0"><span
+                                    style="float: right;margin-right: 10px;">{{sale.amount.toFixed(2)}}</span></td>
+                           </tr>
+                        </tbody>
+                        <thead *ngIf="daybookRecords.payments.length > 0 && arrayDataCheck(daybookRecords.payments)">
+                           <tr>
+                              <th scope="col" scope="col" colspan="3"> Payments
+                              </th>
+                           </tr>
+                        </thead>
+                        <thead *ngIf="arrayDataCheck(daybookRecords.payments)">
+                           <tr>
+                              <td> <b>Name</b></td>
+                              <td style="font-weight:700;">Count</td>
+                              <td style="font-weight:700;"><span style="float: right;margin-right: 10px;">Total
+                                    ({{currency_symbol}})</span>
+                              </td>
+                           </tr>
+                        </thead>
+                        <tbody *ngIf="arrayDataCheck(daybookRecords.payments)">
+                           <tr *ngFor="let sale of daybookRecords.payments">
+                              <td *ngIf="sale.amount!=0 || sale.count!=0"><b>{{sale.name}}</b></td>
+                              <td *ngIf="sale.amount!=0 || sale.count!=0">{{sale.count}}
+                              </td>
+                              <td *ngIf="sale.amount!=0 || sale.count!=0"><span
+                                    style="float: right;margin-right: 10px;">{{sale.amount.toFixed(2)}}</span></td>
+                           </tr>
+                        </tbody>
+                        <tbody *ngIf="daybookRecords.payments.length > 0">
+                           <tr *ngFor="let payment of daybookRecords.payments">
+                              <td *ngIf="payment.amount != 0"> <b>{{payment.name}}</b></td>
+                              <td scope="col" scope="col" colspan="2" *ngIf="payment.amount != 0"><span
+                                    style="float: right;margin-right: 10px;">{{payment.amount}}</span>
+                              </td>
+                           </tr>
+                        </tbody>
+                        <thead *ngIf="arrayDataCheck(daybookRecords.item_discount)">
+                           <tr>
+                              <th scope="col" scope="col" colspan="3">Item Discount
+                              </th>
+                           </tr>
+                        </thead>
+                        <thead *ngIf="arrayDataCheck(daybookRecords.item_discount)">
+                           <tr>
+                              <td><b>Name</b></td>
+                              <td style="font-weight:700;">Count</td>
+                              <td style="font-weight:700;"><span style="float: right;margin-right: 10px;">Total
+                                    ({{currency_symbol}})</span>
+                              </td>
+                           </tr>
+                        </thead>
+                        <tbody *ngIf="arrayDataCheck(daybookRecords.item_discount)">
+                           <tr *ngFor="let sale of daybookRecords.item_discount">
+                              <td *ngIf="sale.amount!=0 || sale.count!=0"><b>{{sale.name}}</b></td>
+                              <td *ngIf="sale.amount!=0 || sale.count!=0">{{sale.count}}
+                              </td>
+                              <td *ngIf="sale.amount!=0 || sale.count!=0"><span
+                                    style="float: right;margin-right: 10px;">{{sale.amount.toFixed(2)}}</span></td>
+                           </tr>
+                        </tbody>
+                        <thead *ngIf="arrayDataCheck(daybookRecords.order_discount)">
+                           <tr>
+                              <th scope="col" scope="col" colspan="3">Order Discount
+                              </th>
+                           </tr>
+                        </thead>
+                        <thead *ngIf="arrayDataCheck(daybookRecords.order_discount)">
+                           <tr>
+                              <td> <b>Name</b></td>
+                              <td style="font-weight:700;">Count</td>
+                              <td style="font-weight:700;"><span style="float: right;margin-right: 10px;">Total
+                                    ({{currency_symbol}})</span>
+                              </td>
+                           </tr>
+                        </thead>
+                        <tbody *ngIf="arrayDataCheck(daybookRecords.order_discount)">
+                           <tr *ngFor="let sale of daybookRecords.order_discount">
+                              <td *ngIf="sale.amount!=0 || sale.count!=0"><b>{{sale.name}}</b></td>
+                              <td *ngIf="sale.amount!=0 || sale.count!=0">{{sale.count}}
+                              </td>
+                              <td *ngIf="sale.amount!=0 || sale.count!=0"><span
+                                    style="float: right;margin-right: 10px;">{{sale.amount.toFixed(2)}}</span></td>
+                           </tr>
+                        </tbody>
+                        <thead *ngIf="daybookRecords.waiter_orders.length > 0">
+                           <tr>
+                              <th scope="col" scope="col" colspan="3">Waiter Orders
+                              </th>
+                           </tr>
+                        </thead>
+                        <thead *ngIf="arrayDataCheck(daybookRecords.waiter_orders)">
+                           <tr>
+                              <td> <b>Name</b></td>
+                              <td style="font-weight:700;">Count</td>
+                              <td style="font-weight:700;"><span style="float: right;margin-right: 10px;">Total
+                                    ({{currency_symbol}})</span>
+                              </td>
+                           </tr>
+                        </thead>
+                        <tbody *ngIf="arrayDataCheck(daybookRecords.waiter_orders)">
+                           <tr *ngFor="let sale of daybookRecords.waiter_orders">
+                              <td *ngIf="sale.total!=0 || sale.count!=0"><b>{{sale.name}}</b></td>
+                              <td *ngIf="sale.total!=0 || sale.count!=0">{{sale.count}}
+                              </td>
+                              <td *ngIf="sale.total!=0 || sale.count!=0"><span
+                                    style="float: right;margin-right: 10px;">{{sale.total.toFixed(2)}}</span></td>
+                           </tr>
+                        </tbody>
+
+                        <thead *ngIf="daybookRecords.staff_orders.length > 0">
+                           <tr>
+                              <th scope="col" scope="col" colspan="3">Staff Orders
+                              </th>
+                           </tr>
+                        </thead>
+                        <thead *ngIf="arrayDataCheck(daybookRecords.staff_orders)">
+                           <tr>
+                              <td> <b>Name</b></td>
+                              <td style="font-weight:700;">Count</td>
+                              <td style="font-weight:700;"><span style="float: right;margin-right: 10px;">Total
+                                    ({{currency_symbol}})</span>
+                              </td>
+                           </tr>
+                        </thead>
+                        <tbody *ngIf="arrayDataCheck(daybookRecords.staff_orders)">
+                           <tr *ngFor="let sale of daybookRecords.staff_orders">
+                              <td *ngIf="sale.total!=0 || sale.count!=0"><b>{{sale.name}}</b></td>
+                              <td *ngIf="sale.total!=0 || sale.count!=0">{{sale.count}}
+                              </td>
+                              <td *ngIf="sale.total!=0 || sale.count!=0"><span
+                                    style="float: right;margin-right: 10px;">{{sale.total.toFixed(2)}}</span></td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+                  <div class="col-lg-2"></div>
+               </div>
+            </ng-template>
+         </div>
+      </div>
+   </div>
+</body>
+
+</html>

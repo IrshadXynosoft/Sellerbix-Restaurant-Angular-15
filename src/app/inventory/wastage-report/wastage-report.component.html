@@ -1,0 +1,223 @@
+<style>
+  @page {
+    size: 210mm 297mm;
+  }
+
+  /* output size */
+  body.receipt .sheet {
+    width: 210mm;
+    /* A4 width */
+    height: 297mm;
+    /* A4 height */
+  }
+
+  /* sheet size */
+  @media print {
+    body.receipt {
+      width: 210mm;
+    }
+  }
+</style>
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <app-inventory-header></app-inventory-header>
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/inventory">
+                Inventory
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page" routerLink="/inventory/reports">
+                Reports
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                Wastage Report
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag cursor-pointer">
+            <h4 class="flex-gr-1">
+              <i class="icon-arrow-left" routerLink="/inventory/reports"></i> Wastage Report
+            </h4>
+            <div class="d-flex" style="padding-bottom: 15px; padding-left: 5px">
+              <button style="width: 120px;float: right;" *ngIf="dataSource.data.length>0" class="btn-setup-sucess"
+                [useExistingCss]="true" printSectionId="print-section" printTitle="Wastage Report" ngxPrint>
+                <i class="icon-print mr-1"></i>Print
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <form [formGroup]="generateReportForm">
+        <div class="row col-12 ">
+          <div class="col-lg-3">
+            <label>Location</label>
+            <select class="form-control m-0 mr-2 w-100" formControlName="branch_id" [(ngModel)]="branch_id">
+              <option value="" disabled> Select</option>
+              <option *ngFor="let i of branchRecords" value="{{ i.id }}">
+                {{ i.name }}
+              </option>
+            </select>
+          </div>
+          <div class="col-lg-3">
+            <label>Inventory Type</label>
+            <select class="form-control w-100" formControlName="inventory_type">
+              <option value=null>All</option>
+              <option value="finishedgood">Finished Good</option>
+              <option value="ingredient">Ingredient</option>
+              <option value="sub_recipe">Sub Recipe</option>
+              <option value="recipe">Recipe</option>
+            </select>
+          </div>
+          <div class="col-lg-3">
+            <label>Issuing Type</label>
+            <select class="form-control w-100" formControlName="issuing_type">
+              <option value="2">Expired</option>
+              <option value="1">Wasted</option>
+              <option value="4">ODS</option>
+            </select>
+
+          </div>
+
+
+          <div class="col-lg-3" style="margin-top:1.7rem;text-align: end;">
+            <button class="btn-setup-sucess" (click)="generateReport()">
+              <i class="icon-save mr-1"></i>Generate Report
+            </button>
+          </div>
+
+        </div>
+        <div class="col-12 row">
+          <div class="col-lg-3">
+            <label>Search by</label>
+            <select class="form-control w-100" formControlName="searchBy" (change)="searchby($event)">
+              <option value=0>Current Date</option>
+              <option value=1>Date Period</option>
+              <option value=2>Specify Date</option>
+            </select>
+          </div>
+          <div class="col-lg-3" *ngIf="searchBySpecificDate">
+            <label>Date</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="generateReportForm.controls.fromDate.hasError('required') && generateReportForm.controls.fromDate.touched">
+              Required</span>
+            <input type="date" placeholder="Code" class="form-control" formControlName="date" />
+          </div>
+          <div class="col-lg-3" *ngIf="searchByPeriod">
+            <label>From Date</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="generateReportForm.controls.fromDate.hasError('required') && generateReportForm.controls.fromDate.touched">
+              Required</span>
+
+            <input type="date" placeholder="Code" [min]="minDate" [max]="todayDate" class="form-control"
+              formControlName="fromDate" />
+          </div>
+          <div class="col-lg-3" *ngIf="searchByPeriod">
+            <label>To Date</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="generateReportForm.controls.toDate.hasError('required') && generateReportForm.controls.toDate.touched">
+              Required</span>
+            <input type="date" placeholder="Code" [min]="minDate" [max]="todayDate" class="form-control"
+              formControlName="toDate" />
+            <span class="error-message float-right" *ngIf="generateReportForm.errors">{{
+              generateReportForm.errors.dates | json }}</span>
+          </div>
+
+        </div>
+      </form>
+
+      <div *ngIf="dataSource.data.length <= 0; else viewmessage">
+        <div class="row col-12">
+          <div class="col-12">
+            <div class="not-found bordered">
+              <h3>Sorry :(</h3>
+              <p>There's no issued items at this moment.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #viewmessage>
+        <div id="print-section">
+          <table mat-table [dataSource]="dataSource" matSort class="tableStyleMain table bordered w-100">
+            <ng-container matColumnDef="index">
+              <th mat-header-cell *matHeaderCellDef>#</th>
+              <td mat-cell *matCellDef="let element">
+                {{ dataSource.data.indexOf(element) + 1 }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="stock_issuing_number">
+              <th mat-header-cell *matHeaderCellDef>Issue Number</th>
+              <td mat-cell *matCellDef="let element">{{ element.stock_issuing_number }}</td>
+            </ng-container>
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef>Issue Date</th>
+              <td mat-cell *matCellDef="let element">{{ element.date|date }}</td>
+            </ng-container>
+            <ng-container matColumnDef="issuing_type">
+              <th mat-header-cell *matHeaderCellDef>Issuing Type</th>
+              <td mat-cell *matCellDef="let element">
+                <span *ngIf="element.issuing_type=='1'">Wasted</span>
+                <span *ngIf="element.issuing_type=='2'">Expired</span>
+                <span *ngIf="element.issuing_type=='3'">Purchase Return</span>
+                <span *ngIf="element.issuing_type=='4'">ODS</span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="staff">
+              <th mat-header-cell *matHeaderCellDef>Created By</th>
+              <td mat-cell *matCellDef="let element">{{ element.staff_name }}</td>
+            </ng-container>
+            <ng-container matColumnDef="location">
+              <th mat-header-cell *matHeaderCellDef>Location</th>
+              <td mat-cell *matCellDef="let element">{{ element.branch_name }}</td>
+            </ng-container>
+            <ng-container matColumnDef="amount">
+              <th mat-header-cell *matHeaderCellDef>Total Amount ({{currency_symbol}})</th>
+              <td mat-cell *matCellDef="let element">{{ element.total_amount }}</td>
+            </ng-container>
+            <ng-container matColumnDef="button">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td class="btn-wrp-equal" mat-cell *matCellDef="let element">
+                <button class="btn-setup-sucess" (click)="viewDetailIssue(element)">
+                  <i _ngcontent-trm-c429="" class="zmdi zmdi-eye"></i>
+                </button>
+
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </div>
+      </ng-template>
+      <mat-paginator [ngClass]="{ show: dataSource.data.length <= 0 }" [pageSize]="50"
+        [pageSizeOptions]="[2, 4, 6, 10, 20]">
+      </mat-paginator>
+
+    </div>
+  </div>
+
+</body>
+
+</html>

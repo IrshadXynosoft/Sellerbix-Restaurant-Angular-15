@@ -1,0 +1,140 @@
+<div class="modal-wrapper">
+  <form [formGroup]="couponForm">
+    <h2 mat-dialog-title *ngIf="!data.id">Add Coupon</h2>
+    <h2 mat-dialog-title *ngIf="data.id">Edit Coupon</h2>
+    <div mat-dialog-content>
+      <div class="col-12 row">
+        <div class="col-6">
+          <div class="formGroup">
+            <label>Coupon Code</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="couponForm.controls.coupon_code.hasError('required' ) && couponForm.controls.coupon_code.touched">Required</span>
+            <input type="text" class="form-control"
+              [ngClass]="couponForm.controls.coupon_code.hasError('required' ) && couponForm.controls.coupon_code.touched ? 'is-invalid' : ''"
+              placeholder="Coupon Code" formControlName="coupon_code" />
+          </div>
+
+
+          <div class="formGroup">
+            <label>Discount Type</label>
+
+            <select class="form-control w-100" aria-label="Discount Type" formControlName="discount_type">
+              <option value="percentage">Percentage</option>
+              <option value="value">Value</option>
+            </select>
+          </div>
+          <div class="formGroup">
+            <label>Coupon Valid From Date</label>
+            <!-- <span class="error-message">*</span>
+                        <span class="error-message float-right" *ngIf="couponForm.controls.valid_from_date.hasError('required' ) && couponForm.controls.valid_from_date.touched">required</span> -->
+            <input type="date" [min]="todayDate" class="form-control" placeholder="Coupon Valid From Date"
+              formControlName="valid_from_date" />
+          </div>
+          <div class="formGroup">
+            <label>Coupon Valid From Time</label>
+            <!-- <span class="error-message">*</span>
+                        <span class="error-message float-right" *ngIf="couponForm.controls.start_time.hasError('required' ) && couponForm.controls.start_time.touched">required</span> -->
+            <input type="time" class="form-control" placeholder="Coupon Valid From TIme" formControlName="start_time"
+              min='01:30:01' max='02:30:02' />
+          </div>
+          <div class="formGroup">
+            <label>Maximum Number of Coupons Issued</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="couponForm.controls.no_of_coupons_issued.hasError('required' ) && couponForm.controls.no_of_coupons_issued.touched">required</span>
+            <span class="error-message float-right"
+              *ngIf="couponForm.controls.no_of_coupons_issued.hasError('pattern' )">Invalid Input</span>
+            <input type="text" class="form-control"
+              [ngClass]="couponForm.controls.no_of_coupons_issued.hasError('required' ) && couponForm.controls.no_of_coupons_issued.touched || couponForm.controls.no_of_coupons_issued.hasError('pattern' ) ? 'is-invalid' : ''"
+              placeholder="Maximum Number of Coupons Issued" formControlName="no_of_coupons_issued" />
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="formGroup">
+            <label>Minimum Order Value</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="couponForm.controls.minimum_order_value.hasError('required' ) && couponForm.controls.minimum_order_value.touched">required</span>
+            <span class="error-message float-right"
+              *ngIf="couponForm.controls.minimum_order_value.hasError('pattern' )">Invalid Input</span>
+            <input type="text" class="form-control"
+              [ngClass]="couponForm.controls.minimum_order_value.hasError('required' ) && couponForm.controls.minimum_order_value.touched || couponForm.controls.minimum_order_value.hasError('pattern' ) ? 'is-invalid' : ''"
+              placeholder="Minimum Cart Amount" formControlName="minimum_order_value" />
+          </div>
+          <div class="formGroup">
+            <label>Discount Value</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="couponForm.controls.discount_value.hasError('required' ) && couponForm.controls.discount_value.touched">required</span>
+            <span class="error-message float-right"
+              *ngIf="couponForm.controls.discount_value.hasError('pattern' )">Invalid Input</span>
+            <input type="text" class="form-control"
+              [ngClass]="couponForm.controls.discount_value.hasError('required' ) && couponForm.controls.discount_value.touched || couponForm.controls.discount_value.hasError('pattern' ) ? 'is-invalid' : ''"
+              placeholder="Discount Amount" formControlName="discount_value" />
+          </div>
+
+
+          <div class="formGroup">
+            <label>Coupon Valid Until Date</label>
+            <!-- <span class="error-message">*</span>
+                        <span class="error-message float-right" *ngIf="couponForm.controls.valid_to_date.hasError('required' ) && couponForm.controls.valid_to_date.touched">required</span> -->
+            <input type="date" [min]="todayDate" class="form-control" placeholder="Coupon Valid To Date"
+              formControlName="valid_to_date" />
+          </div>
+          <div class="formGroup">
+            <label>Coupon Valid Until Time</label>
+            <!-- <span class="error-message">*</span>
+                         <span class="error-message float-right" *ngIf="couponForm.controls.end_time.hasError('required' ) && couponForm.controls.end_time.touched">required</span> -->
+            <input type="time" class="form-control" placeholder="Coupon Valid To Time" formControlName="end_time"
+              min='01:30:01' max='02:30:02' />
+            <span class="error-message float-right" *ngIf="couponForm.errors">{{
+                            couponForm.errors.dates | json }}</span>
+          </div>
+
+          <div class="formGroup form-check " *ngIf="data.id">
+            <input class="form-check-input " style="margin-top:2.5rem ;" type="checkbox" value="1" id="flexCheckChecked"
+              formControlName="active">
+            <label class="form-check-label" style="margin-top:2.5rem ;" for="flexCheckChecked">
+              Active
+            </label>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="col-12">
+          <div class="formGroup">
+            <label>Description</label>
+            <textarea type="text" placeholder="Description" formControlName="description" class="form-control"
+              rows="4"></textarea>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- <label>Name</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right" *ngIf="couponForm.controls.tax_name.hasError('required' ) && couponForm.controls.tax_name.touched">required</span>
+            <span class="error-message float-right"  *ngIf="couponForm.controls.tax_name.hasError('pattern' )">invalid input</span>    
+            <span class="error-message float-right" *ngIf="requestErrorArray" >{{requestErrorArray.tax_name}}</span>
+            <input type="text" class="form-control" placeholder="Name" formControlName="tax_name" />
+            <label>Tax Rate</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right" *ngIf="couponForm.controls.rate.hasError('required' ) && couponForm.controls.rate.touched">required</span>
+            <span class="error-message float-right"  *ngIf="couponForm.controls.rate.hasError('pattern' )">invalid input</span>    
+            <span class="error-message float-right" *ngIf="requestErrorArray" >{{requestErrorArray.rate}}</span>
+            <input type="text" class="form-control"  placeholder="rate %" formControlName="rate"/>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="1" id="flexCheckChecked" formControlName="is_default">
+                    <label class="form-check-label" for="flexCheckChecked">
+                        Default Tax
+                    </label>
+            </div> -->
+    </div>
+    <div mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" [disabled]="!couponForm.valid || couponForm.pristine"
+        (click)="addCoupon()">Submit</button>
+    </div>
+  </form>
+</div>

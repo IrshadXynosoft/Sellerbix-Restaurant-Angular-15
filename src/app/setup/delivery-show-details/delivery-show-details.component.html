@@ -1,0 +1,146 @@
+<div class="modal-wrapper ">
+  <h2>Your Order Details</h2>
+  <div class="row">
+    <div class="col-lg-5">
+      <div class="d-flex">
+        <h4 class="flex-grow-1">Customer Name:</h4>
+        <h4>{{itemList.customer_details.name}}</h4>
+      </div>
+      <div class="d-flex">
+        <h4 class="flex-grow-1">contact Number:</h4>
+        <h4>{{itemList.customer_details.phone_number}}</h4>
+      </div>
+      <div class="d-flex">
+        <h4 class="flex-grow-1">Order No:</h4>
+        <h4>{{itemList.order_number}}</h4>
+      </div>
+      <div class="d-flex">
+        <h4 class="flex-grow-1">Branch:</h4>
+        <h4>{{itemList.branch_name}}</h4>
+      </div>
+      <div class="d-flex" *ngIf="this.data.customerData">
+        <h4 class="flex-grow-1">Building/Villa:</h4>
+        <h4>{{this.data.customerData?this.data.customerData.building_or_villa:'-'}}</h4>
+      </div>
+      <div class="d-flex" *ngIf="this.data.customerData">
+        <h4 class="flex-grow-1">Flat Number:</h4>
+        <h4>{{this.data.customerData?this.data.customerData.flat_number:'-'}}</h4>
+      </div>
+      <div class="d-flex" *ngIf="this.data.customerData">
+        <h4 class="flex-grow-1">Street:</h4>
+        <h4>{{this.data.customerData?this.data.customerData.street:'-'}}</h4>
+      </div>
+      <div class="d-flex" *ngIf="this.data.customerData">
+        <h4 class="flex-grow-1">Land Mark:</h4>
+        <h4>{{this.data.customerData?this.data.customerData.nearest_landmark:'-'}}</h4>
+      </div>
+      <div class="d-flex" *ngIf="this.data.customerData">
+        <h4 class="flex-grow-1">City:</h4>
+        <h4>{{this.data.customerData?this.data.customerData.city:'-'}}</h4>
+      </div>
+      <div class="d-flex" *ngIf="this.data.customerData">
+        <h4 class="flex-grow-1">Delivery Area:</h4>
+        <h4>{{this.data.customerData?this.data.customerData.delivery_area:'-'}}</h4>
+      </div>
+
+
+    </div>
+    <div class="col-lg-7" *ngIf="showReceipt">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Item Name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Price ({{currency_symbol}})</th>
+            <th scope="col">Sub-Total ({{currency_symbol}})</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of itemList.items">
+            <td> <span>{{item.name}}</span>
+              <div *ngIf="item.modifiers" class="combo-tree ">
+                <div class="tree">
+                  <ul class="tree-holder" *ngFor="let modifier of item.modifiers;let i = index;">
+                    <li *ngIf="modifiercheck(modifier.list)">
+                      <span><i class="fa fa-folder-open"></i>{{modifier.name}}</span>
+                      <ul *ngFor="let list of modifier.list">
+                        <li *ngIf="list.status">
+                          <span><i class="fa fa-minus-square"></i>{{list.modifier_list}}</span>
+                          <span style="text-transform:none" *ngIf="list.list_qty">&nbsp; x{{list.list_qty}}</span>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </td>
+            <td>{{item.qty}}</td>
+            <td>{{item.orginal_price}}</td>
+            <td>{{item.total}} </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- <div class="col-12 row mb-4">
+                <div class="col-12">
+                  <span class="float-right"
+                    >Total Amount ({{ currency_symbol }}):<b>{{ itemList.Total }}</b></span
+                  >
+                </div>
+
+              </div> -->
+
+      <!-- <table *ngIf="data.itemData.status == 2" class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">SubTotal: </th>
+
+                        <th scope="col">Tax:</th>
+                        <th scope="col">Total:</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{data.itemData.invoice.sub_total}} ({{currency_symbol}})</td>
+
+                        <td>{{data.itemData.invoice.tax}}</td>
+                        <td><strong>{{data.itemData.amount}} ({{currency_symbol}})</strong>
+                        </td>
+                    </tr>
+                </tbody>
+            </table> -->
+    </div>
+
+  </div>
+  <div class="d-flex br-btm pb-2">
+    <div class="flex-grow-1">Sub Total:</div>
+    <div>{{currency_symbol}} {{itemList.Cart?.subTotal}}</div>
+  </div>
+  <div class="d-flex br-btm pb-2" *ngIf="itemList.Cart?.tax>0">
+    <div class="flex-grow-1">Tax:</div>
+    <div>{{currency_symbol}} {{itemList.Cart?.tax}}</div>
+  </div>
+  <div class="d-flex br-btm pb-2" *ngIf="itemList.coupon_array">
+    <div class="flex-grow-1">Coupon Applied:</div>
+    <div>{{currency_symbol}} {{itemList.coupon_array.applied_discount}}</div>
+  </div>
+  <div class="d-flex br-btm pb-2" *ngIf="itemList.delivery_charge>0">
+    <div class="flex-grow-1">Delivery charge:</div>
+    <div>{{currency_symbol}} {{itemList.delivery_charge}}</div>
+  </div>
+  <div class="d-flex br-btm pt-2 pb-2">
+    <div class="flex-grow-1">Total:</div>
+    <div><strong> {{currency_symbol}} {{ itemList.Total }}</strong></div>
+  </div>
+  <div class="text-right pt-2">
+    <!-- <button *ngIf="data.itemData.invoice_id == 'Not Paid'" class="btn-setup-sucess" (click)="editOrder()">
+            <i class="icon-edit mr-1"></i>Modify Order
+        </button> -->
+    <button class="btn-setup-danger mr-2 w-px-100" (click)="close()">
+      Cancel
+    </button>
+    <!-- <button class="btn-setup-sucess" (click)="showHistoryTag()" [ngClass]="{disabled: showHistory}">
+            <i class="icon-time mr-1"></i>Show History
+        </button> -->
+  </div>
+</div>

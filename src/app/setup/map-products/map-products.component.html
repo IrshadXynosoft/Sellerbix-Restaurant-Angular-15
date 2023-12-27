@@ -1,0 +1,49 @@
+
+<div class="modal-wrapper modal-ht-custom">
+    <form [formGroup]="mapProductsForm">
+     <h2 mat-dialog-title>Choose Items</h2>
+     <div mat-dialog-content>
+        <div class="col-12 col-md-12">
+            <label>Items</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right">{{errorMessage}}</span>
+            <input
+              type="text"
+              placeholder="Search Items by name ,then hit enter to add"
+              aria-label="Items"
+              matInput
+              [formControl]="itemsData"
+              [matAutocomplete]="auto"
+              #autoInput
+            />
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option
+                *ngFor="let option of filteredOptions | async"
+                [value]="option.name"
+                [id]="option.id"
+                (click)="itemsSelected(option, autoInput)"
+              >
+                {{ option.name }}
+              </mat-option>
+            </mat-autocomplete>
+          </div>
+          <div class="col-12 row" >
+            <div clss="col-10"  style="margin-top: 1rem;margin-left: 1rem;">
+              <mat-chip-listbox #chipList aria-label="items">
+                <mat-chip-option *ngFor="let item of itemSelected" (removed)="remove(item)">
+                  {{ item.name }}
+                  <button matChipRemove>
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip-option>
+               </mat-chip-listbox>
+            </div>
+        
+          </div>
+    </div>
+    <div mat-dialog-actions>
+        <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+        <button class="btn-setup-sucess" [disabled]="!mapProductsForm.valid || mapProductsForm.pristine" (click)="mapProducts()">Submit</button>
+    </div>
+   </form>
+</div>

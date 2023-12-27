@@ -1,0 +1,26 @@
+<div class="modal-wrapper">
+  <form [formGroup]="expenseForm">
+    <h2 *ngIf="data.operation == 'add'" mat-dialog-title>Add  Ledger</h2>
+    <h2 *ngIf="data.operation == 'edit'" mat-dialog-title>Edit Ledger</h2>
+    <div mat-dialog-content>
+      <span class="error-message float-right">*</span>
+      <span class="error-message float-right" *ngIf="expenseForm.controls.type.hasError('required' ) && expenseForm.controls.type.touched">Required</span>
+      <br><label>Type:
+      </label>&nbsp;&nbsp;
+      <mat-radio-group  aria-label="Select an option" formControlName="type" >
+          <mat-radio-button value="1" [checked]="updatedType== 1">Payment</mat-radio-button>&nbsp;&nbsp;
+          <mat-radio-button value="0" [checked]="updatedType== 0">Receipt</mat-radio-button>
+        </mat-radio-group><br>
+      <span class="error-message float-right">*</span>
+      <span class="error-message float-right" *ngIf="expenseForm.controls.name.hasError('required' ) && expenseForm.controls.name.touched">Required</span>
+      <span class="error-message float-right" *ngIf="errorMessages.name">{{errorMessages.name}}</span>
+      <input type="text" class="form-control" [ngClass]="expenseForm.controls.name.hasError('required' ) && expenseForm.controls.name.touched || errorMessages.name ? 'is-invalid' : ''" placeholder="Name" formControlName="name" />
+      <textarea class="form-control" placeholder="Description" formControlName="description"></textarea>
+    </div>
+    <div mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button *ngIf="data.operation == 'add'" class="btn-setup-sucess" (click)="onSubmit()">Submit</button>
+      <button *ngIf="data.operation == 'edit'" class="btn-setup-sucess" (click)="onUpdate()">Update</button>
+    </div>
+  </form>
+</div>

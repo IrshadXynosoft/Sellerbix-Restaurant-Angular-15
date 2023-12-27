@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+  <!-- Body Wrapper Start -->
+
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/callcenter">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/accounts">
+                Accounts
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page" (click)="back()">
+                Reports
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                Payment Report
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1"> <i class="icon-arrow-left cursor-pointer" (click)="back()"></i>Payment Report</h4>
+            <button class="btn-setup-sucess" (click)="exportExcel()" *ngIf="dataSource.data.length > 0">Export To
+              Excel</button>
+          </div>
+        </div>
+      </div>
+      <form [formGroup]="paymentForm">
+        <div class="row">
+          <div class="col-lg-2">
+            <label>Search by</label>
+            <select class="form-control w-100" (change)="filterReport($event)" formControlName="searchBy">
+              <option value="">Current Date</option>
+              <option value="1">Date Period</option>
+              <option value="2">Specify Date</option>
+            </select>
+          </div>
+
+          <div class="col-lg-2" *ngIf="specificDate">
+            <label>Date</label>
+            <span class="error-message">*</span>
+            <!-- <span class="error-message float-right"
+              *ngIf="generateSalesReport.controls.fromDate.hasError('required') && generateSalesReport.controls.fromDate.touched">
+              Required</span>
+              <span class="error-message float-right">
+                {{errorMessage}}</span>  -->
+            <input type="date" placeholder="Code" class="form-control" formControlName="date" />
+          </div>
+          <div class="col-lg-2" *ngIf="datePeriod">
+            <label>From Date</label>
+            <span class="error-message">*</span>
+            <!-- <span class="error-message float-right"
+              *ngIf="generateSalesReport.controls.fromDate.hasError('required') && generateSalesReport.controls.fromDate.touched">
+              Required</span>
+              <span class="error-message float-right">
+              {{errorMessage}}</span>  -->
+            <input type="date" placeholder="Code" [min]="minDate" [max]="todayDate" class="form-control"
+              formControlName="fromDate" />
+          </div>
+          <div class="col-lg-2" *ngIf="datePeriod">
+            <label>To Date</label>
+            <span class="error-message">*</span>
+            <!-- <span class="error-message float-right"
+              *ngIf="generateSalesReport.controls.toDate.hasError('required') && generateSalesReport.controls.toDate.touched">
+              Required</span> -->
+            <input type="date" placeholder="Code" [min]="minDate" [max]="todayDate" class="form-control"
+              formControlName="toDate" />
+            <span class="error-message float-right" *ngIf="paymentForm.errors">{{
+              paymentForm.errors.dates | json }}</span>
+          </div>
+          <div class="col-lg-2" *ngIf="dataSource.data.length >0">
+            <label>Total</label>
+            <input type="text" class="form-control" formControlName="totalSum" />
+          </div>
+          <div class="col-lg-3" style="margin-top:2rem;">
+            <button class="btn-setup-sucess" (click)="generateReport()">
+              <i class="icon-save mr-1"></i>Generate Report
+            </button>
+          </div>
+        </div>
+      </form>
+      <div *ngIf="dataSource.data.length <= 0; else showtable">
+        <div class="row">
+          <div class="col-12">
+            <div class="not-found bordered">
+              <h3>Sorry :(</h3>
+              <p>No Report available</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #showtable>
+        <table *ngIf="dataSource.data.length > 0" mat-table [dataSource]="dataSource" matSort matTableExporter
+          #exporter="matTableExporter" class="tableStyleMain table bordered">
+          <ng-container matColumnDef="index">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              #
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{dataSource.data.indexOf(element) + 1}}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Name
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+          </ng-container>
+          <ng-container matColumnDef="ledger">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Ledger
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.ledger }}</td>
+          </ng-container>
+          <ng-container matColumnDef="amount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Amount ({{currency_symbol}})
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.amount }}</td>
+          </ng-container>
+          <ng-container matColumnDef="business_day">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Business Day
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.business_day ? element.business_day : '--'}}</td>
+          </ng-container>
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Date
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.date }}</td>
+          </ng-container>
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Description
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.description ? element.description : '--' }}</td>
+          </ng-container>
+          <ng-container matColumnDef="reference">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Reference
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.reference ? element.reference : '--' }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Status
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.status}}
+            </td>
+          </ng-container>
+          <!-- <ng-container matColumnDef="type">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Payment Type
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.date| date }}</td>
+            </ng-container> -->
+          <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Payment Type
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.type ==1 ? 'Cash' : 'Card' }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </ng-template>
+      <mat-paginator [pageSize]="50" [ngClass]="{ show: dataSource.data.length <= 0 }"
+        [pageSizeOptions]="[2, 4, 6, 10, 50]">
+      </mat-paginator>
+    </div>
+
+  </div>
+
+</body>
+
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <!-- <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                Setup
+              </li>
+              <li class="breadcrumb-item  cursor-pointer" aria-current="page" routerLink="/setup/{{ id }}/editLocation">
+                Location Setup
+              </li> -->
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/driver-pool-orders">
+                Driver Pool
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page" routerLink="/driver-pool-orders/reports">
+                Report
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                Order Report
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1"> <i class="icon-arrow-left cursor-pointer" routerLink="/driver-pool-orders/reports"></i>
+              Order Report</h4>
+          </div>
+        </div>
+      </div>
+      <form [formGroup]="orderReportForm">
+        <div class="col-12 row">
+          <div class="col-lg-3">
+            <label>Search by</label>
+            <select class="form-control w-100" (change)="searchby($event)">
+              <option value=0 selected>Current Date</option>
+              <option value=1>Date Period</option>
+              <option value=2>Specify Date</option>
+            </select>
+          </div>
+          <div class="col-lg-3" *ngIf="searchBySpecificDate">
+            <label>Date</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="orderReportForm.controls.date.hasError('required') && orderReportForm.controls.date.touched">
+              Required</span>
+            <input type="date" placeholder="Code" class="form-control" formControlName="date" />
+          </div>
+          <div class="col-lg-3" *ngIf="searchByPeriod">
+            <label>From Date</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="orderReportForm.controls.fromDate.hasError('required') && orderReportForm.controls.fromDate.touched">
+              Required</span>
+
+           <input type="date" placeholder="Code" [min]="minDate" [max]="todayDate" class="form-control"
+              formControlName="fromDate" />
+          </div>
+          <div class="col-lg-3" *ngIf="searchByPeriod">
+            <label>To Date</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="orderReportForm.controls.toDate.hasError('required') && orderReportForm.controls.toDate.touched">
+              Required</span>
+           <input type="date" placeholder="Code" [min]="minDate" [max]="todayDate" class="form-control"
+              formControlName="toDate" />
+            <span class="error-message float-right" *ngIf="orderReportForm.errors">{{
+                    orderReportForm.errors.dates | json }}</span>
+          </div>
+          <div class="col-lg-3" *ngIf="!searchByPeriod">
+            <label>Supplier</label>
+            <select class="custom-select w-100" formControlName="supply_company_id">
+              <option value="" selected>All</option>
+              <option value="{{i.id}}" *ngFor="let i of supplierRecords">
+                {{i.name}}</option>
+            </select>
+          </div>
+
+          <div class="col-lg-3 " style="margin-top:2rem">
+            <button mat-flat-button class="btn-setup-sucess" (click)="generateReport()">
+              Generate Report
+            </button>
+          </div>
+        </div>
+        <div class="row col-12">
+          <div class="col-lg-3" *ngIf="searchByPeriod">
+            <label>Supplier</label>
+            <select class="custom-select w-100" formControlName="supply_company_id">
+              <option value="" selected>All</option>
+              <option value="{{i.id}}" *ngFor="let i of supplierRecords">
+                {{i.name}}</option>
+            </select>
+          </div>
+          <div class="col-lg-3" style="margin-top: 30px;" *ngIf="searchByPeriod">
+            <span>{{processingResponseStr}}</span>
+           </div>
+        </div>
+      </form>
+
+      <div *ngIf="dataSource.data.length <= 0; else showtable">
+        <div class="row">
+          <div class="col-12">
+            <div class="not-found">
+              <h3>Sorry :(</h3>
+              <p>There's no data yet at this moment.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #showtable>
+        <div class="tableStyleMain bordered">
+          <table mat-table [dataSource]="dataSource" matSort class="mat-z8">
+            <ng-container matColumnDef="index">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                #
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{dataSource.data.indexOf(element) + 1}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="order_no">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Order No</th>
+              <td mat-cell *matCellDef="let element">{{element.order_no}}</td>
+            </ng-container>
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+              <td mat-cell *matCellDef="let element">{{element.date}}</td>
+            </ng-container>
+            <ng-container matColumnDef="time">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Time</th>
+              <td mat-cell *matCellDef="let element">{{element.time}}</td>
+            </ng-container>
+            <ng-container matColumnDef="supplier">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Supplier</th>
+              <td mat-cell *matCellDef="let element">{{element.supplier}}</td>
+            </ng-container>
+            <ng-container matColumnDef="amount">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>amount ({{currency_symbol}})</th>
+              <td mat-cell *matCellDef="let element">{{element.amount}}</td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>status</th>
+              <td mat-cell *matCellDef="let element">
+                <span *ngIf="element.status==0">Not Assigned</span>
+                <span *ngIf="element.status==1">Accepted</span>
+                <span *ngIf="element.status==2">Order Pickup</span>
+                <span *ngIf="element.status==4">Delivered</span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="button">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-flat-button class="btn-setup-sucess commonBtnStyle" matTooltip="View Order Detail"
+                  (click)="viewDetails(element.orderDetails)">
+                  View
+                </button>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </div>
+      </ng-template>
+      <mat-paginator [ngClass]="{ show: dataSource.data.length <= 0 }" [pageSize]="50"
+        [pageSizeOptions]="[2, 4, 6, 10, 50]">
+      </mat-paginator>
+      <div>
+        <span class="float-right mb-2 mt-2 mr-4" *ngIf="totalAmount>0">
+          <strong> Total Amount: {{totalAmount}} {{currency_symbol}}</strong>
+        </span>
+      </div>
+
+
+    </div>
+  </div>
+
+</body>
+
+</html>

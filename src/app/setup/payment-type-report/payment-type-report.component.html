@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page" routerLink="/setup/reports">
+                Reports
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                Payment Type Report
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1"> <i class="icon-arrow-left cursor-pointer" routerLink="/setup/reports"></i>Payment
+              Type
+              Report</h4>
+          </div>
+        </div>
+      </div>
+      <form [formGroup]="reportForm">
+        <div class="row">
+          <div class="col-lg-3">
+            <label>Search by</label>
+            <select class="form-control w-100" formControlName="searchBy" (change)="searchby($event)">
+              <option value=0>Current Date</option>
+              <option value=1>Date Period</option>
+              <option value=2>Specify Date</option>
+            </select>
+          </div>
+          <div class="col-lg-3" *ngIf="searchBySpecificDate">
+            <label>Date</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="reportForm.controls.fromDate.hasError('required') && reportForm.controls.fromDate.touched">
+              Required</span>
+            <input type="date" placeholder="Code" class="form-control" formControlName="date" />
+          </div>
+          <div class="col-lg-3" *ngIf="searchByPeriod">
+            <label>From Date</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="reportForm.controls.fromDate.hasError('required') && reportForm.controls.fromDate.touched">
+              Required</span>
+
+            <input type="date" placeholder="Code" [min]="minDate" [max]="todayDate" class="form-control"
+              formControlName="fromDate" />
+          </div>
+          <div class="col-lg-3" *ngIf="searchByPeriod">
+            <label>To Date</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="reportForm.controls.toDate.hasError('required') && reportForm.controls.toDate.touched">
+              Required</span>
+            <input type="date" placeholder="Code" [min]="minDate" [max]="todayDate" class="form-control"
+              formControlName="toDate" />
+            <span class="error-message float-right" *ngIf="reportForm.errors">{{
+              reportForm.errors.dates | json }}</span>
+          </div>
+          <div class="col-lg-3" style="margin-top:2rem">
+            <button class="btn-setup-sucess" (click)="generateReport()">
+              <i class="icon-save mr-1"></i>Generate Report
+            </button>
+          </div>
+        </div>
+      </form>
+      <div class="col-12 tableStyleMain table">
+        <div *ngIf="paymentRecords.length <= 0; else showtable">
+          <div class="row">
+            <div class="col-12">
+              <div class="not-found bordered">
+                <h3>Sorry :(</h3>
+                <p>No Report available</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ng-template #showtable>
+          <div class="row">
+            <div class="col-12">
+              <mat-card appearance="outlined" class="card bordered">
+                <table class="tableStyleMain">
+                  <thead>
+                    <tr>
+                      <th scope="col">Name</th>
+                      <th scope="col">Count</th>
+                      <th scope="col">Amount ({{currency_symbol}})</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let i of paymentRecords">
+                      <td><span>{{i.name}}</span>
+                        <div *ngFor="let split of i.split" class="col-12 combo-tree">
+                          <div class="tree">
+                            <ul class="tree-holder">
+                              <li>
+                                <span><i class="fa fa-folder-open"></i> {{split.name}}</span>
+                                <ul>
+                                  <li>
+                                    <span><i class="fa fa-minus-square"></i>{{split.amount.toFixed(2)}}&nbsp;
+                                    </span>
+                                  </li>
+                                </ul>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        {{i.count}}
+                      </td>
+                      <td>
+                        {{i.amount.toFixed(2)}}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+              </mat-card>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+
+
+    </div>
+
+  </div>
+
+</body>
+
+</html>

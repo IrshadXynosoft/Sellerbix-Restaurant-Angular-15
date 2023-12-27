@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                Setup
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/location">
+                Locations
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/{{ id }}/editLocation">
+                Location Setup
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page"
+                routerLink="/setup/location/{{ id }}/online">
+                Online Portal Setup
+              </li>
+
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                Ads Banners
+              </li>
+            </ol>
+          </nav>
+        </div>
+
+
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1 ">
+              <i class="icon-arrow-left mr-1 cursor-pointer" (click)="back()"></i>Ads Banners
+            </h4>
+            <div class="d-flex">
+              <input type="text" class="form-control" placeholder="Search" #tax (keyup)="doFilter(tax.value)" />
+            </div>
+            <div class="d-flex" style="padding-bottom: 15px; padding-left: 5px">
+              <button class="btn-setup-sucess" (click)="addBanner()">
+                <i class="icon-plus mr-1"></i> Add Banner
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #message>
+        <div class="row">
+          <div class="col-12">
+            <div class="not-found">
+              <h3>Sorry :(</h3>
+              <p>There's no Banners yet at this moment.</p>
+              <p>Click <a (click)="addBanner()" style="color: var(--primary);cursor: pointer;">here</a> to add Banners.
+              </p>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+      <div class="col-12 tableStyleMain">
+        <table mat-table *ngIf="dataSource.data.length > 0; else message" [dataSource]="dataSource" matSort
+          class="mat-z8">
+          <ng-container matColumnDef="index">
+            <th mat-header-cell *matHeaderCellDef>
+              #
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{dataSource.data.indexOf(element) + 1}}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+          </ng-container>
+          <ng-container matColumnDef="link">
+            <th mat-header-cell *matHeaderCellDef>Link</th>
+            <td mat-cell *matCellDef="let element">{{ element.link?element.link:'--' }}</td>
+          </ng-container>
+          <ng-container matColumnDef="range">
+            <th mat-header-cell *matHeaderCellDef>Range</th>
+            <td mat-cell *matCellDef="let element">{{ element.range }}</td>
+          </ng-container>
+          <ng-container matColumnDef="button">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td class="btn-wrp-equal" mat-cell *matCellDef="let element">
+
+              <button class="btn-setup-sucess" (click)="editBanner(element.id)">
+                <i _ngcontent-trm-c429="" class="zmdi zmdi-edit"></i>
+              </button>
+              <button class="btn-setup-danger" (click)="deleteBanner(element.id, element.name)">
+                <i _ngcontent-trm-c429="" class="zmdi zmdi-delete"></i>
+              </button>
+
+
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+        <mat-paginator [ngClass]="{ show: dataSource.data.length <= 0 }" [pageSize]="5"
+          [pageSizeOptions]="[2, 4, 6, 10, 20]">
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

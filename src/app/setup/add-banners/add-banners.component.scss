@@ -1,0 +1,30 @@
+.mat-mdc-card {
+  background-color: rgb(224, 226, 231);
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  .img {
+    border-radius: .5rem;
+    justify-content: center;
+    height: 200px;
+    width: 200px;
+    align-items: center;
+    text-align: center;
+    object-fit: contain;
+  }
+}
+
+.example-radio-group {
+  display: flex;
+  margin: 5px 0;
+}
+
+.example-radio-button {
+  margin: 5px;
+}
+
+.min-scroll {
+  height: 300px;
+  overflow-y: scroll;
+}

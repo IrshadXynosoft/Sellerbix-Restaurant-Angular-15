@@ -1,0 +1,72 @@
+<div class="modal-wrapper">
+  <button mat-icon-button class="close-button" (click)="close()">
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+  </button>
+  <h2 mat-dialog-title>Orders</h2>
+  <mat-dialog-content>
+    <div class="inline-loader" *ngIf="customPreLoader">
+      <img src="assets/loader.gif" />
+    </div>
+    <div *ngIf="dataSource.data && dataSource.data.length <= 0; else showtable">
+      <div class="row">
+        <div class="col-12">
+          <div class="not-found bordered">
+            <h3>Sorry :(</h3>
+            <p>No report available.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #showtable>
+      <table
+        *ngIf="dataSource.data.length > 0"
+        mat-table
+        matTableExporter
+        #exporter="matTableExporter"
+        [dataSource]="dataSource"
+        matSort
+        class="tableStyleMain table bordered"
+      >
+        <ng-container matColumnDef="order">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Order No</th>
+          <td mat-cell *matCellDef="let element">{{ element.order_number }}</td>
+        </ng-container>
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Date & Time</th>
+          <td mat-cell *matCellDef="let element">
+            {{ dateCheck(element.date) }} &nbsp; {{timeCheck(element.time)}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="entity">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Entity</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.entity }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Sale Amount ({{ currency_symbol }})
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.amount }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="discount">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Discount  ({{ currency_symbol }})
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.discount }}</td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </ng-template>
+    <mat-paginator
+      [ngClass]="{ show: dataSource.data.length <= 0 }"
+      [pageSize]="10"
+      [pageSizeOptions]="[50, 100, 150, 200]"
+    >
+    </mat-paginator>
+  </mat-dialog-content>
+</div>

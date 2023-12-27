@@ -1,0 +1,45 @@
+<div class="modal-wrapper">
+  <form [formGroup]="utensilsForm">
+    <h2 mat-dialog-title *ngIf="!data.id">Add Utensils</h2>
+    <h2 mat-dialog-title *ngIf="data.id">Edit Utensils</h2>
+    <mat-dialog-content>
+      <div class="formGroup">
+        <label>Name</label>
+        <span class="error-message">*</span>
+        <span class="error-message float-right"
+          *ngIf="utensilsForm.controls.name.hasError('required' ) && utensilsForm.controls.name.touched">Required</span>
+        <input type="text" class="form-control"
+          [ngClass]=" utensilsForm.controls.name.hasError('required' ) && utensilsForm.controls.name.touched ? 'is-invalid' : ''"
+          placeholder="Name" formControlName="name" />
+      </div>
+      <div class="formGroup">
+        <label>Selling Price ({{currency_symbol}})</label>
+        <span class="error-message">*</span>
+        <span class="error-message float-right"
+          *ngIf="utensilsForm.controls.selling_price.hasError('required' ) && utensilsForm.controls.selling_price.touched">Required</span>
+        <span class="error-message float-right" *ngIf="utensilsForm.controls.selling_price.hasError('pattern' )">Invalid
+          Input</span>
+        <input type="text" class="form-control" placeholder="Selling Price"
+          [ngClass]="utensilsForm.controls.selling_price.hasError('required' ) && utensilsForm.controls.selling_price.touched || utensilsForm.controls.selling_price.hasError('pattern' ) ? 'is-invalid' : ''"
+          formControlName="selling_price" />
+      </div>
+      <div class="formGroup">
+        <label>Total Quantity</label>
+        <span class="error-message">*</span>
+        <span class="error-message float-right"
+          *ngIf="utensilsForm.controls.total_qty.hasError('required' ) && utensilsForm.controls.total_qty.touched">Required</span>
+        <span class="error-message float-right" *ngIf="utensilsForm.controls.total_qty.hasError('pattern' )">Invalid
+          Input</span>
+        <input type="text" class="form-control" placeholder="Total Quantity"
+          [ngClass]="utensilsForm.controls.total_qty.hasError('required' ) && utensilsForm.controls.total_qty.touched || utensilsForm.controls.total_qty.hasError('pattern' ) ? 'is-invalid' : ''"
+          formControlName="total_qty" />
+      </div>
+
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" [disabled]="!utensilsForm.valid || utensilsForm.pristine"
+        (click)="addUtensils()">Submit</button>
+    </mat-dialog-actions>
+  </form>
+</div>

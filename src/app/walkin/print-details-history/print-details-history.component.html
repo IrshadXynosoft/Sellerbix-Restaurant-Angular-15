@@ -1,0 +1,40 @@
+<div class="modal-wrapper">
+  <button mat-icon-button class="close-button" (click)="close()">
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+  </button>
+  <h2 mat-dialog-title>Print Details</h2>
+  <mat-dialog-content>
+    <div class="row">
+      <div class="col-12">
+        <div class="bordered" >
+          <table class="table" *ngIf="canPrintExists()">
+            <thead>
+              <tr>
+                <th scope="col">Printer Name</th>
+                <th scope="col">Item Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let print of data.print">
+                <tr *ngIf="print.canPrint">
+                  <td class="capital">
+                    {{ print.printObj.settings?.printerName }}
+                  </td>
+                  <td style="text-transform: capitalize">
+                    <div *ngFor="let item of print.printObj.lineItems">
+                      <span class="mr-2">{{ item?.itemName }}</span> x
+                      {{ item?.quantity }}
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+          <div *ngIf="!canPrintExists()" class="px-4 py-4">
+            <p>No data available.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+</div>

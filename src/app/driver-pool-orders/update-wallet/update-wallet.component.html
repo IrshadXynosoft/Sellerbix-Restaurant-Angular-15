@@ -1,0 +1,37 @@
+<div class="modal-wrapper">
+    <form [formGroup]="amountForm">
+      <h2  mat-dialog-title>Update Wallet</h2>
+      <div mat-dialog-content >
+          <label>Amount</label>
+          <span class="error-message float-right">*</span>
+          <span class="error-message float-right"
+            *ngIf="amountForm.controls.amount.hasError('required' ) && amountForm.controls.amount.touched">required</span>
+          <span class="error-message float-right" *ngIf=" amountForm.controls.amount.hasError('pattern')">invalid
+            input</span>
+          <span class="error-message float-right" *ngIf="errorMessages.amount">
+            {{ errorMessages.amount }}</span>
+          <input type="text" class="form-control"
+            [ngClass]="amountForm.controls.amount.hasError('required' ) && amountForm.controls.amount.touched || amountForm.controls.amount.hasError('pattern') || errorMessages.amount ? 'is-invalid' : ''"
+            placeholder="amount" formControlName="amount" />
+          <label>Transaction Id</label>
+          <span class="error-message float-right">*</span>
+          <span class="error-message float-right"
+            *ngIf="amountForm.controls.transaction_id.hasError('required' ) && amountForm.controls.transaction_id.touched">required</span>
+          <span class="error-message float-right" *ngIf=" amountForm.controls.transaction_id.hasError('pattern')">invalid
+            input</span>
+          <span class="error-message float-right" *ngIf="errorMessages.transaction_id">
+            {{ errorMessages.transaction_id }}</span>
+          <input type="text" class="form-control"
+            [ngClass]="amountForm.controls.transaction_id.hasError('required' ) && amountForm.controls.transaction_id.touched || amountForm.controls.transaction_id.hasError('pattern') || errorMessages.transaction_id? 'is-invalid' : ''"
+            placeholder="Transaction Id" formControlName="transaction_id" />
+            <label>Remarks</label>
+            <textarea class="form-control" placeholder="Remarks" formControlName="remarks"></textarea>
+      </div>
+      <div mat-dialog-actions>
+        <button mat-flat-button class="btn-setup-danger" (click)="close()">Cancel</button>
+        <button mat-flat-button class="btn-setup-sucess"
+          (click)="addAmount()">Submit</button>
+      </div>
+    </form>
+  </div>
+  

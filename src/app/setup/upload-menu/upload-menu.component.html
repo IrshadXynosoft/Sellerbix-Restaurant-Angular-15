@@ -1,0 +1,11 @@
+<div class="modal-wrapper">
+    <h2 mat-dialog-title>Upload New Menu</h2>
+    <div mat-dialog-content>
+    <label>Select a Excel File</label>
+    <input type="file" class="form-control" accept=".xlsx" (change)="onFileChange($event)"/>
+    </div>
+    <div mat-dialog-actions>
+        <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+        <button class="btn-setup-sucess" (click)="uploadMenu()">Upload</button>
+    </div>
+</div>

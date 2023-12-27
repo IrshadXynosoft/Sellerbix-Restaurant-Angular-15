@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body id="page_setup">
+    
+
+    <!-- Body Wrapper Start -->
+    <div class="body_wrapper container-fluid">
+      <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+      <div class="px-4">
+        <div class="row pt-4">
+          <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                  Home
+                </li>
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  aria-current="page"
+                  routerLink="/setup"
+                >
+                  Setup
+                </li>
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  aria-current="page"
+                  routerLink="/setup/globalSettings"
+                >
+                  Global Settings
+                </li>
+                <li
+                  class="breadcrumb-item active cursor-pointer"
+                  aria-current="page"
+                >
+                  Referals
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-12">
+            <div class="d-flex align-items-center head-tag ">
+              <h4 class="flex-gr-1" >
+                <i class="icon-arrow-left mr-1 cursor-pointer" (click)="back()"></i>Referrals
+              </h4>
+              <button class="btn-setup-sucess" (click)="addReferal()">
+                <i class="icon-plus mr-1"></i>Add Referals
+              </button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Sample</td>
+                <td>
+                  <button class="btn-setup-sucess mr-1">
+                    <i class="icon-pencil mr-1"></i>Edit
+                  </button>
+                  <button class="btn-setup-danger">
+                    <i class="icon-trash mr-1"></i>Delete
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>Sample</td>
+                <td>
+                  <button class="btn-setup-sucess mr-1">
+                    <i class="icon-pencil mr-1"></i>Edit</button
+                  ><button class="btn-setup-danger">
+                    <i class="icon-trash mr-1"></i>Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

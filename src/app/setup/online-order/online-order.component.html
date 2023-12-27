@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body id="page_setup">
+ 
+
+    <!-- Body Wrapper Start -->
+    <div class="body_wrapper container-fluid">
+         <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+      <div class="px-4">
+        <div class="row pt-4">
+          <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">Home</li>
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  aria-current="page"
+                  routerLink="/setup"
+                >
+                  Setup
+                </li>
+                 <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/addons">
+                 Add-Ons
+                </li>
+                <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                  Onine Order
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-12">
+            <div class="d-flex align-items-center head-tag">
+              <h4 class="flex-gr-1"  ><i class="icon-arrow-left cursor-pointer" routerLink="/setup/addons"></i>Delivery Manager</h4>
+             
+            </div>
+          </div>
+        </div>
+        <div class="mb-2">
+          <label>Name</label>
+          
+        </div>
+        <div class="mb-2">
+          <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+        </div>
+        <div class="mb-2">
+          <mat-slide-toggle>Online Order</mat-slide-toggle>
+        </div>
+   </div>
+    </div>
+  </body>
+</html>

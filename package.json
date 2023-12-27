@@ -1,0 +1,118 @@
+{
+  "name": "Sellerbix",
+  "version": "2.4.0",
+  "description": "Restaurant POS application",
+  "main": "electron-main.js",
+  "author": "Xynosoft Solutions Pvt. Ltd",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Xynosoft/Unidiner-POS-Release-Only"
+  },
+  "build": {
+    "appId": "pos.restaurant.sellerbix",
+    "productName": "Sellerbix POS",
+    "icon": "src/assets/icons8-connect-256.ico",
+    "files": [
+      "dist/angular-build/**/*",
+      "electron-main.js"
+    ],
+    "directories": {
+      "output": "./dist/electron-publish"
+    },
+    "win": {
+      "publish": [
+        "github"
+      ],
+      "target": [
+        "nsis"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "installerIcon": "src/assets/icons8-connect-256.ico",
+      "uninstallerIcon": "src/assets/icons8-connect-256.ico",
+      "uninstallDisplayName": "Sellerbix uninstaller",
+      "license": "license.md",
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "installerHeader": "src/assets/installerHeader.bmp",
+      "installerSidebar": "src/assets/installerSidebar.bmp"
+    },
+    "linux": {},
+    "mac": {}
+  },
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "electron": "wait-on http://localhost:4200 && electron .",
+    "electron-dev": "concurrently \"npm run start\" \"npm run electron\"",
+    "build-pack": "ng build && electron-builder",
+    "build-win": "electron-builder --win",
+    "build-publish": "set GH_TOKEN=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 && ng build && electron-builder --win --publish always"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "^15.2.10",
+    "@angular/cdk": "^15.2.9",
+    "@angular/common": "^15.2.10",
+    "@angular/compiler": "^15.2.10",
+    "@angular/core": "^15.2.10",
+    "@angular/forms": "^15.2.10",
+    "@angular/material": "^15.2.9",
+    "@angular/material-moment-adapter": "^15.2.9",
+    "@angular/platform-browser": "^15.2.10",
+    "@angular/platform-browser-dynamic": "^15.2.10",
+    "@angular/router": "^15.2.10",
+    "@capacitor/android": "^3.5.1",
+    "@capacitor/core": "^3.5.1",
+    "@capacitor/ios": "^3.5.1",
+    "angularx-qrcode": "^14.0.0",
+    "apexcharts": "^3.33.2",
+    "crypto-js": "^4.1.1",
+    "electron-serve": "^1.1.0",
+    "electron-updater": "^5.2.1",
+    "lodash": "^4.17.21",
+    "lodash.compact": "^3.0.1",
+    "mat-table-exporter": "^15.0.0",
+    "moment": "^2.29.1",
+    "ng-apexcharts": "^1.7.0",
+    "ngx-drag-scroll": "^14.0.1",
+    "ngx-image-cropper": "^6.3.2",
+    "ngx-infinite-scroll": "^14.0.0",
+    "ngx-mqtt": "^9.0.5",
+    "ngx-online-status": "^2.0.0",
+    "ngx-print": "^1.3.1",
+    "owl.carousel": "^2.3.4",
+    "rxjs": "~6.6.0",
+    "sweetalert2": "^11.10.0",
+    "tslib": "^2.2.0",
+    "xlsx": "^0.18.5",
+    "zone.js": "~0.11.4"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^15.2.10",
+    "@angular/cli": "^15.2.10",
+    "@angular/compiler-cli": "^15.2.10",
+    "@capacitor/cli": "^3.5.1",
+    "@types/crypto-js": "^4.1.0",
+    "@types/googlemaps": "^3.39.13",
+    "@types/jasmine": "~3.8.0",
+    "@types/lodash": "^4.14.178",
+    "@types/node": "^12.11.1",
+    "concurrently": "^7.3.0",
+    "electron": "^17.4.11",
+    "electron-builder": "^23.3.3",
+    "electron-packager": "^15.4.0",
+    "jasmine-core": "~3.8.0",
+    "karma": "~6.3.0",
+    "karma-chrome-launcher": "~3.1.0",
+    "karma-coverage": "~2.0.3",
+    "karma-jasmine": "~4.0.0",
+    "karma-jasmine-html-reporter": "~1.7.0",
+    "typescript": "~4.9.5",
+    "wait-on": "^6.0.1"
+  }
+}

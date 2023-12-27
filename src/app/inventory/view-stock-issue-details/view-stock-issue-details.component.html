@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body id="page_setup">
+
+    <!-- Body Wrapper Start -->
+    <div class="body_wrapper container-fluid">
+          <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+
+      <div class="px-4">
+        <div class="row pt-4">
+          <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  routerLink="/home/walkin"
+                >
+                  Home
+                </li>
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  aria-current="page"
+                  routerLink="/inventory"
+                >
+                  Inventory
+                </li>
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  aria-current="page"
+                  routerLink="/inventory/stockIssues"
+                >
+                  Stock Issue
+                </li>
+                <li
+                  class="breadcrumb-item active cursor-pointer"
+                  aria-current="page"
+                >
+                  View Stock Issue
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-12">
+            <div class="d-flex align-items-center head-tag">
+              <h4 class="flex-gr-1">
+                <i class="icon-arrow-left cursor-pointer" (click)="back()"></i
+                >Stock Issue : {{ issuenumber }}
+              </h4>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-3">
+            <label>Order No/Ref:</label>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="issuenumber"
+              [disabled]="true"
+            />
+          </div>
+
+          <div class="col-12 col-md-3">
+            <label>Comments</label>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="comments"
+              [disabled]="true"
+            />
+          </div>
+          <div class="col-12 col-md-3">
+            <label>Location</label>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="branch"
+              [disabled]="true"
+            />
+          </div>
+        </div>
+        <table class="table tableStyleMain table-shadow w-100">
+          <thead>
+            <tr>
+              <th scope="col">Sr. No.</th>
+              <th scope="col">Item</th>
+              <th scope="col">Cost/Unit</th>
+              <th scope="col">Issued Quantity</th>
+              <th scope="col">Total ({{ currency_symbol }})</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of stockIssueArray; let i = index">
+              <td>
+                {{ i + 1 }}
+              </td>
+              <td>
+                {{ item.name }}
+              </td>
+              <td>
+                {{ item.cost_per_unit }}
+              </td>
+              <td>
+                {{ item.issued_Quantity }}
+              </td>
+              <td>
+                {{ item.total }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+        <div class="col-12 row mb-4">
+          <div class="col-12">
+            <span class="float-right"
+              >Total Amount {{ currency_symbol }}:<b>{{ total_price }}</b></span
+            >
+          </div>
+        </div>
+
+      </div>
+      <div class="b-right m-2">
+        <button class="btn-setup-danger btn-ht-custom mr-2" (click)="back()">Cancel</button>
+     </div>
+ 
+  </body>
+</html>

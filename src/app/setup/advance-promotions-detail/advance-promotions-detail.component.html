@@ -1,0 +1,123 @@
+<div class="modal-wrapper">
+    <button mat-icon-button class="close-button" (click)="close()">
+      <mat-icon class="close-icon" color="warn">close</mat-icon>
+    </button>
+    <h2 mat-dialog-title>{{data.detailData.promotion_title}}</h2>
+    <mat-dialog-content>
+      <div class="row">
+        <div class="col-12">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Trigger Type:</th>
+                <th scope="col">Applies To</th>
+                <th scope="col">Valid From:</th>
+                <th scope="col">Valid Until:</th>
+                <th scope="col">Repeating</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{data.detailData.trigger_type}}</td>
+                <td>{{data.detailData.applies_to}}</td>
+                <td>{{data.detailData.offer_start_date}}</td>
+                <td>{{data.detailData.offer_end_date}}</td>
+                <td>
+                    <span *ngIf="data.detailData.is_repeat">
+                        <i class="icon-ok mr-1"></i>
+                      </span>
+                      <span *ngIf="!data.detailData.is_repeat">
+                        <i class="icon-remove mr-1"></i>
+                      </span>
+                </td>
+                <td>
+                    <span *ngIf="data.detailData.status">
+                        <i class="icon-ok mr-1"></i>
+                      </span>
+                      <span *ngIf="!data.detailData.status">
+                        <i class="icon-remove mr-1"></i>
+                      </span>
+                </td>
+       
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12" >
+          <table class="table" style="table-layout: fixed">
+            <thead>
+              <tr>
+                <th scope="col">Promotion Type</th>
+                <th scope="col" >
+                    <span *ngIf="data.detailData.categories_to_count && data.detailData.categories_to_count.length>0"> Categories To Count</span>
+                    <span *ngIf="data.detailData.products_to_count && data.detailData.products_to_count.length>0"> Products To Count</span>
+                </th>
+                <th scope="col">
+                    <span *ngIf="data.detailData.categories_to_receive && data.detailData.categories_to_receive.length>0"> Categories To Receive</span>
+                    <span *ngIf="data.detailData.products_to_receive && data.detailData.products_to_receive.length>0"> Products To Receive</span>
+                </th>
+                
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr>
+                <td>
+                    {{data.detailData.promotion_type}}
+                </td>
+                <td style="word-wrap:break-word">
+                     {{countItems}}
+                </td>
+                <td style="word-wrap:break-word">
+                     {{receiveItems}}
+                </td>
+              
+              </tr>
+            </tbody>
+          </table>
+         
+        </div>
+      </div>
+      <div class="row">
+      <div class="col-12" >
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Purchase Quantity</th>
+              <th scope="col">Receive Quantity</th>
+              <th scope="col">Maximum Quantity</th>
+              <th scope="col">Minimum Quantity</th>
+              <th scope="col">Discount Type</th>
+              <th scope="col">Discount Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td> {{data.detailData.purchase_qty}}</td>
+              <td> {{data.detailData.receive_qty}}</td>
+              <td> {{data.detailData.min_qty}}</td>
+              <td> {{data.detailData.max_qty}}</td>
+              <td> {{data.detailData.discount_type}}</td>
+              <td> {{data.detailData.discount_value}} 
+            <span  *ngIf="data.detailData.discount_type=='percentage'"> %</span>
+            <span  *ngIf="data.detailData.discount_type=='value'"> {{currency_symbol}}</span>
+            <span  *ngIf="data.detailData.discount_type=='price'"> {{currency_symbol}}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+     <div class="text-right">
+        <button class="btn-setup-danger commonBtnStyle w-px-100" (click)="close()">
+          Cancel
+        </button>
+      </div>
+    </mat-dialog-actions>
+  </div>
+  

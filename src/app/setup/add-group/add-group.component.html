@@ -1,0 +1,53 @@
+<form [formGroup]="addgroupForm">
+  <!-- <div class="modal-wrapper"> -->
+  <h1 mat-dialog-title>{{data.header}}</h1>
+  <div mat-dialog-content>
+    <label>Group Name</label>
+    <select class="form-control w-100" formControlName="modifier_group_name">
+      <option value="">Select Modifier Group</option>
+      <option *ngFor="let group of modifierlistRecords" value={{group.name}}>{{group.name}}</option>
+    </select>
+    <span class="error-message"
+      *ngIf="!addgroupForm.controls.modifier_group_name.valid && addgroupForm.controls.modifier_group_name.touched">*required</span>
+
+    <p>Group Limits</p>
+    <div class="row">
+      <div class="col-6">
+        <label>Minimum</label>
+        <span class="error-message float-right" *ngIf="addgroupForm.controls.limit_minimum.hasError('pattern' )">invalid
+          input</span>
+        <input type="number" class="form-control" formControlName="limit_minimum" />
+        <span class="error-message"
+          *ngIf="!addgroupForm.controls.limit_maximum.valid && addgroupForm.controls.limit_maximum.touched">Please enter
+          min & max fields</span>
+
+      </div>
+      <div class="col-6">
+        <label>Maximum</label>
+        <input type="number" class="form-control" formControlName="limit_maximum" />
+        <span class="error-message" *ngIf="addgroupForm.errors ">{{ addgroupForm.errors.data | json }}</span>
+      </div>
+      <div class="col-6">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="1" id="mul_quantity"
+            formControlName="can_add_multiple">
+          <label class="form-check-label" for="flexCheckChecked">
+            Add Multiple Quantity
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="data.flagset;else edit" mat-dialog-actions>
+    <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+    <button class="btn-setup-sucess" (click)="submit()">Submit</button>
+  </div>
+  <ng-template #edit>
+    <div mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" (click)="Update()">Update</button>
+    </div>
+  </ng-template>
+
+
+</form>

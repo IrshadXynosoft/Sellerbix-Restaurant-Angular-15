@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <!-- <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                Setup
+              </li>
+              <li class="breadcrumb-item  cursor-pointer" aria-current="page" routerLink="/setup/{{ id }}/editLocation">
+                Location Setup
+              </li> -->
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page" routerLink="/setup/reports">
+                Reports
+              </li>
+              <li class="breadcrumb-item active" aria-current="page">
+                Item Wise Report
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1"> <i class="icon-arrow-left cursor-pointer" routerLink="/setup/reports"></i>Item Wise
+              Report</h4>
+          </div>
+        </div>
+      </div>
+      <form [formGroup]="generateItemWiseReportForm">
+        <div class="row">
+          <div class="col-12">
+
+            <span class="error-message float-right" *ngIf="itemValidation">
+              Required</span>
+            <input type="text" placeholder="Search Items, then hit enter to add" aria-label="Items" #autoInput
+              [formControl]="itemData" [matAutocomplete]="auto" class="form-control bordered" />
+            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+              (optionSelected)='itemSelected($event.option.id,autoInput)'>
+              <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name" [id]="option.id">
+                {{ option.name }}
+              </mat-option>
+            </mat-autocomplete>
+
+          </div>
+          <div class="col-12" *ngIf="itemFormGroups.value.length>0">
+            <table class="tableStyleMain table bordered">
+              <thead>
+                <tr>
+                  <th scope="col ">No</th>
+                  <th scope="col w-50">Items</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr formArrayName="itemData" *ngFor="
+                              let item of itemFormGroups.controls;
+                              let i = index
+                            ">
+                  <td>
+                    {{ i+1 }}
+                  </td>
+                  <td>
+                    {{ ItemName(i) }}
+                  </td>
+
+                  <td [formGroupName]="i">
+                    <button class="btn-setup-danger cust-pos-btn" (click)=clearItem(i);>
+                      <i class="icon-remove"></i>
+                    </button>
+                  </td>
+
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-3">
+            <label>From Date</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="generateItemWiseReportForm.controls.fromDate.hasError('required') && generateItemWiseReportForm.controls.fromDate.touched">
+              Required</span>
+
+            <input type="date" [min]="minDate" [max]="todayDate" placeholder="Code" class="form-control"
+              formControlName="fromDate" />
+          </div>
+          <div class="col-lg-3">
+            <label>To Date</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="generateItemWiseReportForm.controls.toDate.hasError('required') && generateItemWiseReportForm.controls.toDate.touched">
+              Required</span>
+            <input type="date" placeholder="Code" [min]="minDate" [max]="todayDate" class="form-control"
+              formControlName="toDate" />
+            <span class="error-message float-right" *ngIf="generateItemWiseReportForm.errors">{{
+              generateItemWiseReportForm.errors.dates | json }}</span>
+          </div>
+          <div class="col-lg-6" style="margin-top:2rem;">
+            <button class="btn-setup-sucess" (click)="generateReport()"
+              [disabled]="!generateItemWiseReportForm.valid || generateItemWiseReportForm.pristine">
+              <i class="icon-save mr-1"></i>Generate Report
+            </button>
+          </div>
+        </div>
+      </form>
+      <div *ngIf="salesReportArray.length <= 0; else showfinishedGoods">
+        <div class="row">
+          <div class="col-12">
+            <div class="not-found bordered">
+              <h3>Sorry :(</h3>
+              <p>No report available.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #showfinishedGoods>
+        <mat-accordion>
+          <mat-expansion-panel *ngFor="let item of salesReportArray ; let i = index;"
+            (opened)="itemsSelected(item.item_id)">
+            <mat-expansion-panel-header>
+              <mat-panel-title> {{item.item_name}} </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div *ngIf="dataSource.data.length <= 0; else showtable">
+              <div class="row">
+                <div class="col-12">
+                  <div class="not-found bordered">
+                    <h3>Sorry :(</h3>
+                    <p>No Report available for {{item.item_name}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ng-template #showtable>
+              <div class="row">
+                <div class="col-12">
+                  <button class="btn-setup-sucess float-right mb-2" (click)="exportExcel(item.item_name)">
+                    <i class="icon-plus mr-1"></i>Export to Excel
+                  </button>
+                </div>
+              </div>
+              <table *ngIf="dataSource.data.length > 0" mat-table matTableExporter #exporter="matTableExporter"
+                [dataSource]="dataSource" matSort class="tableStyleMain table bordered">
+                <ng-container matColumnDef="index">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    #
+                  </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{dataSource.data.indexOf(element) + 1}}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="order_no">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Order No
+                  </th>
+                  <td mat-cell *matCellDef="let element">{{ element.order_no }}</td>
+                </ng-container>
+                <ng-container matColumnDef="qty">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Quantity
+                  </th>
+                  <td mat-cell *matCellDef="let element">{{ element.qty }}</td>
+                </ng-container>
+                <ng-container matColumnDef="entity_name">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Entity
+                  </th>
+                  <td mat-cell *matCellDef="let element">{{ element.entity_name }}</td>
+                </ng-container>
+                <ng-container matColumnDef="branch_name">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Location
+                  </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.branch_name }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="staff_name">
+                  <th mat-header-cell *matHeaderCellDef>
+                    Staff
+                  </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.staff_name }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="date">
+                  <th mat-header-cell *matHeaderCellDef>
+                    Date
+                  </th>
+                  <td mat-cell *matCellDef="let element">{{ element.date| date }}</td>
+                </ng-container>
+                <ng-container matColumnDef="time">
+                  <th mat-header-cell *matHeaderCellDef>
+                    Time
+                  </th>
+                  <td mat-cell *matCellDef="let element">{{ element.time }}</td>
+                </ng-container>
+                <ng-container matColumnDef="amount">
+                  <th mat-header-cell *matHeaderCellDef>
+                    Amount ({{currency_symbol}})
+                  </th>
+                  <td mat-cell *matCellDef="let element">{{ element.amount }}</td>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                  <th mat-header-cell *matHeaderCellDef>
+                    Profit Status
+                  </th>
+                  <td mat-cell *matCellDef="let element">{{ element.profit_status }}</td>
+                </ng-container>
+                <ng-container matColumnDef="button">
+                  <th mat-header-cell *matHeaderCellDef>Actions</th>
+                  <td class="btn-wrp-equal" mat-cell *matCellDef="let element">
+                    <button class="btn-setup-sucess" matTooltip="View Order Details"
+                      (click)="viewDetails(element.orderDetails)">
+                      <i _ngcontent-pms-c429="" class="zmdi zmdi-eye"></i>
+                    </button>
+                  </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+              </table>
+            </ng-template>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </ng-template>
+
+      <!-- <div class="col-12 tableStyleMain table">
+        <div *ngIf="dataSource.data.length <= 0; else showtable">
+          <div class="row col-12">
+            <div class="col-12">
+              <div class="not-found">
+                <h3>Sorry :(</h3>
+                <p>No Report available</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ng-template #showtable>
+          <table *ngIf="dataSource.data.length > 0" mat-table [dataSource]="dataSource" matSort
+            class="tableStyleMain table">
+            <ng-container matColumnDef="index">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                #
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{dataSource.data.indexOf(element) + 1}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="order_no">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Order No
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.order_no }}</td>
+            </ng-container>
+            <ng-container matColumnDef="invoice_no">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Invoice No
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.invoice_no }}</td>
+            </ng-container>
+            <ng-container matColumnDef="entity_name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Entity
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.entity_name }}</td>
+            </ng-container>
+            <ng-container matColumnDef="branch_name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Location
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.branch_name }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="staff_name">
+              <th mat-header-cell *matHeaderCellDef>
+                Staff
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.staff_name }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef>
+                Date
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.date| date }}</td>
+            </ng-container>
+            <ng-container matColumnDef="time">
+              <th mat-header-cell *matHeaderCellDef >
+                Time
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.time }}</td>
+            </ng-container>
+            <ng-container matColumnDef="amount">
+              <th mat-header-cell *matHeaderCellDef >
+                Amount
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.amount }}</td>
+            </ng-container>
+            <ng-container matColumnDef="button">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td class="btn-wrp-equal" mat-cell *matCellDef="let element">
+                <button class="btn-setup-sucess" matTooltip="View Order Details" (click)="viewDetails(element.orderDetails)" >
+                  <i _ngcontent-pms-c429="" class="zmdi zmdi-eye"></i>
+                </button>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </ng-template>
+        <mat-paginator [ngClass]="{ show: dataSource.data.length <= 0 }" [pageSize]="8"
+          [pageSizeOptions]="[2, 4, 6, 10, 20]">
+        </mat-paginator>
+      </div> -->
+    </div>
+  </div>
+
+</body>
+
+</html>

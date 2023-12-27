@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/inventory">
+                Inventory
+              </li>
+              <li class="breadcrumb-item  cursor-pointer" aria-current="page" routerLink="/inventory/purchaseOrders">
+                Purchase Order
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                View Purchase Order
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1"> <i class="icon-arrow-left cursor-pointer" (click)="back()"></i>Purchase Order :
+              {{purchase_order_number}}</h4>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-md-3">
+          <label>Order No/Ref:</label>
+          <input type="text" class="form-control" [(ngModel)]="purchase_order_number" [disabled]="true">
+        </div>
+
+        <div class="col-12 col-md-2">
+          <label>Due Date</label>
+          <input type="text" class="form-control" [(ngModel)]="due_date" [disabled]="true">
+        </div>
+        <div class="col-12 col-md-3">
+          <label>Comments</label>
+          <input type="text" class="form-control" [(ngModel)]="comments" [disabled]="true">
+        </div>
+        <div class="col-12 col-md-2">
+          <label>Delivered To</label>
+          <input type="text" class="form-control" [(ngModel)]="branch" [disabled]="true">
+        </div>
+        <div class="col-12 col-md-2">
+          <label>Supplier</label>
+          <input type="text" class="form-control" [(ngModel)]="supplier" [disabled]="true">
+        </div>
+      </div>
+      <table class="table tableStyleMain bordered">
+        <thead>
+          <tr>
+            <th scope="col">Sr. No.</th>
+            <th scope="col">Item</th>
+            <th scope="col">Prev.Supplier </th>
+            <th scope="col" *ngIf="isSupplierPrice">Prev.Cost / Unit</th>
+            <th scope="col">Unit Value</th>
+            <!-- <th scope="col">Opening Balance</th> -->
+            <th scope="col">Ordered Quantity</th>
+            <th scope="col">Received Quantity</th>
+            <th scope="col">Closing Balance</th>
+            <th scope="col">Total ({{currency_symbol}})</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of ViewPOArray;let i=index">
+            <td>
+              {{i+1}}
+            </td>
+            <td>
+              {{item.name}}
+            </td>
+
+            <td>
+              {{item.prev_supplier}}
+            </td>
+            <td *ngIf="isSupplierPrice">
+              {{getSupplierPrice(item.received_price,item.buying_unit)}}
+              <!-- {{item.received_price}} {{currency_symbol}}/ {{item.measurement_unit_name}} -->
+            </td>
+            <td>
+              {{item.measurement_unit_name}}
+            </td>
+            <!-- <td>
+              {{findOpeningBalance(item)}}
+            </td> -->
+            <td>
+              {{item.buying_qty}} {{item.buying_unit}}
+            </td>
+            <td>
+              {{item.received_buying_qty?item.received_buying_qty:0}} {{item.buying_unit}}
+            </td>
+          <td>
+              {{item.on_hand_qty}} {{item.measurement_unit_name}}
+
+            </td>
+            <td>
+              {{item.line_total}}
+            </td>
+         </tr>
+
+        </tbody>
+      </table>
+      <div class="col-12 row mb-4">
+        <div class="col-12">
+          <span class="float-right">Total Amount {{currency_symbol}}:<b>{{total_price}}</b></span>
+        </div>
+      </div>
+    </div>
+
+    <div id="print-section" [hidden]="true">
+      <div class="purchase-order">
+        <div class="row">
+          <div class="col-6">
+            <div class="company-name">
+              {{orderArray.tenant_name}}
+            </div>
+            <p>Phone : {{orderArray.tenant_contact}}</p>
+            <p>Website : {{orderArray.website ? orderArray.website : '- - -'}}</p>
+          </div>
+          <div class="col-6">
+            <div class="heading">
+              PURCHASE ORDER
+            </div>
+            <div class="date">DATE <span>{{orderArray.date}}</span></div>
+            <div class="date">PO# <span>{{purchase_order_number}}</span></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="vendor">
+              VENDOR
+            </div>
+            <p>{{orderArray.supplier_name}}</p>
+            <p>Phone : {{orderArray.supplier_contact}}</p>
+            <p>{{orderArray.supplier_address1}}</p>
+            <p *ngIf="orderArray.supplier_address2">{{orderArray.supplier_address2}}</p>
+            <p>{{orderArray.supplier_email}}</p>
+          </div>
+          <div class="col-6">
+            <div class="vendor">
+              SHIPTO
+            </div>
+            <p>{{orderArray.branch}}</p>
+            <p>Phone : {{orderArray.branch_contact}}</p>
+            <p>{{orderArray.branch_address}}</p>
+            <p *ngIf="orderArray.branch_licence_no">{{orderArray.branch_licence_no}}</p>
+            <p>{{orderArray.branch_email}}</p>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>ITEM #</th>
+              <th>QTY</th>
+              <th>UNIT PRICE</th>
+              <th>TOTAL</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of ViewPOArray">
+              <td>{{item.name}}</td>
+              <td>{{item.qty}}</td>
+              <td>{{item.cost_per_unit.toFixed(2)}}</td>
+              <td>{{findTotal(item)}}</td>
+            </tr>
+            <tr>
+              <td class="blank"></td>
+              <td class="blank"></td>
+              <td class="blank"></td>
+              <td class="blank"></td>
+            </tr>
+            <tr>
+              <td class="blank"></td>
+              <td class="blank"></td>
+              <td class="blank"></td>
+              <td class="blank"></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="row">
+          <div class="col-8">
+            <div class="comments">
+              <div class="head">
+                Comments or Special Instructions
+              </div>
+              <p>{{orderArray.comments}}</p>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="label">Subtotal:</div>
+            <div class="value">{{currency_symbol}} {{orderArray.total_amount}}</div>
+
+            <!-- <div class="label">Tax:</div>
+            <div class="value">$0.00</div>
+
+            <div class="label">Shipping:</div>
+            <div class="value">$0.00</div> -->
+
+            <div class="label total">Total:</div>
+            <div class="value total-value">{{currency_symbol}} {{orderArray.total_amount}}</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 description">
+            If you have any questions about this purchase order, please contact<br>{{orderArray.tenant_name}} ,
+            {{orderArray.tenant_contact}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="b-right m-2">
+      <button class="btn-setup-danger btn-ht-custom mr-2" style="width:100px" (click)="back()">Cancel</button>
+      <button [useExistingCss]="true" printSectionId="print-section" printTitle="Purchase Order" ngxPrint
+        class="btn-setup-sucess" style="width:100px"> <i class="icon-print mr-1"></i>Print</button>
+    </div>
+  </div>
+
+</body>
+
+</html>

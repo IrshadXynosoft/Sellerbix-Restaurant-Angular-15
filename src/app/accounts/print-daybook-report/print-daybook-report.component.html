@@ -1,0 +1,354 @@
+<style>
+   @page {
+      size: 58mm 100mm
+   }
+
+   /* output size */
+   body.receipt .sheet {
+      width: 58mm;
+      height: 100mm
+   }
+
+   /* sheet size */
+   @media print {
+      body.receipt {
+         width: 58mm
+      }
+   }
+
+   /* fix for Chrome */
+</style>
+
+<body class="receipt">
+   <div class="modal-wrapper">
+      <div id="print-section" class="container modal-height mt-4">
+         <div class="header">
+            <h3>{{reportData?.branch}}</h3>
+            <h3>Cashier Sales Report</h3>
+            <h5>Printed by {{staff}} at {{today_date}}</h5>
+            <div class="date">
+               <h5>Business day: {{reportData?.business_day}}</h5>
+            </div>
+         </div>
+         <div class="summary" *ngIf="arrayDataCheck(reportData?.sale_summary)">
+            <h3>Sale Summary</h3>
+         </div>
+         <div class="content" *ngIf="arrayDataCheck(reportData?.sale_summary)">
+            <div class="row">
+               <div class="col-6 left">
+                  <strong>Name</strong>
+               </div>
+               <div class="col-3 left">
+                  <strong>Count</strong>
+               </div>
+               <div class="col-3 right">
+                  <strong style="float: right;">Total</strong>
+               </div>
+            </div>
+            <div class="row" *ngFor="let sale of reportData?.sale_summary">
+               <div class="col-6 left" *ngIf="sale.count !=0 && sale.amount !=0">
+                  <h5>{{sale.name}}</h5>
+               </div>
+               <div class="col-3 left" *ngIf="sale.count !=0 && sale.amount !=0">
+                  <h5>{{sale.count}}</h5>
+               </div>
+               <div class="col-3 right" *ngIf="sale.count !=0 && sale.amount !=0">
+                  <h5 style="float: right;">{{sale.total.toFixed(2)}}</h5>
+               </div>
+            </div>
+         </div>
+         <div class="summary" *ngIf="reportData?.entity_order.length > 0 && arrayDataCheck(reportData?.entity_order)">
+            <h3>Entity Orders</h3>
+         </div>
+         <div class="content" *ngIf="reportData?.entity_order.length > 0 && arrayDataCheck(reportData?.entity_order)">
+            <div class="row">
+               <div class="col-6 left">
+                  <strong>Name</strong>
+               </div>
+               <div class="col-3 left">
+                  <strong>Count</strong>
+               </div>
+               <div class="col-3 right">
+                  <strong style="float: right;">Total</strong>
+               </div>
+            </div>
+            <div class="row" *ngFor="let sale of reportData?.entity_order">
+               <div class="col-6 left" *ngIf="sale.count !=0 && sale.total !=0">
+                  <h5>{{sale.name}}</h5>
+                  <div *ngIf="sale.name==='Call Center'" style="margin-left: 10px;">
+                     <span >Take Away</span>
+                     <br><span >Delivery</span>
+                  </div>
+               </div>
+               <div class="col-3 left" *ngIf="sale.count !=0 && sale.total !=0">
+                  <h5>{{sale.count}}</h5>
+                  
+                  <div *ngIf="sale.name==='Call Center'">
+                    <span >{{sale.take_away.count}}</span>
+                     <br><span >{{sale.delivery.count}}</span>
+                  </div>
+               </div>
+               <div class="col-3" *ngIf="sale.count !=0 && sale.total !=0">
+                  <h5 style="float: right;">{{sale.total.toFixed(2)}}</h5><br>
+                  <div *ngIf="sale.name==='Call Center'" style="float: right;">
+                    <span >{{sale.take_away.amount.toFixed(2)}}</span>
+                     <br><span >{{sale.delivery.amount.toFixed(2)}}</span>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="summary" *ngIf="arrayDataCheck(reportData?.collection_summary)">
+            <h3>Cash/Card Collection Summary</h3>
+         </div>
+         <div class="content"
+            *ngIf="reportData?.collection_summary.length > 0 && arrayDataCheck(reportData?.collection_summary)">
+            <div class="row" *ngFor="let collection of reportData?.collection_summary">
+               <div class="col-6 left" *ngIf="collection.amount !=0">
+                  <h5>{{collection.name}} <span
+                        *ngIf="collection.sign && collection.sign !='null'">({{collection.sign}})</span></h5>
+               </div>
+               <div class="col-6 right" *ngIf="collection.amount !=0">
+                  <h5 style="float:right">{{collection.amount}}</h5>
+               </div>
+            </div>
+         </div>
+         <div class="summary" *ngIf="arrayDataCheck(reportData?.receipts)">
+            <h3>Receipts</h3>
+         </div>
+         <div class="content" *ngIf="arrayDataCheck(reportData?.receipts)">
+            <div class="row">
+               <div class="col-6 left">
+                  <strong>Name</strong>
+               </div>
+               <div class="col-3 left">
+                  <strong>Count</strong>
+               </div>
+               <div class="col-3 right">
+                  <strong style="float: right;">Total</strong>
+               </div>
+            </div>
+            <div class="row" *ngFor="let sale of reportData?.receipts">
+               <div class="col-6 left" *ngIf="sale.count !=0 && sale.amount !=0">
+                  <h5>{{sale.name}}</h5>
+               </div>
+               <div class="col-3 left" *ngIf="sale.count !=0 && sale.amount !=0">
+                  <h5>{{sale.count}}</h5>
+               </div>
+               <div class="col-3 right" *ngIf="sale.count !=0 && sale.amount !=0">
+                  <h5 style="float: right;">{{sale.amount}}</h5>
+               </div>
+            </div>
+         </div>
+         <div class="summary" *ngIf="arrayDataCheck(reportData?.receipts_summary)">
+            <h3>Receipts Summary</h3>
+         </div>
+         <div class="content"
+            *ngIf="reportData?.receipts_summary.length > 0 && arrayDataCheck(reportData?.receipts_summary)">
+            <div class="row">
+               <div class="col-6 left">
+                  <strong>Name</strong>
+               </div>
+               <div class="col-3 left">
+                  <strong>Count</strong>
+               </div>
+               <div class="col-3 right">
+                  <strong style="float: right;">Total</strong>
+               </div>
+            </div>
+            <div class="row" *ngFor="let sale of reportData?.receipts_summary">
+               <div class="col-6 left" *ngIf="sale.count !=0 && sale.amount !=0">
+                  <h5>{{sale.name}}</h5>
+               </div>
+               <div class="col-3 left" *ngIf="sale.count !=0 && sale.amount !=0">
+                  <h5>{{sale.count}}</h5>
+               </div>
+               <div class="col-3 right" *ngIf="sale.count !=0 && sale.amount !=0">
+                  <h5 style="float: right;">{{sale.amount.toFixed(2)}}</h5>
+               </div>
+            </div>
+         </div>
+         <div class="summary" *ngIf="arrayDataCheck(reportData?.payments)">
+            <h3>Payments</h3>
+         </div>
+         <div class="content" *ngIf="reportData?.payments.length > 0 && arrayDataCheck(reportData?.payments)">
+            <div class="row">
+               <div class="col-6 left">
+                  <strong>Name</strong>
+               </div>
+               <div class="col-3 left">
+                  <strong>Count</strong>
+               </div>
+               <div class="col-3 right">
+                  <strong style="float: right;">Total</strong>
+               </div>
+            </div>
+            <div class="row" *ngFor="let sale of reportData?.payments">
+               <div class="col-6 left" *ngIf="sale.count !=0 && sale.amount !=0">
+                  <h5>{{sale.name}}</h5>
+               </div>
+               <div class="col-3 left" *ngIf="sale.count !=0 && sale.amount !=0">
+                  <h5>{{sale.count}}</h5>
+               </div>
+               <div class="col-3 right" *ngIf="sale.count !=0 && sale.amount !=0">
+                  <h5 style="float: right;">{{sale.amount.toFixed(2)}}</h5>
+               </div>
+            </div>
+         </div>
+         <div class="summary" *ngIf="arrayDataCheck(reportData?.payments_summary)">
+            <h3>Payments Summary</h3>
+         </div>
+         <div class="content"
+            *ngIf="reportData?.payments_summary.length > 0 && arrayDataCheck(reportData?.payments_summary)">
+            <div class="row">
+               <div class="col-6 left">
+                  <strong>Name</strong>
+               </div>
+               <div class="col-3 left">
+                  <strong>Count</strong>
+               </div>
+               <div class="col-3 right">
+                  <strong style="float: right;">Total</strong>
+               </div>
+            </div>
+            <div class="row" *ngFor="let sale of reportData?.payments_summary">
+               <div class="col-6 left" *ngIf="sale.count !=0 && sale.amount !=0">
+                  <h5>{{sale.name}}</h5>
+               </div>
+               <div class="col-3 left" *ngIf="sale.count !=0 && sale.amount !=0">
+                  <h5>{{sale.count}}</h5>
+               </div>
+               <div class="col-3 right" *ngIf="sale.count !=0 && sale.amount !=0">
+                  <h5 style="float: right;">{{sale.amount.toFixed(2)}}</h5>
+               </div>
+            </div>
+         </div>
+         <div class="summary" *ngIf="arrayDataCheck(reportData?.item_discount)">
+            <h3>Item Discount</h3>
+         </div>
+         <div class="content" *ngIf="arrayDataCheck(reportData?.item_discount)">
+            <div class="row">
+               <div class="col-6 left">
+                  <strong>Name</strong>
+               </div>
+               <div class="col-3 left">
+                  <strong>Count</strong>
+               </div>
+               <div class="col-3 right">
+                  <strong style="float: right;">Total</strong>
+               </div>
+            </div>
+            <div class="row" *ngFor="let sale of reportData?.item_discount">
+               <div class="col-6 left" *ngIf="sale.count !=0 && sale.amount !=0">
+                  <h5>{{sale.name}}</h5>
+               </div>
+               <div class="col-3 left" *ngIf="sale.count !=0 && sale.amount !=0">
+                  <h5>{{sale.count}}</h5>
+               </div>
+               <div class="col-3 right" *ngIf="sale.count !=0 && sale.amount !=0">
+                  <h5 style="float: right;">{{sale.amount.toFixed(2)}}</h5>
+               </div>
+            </div>
+         </div>
+         <div class="summary" *ngIf="arrayDataCheck(reportData?.order_discount)">
+            <h3>Order Discount</h3>
+         </div>
+         <div class="content" *ngIf="arrayDataCheck(reportData?.order_discount)">
+            <div class="row">
+               <div class="col-6 left">
+                  <strong>Name</strong>
+               </div>
+               <div class="col-3 left">
+                  <strong>Count</strong>
+               </div>
+               <div class="col-3 right">
+                  <strong style="float: right;">Total</strong>
+               </div>
+            </div>
+            <div class="row" *ngFor="let sale of reportData?.order_discount">
+               <div class="col-6 left" *ngIf="sale.count !=0 && sale.amount !=0">
+                  <h5>{{sale.name}}</h5>
+               </div>
+               <div class="col-3 left" *ngIf="sale.count !=0 && sale.amount !=0">
+                  <h5>{{sale.count}}</h5>
+               </div>
+               <div class="col-3 right" *ngIf="sale.count !=0 && sale.amount !=0">
+                  <h5 style="float: right;">{{sale.amount.toFixed(2)}}</h5>
+               </div>
+            </div>
+         </div>
+
+         <div class="summary" *ngIf="arrayDataCheck(reportData?.waiter_orders)">
+            <h3>Waiter Orders</h3>
+         </div>
+         <div class="content" *ngIf="reportData?.waiter_orders.length > 0 && arrayDataCheck(reportData?.waiter_orders)">
+            <div class="row">
+               <div class="col-6 left">
+                  <strong>Name</strong>
+               </div>
+               <div class="col-3 left">
+                  <strong>Count</strong>
+               </div>
+               <div class="col-3 right">
+                  <strong style="float: right;">Total</strong>
+               </div>
+            </div>
+            <div class="row" *ngFor="let sale of reportData?.waiter_orders">
+               <div class="col-6 left" *ngIf="sale.count !=0 && sale.total !=0">
+                  <h5>{{sale.name}}</h5>
+               </div>
+               <div class="col-3 left" *ngIf="sale.count !=0 && sale.total !=0">
+                  <h5>{{sale.count}}</h5>
+               </div>
+               <div class="col-3 right" *ngIf="sale.count !=0 && sale.total !=0">
+                  <h5 style="float: right;">{{sale.total.toFixed(2)}}</h5>
+               </div>
+            </div>
+         </div>
+         <div class="summary" *ngIf="reportData?.staff_orders.length > 0 && arrayDataCheck(reportData?.staff_orders)">
+            <h3>Staff Orders</h3>
+         </div>
+         <div class="content" *ngIf="reportData?.staff_orders.length > 0 && arrayDataCheck(reportData?.staff_orders)">
+            <div class="row">
+               <div class="col-6 left">
+                  <strong>Name</strong>
+               </div>
+               <div class="col-3 left">
+                  <strong>Count</strong>
+               </div>
+               <div class="col-3 right">
+                  <strong style="float: right;">Total</strong>
+               </div>
+            </div>
+            <div class="row" *ngFor="let sale of reportData?.staff_orders">
+               <div class="col-6 left" *ngIf="sale.count !=0 && sale.total !=0">
+                  <h5>{{sale.name}}</h5>
+               </div>
+               <div class="col-3 left" *ngIf="sale.count !=0 && sale.total !=0">
+                  <h5>{{sale.count}}</h5>
+               </div>
+               <div class="col-3 right" *ngIf="sale.count !=0 && sale.total !=0">
+                  <h5 style="float: right;">{{sale.total.toFixed(2)}}</h5>
+               </div>
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-12">
+               <h5 style="text-align: center;margin-top: 5px;font-size: 15px;">--End--</h5>
+            </div>
+         </div>
+      </div>
+   </div>
+   <mat-dialog-actions>
+      <div  class="center-content">
+         <button class="btn-setup-danger mr-2" style="width:100px" (click)="close()">Close</button>
+         <!-- <button  [useExistingCss]="true" printTitle="Cashier Sales Report" printSectionId="print-section" ngxPrint
+           class="btn-setup-sucess" style="width:100px"> <i class="icon-print mr-1"></i>Print</button> -->
+         <button styleSheetFile="assets/css/print/daily-report-print.css" printSectionId="print-section" ngxPrint
+            class="btn-setup-sucess mr-2" style="width:100px">Print</button>
+         <button class="btn-setup-sucess" (click)="sendMail()">
+            Send Mail
+         </button>
+      </div>
+   </mat-dialog-actions>
+</body>

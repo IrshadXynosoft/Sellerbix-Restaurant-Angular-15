@@ -1,0 +1,35 @@
+.text-font{
+    font-size:large;
+}
+.radio-container{
+    margin-right: 15px;
+    display: inline-block;
+}
+.example-full-width {
+    width: 100%;
+  }
+ .label-align{
+    text-align: right;
+ } 
+
+ .label-center{
+     text-align: center;
+ }
+//  ::ng-deep input.mat-input-element { 
+//     background-color: white; 
+//     height: 46px;
+//     width: 100%;
+//     // border-radius: 0px; 
+//     // padding: 0 22px; 
+//     // margin-bottom: 0;
+//    }
+
+   .note{
+    color: gray;
+    font-size: 12px;
+    margin-left: 10px;
+  }
+
+  .extra{
+    padding: 20px; background-color: #ffff;
+  }

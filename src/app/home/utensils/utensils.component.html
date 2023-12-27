@@ -1,0 +1,37 @@
+<div class="modal-wrapper">
+    <button mat-icon-button class="close-button" (click)="close()">
+      <mat-icon class="close-icon" color="warn">close</mat-icon>
+    </button>
+    <h1 mat-dialog-title>Utensil</h1>
+  
+    <mat-dialog-content>
+      <ng-template #nodata>
+        <div class="row">
+          <div class="col-12">
+              <div class="not-found">
+                  <h3>Sorry :(</h3>
+                  <p>There's no Utensils yet at this moment.</p>
+              </div>
+          </div>
+      </div>
+      </ng-template>
+      <mat-selection-list [multiple]="false" *ngIf="utensilArray.length > 0;else nodata">
+        <mat-list-option *ngFor="let item of utensilArray;let index=index;" [value]="item.name"
+          (click)=utensilSelect(item,index)>
+         <div class="row">
+           <div class="col-9">
+            {{item.name}}
+           </div>
+           <div class="col-3">
+            <b>{{currency_symbol}}{{toPrice(item.selling_price)}}</b>
+           </div>
+         </div> 
+        </mat-list-option>
+      </mat-selection-list>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <div class="text-right button-sec">
+        <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      </div>
+    </mat-dialog-actions>
+  </div>

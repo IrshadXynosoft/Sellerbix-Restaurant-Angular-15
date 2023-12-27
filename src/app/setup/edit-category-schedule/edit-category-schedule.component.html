@@ -1,0 +1,54 @@
+<form [formGroup]="addmenuForm">
+    <div class="modal-wrapper">
+      <h2 mat-dialog-title>Edit Schedule</h2>
+      <div mat-dialog-content>
+          <label>Category Schedule</label>
+          <span class="error-message float-right" *ngIf="addmenuForm.controls.schedule_name.hasError('pattern')">*Invalid
+            Input</span>
+            <span class="error-message float-right" *ngIf="ErrorArray.name">{{ErrorArray.name}}
+            </span>
+          <input type="text" class="form-control" placeholder="Category Schedule Name" formControlName="schedule_name" />
+              <label>Choose days</label>
+            <span class="error-message float-right" *ngIf="addmenuForm.controls.schedule_name.value">*</span>
+              <div class="row">
+                  <div class="col-12 col-sm-2" >
+                      <mat-checkbox [checked]="allSelected" (change)="toggleAllSelection($event)" >
+                        All
+                      </mat-checkbox>
+                    </div>
+                <div class="col-12 col-sm-2" *ngFor="let data of days;let index = index;">
+                  <mat-checkbox  [checked]="data.status" (change)="onChange($event,  data)">
+                    {{data.name}}
+                  </mat-checkbox>
+                </div>
+              </div>
+          <label>Choose Time</label>
+            <span class="error-message float-right" *ngIf="addmenuForm.controls.schedule_name.value">*</span>
+          <div class="row">
+            <div class="col-12 col-sm-6">
+              <label>Available From</label>
+              <input type="time" class="form-control" placeholder="From" formControlName="start_time" min='01:30:01'
+                max='02:30:02' #dateFrom (change)="timevalid()" (keyup)="dateFromValue()" />
+              <span class="error-message"
+                *ngIf="!addmenuForm.controls.start_time.valid && addmenuForm.controls.start_time.touched && addmenuForm.controls.schedule_name.touched">*required</span>
+  
+            </div>
+            <div class="col-12 col-sm-6">
+              <label>Available Until</label>
+              <input type="time" class="form-control" placeholder="Until" min='01:30:01' max='02:30:02'
+                formControlName="end_time" #dateTo />
+              <span class="error-message"
+                *ngIf="!addmenuForm.controls.end_time.valid && addmenuForm.controls.end_time.touched && addmenuForm.controls.schedule_name.touched">*required</span>
+              <span class="error-message" *ngIf="dateTo.value<dateFrom.value">Until should be greater than From
+                time</span>
+            </div>
+          </div>
+      </div>
+      <div mat-dialog-actions>
+        <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+        <button class="btn-setup-sucess" (click)="addMenuCategory()"
+          [disabled]="!addmenuForm.valid">Update Schedule</button>
+      </div>
+    </div>
+  </form>
+  

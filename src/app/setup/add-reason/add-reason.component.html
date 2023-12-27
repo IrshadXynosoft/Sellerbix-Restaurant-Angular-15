@@ -1,0 +1,32 @@
+<form [formGroup]="addReasonForm">
+  <div class="modal-wrapper">
+    <h2 mat-dialog-title>Add Cancellation Reason</h2>
+    <div mat-dialog-content>
+      <span class="error-message float-right">*</span>
+      <span class="error-message float-right"
+        *ngIf="addReasonForm.controls.reason.hasError('required' ) && addReasonForm.controls.reason.touched">Required</span>
+      <span class="error-message float-right" *ngIf="errorMessages.reason">
+        {{ errorMessages.reason }}</span>
+      <input type="text" class="form-control" [ngClass]="addReasonForm.controls.reason.hasError('required' ) && addReasonForm.controls.reason.touched ? 'is-invalid' : ''" formControlName="reason" placeholder="Enter Reason" />
+      <div class=" mt-3">
+        <mat-radio-group aria-label="Select an option" formControlName="entity_id">
+          <mat-radio-button value="normal">
+            <label class="form-check-label mt-2" for="exampleRadios6">
+              Normal Order
+            </label>
+          </mat-radio-button>&nbsp;&nbsp;
+          <mat-radio-button value="online">
+            <label class="form-check-label mt-2" for="exampleRadios6">
+              Online Order
+            </label>
+          </mat-radio-button>
+        </mat-radio-group>
+
+      </div>
+    </div>
+    <div mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" [disabled]="!addReasonForm.valid" (click)="addReason()">Submit</button>
+    </div>
+  </div>
+</form>

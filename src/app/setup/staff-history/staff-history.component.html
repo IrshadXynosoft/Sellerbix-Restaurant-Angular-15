@@ -1,0 +1,27 @@
+<div class="modal-wrapper">
+    <h2 mat-dialog-title>User Login History</h2>
+    <div mat-dialog-content>
+    <p><strong>{{data.user_name}}</strong></p>
+    
+    <table class="table custom-cntr-scn" >
+        <thead>
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Login Time</th>
+            <th scope="col">Logout Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let history of userHistoryArray">
+            <td>{{history.date| date}}</td>
+            <td>{{history.login_time}}</td>
+            <td>{{history.logout_time?history.logout_time:'-'}}</td>
+          </tr>
+        
+        </tbody>
+      </table>
+    </div>
+    <div mat-dialog-actions>
+        <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+    </div>
+</div>

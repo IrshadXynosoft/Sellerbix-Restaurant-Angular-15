@@ -1,0 +1,203 @@
+<style>
+  @page {
+    size: 210mm 297mm;
+  }
+
+  /* output size */
+  body.receipt .sheet {
+    width: 210mm;
+    /* A4 width */
+    height: 297mm;
+    /* A4 height */
+  }
+
+  /* sheet size */
+  @media print {
+    body.receipt {
+      width: 210mm;
+    }
+  }
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4 px-2">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                Setup
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/inventorySetup">
+                Inventory Setup
+              </li>
+              <li class="breadcrumb-item active" aria-current="page" routerLink="/setup/inventorySetup/ingrdients">
+                Ingredients
+              </li>
+
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1">
+              <i class="icon-arrow-left mr-1 cursor-pointer" (click)="back()"></i>Ingredients
+            </h4>
+            <div class="d-flex">
+
+                <input type="text" placeholder="Search Ingredient." aria-label="MenuItem"
+                 [matAutocomplete]="auto" class="form-control bordered w-100"
+                #itemSearchText (keyup)="doFilter(itemSearchText.value)" />
+              <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                <mat-option *ngFor="
+                      let list_options of Options" [value]="list_options.ingredient.ingredient_name" [id]="list_options.ingredient.ingredient_id" (click)="IngredientSelected(list_options)">
+                  {{ list_options.ingredient.ingredient_name }}
+                </mat-option>
+              </mat-autocomplete>
+            </div>
+            <div class="d-flex" style="padding-bottom: 15px; padding-left: 5px">
+              <button class="btn-setup-sucess w-px-100" (click)="add()">
+                <i class="icon-plus mr-1"></i>Add
+              </button>
+              <button style="width: 120px;float: right;" *ngIf="dataSource.data.length>0" class="btn-setup-sucess"
+                [useExistingCss]="true" printSectionId="print-section" printTitle="Ingredients" ngxPrint>
+                <i class="icon-print mr-1"></i>Print
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+            <div class="row">
+            <div class="col-12 col-md-6"></div>
+            <div class="col-12 col-md-2"></div>
+            <div class="col-12 col-md-4">
+              <select class="form-control w-100 bordered" (change)=filterWithCategory($event)>
+                <option value=0>All Categories</option>
+                <option *ngFor="let category of categoryArray" value="{{ category.id }}">
+                  {{ category.name }}
+                </option>
+              </select>
+            </div>
+            <!-- <div class="col-12 col-md-3">
+                <select class="form-control w-100">
+                  <option selected="selected">All Types</option>
+                </select>
+              </div> -->
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="dataSource.data.length <= 0; else showtable">
+        <div class="row">
+          <div class="col-12">
+            <div class="not-found bordered">
+              <h3>Sorry :(</h3>
+              <p>No Ingredient Added. <br />
+                Click
+                <a routerLink="/setup/inventorySetup/subrecipes/add" (click)="add()">here</a>
+                to add Ingredient.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #showtable>
+        <div id="print-section" infinite-scroll [infiniteScrollDistance]="scrollDistance" [infiniteScrollUpDistance]="scrollUpDistance"
+        [infiniteScrollThrottle]="throttle" (scrolled)="onScrollDown($event)">
+       
+          <table mat-table  [dataSource]="dataSource" matSort #showtable
+            class="mat-z8 tableStyleMain table bordered"> 
+            <ng-container matColumnDef="index">
+              <th mat-header-cell *matHeaderCellDef >
+                #
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{dataSource.data.indexOf(element) + 1}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Name</th>
+              <td mat-cell *matCellDef="let element">{{ element.ingredient.ingredient_name }}</td>
+            </ng-container>
+            <ng-container matColumnDef="category">
+              <th mat-header-cell *matHeaderCellDef>Category</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.ingredient.ingredient_category_name }}</td>
+            </ng-container>
+            <ng-container matColumnDef="unit_name">
+              <th mat-header-cell *matHeaderCellDef>Measurement Unit</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.purchase_detail ? element.purchase_detail.measurement_unit_name : '-' }}</td>
+            </ng-container>
+            <ng-container matColumnDef="cost_per_unit">
+              <th mat-header-cell *matHeaderCellDef>Cost Per Measurement Unit</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.cost_per_unit.toFixed(4) }} </td>
+            </ng-container>
+            <ng-container matColumnDef="supplier">
+              <th mat-header-cell *matHeaderCellDef>Supplier</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.item_supplier ? element.item_supplier.supplier_name : '-' }}</td>
+            </ng-container>
+            <ng-container matColumnDef="supplier_unit">
+              <th mat-header-cell *matHeaderCellDef>Supplier Unit</th>
+              <td mat-cell *matCellDef="let element"> {{element.purchase_detail ?this.getUnit(element.purchase_detail):'--'}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="supplier_price">
+              <th mat-header-cell *matHeaderCellDef>Supplier Cost Price ({{currency_symbol}})</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.item_supplier?element.item_supplier.price:0}}</td>
+            </ng-container>
+            <ng-container matColumnDef="is_track_inventory">
+              <th mat-header-cell *matHeaderCellDef>Track Consumption?</th>
+              <td mat-cell *matCellDef="let element">
+                <span *ngIf="element.is_tracking">
+                  <i class="icon-ok mr-1"></i>
+                </span>
+                <span *ngIf="!element.is_tracking">
+                  <i class="icon-remove mr-1"></i>
+                </span>
+                </td>
+               
+            </ng-container>
+            
+            <ng-container matColumnDef="button">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td class="btn-wrp-equal" mat-cell *matCellDef="let element">
+                <button  class="btn-setup-sucess" routerLink="/setup/inventorySetup/ingredient/edit/{{element.ingredient.ingredient_id}}">
+                        <i _ngcontent-trm-c429="" class="zmdi zmdi-edit"></i>
+                    </button>
+                    <button class="btn-setup-danger" (click)="deleteIngredient(element.ingredient.ingredient_id, element.ingredient.ingredient_name)">
+                      <i _ngcontent-trm-c429="" class="zmdi zmdi-delete"></i>
+                    </button>
+              
+              </td>
+            </ng-container>
+    
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+      </div>
+     </ng-template>
+      <!-- <mat-paginator [pageSize]="100" [pageSizeOptions]="[2, 4, 6, 10, 20]"
+        [ngClass]="{ show: dataSource.data.length <= 0 }">
+      </mat-paginator> -->
+    </div>
+  </div>
+</body>
+
+</html>

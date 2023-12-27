@@ -1,0 +1,32 @@
+
+
+.tableStyleMain {
+  margin-top: 7px;
+
+  th {
+    //padding: 10px;
+   // border-right: 1px #e2e3e3 solid;
+    text-align: center;
+  }
+
+  td {
+    //padding: 10px;
+   // border-right: 1px #eceeee solid;
+    text-align: center;
+  }
+}
+// .table{
+//   border-collapse: unset !important;
+
+// }
+.table-shadow {
+  box-shadow: rgb(251, 175, 3) 0px 0px 0px 1px;
+}
+.negativeStockLabel{
+  position: relative;
+  top: 5px;
+ color:red;
+}
+.negative_qty{
+  color:red
+}

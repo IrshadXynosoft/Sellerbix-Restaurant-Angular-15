@@ -1,0 +1,77 @@
+<div class="modal-wrapper">
+  <button mat-icon-button class="close-button" (click)="close()">
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+  </button>
+  <h2 mat-dialog-title>Table {{ data.table.name }} Orders</h2>
+  <mat-dialog-content>
+    <div class="row">
+      <div class="col-12">
+        <button class="btn-setup-sucess w-100" (click)="splitTable()">
+          Split Table
+        </button>
+      </div>
+    </div>
+    <ul class="note-suggestions">
+      <li
+        (click)="onOrderIdClick(order)"
+        *ngFor="let order of data.table.orders"
+      >
+        <div class="row mb-2">
+          <div class="col-8">
+            <h3>
+              {{
+                order.order.customer_details.phone_number
+                  ? "Mob: " + order.order.customer_details.phone_number
+                  : "Order No: " + order.order_number
+              }}
+              <span>({{ order.order.items.length }} items)</span>
+            </h3>
+            <div class="name capital">
+              Guest:
+              {{
+                order.order.customer_details.name
+                  ? order.order.customer_details.name
+                  : "Unknown"
+              }}
+            </div>
+            <div class="name capital">
+              Waiter:
+              {{
+                order.order.assign_to?.name
+                  ? order.order.assign_to?.name
+                  : staff
+              }}
+            </div>
+          </div>
+          <div class="col-4">
+              <div class="name capital">Total: {{ order.order.Total }}</div>
+             <div> <button
+              class="print commonBtnStyle"
+              [matMenuTriggerFor]="menu"
+              (click)="$event.stopPropagation()"
+            >
+              <i class="icon-print mr-1"></i>Print
+            </button>
+            <mat-menu #menu="matMenu">
+              <button
+                mat-menu-item
+                (click)="Invoicereprint(order.id); $event.stopPropagation()"
+              >
+                Invoice  {{order.inv_print_count == 0 ? 'Print' : 'Reprint'}}
+              </button>
+              <!-- <button mat-menu-item (click)="reprint(order.id);$event.stopPropagation()">Kot Print</button> -->
+            </mat-menu></div>
+          </div>
+        </div>
+        <div class="down-ar-scn">Time : {{ order.time }}</div>
+      </li>
+    </ul>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <div class="text-right">
+      <button class="btn-setup-danger w-px-100" (click)="close()">
+        Cancel
+      </button>
+    </div>
+  </mat-dialog-actions>
+</div>

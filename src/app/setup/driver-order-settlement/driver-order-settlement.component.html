@@ -1,0 +1,95 @@
+<div class="modal-wrapper">
+  <button mat-icon-button class="close-button" (click)="close()">
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+  </button>
+  <h2 mat-dialog-title>Order Settlement</h2>
+
+  <div mat-dialog-content>
+
+    <div *ngIf="totalOrders<=0; else showtable">
+      <div class="row">
+        <div class="col-12">
+          <div class="not-found">
+            <h3>Sorry :(</h3>
+            <p>There are no orders yet at this moment.</p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #showtable>
+
+      <h3><strong>Amount collected for the business day {{dateCheck(businessday) }}</strong></h3>
+      <mat-card appearance="outlined" class="card">
+
+        <div class="data-holder">
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Total Orders:</th>
+                <th scope="col">Location:</th>
+                <th scope="col">Total Amount:</th>
+                <th scope="col">Sale:</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{totalOrders}}</td>
+                <td>
+                  {{branch_name}}
+                </td>
+                <td>{{Total != 0 ? Total : 0.00}} {{currency_symbol}}</td>
+                <td>
+                  <div *ngFor="let payments of list">
+                    {{payments.name}} : <strong>{{payments.amount}}</strong> {{currency_symbol}}
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Order Number</th>
+                <!-- <th scope="col">Location</th> -->
+                <th scope="col">Date & time</th>
+                <th scope="col">Amount ({{currency_symbol}})</th>
+                <th scope="col">Payment Type</th>
+                <th scope="col">Payment Recieved By</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let order of history;let orderindex = index">
+                <td>
+                  {{order.order_number}}
+                </td>
+                <!-- <td >
+                        {{order.branch.name}}
+                      </td> -->
+                <td>{{dateCheck(order.date)}}, {{timeCheck(order.time)}}</td>
+
+                <td>{{order.invoice.amount}}</td>
+
+                <td>{{getPaymentType(order)}}</td>
+                <td [ngClass]="{ staffadmin: order.invoice.staff?.user.name=='Admin' || !order.invoice.staff }">{{order.invoice.staff?order.invoice.staff.user.name:'pos'}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+
+        </div>
+      </mat-card>
+    </ng-template>
+  </div>
+
+  <div mat-dialog-actions>
+    <span class="float-right mb-2 mt-2" *ngIf="totalOrders>0"> <button class="btn-setup-sucess"
+        (click)="settleAll()">Settle All</button><br>
+    </span>
+
+  </div>
+</div>

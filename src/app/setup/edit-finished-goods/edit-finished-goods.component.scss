@@ -1,0 +1,29 @@
+.text-font{
+    font-size:large;
+}
+.radio-container{
+    margin-right: 15px;
+    display: inline-block;
+}
+.example-full-width {
+    width: 100%;
+  }
+ .label-align{
+    text-align: right;
+ } 
+
+ .label-center{
+     text-align: center;
+ }
+ .prf-scn {
+	background: var(--white);
+	margin: 15px 0;
+	padding: 15px;
+	
+	h4 {
+		font-size: 18px;
+		font-weight: 400;
+		color: #565656;
+	}
+
+  }

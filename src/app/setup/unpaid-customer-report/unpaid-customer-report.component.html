@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+  <!-- Body Wrapper Start -->
+
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <!-- <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                  Setup
+                </li>
+                <li class="breadcrumb-item  cursor-pointer" aria-current="page" routerLink="/setup/{{ id }}/editLocation">
+                  Location Setup
+                </li> -->
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/reports">
+                Reports
+              </li>
+              <!-- <li class="breadcrumb-item  cursor-pointer" aria-current="page"
+                routerLink="/setup/reports/unPaidOrderReport">
+                Unpaid Order Report
+              </li> -->
+              <li class="breadcrumb-item active" aria-current="page">
+                Unpaid Customer Report
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1"> <i class="icon-arrow-left cursor-pointer" (click)="back()"></i>Unpaid Customer Report
+            </h4>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 p-2">
+        <div class="d-flex head-tag">
+          <h4 class="flex-gr-1">
+
+          </h4>
+          <div class="d-flex">
+            <!-- <select class="form-control w-100" (change)="customerFilter($event)" >
+              <option value="0" selected>All</option>
+              <option *ngFor="let i of customerList" value="{{ i.id }}">
+                {{ i.name }}
+              </option>
+            </select> -->
+            <!-- <input
+            type="text"
+            style="text-align: center;"
+            placeholder="Search Customers"
+            matInput
+            [formControl]="customersData"
+            [matAutocomplete]="auto"
+            #autoInput
+          />
+
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            (optionSelected)="
+              customerSelected($event.option.value, $event.option.id,autoInput)
+            "
+          >
+            <mat-option
+              *ngFor="let list_options of filteredOptions | async"
+              [value]="list_options.name"
+              [id]="list_options.id"
+            >
+              {{ list_options.name }}
+            </mat-option>
+          </mat-autocomplete> -->
+            <!-- <input type="text" class="form-control" placeholder="Search" #searchText (keyup)="doFilter(searchText.value)" /> -->
+
+          </div>
+          <div class="d-flex" style="padding-bottom: 15px; padding-left: 5px" *ngIf="dataSource.data.length > 0">
+            <button class="btn-orange" (click)="printInvoice()"><i class="icon-print mr-1"></i>
+              Print</button>
+            <button class="btn-setup-sucess " (click)="exportExcel()">Export To Excel</button>
+            <!-- <button class="btn-setup-sucess " (click)="commercialInvoice()" *ngIf="dataSource.data.length > 1">Commercial Invoice</button> -->
+          </div>
+        </div>
+      </div>
+      <!-- <form [formGroup]="unpaidReportForm">
+        <div class="row col-12 ">
+            <div class="col-lg-3" >
+                <label>From Date</label>
+                <span class="error-message">*</span>
+                <span class="error-message float-right"
+                  *ngIf="unpaidReportForm.controls.fromDate.hasError('required') && unpaidReportForm.controls.fromDate.touched">
+                  Required</span>
+
+               <input type="date" placeholder="Code" [min]="minDate" [max]="todayDate" class="form-control"
+              formControlName="fromDate" />
+              </div>
+              <div class="col-lg-3" >
+                <label>To Date</label>
+                <span class="error-message">*</span>
+                <span class="error-message float-right"
+                  *ngIf="unpaidReportForm.controls.toDate.hasError('required') && unpaidReportForm.controls.toDate.touched">
+                  Required</span>
+               <input type="date" placeholder="Code" [min]="minDate" [max]="todayDate" class="form-control"
+              formControlName="toDate" />
+                <span class="error-message float-right" *ngIf="unpaidReportForm.errors">{{
+                  unpaidReportForm.errors?.dates | json }}</span>
+              </div>
+          <div class="col-lg-3" style="margin-top:2rem">
+            <button class="btn-setup-sucess" (click)="generateReport()">
+              <i class="icon-save mr-1"></i>generate Report
+            </button>
+          </div>
+        </div>
+
+      </form> -->
+      <div class="col-12 tableStyleMain table">
+        <div *ngIf="dataSource.data.length <= 0; else showtable">
+          <div class="row">
+            <div class="col-12">
+              <div class="not-found bordered">
+                <h3>Sorry :(</h3>
+                <p>No Report available,Search Customer to generate report </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ng-template #showtable>
+          <!-- <div class="d-flex float-right col-7" style="margin-bottom: 1rem;">
+            <input type="text" class="form-control" placeholder="Search" #searchText (keyup)="doFilter(searchText.value)" />
+            <button class="btn-setup-sucess " (click)="exportExcel()">Export to CSV</button>
+         </div> -->
+
+          <div class="row">
+            <div class="col-12 col-md-4">
+              <label>Customer Name</label>
+              <input type="text" class="form-control" [(ngModel)]="customer_name" [disabled]="true" />
+            </div>
+            <div class="col-12 col-md-4">
+              <label>Customer Contact Number</label>
+              <input type="text" class="form-control" [(ngModel)]="customer_contact" [disabled]="true" />
+            </div>
+
+            <!-- <div class="col-12 col-md-4">
+              <label>Customer Wallet Amount({{currency_symbol}})</label>
+              <input type="text" class="form-control" [(ngModel)]="wallet" [disabled]="true" />
+            </div> -->
+          </div>
+
+          <div class="row">
+            <div class="col-12 col-md-4">
+              <label>Total Amount({{currency_symbol}})</label>
+              <input type="text" class="form-control" [(ngModel)]="totalAmount" [disabled]="true" />
+            </div>
+            <div class="col-12 col-md-4">
+              <label>Total Unpaid({{currency_symbol}})</label>
+              <input type="text" class="form-control" [(ngModel)]="totalUnpaidAmount" [disabled]="true" />
+            </div>
+
+            <div class="col-12 col-md-4">
+              <label>Total Paid({{currency_symbol}})</label>
+              <input type="text" class="form-control" [(ngModel)]="totalPaidAmount" [disabled]="true" />
+            </div>
+          </div>
+          <table *ngIf="dataSource.data.length > 0" mat-table [dataSource]="dataSource" matSort matTableExporter
+            #exporter="matTableExporter" class="tableStyleMain table bordered">
+            <ng-container matColumnDef="index">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                #
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{dataSource.data.indexOf(element) + 1}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="order_no">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Order No
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.order_no }}</td>
+            </ng-container>
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Date
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.date|date }}</td>
+            </ng-container>
+
+            <!-- <ng-container matColumnDef="customer_name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Customer
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.customer_name }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="customer_contact">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Contact Number
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.customer_contact }}
+              </td>
+            </ng-container> -->
+            <ng-container matColumnDef="amount">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Bill Amount({{currency_symbol}})
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.amount }}</td>
+            </ng-container>
+            <ng-container matColumnDef="amount_to_pay">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Amount To Pay({{currency_symbol}})
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.amount_to_pay }}</td>
+            </ng-container>
+            <ng-container matColumnDef="amount_received">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Amount Received({{currency_symbol}})
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.amount_received }}</td>
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </ng-template>
+        <mat-paginator [ngClass]="{ show: dataSource.data.length <= 0 }" [pageSize]="50"
+          [pageSizeOptions]="[2, 4, 6, 10, 50]">
+        </mat-paginator>
+
+        <!-- <div class="b-right col-12 mt-2" [ngClass]="{ show: dataSource.data.length <= 0 }">
+          <div class="col-12 row summary-div">
+            <div class="col-10">
+              <span>Total Unpaid Amount ({{currency_symbol}})</span>
+            </div>
+            <div class="col-2">
+              <span><b>{{this.totalUnpaidAmount}}</b></span>
+            </div>
+          </div>
+        </div> -->
+      </div>
+
+
+    </div>
+
+  </div>
+
+</body>
+
+</html>

@@ -1,0 +1,23 @@
+<form [formGroup]="addLoyaltyForm">
+  <div class="modal-wrapper">
+    <h2 mat-dialog-title>Loyalty Group</h2>
+    <div mat-dialog-content>
+      <label>Name</label>
+      <span class="error-message">*</span>
+      <span class="error-message float-right"
+        *ngIf="addLoyaltyForm.controls.name.hasError('required' ) && addLoyaltyForm.controls.name.touched">Required</span>
+      <span class="error-message float-right" *ngIf="addLoyaltyForm.controls.name.hasError('pattern' )">Invalid
+        input</span>
+      <span class="error-message float-right" *ngIf="loyaltyErrors.name">
+        {{loyaltyErrors.name}}</span>
+      <input type="text" class="form-control"
+        [ngClass]="addLoyaltyForm.controls.name.hasError('required' ) && addLoyaltyForm.controls.name.touched || addLoyaltyForm.controls.name.hasError('pattern' ) || loyaltyErrors.name ? 'is-invalid' : ''"
+        placeholder="Loyalty Group Name:" formControlName="name" />
+    </div>
+    <div mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" *ngIf="data?.operation!='edit'" (click)="addLoyaltyGroup()">Submit</button>
+      <button class="btn-setup-sucess" *ngIf="data?.operation =='edit'" (click)="updateLoyaltyGroup()">Update</button>
+    </div>
+  </div>
+</form>

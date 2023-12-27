@@ -1,0 +1,153 @@
+<div class="commonModalMakinDiv">
+  <div class="modal-wrapper">
+    <button mat-icon-button class="close-button" (click)="close()">
+      <mat-icon class="close-icon" color="warn">close</mat-icon>
+    </button>
+    <h1 mat-dialog-title class="capital">{{data.item_name}}</h1>
+    <span class="error-message">{{errorMessage}}</span>
+    <mat-dialog-content>
+      <mat-tab-group class="capital" [(selectedIndex)]="defaultTabIndex">
+        <form>
+          <mat-tab *ngFor="let modifiergroup of modifierSelected;let groupindex=index" label={{modifiergroup.name}}>
+            <div *ngIf="modifiergroup.can_add_multiple == 0 ; else qtyBox">
+              <!-- radio button -->
+              <div *ngIf="modifiergroup.max_qty == 1; else checkbox" class="scn-content toppings-scn">
+                <h2 class="capital">{{modifiergroup.name}}
+                  <button class="qtydisplay">{{qtyShowingForCheckbox(modifiergroup)}}
+                    of
+                    {{modifiergroup.max_qty}}</button>
+                </h2>
+                <p *ngIf="modifiergroup.max_qty == modifiergroup.min_qty;else other">Please choose
+                  {{modifiergroup.max_qty}}.</p>
+                <ng-template #other>
+                  <p>
+                    Please choose minimum of {{modifiergroup.min_qty}} and maximum of {{modifiergroup.max_qty}}.
+                  </p>
+                </ng-template>
+                <div class="row">
+                  <div *ngFor="let modifierlist of modifiergroup.list let listIndex=index" class="col-12 col-md-6">
+                    <div>
+                      <mat-radio-group aria-label="Select an option" name="gh"
+                        (change)="onChangeRadio($event,groupindex, listIndex)">
+                        <mat-radio-button value="{{modifiergroup.status}}"
+                          [checked]="modifierlist.status ? 'true' : 'false'"><span
+                            class="capital">{{modifierlist.modifier_list}}</span> <br> <span
+                            class="d-block sp-ckbox">{{modifierlist.rate}} {{currency_symbol}}</span></mat-radio-button>
+                      </mat-radio-group>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- checkbox  -->
+              <ng-template #checkbox>
+                <div class="scn-content toppings-scn">
+                  <div class="borderdivMain">
+                    <h2 class="capital">{{modifiergroup.name}}
+                      <button class="qtydisplay">{{qtyShowingForCheckbox(modifiergroup)}}
+                        of
+                        {{modifiergroup.max_qty}}</button>
+                    </h2>
+                    <p>Please choose minimum of {{modifiergroup.min_qty}} and maximum of {{modifiergroup.max_qty}}.</p>
+                    <div class="row">
+                      <div *ngFor="let modifierlist of modifiergroup.list let listIndex=index" class="col-12 col-md-6">
+                        <div class="form-check">
+                          <div class="divPos">
+                            <input class="form-check-input" type="checkbox" value="{{modifiergroup.status}}"
+                              [checked]="(modifierlist.status ? 'checked' : '')"
+                              (change)="onChange($event,groupindex, listIndex)" />
+                          </div>
+                          <label class="form-check-label">
+                            <span class="capital">{{modifierlist.modifier_list}}</span>
+                            <span class="d-block sp-ckbox">+ {{modifierlist.rate}} {{currency_symbol}}</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+            <ng-template #qtyBox>
+              <!-- radio button -->
+              <div *ngIf="modifiergroup.max_qty == 1; else checkbox" class="scn-content toppings-scn">
+                <h2 class="capital">{{modifiergroup.name}}
+                  <button class="qtydisplay">{{listQtyValidation(groupindex)}}
+                    of
+                    {{modifiergroup.max_qty}}</button>
+                </h2>
+                <p *ngIf="modifiergroup.max_qty == modifiergroup.min_qty;else other">Please choose
+                  {{modifiergroup.max_qty}}.</p>
+                <ng-template #other>
+                  <p>
+                    Please choose minimum of {{modifiergroup.min_qty}} and maximum of {{modifiergroup.max_qty}}.
+                  </p>
+                </ng-template>
+                <div class="row">
+                  <div *ngFor="let modifierlist of modifiergroup.list let listIndex=index" class="col-12 col-md-6">
+                    <div class="form-check" style="padding-left:0px;">
+                      <mat-radio-group aria-label="Select an option" name="gh"
+                        (change)="onChangeRadio($event,groupindex, listIndex)">
+                        <mat-radio-button value="{{modifiergroup.status}}"
+                          [checked]="modifierlist.status ? 'true' : 'false'">
+                          <span class="capital">{{modifierlist.modifier_list}}</span> <br> <span
+                            class="d-block sp-ckbox">{{modifierlist.rate}} {{currency_symbol}}</span></mat-radio-button>
+                      </mat-radio-group>
+                    </div>
+                    <div class="quantity-box">
+                      <button class="minus" (click)="minusFn(modifierlist.list_qty,listIndex,groupindex)">-</button>
+                      <input type="text" #ip1 class="quantity-input" maxlength="3" [value]="modifierlist.list_qty"
+                        (input)="inputQty(ip1.value,listIndex,groupindex)">
+                      <button class="plus" (click)="plusFn(listIndex,groupindex)">+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- checkbox  -->
+              <ng-template #checkbox>
+                <div class="scn-content toppings-scn">
+                  <div class="borderdivMain">
+                    <h2 class="capital">{{modifiergroup.name}}
+                      <button class="qtydisplay">{{listQtyValidation(groupindex)}}
+                        of
+                        {{modifiergroup.max_qty}}</button>
+                    </h2>
+                    <p>Please choose minimum of {{modifiergroup.min_qty}} and maximum of {{modifiergroup.max_qty}}.</p>
+                    <div class="row">
+                      <div *ngFor="let modifierlist of modifiergroup.list let listIndex=index" class="col-12 col-md-6">
+                        <div class="form-check" style="padding-left:0px;">
+                          <label class="form-check-label">
+                            <span class="capital">{{modifierlist.modifier_list}}</span>
+                            <span class="d-block sp-ckbox">+ {{modifierlist.rate}} {{currency_symbol}}</span>
+                          </label>
+                        </div>
+                        <div class="quantity-box">
+                          <button class="minus" (click)="minusFn(modifierlist.list_qty,listIndex,groupindex)">-</button>
+                          <input type="text" #ip2 class="quantity-input" maxlength="3" [value]="modifierlist.list_qty"
+                            (input)="inputQty(ip2.value,listIndex,groupindex)">
+                          <button class="plus" (click)="plusFn(listIndex,groupindex)">+</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </ng-template>
+          </mat-tab>
+        </form>
+
+      </mat-tab-group>
+
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <div class="divMainall">
+        <button class="btnCancelMain mr-2" (click)="close()">Cancel</button>
+        <button *ngIf="data.operation==1" class="addModifier" (click)="addModifier()">Add Modifiers</button>
+        <button *ngIf="data.operation==2" class="addModifier" (click)="addModifier()">Update Modifiers</button>
+
+      </div>
+    </mat-dialog-actions>
+
+
+  </div>
+
+</div>

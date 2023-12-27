@@ -1,0 +1,37 @@
+<div class="modal-wrapper">
+    <h2 mat-dialog-title>Supplier Performance Graph - {{data.name}} (Last 30 Days)</h2>
+    <mat-dialog-content>
+  
+        <ng-template #viewmessage>
+          <div class="row">
+            <div class="col-12">
+              <div class="not-found bordered">
+                <h3>Sorry :(</h3>
+                <p>There's no Purchase Orders for {{data.name}} at this moment.</p>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <div class="row" *ngIf="reportData;else viewmessage ">
+            <div class="col-12 col-sm-12 col-md-12">
+              <div
+                class="text_box orders_insights chart-area top-selling-items p-4 p-xl-5 pb-5  animate__animated animate__zoomIn wow"
+                data-wow-duration="1s">
+                <div id="chart">
+                  <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart"
+              [dataLabels]="chartOptions.dataLabels" [plotOptions]="chartOptions.plotOptions"
+              [yaxis]="chartOptions.yaxis" [legend]="chartOptions.legend" [fill]="chartOptions.fill"
+              [stroke]="chartOptions.stroke" [tooltip]="chartOptions.tooltip" [xaxis]="chartOptions.xaxis"></apx-chart>
+                </div>
+              </div>
+            </div>
+
+   </div>
+  
+    
+    </mat-dialog-content>
+  
+    <mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="back()">Close</button>
+    </mat-dialog-actions>
+  </div>

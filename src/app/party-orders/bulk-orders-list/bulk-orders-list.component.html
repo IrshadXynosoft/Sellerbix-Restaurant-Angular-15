@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag">
+            <h2>
+              <span class="d-block order-h-2">Party Orders</span>
+              <!-- <span class="d-block order-h-2">{{today}} </span> -->
+            </h2>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="orderRecords.length <= 0; else showtable">
+        <div class="row">
+          <div class="col-12">
+            <div class="not-found">
+              <h3>Sorry :(</h3>
+              <p>There's no orders yet at this moment.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #showtable>
+        <div class="bordered">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Customer Name</th>
+                  <th scope="col">Est.Amount ({{currency_symbol}})</th>
+                  <th scope="col">Advance paid({{currency_symbol}})</th>
+                  <th scope="col">Booking Date</th>
+                  <th scope="col">Delivery Date</th>
+                  <th scope="col">Delivery Time</th>
+                  <th scope="col">Delivery type</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let orders of orderRecords">
+                  <td class="cursor-pointer click-edit" (click)="details(orders)">
+                    <div *ngIf="orders.booking_order_json.customer_details.name">{{orders.booking_order_json.customer_details.name}}</div>
+                    <div *ngIf="orders.booking_order_json.customer_details.phone_number">{{orders.booking_order_json.customer_details.phone_number}}</div>
+                  </td>
+                  <td>{{orders.booking_order_json.Cart.amount}}
+                  </td>
+                  <td>{{orders.payment_order_json ? orders.payment_order_json.amount_received : "--"}}</td>
+                  <td>{{orders.booking_order_json.current_date}}</td>
+                  <td>{{orders.delivery_date}}</td>
+                  <td>{{orders.time}}</td>
+                  <td *ngIf="orders.booking_order_json.order_type == 2">Dine in</td>
+                  <td *ngIf="orders.booking_order_json.order_type == 4">Take Away</td>
+                  <td *ngIf="orders.booking_order_json.order_type == 3">Delivery</td>
+                  <td *ngIf="orders.status == 1">
+                   <div class="actions">
+                    <button class="btn-setup-sucess"  (click)="BulkOrders(orders)">
+                      Confirm
+                    </button>
+                    <button class="btn-setup-sucess primary"  (click)="ModifyOrder(orders)">
+                      Modify
+                    </button>
+                    <button class="btn-setup-danger "  (click)="deleteOrder(orders)">
+                      Delete
+                    </button>
+                   </div>
+                  </td>
+                  <td *ngIf="orders.status == 2">
+                    <b>Order Taken</b>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          <!-- <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Total Orders:</th>
+                <th scope="col">Paid Amount:</th>
+                <th scope="col">Unpaid Amount:</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{orderRecords.length}}</td>
+                <td>{{totalOrdersAmount}}</td>
+                <td>{{totalUnpaid}}</td>
+              </tr>
+            </tbody>
+          </table> -->
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</body>
+
+</html>

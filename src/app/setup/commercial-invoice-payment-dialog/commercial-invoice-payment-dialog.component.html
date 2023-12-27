@@ -1,0 +1,64 @@
+<div class="modal-wrapper">
+ 
+    <!-- <h2 mat-dialog-title style="text-align: center; color: #4c3e95;">Payment</h2> -->
+    <mat-dialog-content>
+      <div *ngIf="!balanceFlag;else balanceAmount">
+          <mat-icon class="close-icon" color="warn" (click) = "close()">close</mat-icon>
+        <h3 style="text-align: center;">TOTAL AMOUNT( {{currency_symbol}} )</h3>
+        <h1 class="amount">{{data.Cart.amount}}</h1><br>
+        <div *ngIf="multiPaymentFlag">
+          <table *ngIf="paymentArray.length>0" style="width:100%; text-align: center;">
+            <tr *ngFor="let item of paymentArray;let i = index;">
+              <td>{{item.payment_name}}</td>
+              <td>{{item.amount}}</td>
+              <td>
+                <mat-icon class="remove" (click)="removeAmount(i)">close</mat-icon>
+              </td>
+            </tr>
+          </table>
+        </div><br>
+        <form [formGroup]="paymentForm">
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group">
+                <input tabindex="-1" type="text" class="form-control" placeholder="Amount" formControlName="amount" />
+                <span class="error-message float-left" *ngIf="paymentForm.controls.amount.hasError('pattern')">invalid
+                  input</span>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="margin-right: 0;">
+            <div class="col-4" *ngFor="let payment of paymentMethods">
+              <mat-card appearance="outlined" [ngClass]=getClass(payment) (click)="paymentButtonClick(payment.id,payment.name)">
+                <h4> {{ payment.name }} <strong
+                    *ngIf="calculatedLoyaltyPrice != 0.00 && payment.id==3">({{calculatedLoyaltyPrice}}
+                    {{currency_symbol}})</strong>
+                </h4>
+              </mat-card>
+            </div>
+          </div>
+        </form>
+      </div>
+      <ng-template #balanceAmount>
+        <div>
+          <h3 style="text-align: center;">Balance( {{currency_symbol}} )</h3>
+          <h1 style="text-align: center;">{{balance}}</h1>
+        </div>
+      </ng-template>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <div *ngIf="!balanceFlag;else okbutton">
+        <button class="btn-setup-danger commonBtnStyle" style="position:absolute;left:2rem;" (click)="payLater()">Pay Later
+          </button>
+        <button class="btn-setup-sucess  commonBtnStyle" (click)="confirmOrder()">Confirm</button>
+      </div>
+      <ng-template #okbutton>
+        <div>
+          <button class="btn-setup-danger commonBtnStyle mr-1" (click)="paymentReturn()">Return</button>
+          <button class="btn-setup-sucess commonBtnStyle mr-1" (click)="addtowallet()">Add to wallet</button>
+          <button class="btn-setup-sucess commonBtnStyle mr-1" (click)="paymentBalance()">Ok</button>
+        </div>
+      </ng-template>
+    </mat-dialog-actions>
+  </div>
+  

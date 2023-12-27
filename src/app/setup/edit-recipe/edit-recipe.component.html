@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <form [formGroup]="addRecipeForm">
+    <div class="body_wrapper container-fluid">
+        <!-- Header Start -->
+  <app-header></app-header>
+  <!-- Header End -->
+      <div class="px-4">
+        <div class="row pt-4">
+          <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                  Home
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                  Setup
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/inventorySetup">
+                  Inventory Setup
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page"
+                  routerLink="/setup/inventorySetup/recipes">
+                  Recipe
+                </li>
+
+              </ol>
+            </nav>
+          </div>
+          <!-- <div class="col-6 col-sm-4">
+            <div class="img-company-det">
+              <img src="assets/images/rt.jpg" />
+            </div>
+          </div>
+          <div class="col-6 col-sm-8">
+            <div class="company-detinner-scn">
+              <h2>
+                Cheese <span><i class="icon-print"></i></span>
+              </h2>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Preparation Method</th>
+                    <th scope="col">Ingredients:</th>
+                    <th scope="col">Sale Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>baking</td>
+                    <td>Chicken (5.0 kg )</td>
+                    <td>250.00QAR</td>
+                  </tr>
+                  <tr>
+                    <td>baking</td>
+                    <td>Chicken (5.0 kg )</td>
+                    <td>250.00QAR</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div> -->
+        </div>
+        <div class="row">
+          <div class="col-12 ">
+            <div class="d-flex align-items-center head-tag">
+              <h4 class="flex-gr-1">
+                <i class="icon-arrow-left mr-2  cursor-pointer" (click)="back()"></i>Recipe For {{recipe_name}}
+              </h4>
+            </div>
+          </div>
+          <div class=" prf-scn bordered w-100">
+            <div>
+              <label class="mt-3">Measurement Unit</label>
+              <span class="error-message"> *</span>
+              <span class="error-message float-right"
+                *ngIf="addRecipeForm.controls.measurement_unit_id.hasError('required') && addRecipeForm.controls.measurement_unit_id.touched">
+                Required</span>
+              <div class="row ml-1">
+                <select class="custom-select" style="width:40%" [ngClass]="addRecipeForm.controls.measurement_unit_id.hasError('required' ) && 
+           addRecipeForm.controls.measurement_unit_id.touched  ? 'is-invalid' : ''"
+                  formControlName="measurement_unit_id" (change)="measurementChanged($event)">
+                  <option value="">Select Unit</option>
+                  <option *ngFor="let unit of measurementArray" value="{{ unit.id }}">
+                    {{ unit.name }}
+                  </option>
+                </select>
+                <i class="icon-plus ml-2 mt-3 cursor-pointer" matTooltip="Add Measurement Unit"
+                  (click)="addMeasurementUnit()"></i> <br>
+                <!-- <span class="note">NB : Please select a lowest measurement Unit</span> -->
+              </div>
+            </div>
+
+            <h4 class="mt-3">Ingredients/Sub Recipes
+            <span class="error-message">*</span></h4>
+            <span class="error-message" *ngIf="ingredientVlidation">required</span>
+            <input type="text" placeholder="  Search Ingredients/Subrecipes, then hit enter to add"
+              aria-label="Ingredientss" [formControl]="ingredientsData" [matAutocomplete]="auto"
+              class="form-control bordered w-100" #autoInput (keyup)="searchItem(autoInput.value)"/>
+            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+             >
+              <mat-option *ngFor="let option of options" [value]="option.name" [id]="option.id"  (click)='ingredientSelected(option,option.value,autoInput)'>
+                {{ option.name }}
+              </mat-option>
+            </mat-autocomplete>
+            <div *ngIf="isIngredientsAdded(); else showtable">
+              <div class="row">
+                <div class="col-12">
+                  <div class="not-found bordered">
+                    <h3>Sorry :(</h3>
+                    <p>No Ingredients/SubRecipes Added
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ng-template #showtable>
+            <table class="tableStyleMain table mt-2">
+              <thead>
+                <tr>
+                  <th scope="col">No</th>
+                  <th scope="col">Ingredient</th>
+                  <th scope="col">Qty</th>
+                  <th scope="col">Unit Name</th>
+                  <th scope="col">
+                    Cost / Unit <span class="sp-light">({{currency_symbol}})</span>
+                  </th>
+                  
+                  <th scope="col">
+                    Sub-total<span class="sp-light">({{currency_symbol}})</span>
+                  </th>
+                  <th scope="col">Last updated</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr formArrayName="ingredientsData" *ngFor="
+                          let item of ingredientFormGroups.controls;
+                          let i = index
+                        ">
+                  <td>
+                    {{ i+1 }}
+                  </td>
+                  <td>
+                    {{ IngredientName(i) }}
+                  </td>
+                  <td [formGroupName]="i">
+                    <span class="error-message float-right">{{qtyCheck(i)}}</span>
+                    <input type="text" class="form-control" placeholder="" formControlName="qty" (keyup)=findTotal(i) />
+                  </td>
+                  <td>
+                    {{ unitName(i) }}
+                  </td>
+                  <td>
+                    {{ costperUnit(i) }}
+                  </td>
+                 
+
+                  <td [formGroupName]="i">
+                    {{ subTotal(i) }}
+                  </td>
+                  <td [formGroupName]="i">
+                    -
+                  </td>
+                  <td [formGroupName]="i">
+                    <i class="icon-trash mr-1 icon-red cursor-pointer" (click)="clearIngredient(i)"></i>
+                  </td>
+
+                </tr>
+
+              </tbody>
+            </table>
+            </ng-template>
+          </div>
+          <div class="row col-12 prf-scn bordered">
+            <div class="col-lg-5">
+              <h4>Utility Expenses</h4>
+              <input type="text" placeholder="  Search Utilities, then hit enter to add" aria-label="Utilities" 
+                [matAutocomplete]="utility" [formControl]="utilitiesData" class="form-control bordered w-100" #utilityInput />
+              <mat-autocomplete autoActiveFirstOption #utility="matAutocomplete"
+                (optionSelected)='utilitiesSelected($event.option.id,$event.option.value,utilityInput)'>
+                <mat-option *ngFor="let utility of utilities" [value]="utility.name" [id]="utility.id">
+                  {{ utility.name }}
+                </mat-option>
+              </mat-autocomplete>
+              <div *ngIf="isutilityAdded(); else showutilitytable">
+                <div class="row">
+                  <div class="col-12">
+                    <div class="not-found bordered">
+                      <h3>Sorry :(</h3>
+                      <p>No Utility expenses Added
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <ng-template #showutilitytable>
+              <table class="tableStyleMain table mt-2">
+                <thead>
+                  <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Utility</th>
+                    <th scope="col">Expense<span class="sp-light">({{currency_symbol}})</span></th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr formArrayName="utilitiesData" *ngFor="
+                          let item of utilityFormGroups.controls;
+                          let i = index
+                        ">
+                    <td>
+                      {{ i+1 }}
+                    </td>
+                    <td>
+                      {{ utilityName(i) }}
+                    </td>
+
+                    <td [formGroupName]="i">
+                      <span class="error-message float-right">{{utilityCheck(i)}}</span>
+                      <input type="text" class="form-control w-20" placeholder="" formControlName="utility_cost"
+                        (keyup)=findutilityTotal(i) />
+                    </td>
+                    <td [formGroupName]="i">
+                      <i class="icon-trash mr-1 icon-red cursor-pointer" (click)="clearutility(i)"></i>
+                    </td>
+
+                  </tr>
+
+                </tbody>
+              </table>
+              </ng-template>
+            </div>
+            <div class="col-lg-7">
+              <h4>Item Preferences</h4>
+              <div class="row col-12">
+                <div class="col-12 col-lg-4">
+                  <label>VAT/Tax Rate (%)<span class="error-message ">*</span></label>
+                  
+                  <span class="error-message float-right"
+                    *ngIf="addRecipeForm.controls.tax_rate.hasError('required' ) && addRecipeForm.controls.tax_rate.touched">Required</span>
+                  <span class="error-message float-right"
+                    *ngIf="addRecipeForm.controls.tax_rate.hasError('pattern' )">Invalid input</span>
+                  <input type="text" placeholder="VAT/Tax Rate" maxlength="6" [ngClass]="addRecipeForm.controls.tax_rate.hasError('required' ) && 
+                    addRecipeForm.controls.tax_rate.touched || 
+                    addRecipeForm.controls.tax_rate.hasError('pattern' )  ? 'is-invalid' : ''" class="form-control"
+                    formControlName="tax_rate" (keyup)="findRecipeCostValues()" />
+
+
+                </div>
+                <div class="col-12 col-lg-4">
+                  <label>Waste (%)  <span class="error-message ">*</span></label>
+                 
+                  <span class="error-message float-right"
+                    *ngIf="addRecipeForm.controls.waste_percentage.hasError('required' ) && addRecipeForm.controls.waste_percentage.touched">Required</span>
+                  <span class="error-message float-right"
+                    *ngIf="addRecipeForm.controls.waste_percentage.hasError('pattern' )">Invalid input</span>
+
+                  <input type="text" placeholder="Waste" maxlength="6" [ngClass]="addRecipeForm.controls.waste_percentage.hasError('required' ) && 
+                    addRecipeForm.controls.waste_percentage.touched || 
+                    addRecipeForm.controls.waste_percentage.hasError('pattern' )  ? 'is-invalid' : ''"
+                    formControlName="waste_percentage" class="form-control" (keyup)="findRecipeCostValues()" />
+                </div>
+                <div class="col-12 col-lg-4">
+                  <label>Targeted Food Cost (%)  <span class="error-message ">*</span></label>
+                
+                  <span class="error-message float-right"
+                    *ngIf="addRecipeForm.controls.targeted_food_cost_percentage.hasError('required' ) && addRecipeForm.controls.targeted_food_cost_percentage.touched">Required</span>
+                  <span class="error-message float-right"
+                    *ngIf="addRecipeForm.controls.targeted_food_cost_percentage.hasError('pattern' )">Invalid
+                    input</span>
+
+                  <input type="text" placeholder="Targeted Food Cost" [ngClass]="addRecipeForm.controls.targeted_food_cost_percentage.hasError('required' ) && 
+                    addRecipeForm.controls.targeted_food_cost_percentage.touched || 
+                    addRecipeForm.controls.targeted_food_cost_percentage.hasError('pattern' )  ? 'is-invalid' : ''"
+                    formControlName="targeted_food_cost_percentage" maxlength="6" (keyup)="findRecipeCostValues()"
+                    class="form-control" />
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+          <div class="row col-12 prf-scn bordered">
+            <div class="col-12 col-md-5 ">
+              <h4>Preparation Cost</h4>
+              <table class="tableStyleMain table">
+                <thead>
+                  <tr>
+                    <th scope="col">Cost Price  <span class="sp-light">({{currency_symbol}})</span></th>
+                    <th scope="col">Cost Price & Wastage  <span class="sp-light">({{currency_symbol}})</span></th>
+                    <th scope="col">Food Cost  <span class="sp-light">({{currency_symbol}})</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><label clas="form-control">{{cost_price}}</label></td>
+                    <td><label clas="form-control">{{cost_price_plus_wastage}}</label></td>
+                    <td><label clas="form-control">{{food_cost_percentage}}</label></td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+            <div class="col-12 col-md-4">
+              <h4>Sale</h4>
+              <table class="tableStyleMain table">
+                <thead>
+                  <tr>
+                    <th scope="col">Suggested Selling Pricec <span class="sp-light">({{currency_symbol}})</span></th>
+                    <th scope="col">Current Selling Price  <span class="sp-light">({{currency_symbol}})</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><label clas="form-control">{{sugg_sale_price}}</label></td>
+                    <td><label clas="form-control">{{actual_sale_price}}</label></td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+            <div class="col-12 col-md-3">
+              <h4>Profit</h4>
+              <table class="tableStyleMain table">
+                <thead>
+                  <tr>
+                    <th scope="col">Amount  <span class="sp-light">({{currency_symbol}})</span></th>
+                    <th scope="col">Percentage (%)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><label clas="form-control">{{gross_profit_amount}}</label></td>
+                    <td><label clas="form-control">{{gross_profit_percentage}}</label></td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="row col-12 prf-scn bordered">
+          
+            <div class="col-12">
+              <h3 class="text-font"><b>Inventory</b><span class="error-message">*</span></h3>
+              <span class="error-message float-right" *ngIf="!validationForOpeningBalance">
+                Required</span>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col" class="col-3">Location</th>
+                    <th scope="col" class="col-3">Opening Balance ({{measurementUnit}})<span class="error-message"> *</span> </th>
+                    <th scope="col" class="col-3">Reorder Level ({{measurementUnit}})<span class="error-message"> *</span></th>
+                    <th scope="col" class="col-3">Track Inventory?</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr formArrayName="locationData" *ngFor="
+                let item of locationPricesFormGroups.controls;
+                let i = index
+              ">
+                    <td> {{branchname(i)}}
+                    <td [formGroupName]="i">
+                      
+                        <span class="error-message float-right">{{errorMessageOpening(i)}}</span>
+                        <input type="text" placeholder="" class="form-control w-50" formControlName="openingBalance" />
+                     
+                    </td>
+                    <td [formGroupName]="i">
+                      <span class="error-message float-right">{{errorMessageReorder_qty(i)}}</span>
+                      <input type="text" placeholder="" class="form-control w-50" formControlName="reorder_qty" />
+                    </td>
+                    <td [formGroupName]="i">
+                      <div class="form-check">
+                        <input class="form-check-input m-2" type="checkbox" value="" id="flexCheckCheckedt" checked
+                          formControlName="is_track_inventory" />
+                        <label class="form-check-label" for="flexCheckCheckedt">
+                        </label>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          
+        </div>
+          <div class="row col-12 prf-scn bordered">
+            <div class="col-12">
+
+              <div class="row">
+                <div class="row col-12 prf-scn">
+
+                  <div class="col-12">
+
+                    <label>Recipe Preparation Method </label>
+                    <textarea type="text" placeholder="Recipe Preparation Method" class="form-control"
+                      formControlName="recipe_preparation_method" rows="4"></textarea>
+                    <!-- <div class="col-12 col-md-3">
+                      <div class="col-12" style="margin-top:40px;">
+                        <input class="form-check-input" type="checkbox" value="" formControlName="is_track_consumption"
+                          id="flexCheckChecked" />
+                        <label class="form-check-label" for="flexCheckChecked">
+                          Track Consumption?
+                        </label>
+                      </div>
+                    </div> -->
+                    <div class="d-flex justify-content-end mb-3 mt-3">
+                      <button class="btn-setup-sucess bg-grey mr-2 w-px-100" (click)="back()">
+                        Cancel
+                      </button>
+                      <button class="btn-setup-sucess w-px-100" (click)="saveRecipe()"
+                        [disabled]="!addRecipeForm.valid || addRecipeForm.pristine">
+                        <i class="icon-save mr-1"></i>Update
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</body>
+
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+  <!-- Header Start -->
+  <app-header></app-header>
+  <!-- Header End -->
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/callcenter">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                Setup
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/addons">
+                Addons
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                Template Settings
+              </li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="d-flex align-items-center head-tag cursor-pointer">
+          <h4 class="flex-gr-1">
+            <i class="icon-arrow-left" routerLink="/setup/addons"></i>Activate/Deactivate SMS Gateway
+          </h4>
+          <div class="d-flex align-items-center " matTooltip="History">
+            <i class="zmdi zmdi-time" style="font-size: 35px;"></i>
+          </div>
+          <div class="d-flex align-items-center justify-content-end ml-4" (click)="smsSettings()" matTooltip="Settings">
+            <i class="zmdi zmdi-settings" style="font-size: 35px;"></i>
+          </div>
+
+        </div>
+      </div>
+      <div class="content">
+        <form [formGroup]="smsGatewayForm">
+          <div class="allDivMain row col-12">
+            <div class="col-6">
+              <div class="formGroup">
+                <label>
+                  TriggerPoint
+                </label>
+                <span class="error-message">*</span>
+                <span class="error-message float-right"
+                  *ngIf="smsGatewayForm.controls.trigger_point.hasError('required' ) && smsGatewayForm.controls.trigger_point.touched">Required</span>
+                <select class="custom-select selectBarMain"
+                  [ngClass]="smsGatewayForm.controls.trigger_point.hasError('required' ) && smsGatewayForm.controls.trigger_point.touched ? 'is-invalid' : ''"
+                  formControlName="trigger_point">
+                  <option value="" selected>Select</option>
+                  <option *ngFor="let i of triggers" value="{{i.id}}">{{i.name}}</option>
+                </select>
+              </div>
+              <div class="formGroup">
+                <label>
+                  Message Template
+                </label>
+                <span class="error-message">*</span>
+                <span class="error-message float-right"
+                  *ngIf="smsGatewayForm.controls.message_template.hasError('required' ) && smsGatewayForm.controls.message_template.touched">Required</span>
+                <textarea class="form-control"
+                  [ngClass]="smsGatewayForm.controls.message_template.hasError('required' ) && smsGatewayForm.controls.message_template.touched ? 'is-invalid' : ''"
+                  style="height: 165px;overflow-y:scroll;" formControlName="message_template"
+                  (input)="backspaceEvent($event)"></textarea>
+              </div>
+              <div>
+                <div class="d-flex align-items-center ">
+                  <mat-slide-toggle class="flex-gr-1" formControlName="status">Active</mat-slide-toggle>
+                  <div class="d-flex align-items-center justify-content-end">
+                    <button class="btn-setup-sucess commonBtnStyle" (click)="saveTemplate()">
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="messageTags">
+                <label>Message Tags</label>
+                <div clss="col-10" style="border-top:2px rgb(68, 64, 64) solid  ;">
+                  <mat-chip-listbox #chipList aria-label="areas" class="chipList">
+                    <!-- <mat-chip *ngFor="let area of deliveryAreaSelected" (removed)="remove(area)">
+                        {{ area.name }} -->
+                    <mat-chip-option *ngFor="let template of templates" (click)="selectedOptions(template.name)">
+                      {{template.name}}
+                    </mat-chip-option>
+                    <!-- <input   placeholder="" [matChipInputFor]="chipList"  class="form-control  example-chip-list"
+                      [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                     class="w-0" /> -->
+
+                  </mat-chip-listbox>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <ng-template #message>
+          <div class="row">
+            <div class="col-12">
+              <div class="not-found">
+                <h3>Sorry :(</h3>
+                <p>There's no Sms Gateways yet at this moment.</p>
+                <p>Please add Sms Gateway. </p>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <div class="col-12 tableStyleMain mt-4">
+          <table mat-table *ngIf="dataSource.data.length > 0; else message" [dataSource]="dataSource" matSort
+            class="mat-z8">
+            <ng-container matColumnDef="index">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                #
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{dataSource.data.indexOf(element) + 1}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="active_trigger_point">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Trigger Point</th>
+              <td mat-cell *matCellDef="let element">{{ element.active_trigger_point }}</td>
+            </ng-container>
+            <ng-container matColumnDef="template">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Template</th>
+              <td mat-cell *matCellDef="let element">{{ element.template }}</td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>Status</th>
+              <td mat-cell *matCellDef="let element">
+                <span *ngIf="element.status">
+                  <i class="icon-ok mr-1"></i>
+                </span>
+                <span *ngIf="!element.status">
+                  <i class="icon-remove mr-1"></i>
+                </span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td mat-cell *matCellDef="let element">
+                <button class="btn-setup-sucess commonBtnStyle" (click)="editItem(element)">
+                  Edit
+                </button>
+                <button class="btn-setup-danger commonBtnStyle" (click)="deleteItem(element)">
+                  Delete
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+          <mat-paginator [ngClass]="{ show: dataSource.data.length <= 0 }" [pageSize]="50"
+            [pageSizeOptions]="[2, 4, 6, 10, 50]">
+          </mat-paginator>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</body>
+
+</html>

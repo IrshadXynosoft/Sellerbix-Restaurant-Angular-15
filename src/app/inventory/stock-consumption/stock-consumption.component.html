@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <form [formGroup]="newStockRequestForm">
+    <div class="body_wrapper container-fluid">
+      <!-- Header Start -->
+      <app-header></app-header>
+      <!-- Header End -->
+      <app-inventory-header></app-inventory-header>
+      <div class="px-4">
+        <div class="row pt-4">
+          <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                  Home
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/inventory">
+                  Inventory
+                </li>
+                <li class="breadcrumb-item active cursor-pointer" aria-current="page" routerLink="/inventory/reports">
+                  Reports
+                </li>
+                <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                  Stock Consumption Report
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-12">
+            <div class="d-flex align-items-center head-tag cursor-pointer">
+              <h4 class="flex-gr-1"> <i class="icon-arrow-left" routerLink="/inventory/reports"></i> Stock Consumption
+                Report <span *ngIf="SelectedOption?.name"> For {{SelectedOption.name}}</span></h4>
+            </div>
+          </div>
+        </div>
+
+        <div>
+
+          <div class="row">
+            <div class="col-12">
+              <label>Ingredient/Sub Recipe </label>
+              <input type="text" placeholder="  Search Ingredient/Sub Recipe by name, then hit enter to add" class="formControl bordered "
+                aria-label="Suppliers" matInput [formControl]="suppliersData" [matAutocomplete]="auto" #autoInput />
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name" [id]="option.id"
+                  (click)='itemSelected(option,autoInput)'>
+                  {{ option.name }}
+                </mat-option>
+              </mat-autocomplete>
+            </div>
+          </div>
+
+          <div class="col-12 mt-2" *ngIf="consumptionRecord<=0; else message">
+            <div class="not-found bordered">
+              <h3>Sorry :(</h3>
+              <p>No Records Found.</p>
+            </div>
+          </div>
+          <ng-template #message>
+            <div class="row mt-2">
+              <div class="col-12">
+
+                <table class="table tableStyleMain table-shadow">
+                  <thead>
+                    <tr>
+                      <th scope="col">Sr. No.</th>
+                      <th scope="col">Recipe/Sub Recipe</th>
+                      <th scope="col">Inventory Type</th>
+                      <th scope="col">Stock On Hand</th>
+                      <th scope="col">Cost ({{ currency_symbol }})</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let data of Records; let i = index">
+                      <td>
+                        {{ i + 1 }}
+                      </td>
+                      <td>
+                        {{ data.name }}
+                        <mat-accordion>
+                          <mat-expansion-panel class="mat-elevation-z0">
+                            <mat-expansion-panel-header>
+                              <mat-panel-title> Stock Consumption For- {{data.name}} </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <table class="inner-table">
+                              <tr class="border">
+                                <th scope="col">Ingredient/Sub Recipe</th>
+                                <th scope="col">Inventory Type</th>
+                                <th scope="col">Required</th>
+                                <th scope="col">Available</th>
+                              </tr>
+                              <tr *ngFor="let item of data.inventory" class="border">
+                                <td>{{ item.name }}</td>
+                                <td>{{item.type}}</td>
+                                <td>
+                                  {{ item.required }}{{ item.unit }}
+                                </td>
+                                <td>
+                                  {{ item.available }}{{ item.unit }}
+                                </td>
+                              </tr>
+
+                            </table>
+                          </mat-expansion-panel>
+                        </mat-accordion>
+                      </td>
+                      <td>
+                        {{data.type}}
+                      </td>
+                      <td>
+                        {{data.stock_on_hand}} {{data.measurement_unit}}
+                      </td>
+                      <td>
+                        {{data.cost}}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+
+          </ng-template>
+        </div>
+
+      </div>
+    </div>
+  </form>
+</body>
+
+</html>

@@ -1,0 +1,77 @@
+<form [formGroup]="addmenuForm">
+  <div class="modal-wrapper modal-ht-custom width:500px">
+    <h2 mat-dialog-title>Add Menu Category</h2>
+    <div mat-dialog-content>
+      <div class="row col-12">
+        <div class="col-7">
+          <label>Name</label>
+          <span class="error-message">*</span>
+          <span class="error-message float-right"
+            *ngIf="!addmenuForm.controls.name.valid && addmenuForm.controls.name.touched">Required</span>
+          <span class="error-message float-right" *ngIf="addmenuForm.controls.name.hasError('pattern')">Invalid
+            input</span>
+          <span class="error-message float-right" *ngIf="ErrorArray.name">
+            {{ ErrorArray.name }}</span>
+          <input type="text" class="form-control" [ngClass]="!addmenuForm.controls.name.valid && addmenuForm.controls.name.touched || addmenuForm.controls.name.hasError('pattern') || ErrorArray.name ? 'is-invalid' : ''" placeholder="Category Name" formControlName="name" />
+          <label>Priority</label>
+          <span class="error-message">*</span>
+          <span class="error-message float-right"
+            *ngIf="addmenuForm.controls.priority.hasError('required') && addmenuForm.controls.priority.touched">Required</span>
+          <span class="error-message float-right" *ngIf="addmenuForm.controls.priority.hasError('pattern')">Invalid
+            input</span>
+          <input type="text" class="form-control" [ngClass]="addmenuForm.controls.priority.hasError('pattern') || addmenuForm.controls.priority.hasError('required') && addmenuForm.controls.priority.touched ? 'is-invalid' : ''" placeholder="Priority" formControlName="priority" />
+          <label>Secondary Name</label>
+          <input type="text" class="form-control" placeholder="Secondary name" formControlName="secondary_name" />
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked5" formControlName="status" />
+            <label class="form-check-label" for="flexCheckChecked5">
+              Active
+            </label>
+          </div>
+          <label>Upload Category Image:</label>
+          <input type="file" class="form-control" [ngClass]="addmenuForm.controls.file.hasError('required') &&
+          addmenuForm.controls.file.touched ? 'is-invalid' : ''" (change)="handleFileInput($event)" placeholder="Upload" formControlName="file" accept="image/*" />
+        </div>
+        <div class="col-5">
+          <label class="text-center">Category Icon</label>
+          <span class="error-message">*</span>
+          <span class="error-message float-right">{{errorMessage}}</span>
+          <input type="text" class="form-control" placeholder="Search Icon" #category
+            (input)="SearchIcon(category.value)" />
+          <div *ngIf="iconsArray.length <= 0; else showtable">
+            <div class="row">
+              <div class="col-12">
+                <div class="not-found">
+                  <h3>Sorry :(</h3>
+                  <p>There's no category icon found.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ng-template #showtable>
+            <div class="row dinein-inner-selection m-0 mt-3">
+              <div class="col-lg-2 select-tag-scn select-tag-green" *ngFor="let icons of iconsArray;let i=index">
+                <div class="dine-scn-content p-1" (click)="iconSelected(i)">
+                  <img *ngIf="icons.icon_url; else noimage" src='{{imageBasepath}}{{icons.icon_url}}'
+                    class="img-icon-cd"
+                    [ngClass]="icons.icon_url == categoryIconSelected? 'active cursor-pointer': 'cursor-pointer'" />
+                  <ng-template #noimage>
+                    <img src="assets/images/ic_fastfood.png" class="img-icon-cd"
+                      [ngClass]="icons.icon_url == categoryIconSelected? 'active cursor-pointer': 'cursor-pointer'" />
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+
+        </div>
+      </div>
+
+    </div>
+    <div mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" (click)="addMenuCategory()"
+        [disabled]="!addmenuForm.valid || addmenuForm.pristine">Add Category</button>
+    </div>
+  </div>
+</form>

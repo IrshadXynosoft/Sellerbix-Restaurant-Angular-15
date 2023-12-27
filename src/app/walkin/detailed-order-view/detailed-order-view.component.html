@@ -1,0 +1,671 @@
+<p>detailed-order-view works!</p>
+<!DOCTYPE html>
+<html lang="en">
+  <body id="page_setup">
+    <!-- Body Wrapper Start -->
+    <div class="body_wrapper container-fluid">
+      <!-- Header Start -->
+      <app-header></app-header>
+      <!-- Header End -->
+      <div class="px-4">
+        <div class="row">
+          <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  routerLink="/home/walkin"
+                >
+                  Home
+                </li>
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  routerLink="/walkin/entity-orders"
+                >
+                  All Orders
+                </li>
+                <li
+                  class="breadcrumb-item active cursor-pointer"
+                  aria-current="page"
+                >
+                  Order Detail
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <div class="row col-12 head">
+            <div class="col-4">
+              <h2 style="color: #4c3e95">{{ orderDetails.entity_name }}</h2>
+            </div>
+            <div class="col-4" style="text-align: center">
+              <h2>Order no: #{{ orderDetails.order_number }}</h2>
+            </div>
+            <div class="col-4" style="text-align: end">
+              <h2
+                style="color: #4c3e95"
+                *ngIf="orderDetails.kitchen_status == 0"
+              >
+                New
+              </h2>
+              <h2
+                style="color: #4c3e95"
+                *ngIf="orderDetails.kitchen_status == 1"
+              >
+                Started
+              </h2>
+              <h2
+                style="color: #4c3e95"
+                *ngIf="orderDetails.kitchen_status == 2"
+              >
+                Processing
+              </h2>
+              <h2
+                style="color: #4c3e95"
+                *ngIf="orderDetails.kitchen_status == 3"
+              >
+                Finished
+              </h2>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="bordered">
+              <table class="table tableStyleMain">
+                <thead>
+                  <tr>
+                    <th scope="col">Entity No:</th>
+                    <th scope="col">Name & Mob Number</th>
+                    <th
+                      scope="col"
+                      *ngIf="
+                        orderDetails.entity_id == 3 ||
+                        orderDetails.entity_id == 5
+                      "
+                    >
+                      Address
+                    </th>
+                    <th scope="col" *ngIf="orderDetails.entity_id == 2">
+                      Table
+                    </th>
+                    <th scope="col">Staff:</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col" *ngIf="orderDetails.driver_order">
+                      Driver Status
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      {{
+                        orderDetails?.order?.entity_order_no
+                          ? orderDetails?.order?.entity_order_no
+                          : "--"
+                      }}
+                    </td>
+                    <td>
+                      {{
+                        orderDetails.order?.customer_details?.name
+                          ? orderDetails.order?.customer_details?.name
+                          : "--"
+                      }}
+                      <div>
+                        {{
+                          orderDetails.order?.customer_details?.phone_number
+                            ? orderDetails.order?.customer_details?.phone_number
+                            : "--"
+                        }}
+                      </div>
+                    </td>
+                    <td
+                      *ngIf="
+                        orderDetails.entity_id == 3 ||
+                        orderDetails.entity_id == 5
+                      "
+                    >
+                      <div *ngIf="orderDetails?.order?.store_pickup">
+                        Store Pickup
+                      </div>
+                      <div *ngIf="!orderDetails?.order?.store_pickup">
+                        <div>
+                          Building/Villa :
+                          {{
+                            orderDetails.driver_order
+                              ?.customer_delivery_location?.building_or_villa
+                              ? orderDetails.driver_order
+                                  ?.customer_delivery_location
+                                  ?.building_or_villa
+                              : "---"
+                          }}
+                        </div>
+                        <div>
+                          Street :
+                          {{
+                            orderDetails.driver_order
+                              ?.customer_delivery_location?.street
+                              ? orderDetails.driver_order
+                                  ?.customer_delivery_location?.street
+                              : "---"
+                          }}
+                        </div>
+                        <div>
+                          LandMark :
+                          {{
+                            orderDetails.driver_order
+                              ?.customer_delivery_location?.nearest_landmark
+                              ? orderDetails.driver_order
+                                  ?.customer_delivery_location?.nearest_landmark
+                              : "---"
+                          }}
+                        </div>
+                      </div>
+                    </td>
+                    <td *ngIf="orderDetails.entity_id == 2">
+                      {{ orderDetails.order.table_name }}
+                    </td>
+                    <td>
+                      {{
+                        orderDetails?.order?.assign_to?.name
+                          ? orderDetails?.order?.assign_to?.name
+                          : orderDetails.staff_name
+                      }}
+                      <!-- <td *ngIf="orderDetails.payment_status;else elseblock">
+                      <div>Paid<br></div>
+                    </td>
+                    <ng-template #elseblock>
+                      <td>Not paid</td>
+                    </ng-template> -->
+                    </td>
+                    <td>
+                      {{ orderDetails.order?.Total }}
+                      <div>
+                        {{
+                          orderDetails.payment_status ? "(Paid)" : "(Not paid)"
+                        }}
+                      </div>
+                    </td>
+                    <td *ngIf="orderDetails.driver_order">
+                      <div
+                        class="bg-driverstatus-{{
+                          orderDetails.driver_order?.driver_status
+                        }}"
+                      >
+                        <span
+                          *ngIf="orderDetails.driver_order?.driver_status == 1"
+                          >Not assigned</span
+                        >
+                        <span
+                          *ngIf="orderDetails.driver_order?.driver_status == 2"
+                          >Driver Assigned</span
+                        >
+                        <span
+                          *ngIf="orderDetails.driver_order?.driver_status == 3"
+                        >
+                          Driver Accepted
+                        </span>
+                        <span
+                          *ngIf="orderDetails.driver_order?.driver_status == 4"
+                        >
+                          Delivered
+                        </span>
+                        <span
+                          *ngIf="orderDetails.driver_order?.driver_status == 4"
+                          class="bg-status-{{ orderDetails.status }}"
+                          >Cancelled
+                        </span>
+                        <span
+                          *ngIf="orderDetails.driver_order?.driver_status == 5"
+                          >Not delivered
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="bordered">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Item Name</th>
+                    <th scope="col">Item Note</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Line Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of orderDetails?.order?.items">
+                    <td style="text-transform: capitalize">
+                      <span>{{ item.name }}</span>
+                      <div *ngIf="item.modifiers" class="col-12 combo-tree">
+                        <div class="tree">
+                          <ul
+                            class="tree-holder"
+                            *ngFor="
+                              let modifier of item.modifiers;
+                              let i = index
+                            "
+                          >
+                            <li *ngIf="modifiercheck(modifier.list)">
+                              <span
+                                ><i class="fa fa-folder-open"></i>
+                                {{ modifier.name }}</span
+                              >
+                              <ul *ngFor="let list of modifier.list">
+                                <li *ngIf="list.status">
+                                  <span
+                                    ><i class="fa fa-minus-square"></i
+                                    >{{ list.modifier_list }}&nbsp;
+                                    {{ currency_symbol }}{{ list.rate }}</span
+                                  >
+                                  <span
+                                    style="text-transform: none"
+                                    *ngIf="list.list_qty"
+                                    >&nbsp; x{{ list.list_qty }}</span
+                                  >
+                                </li>
+                              </ul>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </td>
+                    <td>{{ item.note ? item.note : "--" }}</td>
+                    <td>{{ timeCheck(item.time) }}</td>
+                    <td>{{ item.qty }}</td>
+                    <td>{{ item.price }} {{ currency_symbol }}</td>
+                    <td>{{ item.total }} {{ currency_symbol }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="d-flex br-btm pb-2 px-2">
+                <div class="flex-grow-1">Sub Total:</div>
+                <div>
+                  {{ orderDetails?.order?.Cart?.subTotal }}
+                  {{ currency_symbol }}
+                </div>
+              </div>
+              <div
+                class="d-flex br-btm pb-2 px-2"
+                *ngIf="orderDetails?.order?.Cart?.tax > 0"
+              >
+                <div class="flex-grow-1">
+                  {{ orderDetails?.order.applied_tax[0]?.name }} :
+                </div>
+                <div>
+                  {{ orderDetails?.order?.Cart?.tax }} {{ currency_symbol }}
+                </div>
+              </div>
+              <div
+                class="d-flex br-btm pb-2 px-2"
+                *ngIf="orderDetails?.order?.Cart?.discount > 0"
+              >
+                <div class="flex-grow-1">Discount:</div>
+                <div>
+                  {{ orderDetails?.order?.Cart?.discount }}
+                  {{ currency_symbol }}
+                </div>
+              </div>
+              <div
+                class="d-flex br-btm pb-2 px-2"
+                *ngIf="orderDetails?.order?.Cart?.otherCharge > 0"
+              >
+                <div class="flex-grow-1">Surcharges:</div>
+                <div>
+                  {{ orderDetails?.order?.Cart?.otherCharge }}
+                  {{ currency_symbol }}
+                </div>
+              </div>
+              <div
+                class="d-flex br-btm pb-2 px-2"
+                *ngIf="orderDetails?.order?.coupon_array"
+              >
+                <div class="flex-grow-1">Coupon Applied:</div>
+                <div>
+                  {{ orderDetails?.order?.coupon_array.applied_discount }}
+                  {{ currency_symbol }}
+                </div>
+              </div>
+              <div
+                class="d-flex br-btm pb-2 px-2"
+                *ngIf="orderDetails?.order?.Cart?.loyalty_coupon"
+              >
+                <div class="flex-grow-1">Loyalty Coupon:</div>
+                <div>
+                  {{
+                    orderDetails?.order?.Cart?.loyalty_coupon?.applied_discount.toFixed(
+                      2
+                    )
+                  }}
+                  {{ currency_symbol }}
+                </div>
+              </div>
+              <div
+                class="d-flex br-btm pb-2 px-2"
+                *ngIf="orderDetails?.order?.delivery_charge > 0"
+              >
+                <div class="flex-grow-1">Delivery Charge</div>
+                <div>
+                  {{ orderDetails?.order?.delivery_charge }}
+                  {{ currency_symbol }}
+                </div>
+              </div>
+              <div
+                class="d-flex br-btm pb-2 px-2"
+                *ngIf="orderDetails.order?.advance_paid > 0"
+              >
+                <div class="flex-grow-1">Advance Paid</div>
+                <div>
+                  {{ orderDetails?.order?.advance_paid }} {{ currency_symbol }}
+                </div>
+              </div>
+              <div class="d-flex br-btm pt-2 pb-2 px-2">
+                <div class="flex-grow-1">Total:</div>
+                <div>
+                  <strong
+                    >{{ orderDetails?.order?.Cart.amount }}
+                    {{
+                      orderDetails?.order?.amount != "Not Paid"
+                        ? currency_symbol
+                        : ""
+                    }}</strong
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="bordered">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Invoice No:</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Payment Method</th>
+                    <th scope="col">Date & Time</th>
+                    <th scope="col">Invoice Taken By</th>
+                    <th scope="col">Collected</th>
+                    <th scope="col">Returned</th>
+                    <th scope="col">Tip</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      {{ orderDetails?.invoice_number }}
+                    </td>
+                    <td>
+                      {{
+                        orderDetails?.payment_status == 1 ? "Paid" : "Not Paid"
+                      }}
+                    </td>
+                    <td
+                      *ngIf="
+                        orderDetails.payment_status == 1 ||
+                          orderDetails?.invoice?.credit_flag;
+                        else notpaid
+                      "
+                    >
+                      <div
+                        *ngFor="
+                          let payment of orderDetails?.invoice?.payment_types
+                        "
+                      >
+                        {{ payment.payment_name }}:
+                        <strong>{{ payment.amount }}</strong
+                        ><br />
+                      </div>
+                    </td>
+                    <ng-template #notpaid>
+                      <td>Not Paid</td>
+                    </ng-template>
+                    <td>
+                      <div *ngIf="orderDetails.invoice_date != 'Not Paid'">
+                        {{ orderDetails.invoice_date }} &nbsp;
+                        {{ orderDetails.invoice_time }}
+                      </div>
+                      <div *ngIf="orderDetails.invoice_date == 'Not Paid'">
+                        --
+                      </div>
+                    </td>
+                    <td>
+                      {{ orderDetails.invoice_taken_by }}
+                    </td>
+                    <td>
+                      {{
+                        orderDetails.payment_status == 1
+                          ? orderDetails.invoice.amount_received
+                          : "--"
+                      }}
+                    </td>
+                    <td>
+                      {{
+                        orderDetails.payment_status == 1
+                          ? orderDetails.invoice.balance_amount
+                          : "--"
+                      }}
+                    </td>
+                    <td>
+                      <div>
+                        {{
+                          orderDetails.payment_status == 1
+                            ? orderDetails.invoice.tip_amount
+                            : "--"
+                        }}
+                      </div>
+                      <div *ngIf="orderDetails.invoice?.tip_payment_type">
+                        {{
+                          orderDetails.invoice?.tip_payment_type == 1
+                            ? "(Cash)"
+                            : "(Card)"
+                        }}
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div
+            class="col-12"
+            *ngIf="orderDetails.driver_order?.driver_assigned == 1"
+          >
+            <div class="bordered">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Driver Name</th>
+                    <th scope="col">Otp</th>
+                    <!-- <th scope="col">Driver Status</th> -->
+                    <th scope="col">Start Time</th>
+                    <th scope="col">End Time</th>
+                    <th scope="col">Customer Details</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      {{ orderDetails.driver_order.driver.driver_name }}
+                    </td>
+                    <td>{{ orderDetails.driver_order.driver_otp }}</td>
+                    <td>
+                      {{
+                        orderDetails.driver_order.delivery_start_time
+                          ? timeCheck(
+                              orderDetails.driver_order.delivery_start_time
+                            )
+                          : "Not started"
+                      }}
+                    </td>
+                    <td>
+                      {{
+                        orderDetails.driver_order.delivery_end_time
+                          ? timeCheck(
+                              orderDetails.driver_order.delivery_end_time
+                            )
+                          : "--"
+                      }}
+                    </td>
+                    <td>
+                      <div
+                        *ngIf="
+                          orderDetails.driver_order.customer_delivery_location
+                            ?.building_or_villa
+                        "
+                      >
+                        <b>Building/Villa :</b
+                        >{{
+                          orderDetails.driver_order.customer_delivery_location
+                            ?.building_or_villa
+                        }}
+                      </div>
+                      <div
+                        *ngIf="
+                          orderDetails.driver_order.customer_delivery_location
+                            ?.flat_number
+                        "
+                      >
+                        <b>Flat :</b
+                        >{{
+                          orderDetails.driver_order.customer_delivery_location
+                            ?.flat_number
+                        }}
+                      </div>
+                      <div
+                        *ngIf="
+                          orderDetails.driver_order.customer_delivery_location
+                            ?.nearest_landmark
+                        "
+                      >
+                        <b>Landmark</b> :{{
+                          orderDetails.driver_order.customer_delivery_location
+                            ?.nearest_landmark
+                        }}
+                      </div>
+                      <div
+                        *ngIf="
+                          orderDetails.driver_order.customer_delivery_location
+                            ?.city
+                        "
+                      >
+                        <b>City :</b>
+                        {{
+                          orderDetails.driver_order.customer_delivery_location
+                            ?.city
+                        }}
+                      </div>
+                      <div
+                        *ngIf="
+                          orderDetails.driver_order.customer_delivery_location
+                            ?.address_type
+                        "
+                      >
+                        <b>Type :</b
+                        >{{
+                          orderDetails.driver_order.customer_delivery_location
+                            ?.address_type
+                        }}
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <h4 class="order-history">Order History</h4>
+          <div
+            class="col-12"
+            *ngFor="let history of orderDetails?.order_histories"
+          >
+            <div class="row">
+              <div class="col-4">
+                <h4 class="ml-1 order-history">
+                  Order Taken By : {{ history.user.name }}
+                </h4>
+              </div>
+              <div class="col-4">
+                <h4>Time : {{ timeCheck(history.time) }}</h4>
+              </div>
+              <div class="col-4">
+                <button
+                  class="float-right btn-setup-sucess"
+                  (click)="printDetails(history.print)"
+                >
+                  Print Details
+                </button>
+              </div>
+            </div>
+            <div class="bordered">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Item Name</th>
+                    <th scope="col">Item Note</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Line Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of history.order.items; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td style="text-transform: capitalize">
+                      <span>{{ item.name }}</span>
+                      <div *ngIf="item.modifiers" class="col-12 combo-tree">
+                        <div class="tree">
+                          <ul
+                            class="tree-holder"
+                            *ngFor="
+                              let modifier of item.modifiers;
+                              let i = index
+                            "
+                          >
+                            <li *ngIf="modifiercheck(modifier.list)">
+                              <span
+                                ><i class="fa fa-folder-open"></i>
+                                {{ modifier.name }}</span
+                              >
+                              <ul *ngFor="let list of modifier.list">
+                                <li *ngIf="list.status">
+                                  <span
+                                    ><i class="fa fa-minus-square"></i
+                                    >{{ list.modifier_list }}&nbsp;
+                                    {{ currency_symbol }}{{ list.rate }}</span
+                                  >
+                                  <span
+                                    style="text-transform: none"
+                                    *ngIf="list.list_qty"
+                                    >&nbsp; x{{ list.list_qty }}</span
+                                  >
+                                </li>
+                              </ul>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </td>
+                    <td>{{ item.note ? item.note : "--" }}</td>
+                    <td>{{ timeCheck(item.time) }}</td>
+                    <td>{{ item.qty }}</td>
+                    <td>{{ item.price }} {{ currency_symbol }}</td>
+                    <td>{{ item.total }} {{ currency_symbol }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="col-12 mb-3">
+            <div class="map" #mapElement></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

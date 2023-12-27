@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+      <!-- Header Start -->
+  <app-header></app-header>
+  <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4 px-2">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                Setup
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/inventorySetup">
+                Inventory Setup
+              </li>
+              <li class="breadcrumb-item cursor-pointer active" aria-current="page"
+                routerLink="/setup/inventorySetup/subrecipes">
+                Sub Recipes
+              </li>
+
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1">
+              <i class="icon-arrow-left mr-1 cursor-pointer"  (click)="back()"></i>Sub Recipes
+            </h4>
+            <div class="d-flex">
+              
+              <input type="text" placeholder="Search Sub Recipe." aria-label="MenuItem"
+              [matAutocomplete]="auto" class="form-control bordered w-100"
+             #itemSearchText (keyup)="doFilter(itemSearchText.value)" />
+           <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+             <mat-option *ngFor="
+                   let list_options of Options
+                 " [value]="list_options.sub_recipe.name" [id]="list_options.sub_recipe.id" (click)="subRecipeSelected(list_options)">
+               {{ list_options.sub_recipe.name }}
+             </mat-option>
+           </mat-autocomplete>
+            </div>
+            <div
+              class="d-flex"
+              style="padding-bottom: 15px; padding-left: 5px"
+            >
+            <button class="btn-setup-sucess w-px-100" (click)="add()">
+              <i class="icon-plus mr-1"></i>Add
+            </button>
+            <!-- <button class="btn-setup-sucess bg-grey w-px-100" (click)="upload()">
+              <i class="icon-upload mr-1"></i>Upload
+            </button> -->
+            </div>
+          </div>
+        </div>
+
+          <div class="row col-12">
+            <div class="col-12 col-md-6"></div>
+            <div class="col-12 col-md-2"></div>
+            <div class="col-12 col-md-4">
+              <select class="form-control w-100 bordered" (change)=filterWithCategory($event)>
+                <option value=0>All Categories</option>
+                <option *ngFor="let category of categoryArray" value="{{ category.id }}">
+                  {{ category.name }}
+                </option>
+              </select>
+            </div>
+            <!-- <div class="col-12 col-md-3">
+                <select class="form-control w-100">
+                  <option selected="selected">All Types</option>
+                </select>
+              </div> -->
+          </div>
+
+      </div>
+
+      <div *ngIf="dataSource.data.length <= 0; else showtable">
+        <div class="row">
+          <div class="col-12">
+            <div class="not-found bordered">
+              <h3>Sorry :(</h3>
+              <p>No Sub Recipe Added. <br />
+                Click
+                <a routerLink="/setup/inventorySetup/subrecipes/add" (click)="add()">here</a>
+                to add Sub Recipe.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #showtable>
+        <div infinite-scroll [infiniteScrollDistance]="scrollDistance" [infiniteScrollUpDistance]="scrollUpDistance"
+        [infiniteScrollThrottle]="throttle" (scrolled)="onScrollDown($event)">
+      <table mat-table *ngIf="dataSource.data.length > 0" [dataSource]="dataSource" matSort
+        class="mat-z8 tableStyleMain table bordered">
+        <ng-container matColumnDef="index">
+          <th mat-header-cell *matHeaderCellDef >
+            #
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{dataSource.data.indexOf(element) + 1}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Name</th>
+          <td mat-cell *matCellDef="let element">{{ element.sub_recipe.name }}</td>
+        </ng-container>
+        <ng-container matColumnDef="unit_name">
+          <th mat-header-cell *matHeaderCellDef>Unit Name</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.sub_recipe.measurement_unit_name }}</td>
+        </ng-container>
+        <ng-container matColumnDef="cost_per_unit">
+          <th mat-header-cell *matHeaderCellDef>Cost Per Measurement Unit</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.cost_per_unit.toFixed(4) }} </td>
+        </ng-container>
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef>Category</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.sub_recipe.ingredient_category_name }}</td>
+        </ng-container>
+        <ng-container matColumnDef="button">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td class="btn-wrp-equal align-items-right" mat-cell *matCellDef="let element">
+            <button  class="btn-setup-sucess" routerLink="/setup/inventorySetup/subrecipes/edit/{{element.sub_recipe.id}}">
+              <i _ngcontent-trm-c429="" class="zmdi zmdi-edit"></i>
+          </button>
+          <button class="btn-setup-danger" (click)="deleteSubRecipe(element.sub_recipe.id, element.sub_recipe.name)">
+            <i _ngcontent-trm-c429="" class="zmdi zmdi-delete"></i>
+          </button> 
+          <!---->
+            <!-- <div col-2>
+              <button class="btn-setup-sucess w-px-100"
+                routerLink="/setup/inventorySetup/subrecipes/edit/{{element.id}}">
+                <i class="icon-edit mr-1"></i>Edit
+              </button>
+              <button class="btn-setup-danger w-px-100" (click)="deleteSubRecipe(element.id, element.name)">
+                <i class="icon-trash mr-1"></i>Delete
+              </button>
+
+            </div> -->
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+      </ng-template>
+   
+      <!-- <mat-paginator [pageSize]="50" [pageSizeOptions]="[2, 4, 6, 10, 50]">
+      </mat-paginator> -->
+    </div>
+  </div>
+</body>
+
+</html>

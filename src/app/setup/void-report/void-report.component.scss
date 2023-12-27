@@ -1,0 +1,21 @@
+.b-right {
+  float: right;
+  background: var(--white);
+  padding: 10px;
+}
+
+.show {
+  visibility: hidden;
+}
+
+.btn-wrp-equal button {
+  width: 34px;
+  margin-bottom: 10px;
+  display: inline-block;
+  height: 34px;
+  border-radius: 50%;
+}
+.summary-div {
+  padding: 2px;
+  text-align: right;
+}

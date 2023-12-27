@@ -1,0 +1,23 @@
+<form  [formGroup]="addalternatelangForm">
+<div class="modal-wrapper">
+    <h2 mat-dialog-title>Add Alternate Language</h2>
+    <div mat-dialog-content>
+    <select class="form-control w-100" formControlName="addalternatelang" >
+        <option value="" disabled>Please Select language</option>
+        <option>Lang</option>
+        <option>Lang</option>
+        <option>Lang</option>
+        <option>Lang</option>
+        <option>Lang</option>
+        <option>Lang</option>
+    </select>
+    <span class="error-message" *ngIf="!addalternatelangForm.controls.addalternatelang.valid && addalternatelangForm.controls.addalternatelang.touched">required</span>
+    <div class="form-check">
+    </div>
+    <div mat-dialog-actions>
+        <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+        <button class="btn-setup-sucess">Submit</button>
+    </div>
+</div>
+</div>
+</form>

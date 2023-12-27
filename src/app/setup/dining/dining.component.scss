@@ -1,0 +1,48 @@
+
+  :host {
+    ::ng-deep {
+      /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+      /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+      .mat-tab-labels {
+        background: #e1e1e1 !important;
+        border-radius: 5px;
+        padding: 3px;
+        margin-bottom: 5px;
+        text-transform: capitalize;
+      }
+      /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+      /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+      .mat-tab-label {
+        height: 35px !important;
+        // min-width: 180px !important;
+        width: 100%;
+        margin-bottom: 0px;
+        background: none;
+        color: #000;
+        opacity: 1;
+        border-radius: 5px;
+        margin-bottom: 0px !important;
+        transition: 0.4s;
+        margin-right: 5px;
+  
+        &:hover {
+          color: #000;
+          background: var(--white) !important;
+        }
+      }
+      /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+      /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+      .mat-tab-label.mat-tab-label-active {
+        background: var(--white) !important;
+        border: 1px #ddd solid;
+        border-radius: 5px;
+        color: #000;
+        // box-shadow: 5px 5px 5px #888888;
+      }
+      /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+      /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+      .mat-tab-label.mat-tab-label-active:hover {
+        background: var(--white) !important;
+      }
+    }
+  }

@@ -1,0 +1,42 @@
+  <button mat-icon-button class="close-button" (click)="close()">
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+  </button>
+  <h2 mat-dialog-title>Change tax</h2>
+  <mat-dialog-content>
+    <mat-tab-group animationDuration="0ms">
+      <mat-tab label="Inclusive">
+        <div class="row " *ngIf="inclusive.length > 0; else novalueorder">
+          <div class="col-sm-4 mt-2" *ngFor="let tax of inclusive">
+            <mat-card appearance="outlined" class="discount-card" (click)="changeTax(tax)">
+              <h4>{{ tax.tax_name }}</h4>
+              {{ tax.rate }} <span>%</span>
+            </mat-card>
+          </div>
+        </div>
+
+        <ng-template #novalueorder>
+          <div class="not-found">
+            <h3>Sorry :(</h3>
+            <p>There's no inclusive tax available.</p>
+          </div>
+        </ng-template>
+      </mat-tab>
+      <mat-tab label="Exclusive">
+        <div class="row " *ngIf="exclusive.length > 0; else nopercentage">
+          <div class="col-sm-4 mt-2"  *ngFor="let tax of exclusive">
+            <mat-card appearance="outlined" class="discount-card" (click)="changeTax(tax)">
+              <h4>{{ tax.tax_name }}</h4>
+              {{ tax.rate }} <span>%</span>
+            </mat-card>
+          </div>
+        </div>
+
+        <ng-template #nopercentage>
+          <div class="not-found">
+            <h3>Sorry :(</h3>
+            <p>There's no exclusive available.</p>
+          </div>
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-dialog-content>

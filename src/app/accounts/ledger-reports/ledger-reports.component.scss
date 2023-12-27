@@ -1,0 +1,44 @@
+.b-right {
+  float: right;
+  background: var(--white);
+  padding: 10px;
+}
+.show {
+  visibility: hidden;
+}
+
+.btn-wrp-equal button {
+  width: 34px;
+  margin-bottom: 10px;
+  display: inline-block;
+  height: 34px;
+  border-radius: 50%;
+}
+.summary-div {
+  padding: 2px;
+  text-align: right;
+}
+.commonBtnStyle {
+  height: 35px;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 5px;
+}
+.tableStyleMain {
+  margin-top: 7px;
+
+  th {
+    padding: 10px;
+    //border-right: 1px #e2e3e3 solid;
+    text-align: center;
+  }
+
+  td {
+    padding: 10px;
+    //border-right: 1px #eceeee  solid;
+    text-align: center;
+  }
+}
+.table {
+  border-collapse: unset !important;
+}

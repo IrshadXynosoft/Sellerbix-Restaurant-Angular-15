@@ -1,0 +1,609 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use "@angular/material" as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+// TODO(v15): As of v15 mat.legacy-core no longer includes default typography styles.
+//  The following line adds:
+//    1. Default typography styles for all components
+//    2. Styles for typography hierarchy classes (e.g. .mat-headline-1)
+//  If you specify typography styles for the components you use elsewhere, you should delete this line.
+//  If you don't need the default component typographies but still want the hierarchy styles,
+//  you can delete this line and instead use:
+//    `@include mat.legacy-typography-hierarchy(mat.define-legacy-typography-config());`
+@include mat.all-legacy-component-typographies();
+@include mat.legacy-core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$ecommerce-primary: mat.define-palette(mat.$indigo-palette);
+$ecommerce-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$ecommerce-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$ecommerce-theme: mat.define-light-theme((color: (primary: $ecommerce-primary,
+        accent: $ecommerce-accent,
+        warn: $ecommerce-warn,
+      ),
+    ));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-legacy-component-themes($ecommerce-theme);
+
+/* You can add global styles to this file, and also import other style files */
+@import "../src/sass/base/all";
+@import "../src/sass/layout/all";
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+}
+
+#page_orders_status .order_container {
+  padding: 0px;
+}
+
+#page_orders_status .body_wrapper {
+  padding-top: 56px;
+}
+
+.body_wrapper {
+  padding-top: 48px;
+}
+
+.header_spacebar {
+  height: 0px;
+}
+
+.butnnDropMain {
+  top: 2px !important;
+}
+
+header {
+  box-shadow: 0px 3px 10px 0px rgba(108, 108, 108, 0.16);
+  z-index: 999 !important;
+}
+
+.butnnDropMain:before {
+  font-size: 15px;
+}
+
+header .navbar .navbar-nav .nav-item .nav-link {
+  color: var(--text-light);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0;
+  height: auto;
+  line-height: inherit !important;
+  transition: all 0.3s;
+}
+
+.navbar-brand {
+  padding: 0px !important;
+}
+
+header {
+  min-height: inherit !important;
+}
+
+.item_section {
+  max-width: 100% !important;
+}
+
+.drag-scroll-content {
+  padding-bottom: 2px !important;
+}
+
+.mat-mdc-dialog-container {
+  position: relative !important;
+  margin-top: 80px;
+  border-radius: 20px !important;
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version.*/
+/* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version.*/
+.mat-mdc-list-base .mat-mdc-list-item .mat-list-item-content {
+  padding: 0px 20px !important;
+  max-height: 50px !important;
+  overflow-y: scroll;
+  display: flex !important;
+  border-bottom: 1px #ddd solid;
+  position: relative;
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version.*/
+.mat-mdc-list-base .mat-mdc-list-item,
+.mat-mdc-list-base .mat-list-option {
+  display: block;
+  height: 37px !important;
+  font-size: 14px;
+}
+
+.mat-mdc-list-base {
+  background: #fff;
+  border: 1px #ddd solid;
+  padding: 0px !important;
+
+  border-radius: 10px;
+}
+
+.breadcrumb {
+  padding: 8px 20px;
+  margin: 15px 0 15px;
+  list-style: none;
+  background-color: #fff;
+  border-radius: 4px;
+  position: relative;
+  border-radius: 11px;
+}
+
+.bgSecMainAll {
+  float: left;
+  width: 100%;
+}
+
+.breadcrumb-item+.breadcrumb-item {
+  padding-left: 35px;
+}
+
+.breadcrumb-item {
+  position: relative;
+}
+
+.breadcrumb-item+.breadcrumb-item::before {
+  content: "";
+  position: absolute;
+  left: 13px;
+  top: -9px;
+  width: 3px;
+  height: 42px;
+  background: #eae8e8;
+  padding-right: 0;
+  transform: rotate;
+  transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -webkit-transform: rotate(-21deg);
+}
+
+header .navbar .navbar-nav {
+  flex-direction: inherit;
+  display: block !important;
+  text-align: center;
+}
+
+header .navbar .navbar-nav .nav-item {
+  padding: 0px 15px;
+  position: relative;
+  transition: all 0.3s;
+  display: inline-block;
+}
+
+.nav-inner {
+  padding-left: 0px !important;
+  margin-left: 0px !important;
+}
+
+.nav-link i {
+  margin-right: 5px !important;
+}
+
+.close-icon:hover {
+  transform: rotate(0deg) !important;
+}
+
+// new table css ----------------------------------------------------------------------------------------
+
+.bordered {
+  border: solid #ccc 1px;
+  -moz-border-radius: 15px;
+  -webkit-border-radius: 15px;
+  border-radius: 15px;
+  -webkit-box-shadow: 0 1px 1px #ccc;
+  -moz-box-shadow: 0 1px 1px #ccc;
+  box-shadow: 0 1px 1px #ccc;
+  margin-bottom: 10px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+}
+
+.bordered tr:hover {
+  background: #ececec;
+  -webkit-transition: all 0.1s ease-in-out;
+  -moz-transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
+}
+
+.bordered td,
+.bordered th {
+  // border-left: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+  padding: 5px;
+  text-align: left;
+  vertical-align: middle;
+  text-align: center;
+  font-size: 12px !important;
+}
+
+.bordered th {
+  background-color: #ececec;
+  background-image: -webkit-gradient(linear,
+      left top,
+      left bottom,
+      from(#f8f8f8),
+      to(#ececec));
+  background-image: -webkit-linear-gradient(top, #f8f8f8, #ececec);
+  background-image: -moz-linear-gradient(top, #f8f8f8, #ececec);
+  background-image: linear-gradient(top, #f8f8f8, #ececec);
+  -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset;
+  -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset;
+  border-top: none;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  text-align: center;
+}
+
+.bordered td:first-child,
+.bordered th:first-child {
+  border-left: none;
+}
+
+.bordered th:first-child {
+  -moz-border-radius: 15px 0 0 0;
+  -webkit-border-radius: 15px 0 0 0;
+  border-radius: 15px 0 0 0;
+}
+
+.bordered th:last-child {
+  -moz-border-radius: 0 15px 0 0;
+  -webkit-border-radius: 0 15px 0 0;
+  border-radius: 0 15px 0 0;
+}
+
+.bordered th:only-child {
+  -moz-border-radius: 15px 15px 0 0;
+  -webkit-border-radius: 15px 15px 0 0;
+  border-radius: 15px 15px 0 0;
+}
+
+.bordered tr:last-child td:first-child {
+  -moz-border-radius: 0 0 0 15px;
+  -webkit-border-radius: 0 0 0 15px;
+  border-radius: 0 0 0 15px;
+}
+
+.bordered tr:last-child td:last-child {
+  -moz-border-radius: 0 0 15px 0;
+  -webkit-border-radius: 0 0 15px 0;
+  border-radius: 0 0 15px 0;
+}
+
+// ========================================================================================
+
+th.mat-mdc-header-cell:last-of-type,
+td.mat-mdc-cell:last-of-type,
+td.mat-mdc-footer-cell:last-of-type {
+  padding-right: 10px !important;
+}
+
+th.mat-mdc-header-cell:first-of-type,
+td.mat-mdc-cell:first-of-type,
+td.mat-mdc-footer-cell:first-of-type {
+  padding-left: 10px !important;
+}
+
+.mat-mdc-header-cell {
+  font-weight: bold !important;
+  font-size: bold;
+  color: #141414 !important;
+  background: #f4f5f8 !important;
+  border-bottom: 1px #00667c solid !important;
+}
+
+.mat-sort-header-container {
+  justify-content: center;
+}
+
+.mat-mdc-paginator-page-size-label {
+  margin: 0 4px;
+  font-size: 13px !important;
+  color: #000;
+}
+
+.mat-mdc-paginator-range-label {
+  margin: 0 32px 0 24px;
+  font-size: 13px !important;
+  color: #000;
+}
+
+.head-tag h4 {
+  color: #00667c;
+  color: #00667c;
+  font-size: 19px;
+  position: relative;
+  padding-left: 41px;
+  min-height: 38px;
+  margin-bottom: 6px;
+
+  i {
+    position: absolute;
+    left: 0;
+    top: -5px;
+    background: #fff;
+    border-radius: 50%;
+    font-size: 14px;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.not-found {
+  background: #fff;
+  padding: 15px;
+  margin-top: 20px;
+  border-radius: 5px;
+
+  h3 {
+    font-size: 24px !important;
+    color: #00667c !important;
+    font-weight: bold !important;
+  }
+
+  p {
+    font-weight: normal !important;
+    color: #000 !important;
+    font-size: 13px !important;
+  }
+}
+
+.drag-scroll-content {
+  padding-bottom: 10px;
+}
+
+.mat-accordion .mat-expansion-panel {
+  margin-bottom: 10px !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.head-tag h2 {
+  margin-bottom: 10px;
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+.mat-tab-label-active {
+  border: 1px #ddd solid;
+  color: #000;
+  border-bottom: none;
+}
+
+.pt-4 {
+  padding-top: 5px !important;
+}
+
+.order_item_container .order_header {
+  border-radius: 20px 20px 0 0;
+  background: none;
+}
+
+#page_home .item_section {
+  padding-top: 94px;
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+.mat-tab-label {
+  border-radius: 4px;
+  margin-bottom: 0px !important;
+}
+
+.mat-ink-bar {
+  display: none;
+}
+
+.order_section {
+  left: 10px !important;
+  bottom: 40px;
+  padding-top: 210px;
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+.mat-tab-label {
+  border-radius: 0px;
+  background: none;
+}
+
+.order_item_container {
+  border-radius: 20px;
+  background: #fff;
+  margin-top: 5px;
+}
+
+.order_item_container .order_footer {
+  position: fixed;
+  bottom: 3px;
+  left: 10px;
+  width: 100%;
+  overflow: hidden;
+  max-width: 550px;
+  border-radius: 0px 0px 20px 20px;
+}
+
+.order_item_container .cart-item-list {
+  padding: 0 0 450px !important;
+  overflow: hidden;
+  overflow: auto;
+  max-height: 300px;
+}
+
+.order_item_container .order_footer .amount_details h2 {
+  padding: 0px 0;
+}
+
+.posPrinterWrapper {
+  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+  .mat-tab-labels {
+    background-color: var(--bg-color) !important;
+    position: relative;
+
+    &:before {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 10px;
+      background: #000;
+      width: 100%;
+      content: "";
+    }
+  }
+}
+
+.floatMainDiv {
+  float: left;
+  width: 20%;
+}
+
+.spaneIconFood span {
+  display: inline-block;
+}
+
+.spaneIconFood span img {
+  width: 20px;
+}
+
+.order_item_container .order_footer .amount_payble {
+  background: #fff;
+  padding: 0 18px;
+  height: 40px;
+}
+
+@media only screen and (max-width: 1200px) {
+  .paddingDelete {
+    padding: 0px;
+  }
+
+  .order_item_container .order_footer {
+    max-width: 363px;
+  }
+
+  .order_section {
+    max-width: 353px;
+  }
+
+  header .navbar .navbar-nav .nav-item .nav-link {
+    font-size: 13px;
+  }
+
+  header .navbar .navbar-nav .nav-item {
+    padding: 0px 8px;
+  }
+
+  header .navbar {
+    padding: 0px 0px !important;
+  }
+
+  .no-order h2 {
+    font-size: 14px;
+  }
+
+  .no-order .banner_img {
+    max-width: 201px;
+  }
+
+  #page_home .item_section {
+    max-width: calc(100% - 353px);
+  }
+}
+
+@media only screen and (max-width: 992px) {
+  #page_home .tab-content .item .text_box {
+    padding: 10px 7px;
+  }
+
+  #page_home .tab-content .item .item_img {
+    height: 79px !important;
+  }
+
+  .navbar-brand i {
+    font-size: 19px;
+  }
+
+  header .navbar .navbar-brand {
+    width: 100%;
+    max-width: 143px;
+    margin-right: 4px;
+  }
+
+  .paddingSpaceMain {
+    padding: 0 4px !important;
+    margin-bottom: 10px;
+  }
+
+  .order_section .no-order {
+    bottom: 0px;
+  }
+
+  header .navbar .navbar-nav .nav-item.show-only-large-devices {
+    display: block;
+    float: left;
+  }
+
+  header .navbar .navbar-nav .nav-item {
+    padding: 0px 6px;
+  }
+}
+
+html,
+body {
+  height: 100%;
+}
+
+.apple-font {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif !important;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+}
+
+.print {
+  background-color: #49afcd;
+  border: none;
+}
+
+.refresh {
+  background-color: #007c54;
+}
+
+.capital {
+  text-transform: capitalize;
+}
+
+.primary {
+  background-color: var(--primary);
+  border: none;
+}

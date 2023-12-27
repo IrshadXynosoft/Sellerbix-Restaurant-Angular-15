@@ -1,0 +1,28 @@
+<div class="modal-wrapper">
+  <h2 mat-dialog-title>{{itemName}}</h2>
+  <div mat-dialog-content>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Items</th>
+        <th scope="col">Group</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let i of modifierListArray">
+        <td>{{i.name}}</td>
+        <td></td>
+        <td>
+          <button class="btn-setup-danger" (click)="deleteModifier(i.id,i.name)">
+            <i class="icon-trash mr-1"></i>Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+  <div mat-dialog-actions>
+    <button class="btn-setup-danger bg-grey mr-2" (click)="close()">Cancel</button>  
+  </div>
+</div>

@@ -1,0 +1,75 @@
+<form [formGroup]="editdriverForm">
+    <div class="modal-wrapper">
+      <h2 mat-dialog-title>Edit Driver</h2>
+      <div mat-dialog-content>
+        <label>Name</label>
+       <label class="form-control">{{data.driverData.name}}</label>
+    
+      <div class="row">
+        <div class="col-6">
+          <label>commission</label>
+          <span class="error-message">*</span>
+          <span class="error-message float-right" *ngIf="editdriverForm.controls.commission.hasError('required' ) && editdriverForm.controls.commission.touched">required</span>
+          <span class="error-message float-right"  *ngIf="editdriverForm.controls.commission.hasError('pattern' )">invalid input</span> 
+          <input class="form-control" type="text" formControlName="commission" >
+        </div>
+        <div class="col-6">
+          <label>Commission Type</label>
+      <select class="form-control w-100" aria-label="Commission Type" formControlName="commission_type" >
+        <option selected value="Percentage">Percentage</option>
+        <option value="Value">Value</option>
+      </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-md-12">
+          <label>Delivery Area</label>
+          <span class="error-message">*</span>
+          <span class="error-message float-right">{{errorMessage}}</span>
+          <input
+            type="text"
+            placeholder="Search Delivery Area by name ,then hit enter to add"
+            aria-label="Delivery Area"
+            matInput
+            [formControl]="deliveryAreaData"
+            [matAutocomplete]="auto"
+            #autoInput
+          />
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option
+              *ngFor="let option of filteredOptions | async"
+              [value]="option.name"
+              [id]="option.id"
+              (click)="areaSelected(option, autoInput)"
+            >
+              {{ option.name }}
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+        <div class="col-12 row" >
+          <div clss="col-10"  style="margin-top: 1rem;margin-left: 1rem;">
+            <mat-chip-listbox #chipList aria-label="areas">
+              <mat-chip-option *ngFor="let area of deliveryAreaSelected" (removed)="remove(area)">
+                {{ area.name }}
+                <button matChipRemove>
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-option>
+              <!-- <input   placeholder="" [matChipInputFor]="chipList"  class="form-control  example-chip-list"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+             class="w-0" /> -->
+               
+            </mat-chip-listbox>
+          </div>
+      
+        </div>
+       
+      </div>
+      
+     </div>
+      <div mat-dialog-actions>
+        <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+        <button class="btn-setup-sucess" [disabled]="!editdriverForm.valid" (click)="editDriver()">Update</button>
+      </div>
+    </div>
+    </form>

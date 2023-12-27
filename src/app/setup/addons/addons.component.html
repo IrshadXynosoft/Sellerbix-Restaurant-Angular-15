@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                Setup
+              </li>
+              <li class="breadcrumb-item active " aria-current="page">
+                Add-Ons
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4>
+              <i class="icon-arrow-left cursor-pointer" (click)="back()"></i> Add-Ons
+            </h4>
+          </div>
+        </div>
+        <div class="col-12 col-sm-3 com-md-3 ">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn cursor-pointer" routerLink="loyalty">
+              <i class="zmdi zmdi-money"></i>
+              <p>Loyalty</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-3 com-md-3 ">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn cursor-pointer" routerLink="staffpoints">
+              <i class="zmdi zmdi-account-o"></i>
+              <p>Staff points</p>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-12 col-sm-3 com-md-3 ">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn cursor-pointer" routerLink="manager">
+              <i class="icon-user"></i>
+              <p>Delivery Manager</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-3 com-md-3 ">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn cursor-pointer" routerLink="adsManager">
+              <i class="icon-user"></i>
+              <p>Ads manager</p>
+            </div>
+          </div>
+        </div> -->
+        <!-- <div class="col-12 col-sm-3 com-md-3 ">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn cursor-pointer" routerLink="ownerDashboard">
+              <i class="zmdi zmdi-assignment"></i>
+              <p>Owner Dashboad</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-3 com-md-3 ">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn cursor-pointer" routerLink="onlineOrder">
+              <i class="icon-map-marker"></i>
+              <p>Online Order</p>
+            </div>
+          </div>
+        </div> -->
+        <div class="col-12 col-sm-3 com-md-3 ">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn cursor-pointer" routerLink="qrcodeMenu">
+              <i class="icon-qrcode"></i>
+              <p>QR Code Menu</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-3 com-md-3 ">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn cursor-pointer" routerLink="qrcodeOrder">
+              <i class="icon-qrcode"></i>
+              <p>QR Code Order</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-3 com-md-3 ">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn cursor-pointer" routerLink="smtpSettings"
+              matTooltip="SMTP email settings">
+              <i class="zmdi zmdi-email"></i>
+              <p>SMTP Settings</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-3 com-md-3 ">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn cursor-pointer" routerLink="SmsGateway"
+              matTooltip="SMTP email settings">
+              <i class="zmdi zmdi-email"></i>
+              <p>SMS Gateway</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-3 com-md-3 ">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn cursor-pointer" routerLink="driverPool"
+              matTooltip="SMTP email settings">
+              <i class="zmdi zmdi-email"></i>
+              <p>Driver Pool</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

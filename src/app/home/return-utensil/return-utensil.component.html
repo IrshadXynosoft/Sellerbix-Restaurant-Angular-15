@@ -1,0 +1,34 @@
+<div class="modal-wrapper">
+    <form [formGroup]="utensilsForm">
+        <h2 mat-dialog-title>Return Utensils</h2>
+        <mat-dialog-content>
+            <div class="formGroup">
+                <label>Price ({{currency_symbol}})</label>
+                <span class="error-message">*</span>
+                <span class="error-message float-right" *ngIf="utensilsForm.controls.selling_price.hasError('required' ) && utensilsForm.controls.selling_price.touched">required</span>
+                <span class="error-message float-right" *ngIf="utensilsForm.controls.selling_price.hasError('pattern' )">Invalid Input</span>
+                <input type="text" class="form-control" placeholder="Price" formControlName="selling_price" />
+            </div>
+            <div class="formGroup">
+                <label>Returned Quantity</label>
+                <span class="error-message">*</span>
+                <span class="error-message float-right" *ngIf="utensilsForm.controls.total_qty.hasError('required' ) && utensilsForm.controls.total_qty.touched">required</span>
+                <span class="error-message float-right" *ngIf="utensilsForm.controls.total_qty.hasError('pattern' )">Invalid Input</span>
+                <span class="error-message float-right" *ngIf="utensilsForm.value['total_qty'] > data.max_qty">Quantity cannot be greater than actual quantity</span>
+                <input type="text" class="form-control" placeholder="Quantity" formControlName="total_qty" />
+            </div>
+            <div class="formGroup">
+                <label>Damaged Quantity</label>
+                <span class="error-message">*</span>
+                <!-- <span class="error-message float-right" *ngIf="utensilsForm.controls.damaged_qty.hasError('required' ) && utensilsForm.controls.damaged_qty.touched">required</span> -->
+                <span class="error-message float-right" *ngIf="compareQuantity()">Returned quantity & damaged quantity cannot be greater than actual quantity</span>
+                <input type="text" class="form-control" placeholder="Damaged Quantity" formControlName="damaged_qty" />
+            </div>
+          
+        </mat-dialog-content>
+        <mat-dialog-actions>
+            <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+            <button class="btn-setup-sucess"  [disabled]="!utensilsForm.valid || utensilsForm.pristine" (click)="addUtensils()">Submit</button>
+        </mat-dialog-actions>
+    </form>
+</div>

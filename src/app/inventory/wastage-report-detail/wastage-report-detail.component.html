@@ -1,0 +1,78 @@
+
+<div class="modal-wrapper">
+    <h2 mat-dialog-title>Stock Issue : {{ issuenumber }}</h2>
+    <mat-dialog-content>
+        <div class="row">
+            <div class="col-12 col-md-4">
+              <label>Order No/Ref:</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="issuenumber"
+                [disabled]="true"
+              />
+            </div>
+  
+            <div class="col-12 col-md-4">
+              <label>Comments</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="comments"
+                [disabled]="true"
+              />
+            </div>
+            <div class="col-12 col-md-4">
+              <label>Location</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="branch"
+                [disabled]="true"
+              />
+            </div>
+          </div>
+        <table class="table tableStyleMain bordered">
+            <thead>
+              <tr>
+                <th scope="col">Sr. No.</th>
+                <th scope="col">Item</th>
+                <th scope="col">Cost/Unit</th>
+                <th scope="col">Issued Quantity</th>
+                <th scope="col">Total ({{ currency_symbol }})</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of stockIssueArray; let i = index">
+                <td>
+                  {{ i + 1 }}
+                </td>
+                <td>
+                  {{ item.name }}
+                </td>
+                <td>
+                  {{ item.cost_per_unit }}
+                </td>
+                <td>
+                  {{ item.issued_Quantity }}
+                </td>
+                <td>
+                  {{ item.total }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="col-12 row mb-4">
+            <div class="col-12">
+              <span class="float-right"
+                >Total Amount {{ currency_symbol }}:<b>{{ total_price }}</b></span
+              >
+            </div>
+          </div>
+    
+    </mat-dialog-content>
+  
+    <mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="back()">Close</button>
+    </mat-dialog-actions>
+  </div>

@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <form [formGroup]="addLoyaltyForm">
+  <div class="body_wrapper container-fluid">
+      <!-- Header Start -->
+  <app-header></app-header>
+  <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                Setup
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/addons">
+               Add-Ons
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+               Loyalty
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1" >
+              <i class="icon-arrow-left mr-1 cursor-pointer" routerLink="/setup/addons"> </i>Loyalty
+            </h4>
+          </div>
+        </div>
+      
+          <div class="row col-12">
+            <div class="col-3 currency-wrap float-right">
+              <span class="currency-code"> {{currency_symbol}}</span>
+             <input type="text" placeholder="Loyalty Point" class="form-control text-currency w-70" formControlName="price_to_point" #price  (input)="onChangePriceTopoint(price.value)"/>
+            </div>
+            <div class="col-1" style="top: 0.5rem;">=</div>
+           
+            <div class="col-3 currency-wrap">
+            <span class="currency-code-loyalty">1 Loyalty  {{currency_symbol}}</span>
+             <input type="text"  class="form-control text-currency w-70"  formControlName="loyaltyValue" />
+            </div>
+            
+            <div class="col-5">
+              <label class="hint">If you purchase for {{price_to_point}} {{currency_symbol}}, you will get 1 loyalty point</label>
+            </div>
+           </div>
+           <div class="row col-12">
+            <div class="col-3 currency-wrap">
+              <span class="currency-code-loyalty">1 Loyalty  {{currency_symbol}}</span>
+             <input type="text"  class="form-control text-currency w-70"  formControlName="loyaltyValue"/>
+            </div>
+            <div class="col-1" style="top: 0.5rem;">=</div>
+           
+            
+            <div class="col-3 currency-wrap float-right">
+              <span class="currency-code"> {{currency_symbol}}</span>
+             <input type="text" placeholder="Loyalty Point" class="form-control text-currency w-70" formControlName="point_to_price" #point  (input)="onChangePointToprice(point.value)" />
+            </div>
+            <div class="col-5">
+              <label class="hint">If you redeem 1 loyalty point , you will get {{point_to_price}} {{currency_symbol}} discount</label>
+            </div>
+           </div>
+           <div class="col-12">
+            <div class="row d-flex justify-content-end">
+              <button class="btn-setup-danger mr-2" routerLink="/setup/addons">Cancel</button>
+              <button class="btn-setup-sucess"  [disabled]="!addLoyaltyForm.valid || addLoyaltyForm.pristine" (click)="submit()">Save</button>
+             </div>
+           </div>
+           
+         
+      </div>
+     
+    </div>
+  </div>
+</form>
+</body>
+
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                Setup
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/menuSetup">
+                Menu Setup
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                Modifier Group
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag">
+            <h4 class="flex-gr-1">
+              <i class="icon-arrow-left mr-1  cursor-pointer" (click)="back()"></i>Modifier Groups
+            </h4>
+            <div class="d-flex">
+              <input type="text" class="form-control" placeholder="Search Modifier Group" #group
+                (keyup)="doFilter(group.value)" />
+            </div>
+            <div class="d-flex" style="padding-bottom: 15px; padding-left: 5px">
+              <button class="btn-setup-sucess" (click)="addModifierGroup()">
+                <i class="icon-plus mr-1"></i>Add Modifier Group
+              </button>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+      <div *ngIf="dataSource.data.length <= 0; else showtable">
+        <div class="row">
+          <div class="col-12">
+            <div class="not-found">
+              <h3>Sorry :(</h3>
+              <p>There's no ModifierGroup yet at this moment.</p>
+              <p>Click <a (click)="addModifierGroup()" style="color: var(--primary);cursor: pointer;">here</a> to add
+                ModifierGroup. </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #showtable>
+        <div class="tableStyleMain">
+          <table mat-table [dataSource]="dataSource" class="mat-z8">
+            <ng-container matColumnDef="Index">
+              <th mat-header-cell *matHeaderCellDef>#</th>
+              <td mat-cell *matCellDef="let element">{{ dataSource.data.indexOf(element) + 1 }}</td>
+            </ng-container>
+            <ng-container matColumnDef="Name">
+              <th mat-header-cell *matHeaderCellDef>Name</th>
+              <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+            </ng-container>
+            <ng-container matColumnDef="priority">
+              <th mat-header-cell *matHeaderCellDef>Priority</th>
+              <td mat-cell *matCellDef="let element">{{ element.priority }}</td>
+            </ng-container>
+            <ng-container matColumnDef="button">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td class="btn-wrp-equal align-items-right" mat-cell *matCellDef="let element">
+
+                <button class="btn-setup-sucess" matTooltip="Edit" (click)="editModifierGroup(element)">
+                  <i _ngcontent-trm-c429="" class="zmdi zmdi-edit"></i>
+                </button>
+                <!-- <button
+                  class="btn-setup-danger"
+                  (click)="deletemodifiergroup(element.id, element.name)"
+                >
+                  <i class="icon-trash mr-1"></i>Delete
+                </button> -->
+
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </div>
+      </ng-template>
+      <mat-paginator [ngClass]="{ show: dataSource.data.length <= 0 }" [pageSize]="50"
+        [pageSizeOptions]="[50, 100, 150, 200, 250]">
+      </mat-paginator>
+    </div>
+  </div>
+</body>
+
+</html>

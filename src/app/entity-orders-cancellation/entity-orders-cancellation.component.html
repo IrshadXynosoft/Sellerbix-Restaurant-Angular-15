@@ -1,0 +1,46 @@
+<div class="modal-wrapper">
+  <button mat-icon-button class="close-button" (click)="close()">
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+  </button>
+  <h2 mat-dialog-title>Order Cancellation Reason</h2>
+
+  <mat-dialog-content>
+    <form [formGroup]="cancelForm">
+      <label>Reason:</label>
+      <span class="error-message float-right">*</span>
+      <span class="error-message float-right"
+        *ngIf="cancelForm.controls.reason.hasError('required' ) && cancelForm.controls.reason.touched">required</span>
+      <select class="form-control w-100" formControlName="reason">
+        <option value="">Reason For Cancellation</option>
+        <option *ngFor="let reason of modifierRecords" value="{{reason.id}}">{{reason.reason}}</option>
+      </select>
+      <label>Inventory Status:</label>
+      <select class="form-control w-100" formControlName="inventory_status">
+        <option value="">Select</option>
+        <option value="1">Return to inventory</option>
+        <option value="2">Wasted</option>
+      </select>
+      <label>Supervisor password</label>
+      <span class="error-message float-right">*</span>
+      <input type="password" class="form-control" formControlName="password" />
+      <label>Remarks</label>
+      <textarea class="form-control" formControlName="remarks"></textarea>
+      <label *ngIf="data.payment_status == 1">Is refundable ?</label>
+      <span *ngIf="data.payment_status == 1" class="error-message float-right">*</span>
+      <select *ngIf="data.payment_status == 1" class="form-control w-100" formControlName="refund">
+        <option value="">Select</option>
+        <option value="1">Yes</option>
+        <option value="0">No</option>
+      </select>
+      <!-- <mat-checkbox *ngIf="data.payment_status == 1" class="flex-grow-1" formControlName="refund">Is refundable ?
+      </mat-checkbox> -->
+    </form>
+
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <div class="text-right button-sec">
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" (click)="cancelOrder()">Yes,Confirm</button>
+    </div>
+  </mat-dialog-actions>
+</div>

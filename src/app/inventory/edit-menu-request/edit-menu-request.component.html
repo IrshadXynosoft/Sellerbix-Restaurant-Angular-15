@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+    <!-- Body Wrapper Start -->
+    <form [formGroup]="newStockRequestForm">
+        <div class="body_wrapper container-fluid">
+            <!-- Header Start -->
+            <app-header></app-header>
+            <!-- Header End -->
+            <app-inventory-header></app-inventory-header>
+            <div class="px-4">
+                <div class="row pt-4">
+                    <div class="bgSecMainAll">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                                    Home
+                                </li>
+                                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/inventory">
+                                    Inventory
+                                </li>
+                                <li class="breadcrumb-item cursor-pointer" aria-current="page"
+                                    routerLink="/inventory/inventoryMovement">
+                                    Inventory Movements
+                                </li>
+                                <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                                    Menu Requests
+                                </li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="col-12">
+                        <div class="d-flex align-items-center head-tag cursor-pointer">
+                            <h4 class="flex-gr-1"> <i class="icon-arrow-left" routerLink="/inventory/menuRequests"></i>
+                                Edit Menu Request</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="row">
+                        <div class="col-12 col-md-3">
+                            <label>Request No/Ref:</label>
+
+                            <input type="text" class="form-control" placeholder="Order No/Ref:"
+                                formControlName="stock_request_number" />
+                        </div>
+
+                        <div class="col-12 col-md-2">
+                            <label>Requsted Date:</label>
+                            <input type="text" class="form-control" formControlName="req_date" />
+                        </div>
+
+                        <div class="col-12 col-md-2">
+                            <label>Request From:</label>
+                            <input type="text" class="form-control" formControlName="branch_selected"
+                                [disabled]="true" />
+                        </div>
+                        <div class="col-12 col-md-2">
+                            <label>Request To:</label>
+                            <select class="form-control w-100" formControlName="to_branch">
+                                <option value="" selected>Select</option>
+                                <option *ngFor="let i of branchRecords" value={{i.id}}>{{i.name}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <label>Comments:</label>
+                            <input type="text" placeholder="Comments:" class="form-control"
+                                formControlName="comments" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <label>Select items to request </label><br>
+                            <input type="text" placeholder="Search inventory item by name, then hit enter to add"
+                                class="form-control w-100" aria-label="Suppliers" [formControl]="suppliersData"
+                                [matAutocomplete]="auto" #autoInput (keyup)="searchItem(autoInput.value)" />
+                            <mat-autocomplete #auto="matAutocomplete">
+                                <mat-option *ngFor="let option of options" [value]="option.name" [id]="option.id"
+                                    (click)='itemSelected(option,autoInput)'>
+                                    {{ option.name }}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </div>
+                    </div>
+                    <div class="not-found bordered" *ngIf="!isItemsSelected; else message">
+                        <h3>Sorry :(</h3>
+                        <p>No Items Selected.</p>
+                    </div>
+                    <ng-template #message>
+                        <table class="table tableStyleMain bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Sr. No.</th>
+                                    <th scope="col">Item</th>
+                                    <th scope="col">Stock On Hand</th>
+                                    <th scope="col">Price {{currency_symbol}}</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Total ({{currency_symbol}})</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr formArrayName="suppliersData" *ngFor="
+              let item of supplierFormGroups.controls;
+              let i = index
+            ">
+                                    <td>
+                                        {{ i+1 }}
+                                    </td>
+                                    <td>
+                                        {{ itemName(i) }}
+                                    </td>
+                                    <td>
+                                        {{ stockOnHand(i) }} {{ measurementunit(i) }}
+                                    </td>
+                                    <td>
+                                        {{ price(i) }}
+                                    </td>
+                                    <td [formGroupName]="i">
+                                        <span class="error-message">{{errorMessage(i)}}</span>
+                                        <div class="col-12 row">
+                                            <div class="d-flex">
+                                                <input type="text" class="form-control" style="width:120px"
+                                                    placeholder="Qty" formControlName="qty" (input)=findTotal(i) /><span
+                                                    class="unit-space">{{measurementunit(i)}}</span>
+                                            </div>
+
+                                        </div>
+                                    </td>
+                                    <td>{{ subTotal(i) }}</td>
+                                    <td [formGroupName]="i">
+                                        <i class="icon-trash mr-1 icon-red cursor-pointer" (click)="clearSupplier(i)"></i>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                        <div class="col-12 row mb-4">
+                            <div class="col-12">
+                                <span class="float-right">Total Amount {{currency_symbol}}:<b>{{total_price}}</b></span>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <div class="d-flex align-items-center justify-content-end m-2">
+                        <button class="btn-setup-danger btn-ht-custom mr-2" (click)="back()">Cancel</button>
+                        <button class="btn-setup-sucess btn-ht-custom mr-2" (click)="saveStockRequest()"
+                            [disabled]="!newStockRequestForm.valid || newStockRequestForm.pristine">
+                            Update
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</body>
+
+</html>

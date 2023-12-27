@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+      <!-- Header Start -->
+  <app-header></app-header>
+  <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+
+        <div class="img-company-det">
+          <img *ngIf="tenantArray.logo_url;else noimage" src='{{logoBasePath}}{{tenantArray.logo_url}}' />
+          <ng-template #noimage>
+            <img src="assets/images/logo.png" />
+          </ng-template>
+        </div>
+
+        <div class="col-10 col-sm-10">
+          <div class="company-detinner-scn">
+            <h3>
+              {{ tenantArray.name }}
+              <i class="icon-pencil cursor-pointer" (click)="editTenant(tenantArray.id)"></i>
+            </h3>
+            <div class="d-flex align-items-center">
+              <div class="mn-item">
+                <span><strong>Telephone</strong></span>
+                <p>{{ tenantArray.contact_no }}</p>
+              </div>
+              <div class="mn-item">
+                <span><strong>Country</strong></span>
+                <p>{{ countryName }}</p>
+              </div>
+              <div class="mn-item">
+                <span><strong>Timezone</strong></span>
+                <p>{{ countryTimeZone }}</p>
+              </div>
+              <!-- <div class="mn-item">
+                  <span><strong>End of Business Day</strong></span>
+                  <p>{{ tenantArray.business_day_end }}</p>
+                </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row pt-4">
+        <div class="col-12 col-sm-3 com-md-3 " *ngFor="let pages of selectedMenuItem">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn" (click)="menuOnClick(pages.menu_url)">
+            <div class="text-center card-inner-scn cursor-pointer">
+              <i class="mr-2 " [ngClass]="pages.menu_icon"></i>
+              <p matTooltip="{{pages.name}}">{{pages.name}}</p>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-12 col-sm-3 com-md-3 " >
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn" routerLink="/setup/staff_summary">
+            <div class="text-center card-inner-scn cursor-pointer">
+              <i class="icon-map-marker"></i>
+              <p matTooltip="Entities">Admin</p>
+            </div>
+          </div>
+        </div> -->
+      </div>
+      <!-- <div class="row pt-4">
+           <div
+            class="col-12 col-sm-3 com-md-3 cursor-pointer"
+            (click)="location()"
+          >
+            <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+              <div class="text-center card-inner-scn">
+                <i class="icon-map-marker"></i>
+                <p matTooltip="Location setup">Location Setup</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-3 com-md-3 cursor-pointer">
+            <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn" (click)="menuSetup()">
+              <div class="text-center card-inner-scn">
+                <i class="zmdi zmdi-cutlery"></i>
+                <p matTooltip="Menu setup">Menu Setup</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-3 com-md-3 cursor-pointer">
+            <div
+              class="card p-3 p-xl-4 mb-3 tag-hvr-scn"
+              (click)="inventorySetup()"
+            >
+              <div class="text-center card-inner-scn">
+                <i class="icon-edit"></i>
+                <p matTooltip="Menu setup">Inventory Setup</p>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-12 col-sm-3 com-md-3 cursor-pointer"
+            (click)="staff()"
+          >
+            <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+              <div class="text-center card-inner-scn">
+                <i class="zmdi zmdi-accounts-alt"></i>
+                <p matTooltip="Staff Details">Staff</p>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-12 col-sm-3 com-md-3 cursor-pointer"
+            (click)="globalSettings()"
+          >
+            <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+              <div class="text-center card-inner-scn">
+                <i class="zmdi zmdi-settings"></i>
+                <p matTooltip="Global Settings">Global Settings</p>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-12 col-sm-3 com-md-3 cursor-pointer"
+            (click)="partner()"
+          >
+            <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+              <div class="text-center card-inner-scn">
+                <i class="icon-user"></i>
+                <p matTooltip="Partner Integration">Partner Integrations</p>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-12 col-sm-3 com-md-3 cursor-pointer"
+            (click)="addons()"
+          >
+            <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+              <div class="text-center card-inner-scn">
+                <i class="icon-globe"></i>
+                <p matTooltip="Add-ons">Add-Ons</p>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-12 col-sm-3 com-md-3 cursor-pointer"
+            (click)="myAccount()"
+          >
+            <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+              <div class="text-center card-inner-scn">
+                <i class="icon-suitcase"></i>
+                <p matTooltip="Account Details">My Account</p>
+              </div>
+            </div>
+          </div>
+        </div> -->
+    </div>
+  </div>
+</body>
+
+</html>

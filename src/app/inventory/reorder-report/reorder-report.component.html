@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/inventory">
+                Inventory
+              </li>
+
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page" routerLink="/inventory/reports">
+                Reports
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                Threshold Stock Report
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1"> <i class="icon-arrow-left cursor-pointer"
+                routerLink="/inventory/reports"></i>Threshold Stock Report</h4>
+                <div class="d-flex" style="padding-bottom: 15px; padding-left: 5px">
+                  <button style="width: 120px;float: right;" *ngIf="dataSourceforFInishedGood.data.length>0 && tabIndex==0" class="btn-setup-sucess"
+                    [useExistingCss]="true" printSectionId="print-section" printTitle="Threshold Stock for Ingredients/Finished Goods" ngxPrint>
+                    <i class="icon-print mr-1"></i>Print
+                  </button>
+                  <button style="width: 120px;float: right;" *ngIf="dataSourceforSubrecipe.data.length>0 && tabIndex==1" class="btn-setup-sucess"
+                    [useExistingCss]="true" printSectionId="print-section-subrecipe" printTitle="Threshold Stock for Sub Recipe" ngxPrint>
+                    <i class="icon-print mr-1"></i>Print
+                  </button>
+                </div>
+          </div>
+        </div>
+      </div>
+      <form [formGroup]="generatePurchaseOrderReport">
+        <div class="row col-12 ">
+          <div class="col-lg-3">
+            <label>Location</label>
+            <select class="form-control w-100" formControlName="branch_id">
+              <option value="">Select</option>
+              <option *ngFor="let i of branchRecords" value="{{ i.id }}">
+                {{ i.name }}
+              </option>
+            </select>
+          </div>
+          <div class="col-lg-3">
+            <label>Supplier</label>
+            <select class="form-control w-100" formControlName="supplier_id">
+              <option value=null>All</option>
+              <option *ngFor="let i of supplierArray" value="{{ i.id }}">
+                {{ i.name }}
+              </option>
+            </select>
+          </div>
+          <div class="col-lg-6" style="margin-top:1.7rem">
+            <button class="btn-setup-sucess" (click)="generateReport()">
+              <i class="icon-save mr-1"></i>Generate Report
+            </button>
+          </div>
+        </div>
+
+      </form>
+      <mat-tab-group (selectedTabChange)="tabClick($event)" class="mt-2">
+        <mat-tab label="Ingredients/Finished Goods">
+          <div *ngIf="dataSourceforFInishedGood.data.length <= 0; else showtable">
+            <div class="row col-12">
+              <div class="col-12">
+                <div class="not-found bordered">
+                  <h3>Sorry :(</h3>
+                  <p>No Report available</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ng-template #showtable>
+            <div id="print-section">
+            <table mat-table [dataSource]="dataSourceforFInishedGood" matSort class="tableStyleMain table bordered w-100">
+              <ng-container matColumnDef="index">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  #
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{dataSourceforFInishedGood.data.indexOf(element) + 1}}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="item_name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Item Name
+                </th>
+                <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+              </ng-container>
+              <ng-container matColumnDef="item_type">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Item Type
+                </th>
+                <td mat-cell *matCellDef="let element">{{ element.type}}</td>
+              </ng-container>
+              <ng-container matColumnDef="stock_onhand">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Stock on hand
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <span class="color-red"> {{ element.stock_on_hand }}</span>
+
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="cost_unit">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Cost/Unit ({{currency_symbol}})
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.cost_unit }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="reorder_qty">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Reorder Quantity
+                </th>
+                <td mat-cell *matCellDef="let element">{{ element.reorder_qty }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="supplier_name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Supplier Name
+                </th>
+                <td mat-cell *matCellDef="let element">{{ element.supplier_name}}</td>
+              </ng-container>
+              <ng-container matColumnDef="button">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td class="btn-wrp-equal" mat-cell *matCellDef="let element">
+                  <span *ngIf="element.purchase_order_id">
+                    <button class="btn-setup-sucess" (click)="viewlastPO(element)"
+                      matTooltip="View Last Purchase Order">
+                      <i _ngcontent-trm-c429="" class="zmdi zmdi-eye"></i>
+                    </button>
+                  </span>
+                  <span *ngIf="!element.purchase_order_id">--</span>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsForIngredient"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsForIngredient"></tr>
+            </table>
+          </div>
+          </ng-template>
+          <mat-paginator #finishedGood [ngClass]="{ show: dataSourceforFInishedGood.data.length <= 0 }" [pageSize]="50"
+            [pageSizeOptions]="[2, 4, 6, 10, 20]">
+          </mat-paginator>
+        </mat-tab>
+        <mat-tab label="Sub Recipes">
+          <div *ngIf="dataSourceforSubrecipe.data.length <= 0; else showtable1">
+            <div class="row col-12">
+              <div class="col-12">
+                <div class="not-found">
+                  <h3>Sorry :(</h3>
+                  <p>No Report available</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ng-template #showtable1>
+            <div id="print-section-subrecipe">
+            <table mat-table [dataSource]="dataSourceforSubrecipe" matSort class="tableStyleMain table bordered w-100">
+              <ng-container matColumnDef="index">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  #
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{dataSourceforSubrecipe.data.indexOf(element) + 1}}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="item_name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Item Name
+                </th>
+                <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+              </ng-container>
+              <ng-container matColumnDef="stock_onhand">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Stock on hand
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <span class="color-red"> {{ element.stock_on_hand}}</span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="cost_unit">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Cost/Unit ({{currency_symbol}})
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.cost_unit }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="reorder_qty">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Reorder Quantity
+                </th>
+                <td mat-cell *matCellDef="let element">{{ element.reorder_qty }}</td>
+              </ng-container>
+
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsForSubRecipe"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsForSubRecipe"></tr>
+            </table>
+          </div>
+          </ng-template>
+          <mat-paginator #Subrecipe [ngClass]="{ show: dataSourceforSubrecipe.data.length <= 0 }" [pageSize]="50"
+            [pageSizeOptions]="[2, 4, 6, 10, 20]">
+          </mat-paginator>
+        </mat-tab>
+      </mat-tab-group>
+
+
+
+    </div>
+
+  </div>
+
+</body>
+
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+    <form [formGroup]="addCustomerForm">
+    <!-- Body Wrapper Start -->
+    <div class="body_wrapper container-fluid">
+           <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+        <div class="px-4">
+            <div class="col-12 p-0 mt-2">
+                <div class="d-flex align-items-center head-tag cursor-pointer">
+                    <h4 class="flex-gr-1"><i class="icon-arrow-left mr-2 cursor-pointer"  (click)="cancel()"></i>Create New Customer
+                    </h4>
+                </div>
+            </div>
+            <div class="col-12 p-0">
+                <h3>General Information</h3>
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg-3">
+                    <label>Name</label>
+                     <input type="text" class="form-control" placeholder="Name" formControlName="name"/>
+                </div>
+                <div class="col-12 col-lg-3">
+                    <label>Phone Number</label>
+                    <span class="error-message ">*</span>
+                    <span class="error-message float-right" *ngIf="addCustomerForm.controls.contact_no.hasError('required' ) && addCustomerForm.controls.contact_no.touched">required</span>
+                    <span class="error-message float-right"  *ngIf="addCustomerForm.controls.contact_no.hasError('pattern' )">invalid input</span>  
+                    <span class="error-message float-right" *ngIf="customerErrorArray.contact_no">
+                        {{ customerErrorArray.contact_no }}</span
+                      >
+                    <input type="text" class="form-control" [ngClass]="addCustomerForm.controls.contact_no.hasError('required' ) && addCustomerForm.controls.contact_no.touched || addCustomerForm.controls.contact_no.hasError('pattern' ) || customerErrorArray.contact_no ? 'is-invalid' : '' " placeholder="Phone Number" formControlName="contact_no"/>
+                </div>
+                <div class="col-12 col-lg-3">
+                    <label>Alternate Phone Number</label>
+                    <input type="text" class="form-control" placeholder="Alternate Phone Number" formControlName="alternate_contact_no"/>
+                </div>
+                <div class="col-12 col-lg-3">
+                    <label>Email</label>
+                    <span class="error-message float-right"  *ngIf="addCustomerForm.controls.email.hasError('pattern' )">invalid input</span>  
+                    <input type="email" class="form-control" placeholder="Email" formControlName="email"/>
+                </div>
+                <div class="col-12 col-lg-3">
+                    <label>Date Of Birth</label>
+                    <input type="date" class="form-control" placeholder="date of birth" formControlName="dob" />
+                </div>
+            </div>
+            <mat-tab-group>
+                <mat-tab label="Delivery">
+                    <h3 class="mt-2">Address</h3>
+                    <div class="row mr-0">
+                        <div class="col-12 col-lg-3">
+                            <label>Delivery Area</label>
+                            <span class="error-message ">*</span>
+                            <span class="float-right" matTooltip="Add Delivery Area">
+                                <i class="icon-plus mr-1 cursor-pointer" (click)="addDeliveryArea()"></i>
+                              </span>
+                            <span class="error-message float-right" *ngIf="addCustomerForm.controls.delivery_area_id.hasError('required' ) && addCustomerForm.controls.delivery_area_id.touched">required</span>
+                            <select class="form-control w-100"  formControlName="delivery_area_id">
+                                <option value="" disabled>Select</option>
+                                <option *ngFor="let i of deliveryAreaRecords" value="{{ i.id }}">
+                                  {{ i.name }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-lg-3">
+                            <label>Location/Branch</label>
+                            <span class="error-message ">*</span>
+                            <span class="error-message float-right" *ngIf="addCustomerForm.controls.branch_id.hasError('required' ) && addCustomerForm.controls.branch_id.touched">required</span>
+                            <select class="form-control w-100"  formControlName="branch_id">
+                                <option value="" disabled>Select</option>
+                                <option *ngFor="let i of branchRecords" value="{{ i.id }}">
+                                  {{ i.name }}
+                                </option>
+                            </select>
+                           
+                        </div>
+                        <div class="col-12 col-lg-3">
+                            <label>Building / Villa</label>
+                             <input type="text" class="form-control" placeholder="Building/Villa"  formControlName="building_or_villa"/>
+                        </div>
+                        <div class="col-12 col-lg-3">
+                            <label>Street</label>
+                           <input type="text" class="form-control" placeholder="Street"  formControlName="street"/>
+                        </div>
+                        <div class="col-12 col-lg-3">
+                            <label>Zone Number</label>
+                           <input type="text" class="form-control" placeholder="Flat Number"  formControlName="flat_number"/>
+                        </div>
+                        <div class="col-12 col-lg-3">
+                            <label>Nearest Landmark</label>
+                            <input type="text" class="form-control" placeholder="Nearest Landmark"  formControlName="nearest_landmark"/>
+                        </div>
+                        <div class="col-12 col-lg-3">
+                            <label>City</label>
+                          <input type="text" class="form-control" placeholder="City"  formControlName="city"/>
+                        </div>
+                        <div class="col-12 col-lg-3">
+                            <label>Country</label>
+                            <!-- <span class="error-message ">*</span>
+                            <span class="error-message float-right" *ngIf="addCustomerForm.controls.country_id.hasError('required' ) && addCustomerForm.controls.country_id.touched">required</span> -->
+                            <select class="form-control w-100"  formControlName="country_id" >
+                                <option value="" disabled>Select</option>
+                                <option *ngFor="let i of countryRecords" value="{{ i.id }}">
+                                  {{ i.name }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="d-flex btn-scn mr-2">
+                        <button class="btn-setup-danger w-px-100 mr-2 commonBtnStyle" (click)="cancel()">Cancel
+                        </button>
+                        <button class="btn-setup-sucess w-px-100 commonBtnStyle" [disabled]="!addCustomerForm.valid" (click)="saveCustomer()">Save
+                        </button>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Take Away">
+                    <h3 class="mt-2">Available Pickup Locations / branches</h3>
+                    <div class="row dinein-inner-selection m-0 mt-3"  >
+                        <div class="col-lg-2 select-tag-scn select-tag-green cursor-pointer " >
+                            <div class="dine-scn-content"  >
+                                <button class="btn-setup-sucess commonBtnStyle" (click)="saveWithLocation(branch_id,branch_name)">{{branch_name}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Table Reservations">
+                   
+                    <div class="row dinein-inner-selection m-0 mt-3"  >
+                            <div class="dine-scn-content"  >
+                                <button class="btn-setup-sucess commonBtnStyle" (click)="tableReservation()">
+                                    Book Reservations
+                                </button>
+                            </div>
+                   </div>
+                </mat-tab>
+                <mat-tab label="Party Order">
+                    <div class="row dinein-inner-selection m-0 mt-3"  >
+                        <div class="dine-scn-content"  >
+                                <button class="btn-setup-sucess commonBtnStyle" (click)="partyOrders()">Book Party Orders</button>
+                            </div>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Entities">
+                    <h3 class="mt-2">Choose Entities</h3>
+                    <div class="row dinein-inner-selection m-0 mt-3"  >
+                        <div class="dine-scn-content"  >
+                                <button class="btn-setup-sucess commonBtnStyle" *ngFor="let i of customEntities" (click)="entityOrder(i)">{{i.name}}</button>
+                            </div>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+     
+    </div>
+</form>
+</body>
+
+</html>

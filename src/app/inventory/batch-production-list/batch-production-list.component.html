@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+  <!-- Body Wrapper Start -->
+  <form [formGroup]="batchProductionForm">
+    <div class="body_wrapper container-fluid">
+      <!-- Header Start -->
+      <app-header></app-header>
+      <!-- Header End -->
+      <app-inventory-header></app-inventory-header>
+      <div class="px-4">
+        <div class="row pt-4">
+          <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                  Home
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/inventory">
+                  Inventory
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                  Batch Production
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-12">
+            <div class="d-flex align-items-center head-tag ">
+              <h4 class="flex-gr-1"> <i class="icon-arrow-left cursor-pointer" routerLink="/inventory"></i> Batch
+                Production Process
+              </h4>
+
+              <div class="d-flex align-items-center justify-content-end">
+                <select class="form-control w-100 bordered" formControlName="branch_id_for_past_processed">
+                  <option value="" selected disabled> Select</option>
+                  <option *ngFor="let i of branchRecords" value="{{ i.id }}" (click)="forprocessedLocation(i)">
+                    {{ i.name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-2 col-12 row">
+          <h2 style="padding-left:2rem !important" class="p-2 flex-gr-1">Past Processed List</h2>
+
+          <div class="d-flex align-items-center justify-content-end">
+            <div class="d-flex">
+              <input type="text" class="form-control bordered" placeholder="Search" #unitFilterText
+                (keyup)="doFilter(unitFilterText.value)" />
+            </div>
+            <div class="d-flex d-padding ml-2 mb-3">
+              <button class="btn-setup-sucess btn-ht-custom" (click)="newBatchProcess()">
+                <i class="icon-plus mr-1"></i> New Batch Process
+              </button>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-12" *ngIf="dataSource.data.length <= 0; else message">
+          <div class="not-found bordered">
+            <h3>Sorry :(</h3>
+            <p> No Batch Process found!</p>
+            <p>Click <a (click)="newBatchProcess()" style="color: orange;cursor: pointer;">here</a> to add new
+              Batch Process
+            </p>
+          </div>
+        </div>
+
+
+
+        <ng-template #message>
+          <div infinite-scroll
+          [infiniteScrollDistance]="scrollDistance"
+          [infiniteScrollUpDistance]="scrollUpDistance"
+          [infiniteScrollThrottle]="throttle"
+          (scrolled)="onScrollDown($event)"  
+        >
+             <table mat-table [dataSource]="dataSource" matSort class="mat-z8 tableStyleMain table w-100 bordered">
+              <ng-container matColumnDef="index">
+                <th mat-header-cell *matHeaderCellDef>
+                  #
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{dataSource.data.indexOf(element) + 1}}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="process_no">
+                <th mat-header-cell *matHeaderCellDef>Process No.</th>
+                <td mat-cell *matCellDef="let element">{{ element.process_no }}</td>
+              </ng-container>
+              <ng-container matColumnDef="process_date">
+                <th mat-header-cell *matHeaderCellDef>Processed Date</th>
+                <td mat-cell *matCellDef="let element">{{ element.process_date |date }}</td>
+              </ng-container>
+              <ng-container matColumnDef="staff">
+                <th mat-header-cell *matHeaderCellDef>Created By</th>
+                <td mat-cell *matCellDef="let element">{{ element.staff }}</td>
+              </ng-container>
+              <ng-container matColumnDef="location">
+                <th mat-header-cell *matHeaderCellDef>Location</th>
+                <td mat-cell *matCellDef="let element">{{ element.location }}</td>
+              </ng-container>
+              <ng-container matColumnDef="button">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td class="btn-wrp-equal" mat-cell *matCellDef="let element">
+                  <button class="btn-setup-sucess" (click)="viewBatchProcess(element)">
+                    <i _ngcontent-trm-c429="" class="zmdi zmdi-eye"></i>
+                  </button>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+          </div>
+        </ng-template>
+       
+      </div>
+    </div>
+
+
+  </form>
+</body>
+
+</html>

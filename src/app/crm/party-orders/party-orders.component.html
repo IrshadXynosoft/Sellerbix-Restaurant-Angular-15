@@ -1,0 +1,66 @@
+<form [formGroup]="partyOrdersForm">
+  <div class="modal-wrapper">
+    <h2 mat-dialog-title>Party Orders</h2>
+    <div mat-dialog-content>
+      <div class="row">
+        <div class="col-4">
+          <label>Event</label>
+        </div>
+        <div class="col-8">
+          <input class="form-control" type="text" formControlName="event" />
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-4 mt-2">
+          <label>Date</label>
+          <span class="error-message">*</span>
+        </div>
+        <div class="col-8">
+          <input class="form-control" [formControl]="dateChoosen" [min]="todayDate" [matDatepicker]="releasedAtPicker"
+            (click)="releasedAtPicker.open()" pattern="dd/MM/YYYY">
+          <mat-datepicker-toggle style="margin-top: -39px;float:right" matSuffix [for]="releasedAtPicker">
+          </mat-datepicker-toggle>
+          <mat-datepicker #releasedAtPicker [touchUi]="true">
+          </mat-datepicker>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-4">
+          <label>Pax Number</label>
+          <span class="error-message">*</span>
+        </div>
+        <div class="col-8">
+          <span class="error-message float-right" *ngIf="
+              partyOrdersForm.controls.pax_no.hasError('required') &&
+              partyOrdersForm.controls.pax_no.touched
+            ">required</span>
+            <input class="form-control" type="text" formControlName="pax_no" />
+        </div>
+      </div>
+
+      <div class="row mt-2">
+        <div class="col-4 mt-2">
+          <label>Order Type</label>
+          <span class="error-message">*</span>
+        </div>
+        <div class="col-8">
+          <span class="error-message float-right" *ngIf="
+              partyOrdersForm.controls.order_type.hasError('required') &&
+              partyOrdersForm.controls.order_type.touched
+            ">required</span>
+          <select class="form-control w-100" aria-label="Table Number" formControlName="order_type">
+            <option value="" disabled>Select</option>
+            <option selected value="2">Dinein</option>
+            <option value="4">Take Away</option>
+            <option value="3">Delivery</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" [disabled]="!partyOrdersForm.valid || partyOrdersForm.pristine"
+        (click)="takeOrder()">Take Order</button>
+    </div>
+  </div>
+</form>

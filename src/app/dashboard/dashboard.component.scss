@@ -1,0 +1,46 @@
+#chart2 {
+    max-width: 380px;
+    margin: 25px auto;
+    padding: 0;
+  }
+ .btn-announcement {
+  background: var(--primary);
+  border-radius: 10px;
+  color: var(--white);
+  width: 6rem;
+  border: 0;
+  box-shadow: none !important;
+  position: relative;
+  font-weight: 500;
+  min-height: 39px;
+  position: absolute;
+  right: .5rem;
+ }
+
+ .min-scroll {
+  height: 300px;
+  overflow-y: scroll;
+}
+.orders_insights {
+  height: 307px;
+}
+.not-found {
+  background: #d7d7d7;
+  padding: 40px;
+  margin-top: 20px;
+  height: 150px;
+  width: 100%;
+
+  h3 {
+    font-size: 30px;
+    color: #565656;
+    font-weight: 600;
+  }
+
+  p {
+    font-size: 16px !important;
+    color: #727070;
+    font-weight: 400;
+    padding: 10px;
+  }
+}

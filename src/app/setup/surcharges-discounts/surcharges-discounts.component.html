@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4 px-2">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                Setup
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/location">
+                Locations
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/{{ id }}/editLocation">
+                Location Setup
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page"
+                routerLink="/setup/location/{{ id }}/menuManagement">
+                Menu Management
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                Surcharges and Discounts
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1"><i class="icon-arrow-left  cursor-pointer" (click)="back()"></i> Surcharges and
+              Discounts</h4>
+
+          </div>
+
+        </div>
+      </div>
+
+      <mat-tab-group>
+        <mat-tab label="Additional Surcharges">
+          <!-- <div class="row col-12">
+              <div class="col-3"><h2>Additional Surcharges</h2></div>
+              <div class="col-7">
+                <input
+                  #surcharge
+                  (keyup)="doFilter(surcharge.value)"
+                  type="text"
+                  class="form-control"
+                  placeholder="Search Surcharge"
+                />
+              </div>
+              <div class="col-2">
+                <button class="btn-setup-sucess" (click)="addSurcharge()">
+                  <i class="icon-plus mr-1"></i>Add Surcharge
+                </button>
+              </div>
+            </div> -->
+          <div class="col-12 p-2">
+            <div class="d-flex  head-tag">
+              <h4 class="flex-gr-1">
+                <!-- Additional Surcharges -->
+              </h4>
+              <div class="d-flex float-right">
+                <input type="text" class="form-control" placeholder="Search Surcharge" #surcharge
+                  (keyup)="doFilter(surcharge.value)" />
+              </div>
+              <div class="d-flex" style="padding-bottom: 15px; padding-left: 5px">
+                <button class="btn-setup-sucess" (click)="addSurcharge()">
+                  <i class="icon-plus mr-1"></i>Add Surcharge
+                </button>
+              </div>
+            </div>
+          </div>
+          <ng-template #message>
+            <p *ngIf="dataSource.data.length <= 0" class="message">
+              No Surcharges Added. <br />
+              Click
+              <a routerLink="/setup/location/menuManagement/subchargesDiscount" (click)="addSurcharge()">here</a>
+              to add Surcharges.
+            </p>
+          </ng-template>
+          <div class="col-12 p-0 tableStyleMain" *ngIf="dataSource.data.length > 0; else message">
+            <table mat-table #surchargeTable [dataSource]="dataSource" matSort class="mat-z8">
+              <ng-container matColumnDef="index">
+                <th mat-header-cell *matHeaderCellDef>
+                  #
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{dataSource.data.indexOf(element) + 1}}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Name
+                </th>
+                <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+              </ng-container>
+              <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Type
+                </th>
+                <td mat-cell *matCellDef="let element">{{ element.type }}</td>
+              </ng-container>
+              <ng-container matColumnDef="rate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Rate
+                </th>
+                <td mat-cell *matCellDef="let element">{{ element.rate }}</td>
+              </ng-container>
+              <ng-container matColumnDef="walkIn">
+                <th mat-header-cell *matHeaderCellDef>Walk-In</th>
+                <td mat-cell *matCellDef="let element">
+                  <span *ngIf="element.walkIn">
+                    <i class="icon-ok mr-1"></i>
+                  </span>
+                  <span *ngIf="!element.walkIn">
+                    <i class="icon-remove mr-1"></i>
+                  </span>
+                  <!-- <input type="checkbox" [(ngModel)]="element.walkIn" /> -->
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="dineIn">
+                <th mat-header-cell *matHeaderCellDef>Dine-In</th>
+                <td mat-cell *matCellDef="let element">
+                  <span *ngIf="element.dineIn">
+                    <i class="icon-ok mr-1"></i>
+                  </span>
+                  <span *ngIf="!element.dineIn">
+                    <i class="icon-remove mr-1"></i>
+                  </span>
+
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="callCenter">
+                <th mat-header-cell *matHeaderCellDef>Call Center</th>
+                <td mat-cell *matCellDef="let element">
+                  <span *ngIf="element.callCenter">
+                    <i class="icon-ok mr-1"></i>
+                  </span>
+                  <span *ngIf="!element.callCenter">
+                    <i class="icon-remove mr-1"></i>
+                  </span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="takeAway">
+                <th mat-header-cell *matHeaderCellDef>Take Away</th>
+                <td mat-cell *matCellDef="let element">
+                  <span *ngIf="element.takeAway">
+                    <i class="icon-ok mr-1"></i>
+                  </span>
+                  <span *ngIf="!element.takeAway">
+                    <i class="icon-remove mr-1"></i>
+                  </span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="eorder">
+                <th mat-header-cell *matHeaderCellDef>E-Order</th>
+                <td mat-cell *matCellDef="let element">
+                  <span *ngIf="element.eorder">
+                    <i class="icon-ok mr-1"></i>
+                  </span>
+                  <span *ngIf="!element.eorder">
+                    <i class="icon-remove mr-1"></i>
+                  </span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="isTaxable">
+                <th mat-header-cell *matHeaderCellDef>Is Taxable?</th>
+                <td mat-cell *matCellDef="let element">
+                  <span *ngIf="element.isTaxable">
+                    <i class="icon-ok mr-1"></i>
+                  </span>
+                  <span *ngIf="!element.isTaxable">
+                    <i class="icon-remove mr-1"></i>
+                  </span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Status</th>
+                <td mat-cell *matCellDef="let element">
+                  <mat-slide-toggle (change)="onToggleSurcharges($event,element.id)" [(ngModel)]="element.status" matTooltip="Change Status" >
+                  </mat-slide-toggle>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="button">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let element" class="btn-wrp-equal align-items-right">
+                  <button class="btn-setup-sucess" (click)="editsurcharge(element.id)" matTooltip="Edit">
+                    <i _ngcontent-trm-c429="" class="zmdi zmdi-edit"></i>
+                  </button>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+
+          </div>
+          <mat-paginator #surchargeTable [pageSize]="50" [pageSizeOptions]="[2, 4, 6, 10, 50]">
+          </mat-paginator>
+          <!-- <div *ngIf="dataSource.data.length<=0"   class="message">
+              No Surcharges added<br>Click add surcherges to add Surcharges
+            </div> -->
+        </mat-tab>
+        <mat-tab label="Order Discounts">
+
+          <div class="col-12 p-2">
+            <div class="d-flex head-tag">
+              <h4 class="flex-gr-1">
+
+              </h4>
+              <div class="d-flex">
+                <input type="text" class="form-control" placeholder="Search Order Discount" #order
+                  (keyup)="doFilterOrder(order.value)" />
+              </div>
+              <div class="d-flex" style="padding-bottom: 15px; padding-left: 5px">
+                <button class="btn-setup-sucess" (click)="addOrderDiscount()">
+                  <i class="icon-plus mr-1"></i>Add Order Discount
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="col-12">
+              <div class="d-flex align-items-center head-tag head-tag-light mt-2">
+                <h2>Order Level Discount</h2>
+                <input #order (keyup)="doFilter(order.value)" type="text" class="form-control" placeholder="Search " />
+                <button class="btn-setup-sucess" (click)="addOrderDiscount()"><i class="icon-plus mr-1"></i>Add Order
+                  Discount</button>
+              </div>
+            </div> -->
+          <ng-template #orderMessage>
+            <p *ngIf="dataSourceOrderDiscounts.data.length <= 0" class="message">
+              No Order discounts Added. <br />
+              Click
+              <a routerLink="/setup/location/menuManagement/subchargesDiscount" (click)="addOrderDiscount()">here</a>
+              to add Order Discount.
+            </p>
+          </ng-template>
+          <div class="col-12 tableStyleMain" *ngIf="dataSourceOrderDiscounts.data.length > 0; else orderMessage">
+            <table mat-table #orderdiscount [dataSource]="dataSourceOrderDiscounts" matSort class="mat-z8">
+              <ng-container matColumnDef="index">
+                <th mat-header-cell *matHeaderCellDef>
+                  #
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{dataSourceOrderDiscounts.data.indexOf(element) + 1}}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+              </ng-container>
+              <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+                <td mat-cell *matCellDef="let element">{{ element.type }}</td>
+              </ng-container>
+              <ng-container matColumnDef="rate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Rate</th>
+                <td mat-cell *matCellDef="let element">{{ element.rate }}</td>
+              </ng-container>
+              <ng-container matColumnDef="walkIn">
+                <th mat-header-cell *matHeaderCellDef>Walk-In</th>
+                <td mat-cell *matCellDef="let element">
+                  <span *ngIf="element.walkIn">
+                    <i class="icon-ok mr-1"></i>
+                  </span>
+                  <span *ngIf="!element.walkIn">
+                    <i class="icon-remove mr-1"></i>
+                  </span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="dineIn">
+                <th mat-header-cell *matHeaderCellDef>Dine-In</th>
+                <td mat-cell *matCellDef="let element">
+                  <span *ngIf="element.dineIn">
+                    <i class="icon-ok mr-1"></i>
+                  </span>
+                  <span *ngIf="!element.dineIn">
+                    <i class="icon-remove mr-1"></i>
+                  </span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="callCenter">
+                <th mat-header-cell *matHeaderCellDef>Call Center</th>
+                <td mat-cell *matCellDef="let element">
+                  <span *ngIf="element.callCenter">
+                    <i class="icon-ok mr-1"></i>
+                  </span>
+                  <span *ngIf="!element.callCenter">
+                    <i class="icon-remove mr-1"></i>
+                  </span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="takeAway">
+                <th mat-header-cell *matHeaderCellDef>Take Away</th>
+                <td mat-cell *matCellDef="let element">
+                  <span *ngIf="element.takeAway">
+                    <i class="icon-ok mr-1"></i>
+                  </span>
+                  <span *ngIf="!element.takeAway">
+                    <i class="icon-remove mr-1"></i>
+                  </span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="eorder">
+                <th mat-header-cell *matHeaderCellDef>E-Order</th>
+                <td mat-cell *matCellDef="let element">
+                  <span *ngIf="element.eorder">
+                    <i class="icon-ok mr-1"></i>
+                  </span>
+                  <span *ngIf="!element.eorder">
+                    <i class="icon-remove mr-1"></i>
+                  </span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="onTotal">
+                <th mat-header-cell *matHeaderCellDef>On Total?</th>
+                <td mat-cell *matCellDef="let element">
+                  <span *ngIf="element.onTotal">
+                    <i class="icon-ok mr-1"></i>
+                  </span>
+                  <span *ngIf="!element.onTotal">
+                    --
+                  </span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Status</th>
+                <td mat-cell *matCellDef="let element">
+                  <!-- <input
+                      type="radio"
+                      [(ngModel)]="element.status"
+                      [value]="element.status"
+                    /> -->
+                  <mat-slide-toggle (change)="onToggleOrderDiscounts($event,element.id)" [(ngModel)]="element.status" matTooltip="Change Status">
+                    </mat-slide-toggle>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="button">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let element" class="btn-wrp-equal align-items-right" >
+                  <button class="btn-setup-sucess" (click)="editorderDiscount(element.id)" matTooltip="Edit">
+                    <i _ngcontent-trm-c429="" class="zmdi zmdi-edit"></i>
+                  </button>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsOrderDiscounts"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsOrderDiscounts"></tr>
+            </table>
+          </div>
+          <mat-paginator #orderdiscount [pageSize]="50" [pageSizeOptions]="[2, 4, 6, 10, 50]">
+          </mat-paginator>
+        </mat-tab>
+        <mat-tab label="Item Discounts">
+          <div class="col-12 p-2">
+            <div class="d-flex head-tag">
+              <h4 class="flex-gr-1">
+
+              </h4>
+              <div class="d-flex float-right">
+                <input type="text" class="form-control" placeholder="Search Item Discount" #item
+                  (keyup)="doFilterItem(item.value)" />
+              </div>
+              <div class="d-flex float-right" style="padding-bottom: 15px; padding-left: 5px">
+                <button class="btn-setup-sucess" (click)="addItemDiscount()">
+                  <i class="icon-plus mr-1"></i>Add Item Discount
+                </button>
+              </div>
+            </div>
+          </div>
+          <ng-template #itemMessage>
+            <p *ngIf="dataSourceItemDiscounts.data.length <= 0" class="message">
+              No Item discounts Added. <br />
+              Click
+              <a routerLink="/setup/location/menuManagement/subchargesDiscount" (click)="addItemDiscount()">here</a>
+              to add Item Discount.
+            </p>
+          </ng-template>
+          <div class="col-12 tableStyleMain" *ngIf="dataSourceItemDiscounts.data.length > 0; else itemMessage">
+            <table mat-table #itemdiscount [dataSource]="dataSourceItemDiscounts" matSort class="mat-z8">
+              <ng-container matColumnDef="index">
+                <th mat-header-cell *matHeaderCellDef>
+                  #
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{dataSourceItemDiscounts.data.indexOf(element) + 1}}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+              </ng-container>
+              <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+                <td mat-cell *matCellDef="let element">{{ element.type }}</td>
+              </ng-container>
+              <ng-container matColumnDef="rate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Rate</th>
+                <td mat-cell *matCellDef="let element">{{ element.rate }}</td>
+              </ng-container>
+              <ng-container matColumnDef="walkIn">
+                <th mat-header-cell *matHeaderCellDef>Walk-In</th>
+                <td mat-cell *matCellDef="let element">
+                  <span *ngIf="element.walkIn">
+                    <i class="icon-ok mr-1"></i>
+                  </span>
+                  <span *ngIf="!element.walkIn">
+                    <i class="icon-remove mr-1"></i>
+                  </span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="dineIn">
+                <th mat-header-cell *matHeaderCellDef>Dine-In</th>
+                <td mat-cell *matCellDef="let element">
+                  <span *ngIf="element.dineIn">
+                    <i class="icon-ok mr-1"></i>
+                  </span>
+                  <span *ngIf="!element.dineIn">
+                    <i class="icon-remove mr-1"></i>
+                  </span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="callCenter">
+                <th mat-header-cell *matHeaderCellDef>Call Center</th>
+                <td mat-cell *matCellDef="let element">
+                  <span *ngIf="element.callCenter">
+                    <i class="icon-ok mr-1"></i>
+                  </span>
+                  <span *ngIf="!element.callCenter">
+                    <i class="icon-remove mr-1"></i>
+                  </span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="takeAway">
+                <th mat-header-cell *matHeaderCellDef>Take Away</th>
+                <td mat-cell *matCellDef="let element">
+                  <span *ngIf="element.takeAway">
+                    <i class="icon-ok mr-1"></i>
+                  </span>
+                  <span *ngIf="!element.takeAway">
+                    <i class="icon-remove mr-1"></i>
+                  </span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="eorder">
+                <th mat-header-cell *matHeaderCellDef>E-Order</th>
+                <td mat-cell *matCellDef="let element">
+                  <span *ngIf="element.eorder">
+                    <i class="icon-ok mr-1"></i>
+                  </span>
+                  <span *ngIf="!element.eorder">
+                    <i class="icon-remove mr-1"></i>
+                  </span>
+                </td>
+              </ng-container>
+              <!-- <ng-container matColumnDef="onTotal">
+                    <th mat-header-cell *matHeaderCellDef>on Total?</th>
+                    <td mat-cell *matCellDef="let element">
+                      <input type="checkbox" [(ngModel)]="element.onTotal" />
+                    </td>
+                  </ng-container> -->
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Status</th>
+                <td mat-cell *matCellDef="let element">
+                  <!-- <input
+                        type="radio"
+                        [(ngModel)]="element.status"
+                        [value]="element.status"
+                      /> -->
+                  <mat-slide-toggle (change)="onToggleItemDiscounts($event,element.id)" [(ngModel)]="element.status" matTooltip="Change Status">
+                    </mat-slide-toggle>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="button">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let element" class="btn-wrp-equal align-items-right">
+                  <button class="btn-setup-sucess" (click)="edititemDiscount(element.id)" matTooltip="Edit">
+                    <i _ngcontent-trm-c429="" class="zmdi zmdi-edit"></i>
+                  </button>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsItemDiscounts"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsItemDiscounts"></tr>
+            </table>
+          </div>
+          <mat-paginator #itemdiscount [pageSize]="50" [pageSizeOptions]="[2, 4, 6, 10, 50]">
+          </mat-paginator>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</body>
+
+</html>

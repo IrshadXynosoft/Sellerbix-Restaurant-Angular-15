@@ -1,0 +1,104 @@
+<form [formGroup]="addCustomerForm">
+  <div class="modal-wrapper">
+    <h2 mat-dialog-title>Edit Customer</h2>
+    <div mat-dialog-content>
+      <div class="row">
+        <div class="col-12 col-lg-6">
+          <label>Name</label>
+          <input type="text" class="form-control" placeholder="Name" formControlName="name" />
+        </div>
+        <div class="col-12 col-lg-6">
+          <label>Phone Number</label>
+          <span class="error-message">*</span>
+          <span class="error-message float-right" *ngIf="
+                addCustomerForm.controls.contact_no.hasError('required') &&
+                addCustomerForm.controls.contact_no.touched
+              ">Required</span>
+          <span class="error-message float-right"
+            *ngIf="addCustomerForm.controls.contact_no.hasError('pattern')">Invalid input</span>
+          <span class="error-message float-right" *ngIf="ErrorArray.contact_no">
+            {{ ErrorArray.contact_no }}</span>
+          <input type="text" class="form-control"
+            [ngClass]="addCustomerForm.controls.contact_no.hasError('required') &&
+          addCustomerForm.controls.contact_no.touched || addCustomerForm.controls.contact_no.hasError('pattern') || ErrorArray.contact_no ? 'is-invalid' : ''"
+            placeholder="Phone Number" formControlName="contact_no" />
+        </div>
+      </div>
+      <div class="row">
+
+        <div class="col-12 col-lg-6">
+          <label>Email</label>
+          <span class="error-message float-right" *ngIf="addCustomerForm.controls.email.hasError('pattern')">invalid
+            input</span>
+          <input type="email" class="form-control" placeholder="Email" formControlName="email" />
+        </div>
+   
+        <div class="col-12 col-lg-6">
+          <label>Delivery Area</label>
+          <span class="error-message">*</span>
+          <span class="error-message float-right" *ngIf="
+                addCustomerForm.controls.delivery_area_id.hasError('required') &&
+                addCustomerForm.controls.delivery_area_id.touched
+              ">required</span>
+          <!-- <input type="text" class="form-control" placeholder="Delivery Area"  formControlName="delivery_area"/> -->
+          <select class="form-control w-100" formControlName="delivery_area_id">
+            <option value="">Select</option>
+            <option *ngFor="let i of deliveryAreaRecords" value="{{ i.id }}">
+              {{ i.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12 col-lg-6">
+          <label>Date Of Birth</label>
+          <input type="date" class="form-control" placeholder="date of birth" formControlName="dob" />
+        </div>
+        <div class="col-12 col-lg-6">
+          <label>Gender</label>
+          <select class="form-control w-100" formControlName="gender">
+            <option value="O">Others</option>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-lg-6">
+         <!-- <label>Loyalty Group</label><br>
+          <mat-form-field appearance="outline" style="width:100%">
+            <mat-label>Loyalty Group</mat-label>
+            <mat-select formControlName="loyalty_group_id" multiple [disableOptionCentering]="true" panelClass="myPanelClass">
+              <mat-option *ngFor="let i of loyaltyGroupArray" value="{{ i.id }}"> {{ i.name }}</mat-option>
+            </mat-select>
+          </mat-form-field> -->
+          <label>Loyalty Group</label>
+          <select class="form-control w-100" formControlName="loyalty_group_id">
+            <option value="" disabled>Select</option>
+            <option *ngFor="let i of loyaltyGroupArray" value="{{ i.id }}">
+              {{ i.name }}
+            </option>
+          </select>
+        </div>
+        <div class="col-12 col-lg-6">
+           <label>Price Plan</label>
+           <select class="form-control w-100" formControlName="price_plan_id">
+             <option value="" disabled>Select</option>
+             <option *ngFor="let i of peicePlansArray" value="{{ i.id }}">
+              {{ i.name }}
+             </option>
+           </select>
+         </div>
+      </div>
+    </div>
+    <div mat-dialog-actions>
+      <button class="btn-setup-danger w-px-100 mr-2" (click)="cancel()">
+        Cancel
+      </button>
+      <button class="btn-setup-sucess w-px-100" (click)="saveCustomer()">
+        Update
+      </button>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                Setup
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/globalSettings">
+                Global Settings
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                Order Modify Reasons
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1">
+              <i class="icon-arrow-left mr-1 cursor-pointer " (click)="back()"></i>Order Modify Reasons
+            </h4>
+            <div class="d-flex">
+              <input type="text" class="form-control" placeholder="Search Reasons" #reason
+                (keyup)="doFilter(reason.value)" />
+            </div>
+            <div class="d-flex" style="padding-bottom: 15px; padding-left: 5px">
+              <button class="btn-setup-sucess" (click)="addReason()">
+                <i class="icon-plus mr-1"></i>Add Reason
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="dataSource.data.length <= 0; else showtable">
+        <div class="row">
+          <div class="col-12">
+            <div class="not-found">
+              <h3>Sorry :(</h3>
+              <p>There's no Reasons yet at this moment.</p>
+              <p>Click <a (click)="addReason()" style="color: var(--primary);cursor: pointer;">here</a> to add reason.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #showtable>
+        <div class="tableStyleMain">
+          <table mat-table [dataSource]="dataSource" class="mat-z8">
+            <ng-container matColumnDef="index">
+              <th mat-header-cell *matHeaderCellDef>
+                #
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{dataSource.data.indexOf(element) + 1}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Reasons">
+              <th mat-header-cell *matHeaderCellDef>Reasons</th>
+              <td mat-cell *matCellDef="let element">{{ element.reason }}</td>
+            </ng-container>
+            <ng-container matColumnDef="button">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td class="btn-wrp-equal align-items-right" mat-cell *matCellDef="let element">
+                <button class="btn-setup-sucess" (click)="editReason(element.id, element.reason)">
+                  <i _ngcontent-trm-c429="" class="zmdi zmdi-edit"></i>
+                </button>
+                <button class="btn-setup-danger" (click)="deleteReason(element.id)">
+                  <i _ngcontent-trm-c429="" class="zmdi zmdi-delete"></i>
+                </button>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </div>
+      </ng-template>
+      <mat-paginator [ngClass]="{ show: dataSource.data.length <= 0 }" [pageSize]="15"
+        [pageSizeOptions]="[2, 4, 6, 10, 20]">
+      </mat-paginator>
+    </div>
+  </div>
+</body>
+
+</html>

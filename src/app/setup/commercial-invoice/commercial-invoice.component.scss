@@ -1,0 +1,43 @@
+.b-right {
+  float: right;
+  background: var(--white);
+  padding: 10px;
+}
+
+.show {
+  visibility: hidden;
+}
+
+.btn-wrp-equal button {
+  width: 34px;
+  margin-bottom: 10px;
+  display: inline-block;
+  height: 34px;
+  border-radius: 50%;
+}
+
+.summary-div {
+  padding: 2px;
+  text-align: right;
+}
+
+::ng-deep input.mat-mdc-input-element {
+  background-color: white;
+  height: 40px;
+  width: 100%;
+  border: 1px solid #ced4da;
+}
+
+.b-right {
+  float: right;
+  padding-top: 1rem;
+}
+
+.commercial-btn {
+  background: #75ca75;
+  color: var(--white);
+  border: 1px solid #75ca75;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-top: 32px;
+}

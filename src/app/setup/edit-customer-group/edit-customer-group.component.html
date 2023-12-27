@@ -1,0 +1,18 @@
+<form [formGroup]="addCustomerGroupForm">
+    <div class="modal-wrapper">
+        <h2 mat-dialog-title>Customer Group</h2>
+        <div mat-dialog-content>
+        <span class="error-message float-right">*</span>
+        <span class="error-message float-right" *ngIf="addCustomerGroupForm.controls.name.hasError('required' ) && addCustomerGroupForm.controls.name.touched">required</span>
+        <span class="error-message float-right"  *ngIf="addCustomerGroupForm.controls.name.hasError('pattern' )">invalid input</span>  
+        <span class="error-message float-right" *ngIf="ErrorArray.name">
+          {{ ErrorArray.name }}</span
+        >
+        <input type="text" class="form-control" [ngClass]="addCustomerGroupForm.controls.name.hasError('required' ) && addCustomerGroupForm.controls.name.touched || addCustomerGroupForm.controls.name.hasError('pattern' ) || ErrorArray.name ? 'is-invalid' : ''" placeholder="Customer Group Name:" formControlName="name" />
+       </div>
+        <div mat-dialog-actions>
+          <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+          <button class="btn-setup-sucess" [disabled]="!addCustomerGroupForm.valid || addCustomerGroupForm.pristine"  (click)="submit()">Submit</button>
+        </div>
+      </div>
+      </form>

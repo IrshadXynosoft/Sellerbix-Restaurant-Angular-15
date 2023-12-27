@@ -1,0 +1,479 @@
+.tabs {
+  position: relative;
+  clear: both;
+  height: 100vh;
+}
+
+.tab label {
+  padding: 10px;
+  border: 1px solid #ccc;
+  font-size: 18px;
+  position: relative;
+  left: 0;
+  width: 248px;
+  display: block;
+  margin-bottom: 8px;
+  border-radius: 30px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.tab [type="radio"] {
+  display: none;
+}
+
+.content {
+  position: absolute;
+  top: 0;
+  left: 257px;
+  background: white;
+  right: 0;
+  padding: 30px;
+  border: 1px solid #ccc;
+  overflow: auto;
+  height: 100vh;
+  border-radius: 5px;
+}
+
+[type="radio"]:checked ~ label {
+  background: white;
+  border-bottom: 2px solid var(--primary);
+  z-index: 2;
+}
+
+[type="radio"]:checked ~ label ~ .content {
+  z-index: 1000;
+}
+
+.clearDiv {
+  clear: both;
+}
+
+.floatMainTab {
+  float: left;
+
+  h3 {
+    color: var(--primary);
+    font-weight: bold;
+    font-size: 26px;
+  }
+}
+
+.floatMainTabBtn {
+  float: right;
+}
+
+.invoiceBorder {
+  border: 1px #ddd solid;
+  padding: 20px;
+  float: left;
+  width: 100%;
+  border-radius: 5px;
+
+  h2 {
+    font-size: 20px;
+    color: #000;
+    font-weight: bold;
+    text-transform: capitalize;
+    margin-bottom: 8px;
+  }
+}
+
+.doubleBorder {
+  border: 2px #ddd dotted;
+  padding: 14px;
+  border-radius: 5px;
+
+  h4 {
+    font-size: 15px;
+    color: var(--primary);
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+}
+
+.invoiceNav {
+  margin: 0;
+  padding: 0;
+
+  li {
+    display: block;
+    padding-bottom: 5px;
+    color: #000;
+    font-size: 15px;
+  }
+}
+
+.invoiceNav1 {
+  margin: 20px 0 0;
+  padding: 0;
+
+  li {
+    display: inline-block;
+    margin-right: 5px;
+  }
+
+  .editBtn {
+    width: 100px;
+    text-align: center;
+    border-radius: 5px;
+    padding: 7px;
+    color: var(--white);
+    background: #70b570;
+    display: block;
+    text-decoration: none;
+    margin-bottom: 5px;
+  }
+
+  .deleteBtn {
+    width: 100px;
+    text-align: center;
+    border-radius: 5px;
+    padding: 7px;
+    color: var(--white);
+    background: #bd362f;
+    display: block;
+    text-decoration: none;
+  }
+}
+
+.allDivMain {
+  float: left;
+  width: 100%;
+}
+
+.floatMainTabBtn button {
+  width: 200px;
+  text-align: center;
+  border-radius: 5px;
+  padding: 7px;
+  margin-bottom: 15px;
+  color: var(--white);
+  background: #70b570;
+  border: none;
+  display: block;
+  text-decoration: none;
+}
+
+.printerDivBg {
+  background-color: #f9f9f9;
+  float: left;
+  width: 100%;
+  border-radius: 5px;
+  padding: 40px;
+
+  h3 {
+    font-size: 31px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #000;
+  }
+
+  p {
+    color: #000;
+    font-size: 15px;
+    font-weight: normal;
+    margin-bottom: 10px;
+  }
+
+  button {
+    width: 200px;
+    text-align: center;
+    border-radius: 5px;
+    padding: 7px;
+    margin-bottom: 15px;
+    color: var(--white);
+    background: #70b570;
+    border: none;
+    display: block;
+    text-decoration: none;
+  }
+}
+
+.cloudprinterDivBg {
+  background: linear-gradient(to bottom, #356aa0 0%, #356aa0 100%);
+  float: left;
+  width: 100%;
+  border-radius: 5px;
+  padding-top: 30px;
+  padding: 40px;
+  color: rgba(255, 255, 255, 0.7);
+
+  h3 {
+    font-size: 31px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 15px;
+    font-weight: normal;
+    margin-bottom: 10px;
+  }
+}
+
+.bgGreyMain {
+  background: #eee;
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.contentTxtAll {
+  float: left;
+  width: 100%;
+
+  .selectBarMain {
+    width: 100%;
+  }
+
+  i {
+    font-size: 20px;
+    font-weight: normal;
+    margin-bottom: 10px;
+    color: #000;
+    display: block;
+    font-style: normal;
+  }
+
+  h4 {
+    border-bottom: 1px #ddd solid;
+    font-size: 31px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+
+  .addRuleBtn {
+    width: 200px;
+    text-align: center;
+    border-radius: 5px;
+    padding: 7px;
+    margin-bottom: 15px;
+    color: var(--white);
+    background: #70b570;
+    border: none;
+    display: block;
+    text-decoration: none;
+  }
+}
+
+.radioBtnFloat {
+  float: left;
+  width: 100%;
+
+  h3 {
+    border-bottom: 1px #ddd solid;
+    font-size: 25px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    margin-top: 30px;
+  }
+}
+
+// invoicetemplates
+.generalHeader {
+  border-bottom: 1px #ddd solid;
+  color: #000;
+  font-weight: bold;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  margin-top: 20px;
+  font-size: 26px;
+}
+
+.printer {
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px;
+  color: var(--white);
+  background: #70b570;
+  border: none;
+  display: block;
+  text-decoration: none;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.mat-mdc-header-cell {
+  font-weight: bold;
+  font-size: medium;
+  color: rgb(20, 20, 20);
+}
+
+.mat-mdc-cell {
+  font-size: 15px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+
+.not-found {
+  background: #d7d7d7;
+  padding: 15px;
+  margin-top: 20px;
+
+  h3 {
+    font-size: 30px;
+    color: #565656;
+    font-weight: 600;
+  }
+
+  p {
+    font-size: 16px;
+    color: #727070;
+    font-weight: 400;
+  }
+}
+
+.btn-wrp-equal button {
+  width: 34px;
+  margin-bottom: 10px;
+  display: inline-block;
+  height: 34px;
+  border-radius: 50%;
+}
+
+.tableStyleMain {
+  margin-top: 7px;
+
+  th {
+    padding: 10px;
+    border-right: 1px #e2e3e3 solid;
+    text-align: center;
+  }
+
+  td {
+    padding: 10px;
+    border-right: 1px #eceeee solid;
+    text-align: center;
+  }
+}
+
+.show {
+  visibility: hidden;
+}
+
+// warning message
+
+.new-message-box p {
+  font-size: 1.15em;
+  font-weight: 600;
+}
+
+.info-tab {
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+  position: relative;
+  top: 8px;
+}
+
+.info-tab {
+  float: left;
+  margin-left: -23px;
+}
+
+.info-tab i::before {
+  width: 24px;
+  height: 24px;
+  box-shadow: inset 12px 0 13px rgba(0, 0, 0, 0.5);
+}
+
+.info-tab i::after {
+  width: 0;
+  height: 0;
+  border: 12px solid transparent;
+  border-bottom-color: var(--white);
+  border-left-color: var(--white);
+  bottom: -18px;
+}
+
+.info-tab i::before,
+.info-tab i::after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  bottom: -17px;
+  transform: rotateX(60deg);
+}
+
+.note-box,
+.warning-box,
+.tip-box-success,
+.tip-box-danger,
+.tip-box-warning,
+.tip-box-info,
+.tip-box-alert {
+  padding: 12px 8px 3px 26px;
+}
+
+/*******warning*******/
+.new-message-box-warning {
+  background: #eeeeee;
+  padding: 3px;
+  margin: 6px 0;
+}
+
+.tip-icon-warning {
+  background: #ffeb3b; //500
+}
+
+.tip-box-warning {
+  color: #212121; //900
+  background: #fff9c4; //100
+}
+
+.tip-icon-warning::before {
+  font-size: 25px;
+  content: "\f071";
+  top: 8px;
+  left: 11px;
+  font-family: FontAwesome;
+  position: absolute;
+  color: #212121;
+}
+
+.tip-icon-warning i::before {
+  background: #ffeb3b; //500
+}
+
+.card {
+  margin-bottom: 10px;
+  height: 16rem;
+}
+
+.delete_item_icon {
+  color: rgb(241, 26, 26);
+  cursor: pointer;
+  // margin-top: -10px;
+}
+
+.example-additional-selection {
+  opacity: 0.75;
+  font-size: 0.75em;
+}
+.selected-category {
+  background-color: #ccc;
+  padding: 4px 8px;
+  margin: 2px;
+  border-radius: 16px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.remove-category-icon {
+  cursor: pointer;
+  margin-left: 4px;
+}

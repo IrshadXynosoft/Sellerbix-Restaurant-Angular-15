@@ -1,0 +1,169 @@
+<p>menu-requests works!</p>
+<!DOCTYPE html>
+<html lang="en">
+  <body id="page_setup">
+
+    <!-- Body Wrapper Start -->
+    <form [formGroup]="newStockRequestForm">
+      <div class="body_wrapper container-fluid">
+            <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+
+        <app-inventory-header></app-inventory-header>
+        <div class="px-4">
+          <div class="row pt-4">
+            <div class="bgSecMainAll">
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li
+                    class="breadcrumb-item cursor-pointer"
+                    routerLink="/home/walkin"
+                  >
+                    Home
+                  </li>
+                  <li
+                    class="breadcrumb-item cursor-pointer"
+                    aria-current="page"
+                    routerLink="/inventory"
+                  >
+                    Inventory
+                  </li>
+                  <li
+                  class="breadcrumb-item cursor-pointer"
+                  aria-current="page"
+                  routerLink="/inventory/inventoryMovement"
+                >
+                  Inventory Movements
+                </li>
+                  <li
+                    class="breadcrumb-item active cursor-pointer"
+                    aria-current="page"
+                  >
+                    Menu Requests
+                  </li>
+                </ol>
+              </nav>
+            </div>
+            <div class="col-12">
+              <div class="d-flex align-items-center head-tag cursor-pointer">
+                <h4 class="flex-gr-1" >
+                  <i class="icon-arrow-left" routerLink="/inventory/inventoryMovement"></i>Menu Requests
+                </h4>
+                <div class="d-flex align-items-center justify-content-end">
+                <select
+                class="form-control w-100 bordered"
+                formControlName="branch_id_for_requst"
+                (change)="listStockrequestsByLocation()"
+              >
+                <option value="" selected disabled>Select</option>
+                <option *ngFor="let i of branchRecords" value="{{ i.id }}">
+                  {{ i.name }}
+                </option>
+              </select>
+              </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="col-12 row">
+              <h2 class="p-2 flex-gr-1">Menu Requests</h2>
+              <div class="d-flex align-items-center justify-content-end">
+                <button class="btn-setup-sucess btn-ht-custom" (click)="newStockRequest()">
+                   <i class="icon-plus mr-1"></i> New Menu Request
+                 </button>
+               </div>
+            </div>
+            
+            <ng-template #viewmessage>
+              <div class="row">
+                <div class="col-12">
+                  <div class="not-found bordered">
+                    <h3>Sorry :(</h3>
+                    <p>There's no requests at this moment.</p>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+            <div class="col-12">
+              <table
+                mat-table
+                *ngIf="dataSource.data.length > 0; else viewmessage"
+                [dataSource]="dataSource"
+                matSort
+                class="tableStyleMain table bordered w-100"
+              >
+                <ng-container matColumnDef="index">
+                  <th mat-header-cell *matHeaderCellDef>#</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ dataSource.data.indexOf(element) + 1 }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="menu_request_number">
+                  <th mat-header-cell *matHeaderCellDef>Request Number</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.menu_request_number }}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="staff">
+                  <th mat-header-cell *matHeaderCellDef>Created By</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.staff_name }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="from_branch_name">
+                  <th mat-header-cell *matHeaderCellDef>From Location</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.from_branch_name }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="to_branch_name">
+                  <th mat-header-cell *matHeaderCellDef>To Location</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.to_branch_name }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                  <th mat-header-cell *matHeaderCellDef>Status</th>
+                  <td mat-cell *matCellDef="let element">
+                   <span *ngIf="element.action_status==0">Requested</span>
+                   <span *ngIf="element.action_status==1">Accepted</span>
+                   <span *ngIf="element.action_status==2">Rejected</span>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="button">
+                  <th mat-header-cell *matHeaderCellDef>Actions</th>
+                  <td mat-cell *matCellDef="let element">
+                  
+                    <button class="btn-setup-sucess commonBtnStyle" [matMenuTriggerFor]="menuPO" *ngIf="element.action_status==0; else viewRequest">Actions</button>
+                    <mat-menu #menuPO="matMenu">
+                      <button mat-menu-item (click)="editRequestDetail(element.id)">Edit</button>
+                      <button mat-menu-item (click)="viewRequestDetail(element.id)">View</button>
+                      <button mat-menu-item (click)="deleteRequestDetail(element.id,element.menu_request_number)">Delete</button>
+                     
+                    </mat-menu>
+                    <ng-template #viewRequest>
+                      <button class="btn-setup-sucess commonBtnStyle" (click)="viewRequestDetail(element.id)">View</button>
+                    </ng-template>
+                  </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr
+                  mat-row
+                  *matRowDef="let row; columns: displayedColumns"
+                ></tr>
+              </table>
+              <mat-paginator
+                [ngClass]="{ show: dataSource.data.length <= 0 }"
+                [pageSize]="50"
+                [pageSizeOptions]="[2, 4, 6, 10, 20]"
+              >
+              </mat-paginator>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </body>
+</html>

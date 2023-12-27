@@ -1,0 +1,16 @@
+<form  [formGroup]="paymentForm">
+    <div class="modal-wrapper">
+        <h2 mat-dialog-title>Add Customer Details</h2>
+        <div mat-dialog-content>
+            <label>Name</label>
+            <input type="text" class="form-control" placeholder="Name" formControlName="name"/>
+            <label>Phone Number</label>
+            <span class="error-message">*</span>
+            <input type="text" [ngClass]="{'invalid': invalidFlag}" class="form-control" placeholder="Phone Number" #ip (input)="phonenumberValidCheck(ip.value)"  formControlName="phone_number" />
+        </div>
+        <div mat-dialog-actions>
+            <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+            <button class="btn-setup-sucess" (click)="addCustomer()">Submit</button>
+        </div>
+    </div>
+    </form>

@@ -1,0 +1,39 @@
+h3 {
+  color: #565656;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.btn-scn {
+  justify-content: right;
+}
+
+.commonBtnStyle {
+  height: 40px;
+  width: 160px;
+  padding: 0;
+  margin-bottom: 8px;
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
+::ng-deep .mat-tab-label {
+  border-radius: 0px;
+  margin-bottom: 0px !important;
+  color: black;
+}
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
+::ng-deep .mat-tab-label-active {
+  border: 1px var(--primary) solid;
+  color: var(--primary);
+  border-bottom: none;
+  background-color: white !important;
+}
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
+::ng-deep .mat-tab-body-wrapper {
+  background-color: white !important;
+  padding: 10px;
+  height: 20rem;
+}

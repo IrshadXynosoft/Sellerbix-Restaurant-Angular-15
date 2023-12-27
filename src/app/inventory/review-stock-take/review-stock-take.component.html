@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body id="page_setup">
+
+
+    <!-- Body Wrapper Start -->
+    <div class="body_wrapper container-fluid">
+          <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+      <app-inventory-header></app-inventory-header>
+      <div class="px-4">
+        <div class="row pt-4">
+          <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  routerLink="/home/walkin"
+                >
+                  Home
+                </li>
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  aria-current="page"
+                  routerLink="/inventory"
+                >
+                  Inventory
+                </li>
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  aria-current="page"
+                  routerLink="/inventory/stockTakes"
+                >
+                  Stock Takes
+                </li>
+                <li
+                  class="breadcrumb-item active cursor-pointer"
+                  aria-current="page"
+                >
+                  View Stock Take
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-12">
+            <div class="d-flex align-items-center head-tag cursor-pointer">
+              <h4 class="flex-gr-1" >
+                <i class="icon-arrow-left" routerLink="/inventory/stockTakes"></i> View Stock Takes
+              </h4>
+            </div>
+          </div>
+        </div>
+        
+        <form [formGroup]="stocktakeForm">
+          <div class="row">
+            <div class="col-3">
+                <label>Date</label>
+                <label class="form-control  ">{{todayDate}}</label>
+            </div>
+            <div class="col-3">
+                <label>Stock Take Number / Reference</label>
+               
+                <input type="text" class="form-control" placeholder="Supplier or Email"
+                    formControlName="stockno" />
+
+            </div>
+            <div class="col-3">
+                <label>Comments</label>
+               
+                <input type="text" placeholder="Enter Your Comments" class="form-control"
+                    formControlName="comments" />
+            </div>
+        </div>
+            <table class="tableStyleMain table bordered ">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Item</th>
+                  <th scope="col">Unit Name</th>
+                  <th scope="col">Closing Stock</th>
+                  <th scope="col">Closing Stock value {{currency_symbol}} </th>
+                  <th scope="col">Counted Stock</th>
+                  <th scope="col">Counted Stock Value {{currency_symbol}}</th>
+                  <th scope="col">Stock Difference</th>
+                  <th scope="col">Cost Difference {{currency_symbol}}</th>
+                  
+                </tr>
+              </thead>
+            <tbody>
+                <tr *ngFor="let items of getItemsArray();let i=index">
+                    <td>{{i+1}}</td>
+                    <td>
+                        <h4 class="m-0 mb-2">{{items.name}}</h4>
+                    </td>
+                    <td>
+                        <h4 class="m-0 mb-2">{{items.measurement_unit_name}}</h4>
+                    </td>
+                    <td>
+                        <h4 class="m-0 mb-2">{{items.opening_stock}} {{items.measurement_unit_name}}</h4>
+                    </td>
+                    <td>
+                        <h4 class="m-0 mb-2">{{items.opening_stock_value}}</h4>
+                    </td>
+                    <td>
+                        <h4 class="m-0 mb-2">{{items.counted_stock}} {{items.measurement_unit_name}}</h4>
+                    </td>
+                    <td>
+                        <h4 class="m-0 mb-2">{{items.counted_stock_value}} </h4>
+                    </td>
+                    <td>
+                        <h4 class="m-0 mb-2"><span class="error-message">{{items.stock_diff}} {{items.measurement_unit_name}}</span></h4>
+                    </td>
+                    <td>
+                        <h4 class="m-0 mb-2"><span class="error-message">{{items.cost_diff}}</span></h4>
+                    </td>
+                   
+                </tr>
+            </tbody>
+            </table>
+          <!-- </ng-template> -->
+        </form>
+        <div class="col-12">
+          <!-- <div class="col-12"> -->
+          <div class="col-12">
+            <button
+              class="btn-setup-danger mr-2 float-right"
+              routerLink="/inventory/stockTakes"
+            >
+              Cancel
+            </button>
+            <button
+            class="btn-setup-sucess mr-2 float-right"
+            (click)="reviewStckTake()"
+          >
+            Complete
+          </button>
+          <button
+          class="btn-setup-danger mr-2 float-right"
+          (click)="rejectStockTake()"
+        >
+          Reject
+        </button>
+          </div>
+          
+        </div>
+        <!-- </div> -->
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <form [formGroup]="addSubRecipeForm">
+    <div class="body_wrapper container-fluid">
+        <!-- Header Start -->
+  <app-header></app-header>
+  <!-- Header End -->
+      <div class="px-4">
+        <div class="row pt-4">
+          <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                  Home
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                  Setup
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/inventorySetup">
+                  Inventory Setup
+                </li>
+                <li class="breadcrumb-item cursor-pointer active" aria-current="page"
+                  routerLink="/setup/inventorySetup/subrecipes">
+                  Sub Recipes
+                </li>
+
+              </ol>
+            </nav>
+          </div>
+          <div class="col-12">
+            <div class="d-flex align-items-center head-tag ">
+              <h4 class="flex-gr-1">
+                <i class="icon-arrow-left mr-2 cursor-pointer"  (click)="back()"></i>Edit Sub recipe
+              </h4>
+            </div>
+          </div>
+        </div>
+          <div class="bordered extra">
+            <div class="row">
+              <div class="col-6">
+                <h3 class="text-font"><b>General Details</b></h3>
+                <div class="row">
+                  <div class="col-12 col-lg-6">
+                    <label>Name</label>
+                    <span class="error-message"> *</span>
+                    <span class="error-message float-right"
+                      *ngIf="addSubRecipeForm.controls.name.hasError('required') && addSubRecipeForm.controls.name.touched">
+                      Required</span>
+                    <span class="error-message float-right" *ngIf="addSubRecipeForm.controls.name.hasError('maxlength')">
+                      You have reached your maximum limit of characters allowed</span>
+                    <span class="error-message float-right" *ngIf="addSubRecipeForm.controls.name.hasError('pattern')">
+                      Invalid input</span>
+                    <span class="error-message float-right" *ngIf="ErrorArray.name">
+                      {{ ErrorArray.name }}</span>
+                    <input type="text" placeholder="Name" class="form-control" [ngClass]="addSubRecipeForm.controls.name.hasError('required' ) && 
+                       addSubRecipeForm.controls.name.touched || 
+                       addSubRecipeForm.controls.name.hasError('pattern' ) || 
+                       ErrorArray.name ? 'is-invalid' : ''" formControlName="name" />
+  
+                    <label class="mt-3">Code</label>
+                    <input type="text" placeholder="Code" class="form-control" formControlName="code" />
+                  </div>
+                  <div class="col-12 col-lg-6">
+                    <label>Category</label>
+                    <span class="error-message"> *</span>
+                    <span class="error-message float-right"
+                      *ngIf="addSubRecipeForm.controls.ingredient_category_id.hasError('required') && addSubRecipeForm.controls.ingredient_category_id.touched">
+                      Required</span>
+  
+                    <div class="row ml-1">
+                      <select class="custom-select" style="width:90%" [ngClass]="addSubRecipeForm.controls.ingredient_category_id.hasError('required' ) && 
+                 addSubRecipeForm.controls.ingredient_category_id.touched  ? 'is-invalid' : ''"
+                        formControlName="ingredient_category_id">
+                        <option value="">Select Category</option>
+                        <option *ngFor="let category of categoryArray" value="{{ category.id }}">
+                          {{ category.name }}
+                        </option>
+                      </select>
+                      <i class="icon-plus cursor-pointer ml-2 mt-2 " matTooltip="Add Category"
+                        (click)="addCategory()"></i>
+                    </div>
+  
+                    <label class="mt-3">Measurement Unit</label>
+                    <span class="error-message"> *</span>
+                    <span class="error-message float-right"
+                      *ngIf="addSubRecipeForm.controls.measurement_unit_id.hasError('required') && addSubRecipeForm.controls.measurement_unit_id.touched">
+                      Required</span>
+                    <div class="row ml-1">
+                      <select class="custom-select" style="width:90%" [ngClass]="addSubRecipeForm.controls.ingredient_category_id.hasError('required' ) && 
+                 addSubRecipeForm.controls.ingredient_category_id.touched  ? 'is-invalid' : ''"
+                        formControlName="measurement_unit_id" (change)="measurementChanged($event)">
+                        <option value="">Select Unit</option>
+                        <option *ngFor="let unit of measurementArray" value="{{ unit.id }}">
+                          {{ unit.name }}
+                        </option>
+                      </select>
+                      <i class="icon-plus ml-2 mt-2 cursor-pointer" matTooltip="Add Measurement Unit"
+                        (click)="addMeasurementUnit()"></i>
+                      <span class="note">NB : Please select a lowest measurement Unit</span>
+                    </div>
+                  </div>
+                  <div class="col-12 col-lg-12">
+                    <label>Description</label>
+                    <textarea class="form-control" placeholder="Description" formControlName="description"
+                      rows="5"></textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <h3 class="text-font"><b>Utility Expenses</b></h3>
+                <input type="text" placeholder=" Search Utilities, then hit enter to add" 
+                  [matAutocomplete]="utility" [formControl]="utilitiesData" class="form-control bordered w-100"
+                  #utilityInput />
+                <mat-autocomplete autoActiveFirstOption #utility="matAutocomplete"
+                  (optionSelected)='utilitiesSelected($event.option.id,$event.option.value,utilityInput)'>
+                  <mat-option *ngFor="let utility of utilities" [value]="utility.name" [id]="utility.id">
+                    {{ utility.name }}
+                  </mat-option>
+                </mat-autocomplete>
+                <div *ngIf="isutilityAdded(); else showutilitytable">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="not-found bordered">
+                        <h3>Sorry :(</h3>
+                        <p>No Utility expenses Added
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <ng-template #showutilitytable>
+                  <table class="tableStyleMain table mt-2">
+                    <thead>
+                      <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Utility</th>
+                        <th scope="col">Expense<span class="sp-light">({{currency_symbol}})</span></th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr formArrayName="utilitiesData" *ngFor="
+                        let item of utilityFormGroups.controls;
+                        let i = index
+                      ">
+                        <td>
+                          {{ i+1 }}
+                        </td>
+                        <td>
+                          {{ utilityName(i) }}
+                        </td>
+  
+                        <td [formGroupName]="i">
+                          <span class="error-message float-right">{{utilityCheck(i)}}</span>
+                          <input type="text" class="form-control w-20" placeholder="" formControlName="utility_cost"
+                            (keyup)=findTotalAmount() />
+                        </td>
+                        <td [formGroupName]="i">
+                          <i class="icon-trash mr-1 icon-red cursor-pointer" (click)="clearutility(i)"></i>
+                        </td>
+  
+                      </tr>
+  
+                    </tbody>
+                  </table>
+                </ng-template>
+              </div>
+            </div>
+  
+            <div class="row mt-3">
+              <div class="col-12">
+                <h3 class="text-font"><b>Sub Recipe Ingredients</b>
+                  <span class="error-message"> *</span>
+                </h3>
+              </div>
+              <div class="col-md-12">
+                <input type="text" placeholder="Search Ingredients by name, then hit enter to add"
+                (keyup)="searchItem(autoInput.value)" [formControl]="ingredientsData" [matAutocomplete]="auto"
+                #autoInput class="form-control bordered w-100" />
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let option of options" [value]="option.name" [id]="option.id"
+                  (click)='ingredientSelected(option,autoInput)'>
+                  {{ option.name }}
+                </mat-option>
+              </mat-autocomplete>
+  
+                <div *ngIf="isIngredientsAdded(); else showtable">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="not-found bordered">
+                        <h3>Sorry :(</h3>
+                        <p>No Ingredients Added
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <ng-template #showtable>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">No</th>
+                        <th scope="col w-50">Ingredients</th>
+                        <th scope="col">Qty <span class="error-message"> *</span></th>
+                        <th scope="col">Unit Name</th>
+                        <th scope="col">Cost/Unit</th>
+                        <th scope="col">Sub Total ({{currency_symbol}})</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr formArrayName="ingredientsData" *ngFor="
+                            let item of ingredientFormGroups.controls;
+                            let i = index
+                          ">
+                        <td>
+                          {{ i+1 }}
+                        </td>
+                        <td>
+                          {{ IngredientName(i) }}
+                        </td>
+                        <td [formGroupName]="i">
+                          <span class="error-message float-right">{{errorMessage(i)}}</span>
+                          <input type="text" class="form-control" placeholder="" formControlName="qty"
+                            (keyup)=findTotal(i) />
+                        </td>
+  
+                        <td>
+                          {{ unitName(i) }}
+                        </td>
+                        <td>
+                          {{ costperUnit(i) }}
+                        </td>
+                        
+                        <td [formGroupName]="i">
+                          {{ subTotal(i) }}
+                        </td>
+  
+                        <td [formGroupName]="i">
+                          <i class="icon-trash mr-1 icon-red cursor-pointer" (click)="clearIngredient(i)"></i>
+
+                        </td>
+  
+                      </tr>
+  
+                    </tbody>
+                  </table>
+                </ng-template>
+              </div>
+  
+              <!-- <div class="col-12 row">
+              <div class="col-10">
+                <label class=" float-right m-2">Total ({{currency_symbol}})</label>
+              </div>
+              <div class="col-2">
+                <input type="text" placeholder="" class="form-control" formControlName="totalAmount" readonly />
+              </div>
+            </div> -->
+            </div>
+            <div class="row">
+              <div class="col-12 col-lg-3">
+                <label>Total ({{currency_symbol}})</label>
+                <input type="text" placeholder="" class="form-control" formControlName="totalAmount" readonly />
+              </div>
+              <div class="col-12 col-lg-3">
+                <label>Yield <span *ngIf="measurementUnit">in {{measurementUnit}}</span></label>
+                <span class="error-message"> *</span>
+                <!-- <div class="row">
+                <div> <input type="text" placeholder="" class="form-control" formControlName="yield" [ngClass]="addSubRecipeForm.controls.yield.hasError('required' ) && 
+                    addSubRecipeForm.controls.yield.touched || 
+                    addSubRecipeForm.controls.yield.hasError('pattern' ) ? 'is-invalid' : ''"
+                    (keyup)="findCostPerUnit()" /></div>
+                <div style="margin-top: 0.5rem;padding-left: 00.5rem;"><span>{{measurementUnit}}</span></div></div> -->
+                <input type="text" placeholder="" class="form-control" formControlName="yield" [ngClass]="addSubRecipeForm.controls.yield.hasError('required' ) && 
+                addSubRecipeForm.controls.yield.touched || 
+                addSubRecipeForm.controls.yield.hasError('pattern' ) ? 'is-invalid' : ''" (keyup)="findCostPerUnit()"
+                  style='margin-right: -10em;' />
+  
+                <span class="error-message"
+                  *ngIf="addSubRecipeForm.controls.yield.hasError('required') && addSubRecipeForm.controls.yield.touched">
+                  Required</span>
+                <span class="error-message"
+                  *ngIf="addSubRecipeForm.controls.yield.hasError('pattern') && addSubRecipeForm.controls.yield.touched">
+                  Invalid Input</span>
+  
+              </div>
+              <div class="col-12 col-lg-3">
+                <label>Cost Per Measurement Unit ({{currency_symbol}})</label>
+                <Label class="form-control">{{costPerUnit}}</Label>
+              </div>
+  
+            </div>
+            <div class="row mt-3">
+              <div class="col-12">
+                <h3 class="text-font"><b>Inventory</b><span class="error-message">*</span></h3>
+                <span class="error-message float-right" *ngIf="!validationForOpeningBalance">
+                  Required</span>
+                  <table class="table tableStyleMain">
+                    <thead>
+                      <tr>
+                        <th scope="col" class="col-3">Location</th>
+                        <th scope="col" class="col-3">Opening Balance</th>
+                        <th scope="col" class="col-3">Reorder Level</th>
+                        <th scope="col" class="col-3">Track Inventory?</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr formArrayName="locationData" *ngFor="
+                            let item of locationPricesFormGroups.controls;
+                            let i = index
+                          ">
+                        <td class="col-3">{{ branchname(i) }}</td>
+                        <td [formGroupName]="i" class="col-3">
+                          {{ showOpeningBalance(i) }} {{ measurementUnit }}
+                        </td>
+                        <td [formGroupName]="i" class="col-3">
+                          <span class="error-message float-right">{{
+                            errorMessageReorder_qty(i)
+                            }}</span>
+                            <div class="d-flex">
+                                <input type="text" placeholder="" class="form-control w-50" formControlName="reorder_qty" /><span class="unit-space">{{ measurementUnit }}</span>
+                            </div>
+                         </td>
+                        <td [formGroupName]="i" class="col-3">
+                          <div class="form-check">
+                            <input class="form-check-input m-2" type="checkbox" value="" id="flexCheckCheckedt" checked
+                              formControlName="is_track_inventory" />
+                            <label class="form-check-label" for="flexCheckCheckedt">
+                            </label>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+              </div>
+              <div class="col-12">
+                <div class="d-flex justify-content-end mb-4">
+                  <button class="btn-setup-danger mr-2" (click)="back()">Cancel</button>
+                  <button class="btn-setup-sucess" (click)="savesubRecipe()"
+                    [disabled]="!addSubRecipeForm.valid || addSubRecipeForm.pristine">
+                    <i class="icon-save mr-1"></i>Update
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+  </form>
+</body>
+
+</html>

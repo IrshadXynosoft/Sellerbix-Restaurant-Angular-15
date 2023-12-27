@@ -1,0 +1,16 @@
+<div class="modal-wrapper">
+  <h2 mat-dialog-title>Add User Printer</h2>
+  <mat-dialog-content>
+    <div class="row">
+      <div class="col-6" *ngFor="let i of availablePrinters">
+        <mat-checkbox class="ml-4" [checked]="i.status" (change)="changePrinter($event,i)">
+          {{i.name}}
+        </mat-checkbox>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+    <button class="btn-setup-sucess" (click)="savePrinter()">Save</button>
+  </mat-dialog-actions>
+</div>

@@ -1,0 +1,80 @@
+<div class="modal-wrapper">
+  <button mat-icon-button class="close-button" (click)="close()">
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+  </button>
+  <!-- <h2 *ngIf="calculatedLoyaltyPrice != 0.00" mat-dialog-title style="color: orange;">Loyalty price : {{calculatedLoyaltyPrice}} {{currency_symbol}}</h2> -->
+  <!-- <h2 *ngIf="calculatedLoyaltyPrice == 0.00" mat-dialog-title>Payment </h2> -->
+  <mat-dialog-content>
+    <div *ngIf="!balanceFlag;else balanceAmount">
+      <h3 style="text-align: center;">TOTAL AMOUNT( {{currency_symbol}} )</h3>
+      <h1 class="amount">{{data.Cart.amount}}</h1><br>
+      <div *ngIf="multiPaymentFlag">
+        <table *ngIf="paymentArray.length>0" style="width:100%; text-align: center;">
+          <tr *ngFor="let item of paymentArray;let i = index;">
+            <td>{{item.payment_name}}</td>
+            <td>{{item.amount}}</td>
+            <td>
+              <mat-icon class="remove" (click)="removeAmount(i)">close</mat-icon>
+            </td>
+          </tr>
+        </table>
+      </div><br>
+      <form [formGroup]="paymentForm">
+        <div class="row">
+          <div class="col-12">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="" formControlName="amount" />
+              <span class="error-message float-left" *ngIf="paymentForm.controls.amount.hasError('pattern')">invalid
+                input</span>
+            </div>
+          </div>
+          <!-- <div class="col-6"> -->
+          <!-- <select class="form-control w-100" style="border-radius: 50px;" formControlName="payment_type" (change)="PaymentMode()" >
+              <option value="">Payment</option>
+              <option *ngFor="let payment of paymentMethods"  [ngValue]="{id:payment.id,name:payment.name}"  >
+                {{ payment.name }}
+              </option>
+            </select> -->
+          <!-- <button mat-stroked-button color="primary" (click)="PaymentMode()" style="width: inherit;">Payment</button> -->
+          <!-- </div> -->
+        </div>
+        <div class="row" style="margin-right: 0;">
+          <div class="col-4" *ngFor="let payment of paymentMethods">
+            <mat-card appearance="outlined" [ngClass]=getClass(payment) (click)="paymentButtonClick(payment)">
+              <h4> {{ payment.name }} <strong
+                  *ngIf="calculatedLoyaltyPrice != 0.00 && payment.id==3">({{calculatedLoyaltyPrice}}
+                  {{currency_symbol}})</strong>
+              </h4>
+            </mat-card>
+          </div>
+        </div>
+      </form>
+    </div>
+    <ng-template #balanceAmount>
+      <div>
+        <h3 style="text-align: center;">Balance( {{currency_symbol}} )</h3>
+        <h1 style="text-align: center;">{{tipInput.value}}</h1>
+        <input type="text" class="form-control" placeholder="" [formControl]="tipInput"/>
+      </div>
+    </ng-template>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <div *ngIf="!balanceFlag;else okbutton">
+      <button class="btn-setup-sucess commonBtnStyle"
+        style="position:absolute;left:1.5rem;background: var(--primary) !important; border-color: var(--primary);"
+        (click)="confirmWithPrint()">Confirm & Print
+      </button>
+      <button class="btn-setup-sucess  commonBtnStyle" (click)="confirmOrder()">Confirm</button> </div>
+    <ng-template #okbutton>
+      <div>
+        <button class="btn-setup-sucess commonBtnStyle2 " style="position:absolute;left:1.5rem;"
+          (click)="paymentReturn()">Balance Returned</button>
+        <button class="btn-setup-danger commonBtnStyle2 " [matMenuTriggerFor]="menu">Received as Tip</button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="tipRecieved(1)">Recieved as cash</button>
+          <button mat-menu-item (click)="tipRecieved(2)">Recieved as card</button>
+        </mat-menu>
+      </div>
+    </ng-template>
+  </mat-dialog-actions>
+</div>

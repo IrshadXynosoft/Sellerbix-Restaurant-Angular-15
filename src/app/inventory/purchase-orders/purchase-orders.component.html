@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <app-inventory-header></app-inventory-header>
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/inventory">
+                Inventory
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                Purchase Order
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag cursor-pointer">
+            <h4 class="flex-gr-1"> <i class="icon-arrow-left" routerLink="/inventory"></i>Purchase Order</h4>
+          </div>
+
+          <div class="d-flex align-items-center justify-content-end">
+
+            <button class="btn-setup-sucess btn-ht-custom" (click)="newOrder()">
+              <i class="icon-plus mr-1"></i> New Purchase Order
+            </button>
+          </div>
+
+        </div>
+      </div>
+      <mat-tab-group (selectedTabChange)="tabClick($event)">
+        <mat-tab label="Open Purchase Orders">
+          <div class="row pt-3 col-12">
+
+            <div class="col-12 col-lg-3">
+              <select class="form-control bordered m-0 mr-2" (change)="getpurchaseForLocation($event,1)"
+                [(ngModel)]="branch_id">
+                <option value="" selected disabled> Select</option>
+                <option *ngFor="let i of branchRecords" value="{{ i.id }}">
+                  {{ i.name }}
+                </option>
+              </select>
+            </div>
+
+          </div>
+          <ng-template #message>
+
+            <div class="col-12">
+              <div class="not-found bordered">
+                <h3>Sorry :(</h3>
+                <p>You currently have no Open Purchase Orders.</p>
+                <p>Click <a (click)="newOrder()" style="color: var(--primary);cursor: pointer;">here</a> to add new
+                  Purchase
+                  Order. </p>
+              </div>
+            </div>
+
+          </ng-template>
+
+          <table *ngIf="dataSourceForOpenPO.data.length > 0; else message" mat-table [dataSource]="dataSourceForOpenPO"
+            matSort #openPOTable class="tableStyleMain table bordered">
+            <ng-container matColumnDef="index">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                #
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{dataSourceForOpenPO.data.indexOf(element) + 1}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="order_no">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Order Number
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.purchase_order_number }}</td>
+            </ng-container>
+            <ng-container matColumnDef="created_by">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Created By
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.staff}}</td>
+            </ng-container>
+            <ng-container matColumnDef="ordered_by">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Ordered By
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.branch }}</td>
+            </ng-container>
+            <ng-container matColumnDef="due_date">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Due Date
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.due_date | date }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Total">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Total ({{currency_symbol}})
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.total_amount }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="button">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td class="btn-wrp-equal" mat-cell *matCellDef="let element">
+                <button class="btn-setup-sucess commonBtnStyle" [matMenuTriggerFor]="menuPO" matTooltip="Actions">
+                  <i _ngcontent-trm-c429="" class="zmdi zmdi-eye"></i>
+                </button>
+                <mat-menu #menuPO="matMenu">
+                  <button mat-menu-item (click)="editPurchaseOrder(element)" style="color:green">Edit</button>
+                  <button mat-menu-item (click)="sendPurchaseOrder(element)" style="color: var(--primary);">Send</button>
+                  <button mat-menu-item
+                    (click)="deletePurchaseOrder(element.id,element.purchase_order_number)" style="color: red;">Delete</button>
+
+                </mat-menu>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsOpenPO"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsOpenPO"></tr>
+          </table>
+
+          <mat-paginator #openPOTable [pageSize]="50" [pageSizeOptions]="[2, 4, 6, 10, 50]" [ngClass]="{ show: dataSourceForOpenPO.data.length <= 0 }" >
+          </mat-paginator>
+
+        </mat-tab>
+        <mat-tab label="Sent Purchase Orders ">
+          <div class="row pt-3 col-12">
+            <div class="col-12 col-lg-6">
+              <input type="text" class="form-control bordered" placeholder="Supplier" #supplier1
+                (keyup)="doFilter(supplier1.value)" />
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="d-flex align-items-center justify-content-end">
+                <select class="form-control bordered m-0 mr-2" (change)="getpurchaseForLocation($event,2)">
+                  <option value="" disabled> Select</option>
+                  <option *ngFor="let i of branchRecords" value="{{ i.id }}">
+                    {{ i.name }}
+                  </option>
+                </select>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked5"
+                    (change)="ShowOverdue($event)" />
+                  <label class="form-check-label" for="flexCheckChecked5">
+                    Show only overdue
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ng-template #sentPOmessage>
+
+            <div class="col-12">
+              <div class="not-found bordered">
+                <h3>Sorry :(</h3>
+                <p>You currently have no Sent Purchase Orders.</p>
+              </div>
+            </div>
+
+          </ng-template>
+
+
+          <table *ngIf="dataSourceForSentPO.data.length > 0; else sentPOmessage" mat-table
+            [dataSource]="dataSourceForSentPO" matSort #sendPOTable class="tableStyleMain table bordered">
+            <ng-container matColumnDef="index">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                #
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{dataSourceForSentPO.data.indexOf(element) + 1}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="order_no">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Order Number
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.purchase_order_number }}</td>
+            </ng-container>
+            <ng-container matColumnDef="supplier">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Supplier
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.supplier_name }}</td>
+            </ng-container>
+            <ng-container matColumnDef="created_by">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Created By
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.staff}}</td>
+            </ng-container>
+            <ng-container matColumnDef="ordered_by">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Ordered By
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.branch }}</td>
+            </ng-container>
+            <ng-container matColumnDef="due_date">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Due Date
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.due_date | date }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Total">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Total ({{currency_symbol}})
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.total_amount }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="button">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td class="btn-wrp-equal" mat-cell *matCellDef="let element">
+                <button class="btn-setup-sucess commonBtnStyle" [matMenuTriggerFor]="menu" matTooltip="Actions">
+                  <i _ngcontent-trm-c429="" class="zmdi zmdi-eye"></i>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="viewPurchaseOrder(element)" style="color:green">Open</button>
+                  <button mat-menu-item (click)="recievePurchaseOrder(element)"  style="color: var(--primary);">Receive</button>
+                  <button mat-menu-item (click)="rejectPurchaseOrder(element)"  style="color: red;">Reject</button>
+                  <button mat-menu-item (click)="resendPurchaseOrder(element)"  style="color:blue;"> Re-send</button>
+                  <button mat-menu-item
+                    (click)="deletesentPurchaseOrder(element.id,element.purchase_order_number)"  style="color: red;">Delete</button>
+                </mat-menu>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsSentPO"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsSentPO"></tr>
+            
+          </table>
+          <mat-paginator #sendPOTable [pageSize]="50" [pageSizeOptions]="[2, 4, 6, 10, 50]" [ngClass]="{ show: dataSourceForSentPO.data.length <= 0 }" >
+          </mat-paginator>
+        </mat-tab>
+        <mat-tab label="Received Purchase Orders ">
+          <div class="row pt-3 col-12">
+            <div class="col-12 col-lg-6">
+
+              <input type="text" class="form-control bordered" placeholder="Supplier" #supplier2
+                (keyup)="doFilterReceived(supplier2.value)" />
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="d-flex align-items-center justify-content-end">
+                <select class="form-control bordered m-0 mr-2" (change)="getpurchaseForLocation($event,3)">
+                  <option value="" disabled> Select</option>
+                  <option *ngFor="let i of branchRecords" value="{{ i.id }}">
+                    {{ i.name }}
+                  </option>
+                </select>
+                <div class="form-check">
+                  <input class="form-control bordered m-0 mr-2" type="date" value="" id="flexCheckChecked5"
+                    placeholder="Date Filter" #dateFilter (input)="dateFilterReceivedArray(dateFilter.value)" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <ng-template #receivedPOMessage>
+
+            <div class="col-12">
+              <div class="not-found bordered">
+                <h3>Sorry :(</h3>
+                <p>You currently have no Received Purchase Orders.</p>
+              </div>
+            </div>
+
+          </ng-template>
+          <table *ngIf="dataSourceForReceivedPO.data.length > 0; else receivedPOMessage" mat-table
+            [dataSource]="dataSourceForReceivedPO" matSort #receivePOTable class="tableStyleMain table bordered">
+            <ng-container matColumnDef="index">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                #
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{dataSourceForReceivedPO.data.indexOf(element) + 1}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="order_no">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Order Number
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.purchase_order_number }}</td>
+            </ng-container>
+            <ng-container matColumnDef="supplier">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Supplier
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.supplier_name }}</td>
+            </ng-container>
+            <ng-container matColumnDef="created_by">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Created By
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.staff}}</td>
+            </ng-container>
+            <ng-container matColumnDef="ordered_by">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Ordered By
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.branch }}</td>
+            </ng-container>
+            <ng-container matColumnDef="due_date">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Due Date
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.due_date | date }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Total">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Total ({{currency_symbol}})
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.total_amount }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="button">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td class="btn-wrp-equal" mat-cell *matCellDef="let element" matTooltip="View">
+                <button class="btn-setup-sucess" (click)="viewPurchaseOrder(element)">
+                  <i _ngcontent-trm-c429="" class="zmdi zmdi-eye"></i>
+                </button>
+
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsReceivedPO"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsReceivedPO"></tr>
+          </table>
+          <mat-paginator #receivePOTable [pageSize]="50" [ngClass]="{ show: dataSourceForReceivedPO.data.length <= 0 }"  [pageSizeOptions]="[2, 4, 6, 10, 50]">
+          </mat-paginator>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,154 @@
+table {
+  width: 100%;
+  border-collapse: unset !important;
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.mat-mdc-header-cell {
+  font-weight: bold;
+  font-size: medium;
+  color: rgb(20, 20, 20);
+}
+
+.mat-mdc-cell {
+  font-size: 15px;
+  // padding-top: 7px;
+  // padding-bottom: 7px;
+}
+
+.btn-wrp-equal button {
+  width: 34px;
+  margin-bottom: 10px;
+  display: inline-block;
+  height: 34px;
+  border-radius: 50%;
+}
+
+.show {
+  visibility: hidden;
+}
+
+// warning message
+
+.new-message-box p {
+  font-size: 1.15em;
+  font-weight: 600;
+}
+
+.info-tab {
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+  position: relative;
+  top: 8px;
+}
+
+.info-tab {
+  float: left;
+  margin-left: -23px;
+}
+
+.info-tab i::before {
+  width: 24px;
+  height: 24px;
+  box-shadow: inset 12px 0 13px rgba(0, 0, 0, 0.5);
+}
+
+.info-tab i::after {
+  width: 0;
+  height: 0;
+  border: 12px solid transparent;
+  border-bottom-color: var(--white);
+  border-left-color: var(--white);
+  bottom: -18px;
+}
+
+.info-tab i::before,
+.info-tab i::after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  bottom: -17px;
+  transform: rotateX(60deg);
+}
+
+.note-box,
+.warning-box,
+.tip-box-success,
+.tip-box-danger,
+.tip-box-warning,
+.tip-box-info,
+.tip-box-alert {
+  padding: 12px 8px 3px 26px;
+}
+
+/*******warning*******/
+.new-message-box-warning {
+  background: #eeeeee;
+  padding: 3px;
+  margin: 6px 0;
+}
+
+.tip-icon-warning {
+  background: #ffeb3b; //500
+}
+
+.tip-box-warning {
+  color: #212121; //900
+  background: #fff9c4; //100
+}
+
+.tip-icon-warning::before {
+  font-size: 25px;
+  content: "\f071";
+  top: 8px;
+  left: 11px;
+  position: absolute;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  color: #212121;
+}
+
+.tip-icon-warning i::before {
+  background: #ffeb3b; //500
+}
+
+.card {
+  margin-bottom: 10px;
+  height: 100%;
+  padding: 0 !important;
+  border-radius: 6px;
+}
+
+.tableStyleMain {
+  margin-top: 7px;
+
+  th {
+    padding-bottom: 15px;
+    //border-right: 1px #e2e3e3 solid;
+    text-align: center;
+  }
+
+  td {
+    // padding: 10px;
+    //border-right: 1px #eceeee  solid;
+    text-align: center;
+  }
+}
+
+.credit {
+  color: green !important;
+}
+
+.debit {
+  color: red !important;
+}
+
+.ml-20 {
+  margin-left: 20px !important;
+}

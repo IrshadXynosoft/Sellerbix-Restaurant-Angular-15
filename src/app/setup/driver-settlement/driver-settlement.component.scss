@@ -1,0 +1,398 @@
+.content {
+  background: white;
+  padding: 30px;
+  border: 1px solid #ccc;
+  overflow: auto;
+  height: 100vh;
+  margin-top: 40px;
+}
+
+.clearDiv {
+  clear: both;
+}
+
+.floatMainTab {
+  float: left;
+}
+
+.floatMainTabBtn {
+  float: right;
+}
+
+.invoiceBorder {
+  border: 1px #ddd solid;
+  padding: 20px;
+  float: left;
+  width: 100%;
+  border-radius: 5px;
+
+  h2 {
+    font-size: 20px;
+    color: #000;
+    font-weight: bold;
+    text-transform: capitalize;
+    margin-bottom: 8px;
+  }
+}
+
+.doubleBorder {
+  border: 2px #ddd dotted;
+  padding: 14px;
+  border-radius: 5px;
+
+  h4 {
+    font-size: 15px;
+    color: var(--primary);
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+}
+
+.invoiceNav {
+  margin: 0;
+  padding: 0;
+
+  li {
+    display: block;
+    padding-bottom: 5px;
+    color: #000;
+    font-size: 15px;
+  }
+}
+
+.invoiceNav1 {
+  margin: 20px 0 0;
+  padding: 0;
+
+  li {
+    display: inline-block;
+    margin-right: 5px;
+  }
+
+  .editBtn {
+    width: 100px;
+    text-align: center;
+    border-radius: 5px;
+    padding: 7px;
+    color: var(--white);
+    background: #70b570;
+    display: block;
+    text-decoration: none;
+    margin-bottom: 5px;
+  }
+
+  .deleteBtn {
+    width: 100px;
+    text-align: center;
+    border-radius: 5px;
+    padding: 7px;
+    color: var(--white);
+    background: #bd362f;
+    display: block;
+    text-decoration: none;
+  }
+}
+
+.allDivMain {
+  float: left;
+  width: 100%;
+}
+
+.floatMainTabBtn button {
+  width: 200px;
+  text-align: center;
+  border-radius: 5px;
+  padding: 7px;
+  margin-bottom: 15px;
+  color: var(--white);
+  background: #70b570;
+  border: none;
+  display: block;
+  text-decoration: none;
+}
+
+.printerDivBg {
+  background-color: #f9f9f9;
+  float: left;
+  width: 100%;
+  border-radius: 5px;
+  padding: 40px;
+
+  h3 {
+    font-size: 31px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #000;
+  }
+
+  p {
+    color: #000;
+    font-size: 15px;
+    font-weight: normal;
+    margin-bottom: 10px;
+  }
+
+  button {
+    width: 200px;
+    text-align: center;
+    border-radius: 5px;
+    padding: 7px;
+    margin-bottom: 15px;
+    color: var(--white);
+    background: #70b570;
+    border: none;
+    display: block;
+    text-decoration: none;
+  }
+}
+
+.cloudprinterDivBg {
+  background: linear-gradient(to bottom, #356aa0 0%, #356aa0 100%);
+  float: left;
+  width: 100%;
+  border-radius: 5px;
+  padding-top: 30px;
+  padding: 40px;
+  color: rgba(255, 255, 255, 0.7);
+
+  h3 {
+    font-size: 31px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 15px;
+    font-weight: normal;
+    margin-bottom: 10px;
+  }
+}
+
+.bgGreyMain {
+  background: #eee;
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.contentTxtAll {
+  float: left;
+  width: 100%;
+
+  .selectBarMain {
+    width: 100%;
+  }
+
+  i {
+    font-size: 20px;
+    font-weight: normal;
+    margin-bottom: 10px;
+    color: #000;
+    display: block;
+    font-style: normal;
+  }
+
+  h4 {
+    border-bottom: 1px #ddd solid;
+    font-size: 31px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+
+  .addRuleBtn {
+    width: 200px;
+    text-align: center;
+    border-radius: 5px;
+    padding: 7px;
+    margin-bottom: 15px;
+    color: var(--white);
+    background: #70b570;
+    border: none;
+    display: block;
+    text-decoration: none;
+  }
+}
+
+.radioBtnFloat {
+  float: left;
+  width: 100%;
+
+  h3 {
+    border-bottom: 1px #ddd solid;
+    font-size: 25px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    margin-top: 30px;
+  }
+}
+
+// invoicetemplates
+.generalHeader {
+  border-bottom: 1px #ddd solid;
+  color: #000;
+  font-weight: bold;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  margin-top: 20px;
+  font-size: 26px;
+}
+
+.printer {
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px;
+  color: var(--white);
+  background: #70b570;
+  border: none;
+  display: block;
+  text-decoration: none;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.mat-mdc-header-cell {
+  font-weight: bold;
+  font-size: medium;
+  color: rgb(20, 20, 20);
+}
+
+.mat-mdc-cell {
+  font-size: 15px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+
+.not-found {
+  background: #d7d7d7;
+  padding: 15px;
+  margin-top: 20px;
+
+  h3 {
+    font-size: 30px;
+    color: #565656;
+    font-weight: 600;
+  }
+
+  p {
+    font-size: 16px;
+    color: #727070;
+    font-weight: 400;
+  }
+}
+
+.btn-wrp-equal button {
+  width: 34px;
+  margin-bottom: 10px;
+  display: inline-block;
+  height: 34px;
+  border-radius: 50%;
+}
+
+.tableStyleMain {
+  margin-top: 7px;
+
+  th {
+    padding: 10px;
+    border-right: 1px #e2e3e3 solid;
+    text-align: center;
+  }
+
+  td {
+    padding: 10px;
+    border-right: 1px #eceeee solid;
+    text-align: center;
+  }
+}
+
+.show {
+  visibility: hidden;
+}
+
+.header {
+  border-bottom: 2px #ccc solid;
+  margin-bottom: 10px;
+  span {
+    font-size: 12px;
+  }
+  h2 {
+    font-size: 20px;
+    margin-bottom: 2px;
+  }
+}
+.card-details {
+  text-align: center;
+  margin-bottom: 10px;
+  width: 100%;
+  height: 7rem;
+  border: 1px solid #ddd;
+  display: inline-block;
+  margin-right: 8px;
+  color: black;
+  h2 {
+    font-size: 16px !important;
+  }
+}
+.yellow {
+  background-color: rgb(251, 251, 165) !important;
+}
+.green {
+  background-color: rgb(113, 216, 113) !important;
+}
+.light-green {
+  background-color: rgb(166, 232, 166) !important;
+}
+.red {
+  background-color: rgb(176, 95, 95) !important;
+}
+.light-orange {
+  background-color: rgb(219, 178, 107) !important;
+}
+
+.performance-card {
+  text-align: center;
+  margin-bottom: 10px;
+  width: 100%;
+  // height: 95vh;
+  overflow-y: scroll;
+  border: 1px solid #ddd;
+  color: black;
+  h2 {
+    font-size: 18px;
+    border-bottom: 1px solid grey;
+  }
+}
+
+.points-card {
+  text-align: center;
+  margin-bottom: 10px;
+  width: 100%;
+  overflow-y: scroll;
+  border: 1px solid black;
+  color: black;
+  h3 {
+    font-size: 18px !important;
+    border-bottom: none !important;
+  }
+}
+#chart {
+  margin: 30px auto;
+}
+
+.commonBtnStyle {
+  height: 35px;
+  width: 150px;
+  padding: 0;
+  margin-bottom: 5px;
+}

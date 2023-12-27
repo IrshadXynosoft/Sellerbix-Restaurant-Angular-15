@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/callcenter">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                Setup
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                My Account
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1">
+              <i class="icon-arrow-left mr-1 cursor-pointer" (click)="back()"></i>Account Settings
+            </h4>
+            <div class="d-flex">
+              <button class="btn-setup-sucess bg-grey" (click)="paymentHistory()">Payment History</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row col-12">
+        <div>
+          <label>Registration Date</label>
+          <input type="text" class="form-control" value="19-11-2022" [(ngModel)]="regDate" disabled />
+        </div>
+        <div style="margin-left: 25px;">
+          <label>Expiry Date</label>
+          <input type="text" class="form-control" value="19-11-2022" [(ngModel)]="expDate" disabled />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="new-message-box-warning">
+            <div class="info-tab tip-icon-warning" title="warning"><i></i></div>
+            <div class="tip-box-warning">
+              <p>You have {{this.dateRemaining}} (s) remaining.Please renew your subscription before it expires.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <!-- <h3>Select your number of outlets</h3>
+        <mat-slider class="w-100" thumbLabel [displayWith]="formatLabel" tickInterval="1000" step="1000" min="0"
+          max="100000" aria-label="units"></mat-slider> -->
+        <h3>Your Subscription Plan</h3>
+        <div class="bordered">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Module</th>
+              <th scope="col">Status</th>
+              <th scope="col">Price/Month</th>
+              <th scope="col">Price/Yearly</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let menu of menuList;let index = index;">
+              <td>{{menu.name}}</td>
+              <td>
+                <mat-slide-toggle [checked]="menu.status == 1 ? true : false" (change)="totalSumCheck($event,menu.price_yearly,index)"></mat-slide-toggle>
+              </td>
+              <td>{{menu.price_monthly}}</td>
+              <td>{{menu.price_yearly}}</td>
+            </tr>
+            <tr>
+              <td colspan="4" rowspan="4"><strong style="float:right">Total : &nbsp; {{currency_symbol}} {{yearlyTotalSum.toFixed(2)}}/ yearly</strong></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="d-flex">
+          <div class="flex-grow-1">
+            <!-- <button class="btn-setup-sucess bg-grey mr-1" (click)="updateBilling()">
+              Update Billing Details
+            </button>
+            <button class="btn-setup-sucess bg-grey">Payment History</button> -->
+          </div>
+          <div>
+            <!-- <button class="btn-setup-sucess mr-1" (click)="save()">Make Payment</button> -->
+            <button class="btn-setup-sucess" (click)="save()">Checkout</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

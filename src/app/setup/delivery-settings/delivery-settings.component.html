@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">Home</li>
+              <!-- <li class="breadcrumb-item  cursor-pointer" aria-current="page" routerLink="/setup">
+                Setup
+              </li> -->
+              <!-- <li class="breadcrumb-item  cursor-pointer" aria-current="page" routerLink="/setup/location">
+                Locations
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/{{ id }}/editLocation">
+                Location Setup
+              </li> -->
+              <li class="breadcrumb-item active  cursor-pointer" aria-current="page">
+                Delivery Settings
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag">
+            <h4 class="flex-gr-1"><i class="icon-arrow-left cursor-pointer" (click)="location()"></i>Delivery Settings
+            </h4>
+          </div>
+        </div>
+        <div class="col-12 col-sm-3 com-md-3 ">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn cursor-pointer" (click)="deliveryArea()">
+              <i class="icon-map-marker"></i>
+              <p matTooltip="Delivery Area">Delivery Area</p>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-12 col-sm-3 com-md-3 ">
+            <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+              <div
+                class="text-center card-inner-scn cursor-pointer"
+                (click)="deliveryManager()"
+              >
+                <i class="icon-user"></i>
+                <p matTooltip="Delivery Settings">Delivery Settings</p>
+              </div>
+            </div>
+          </div> -->
+        <div class="col-12 col-sm-3 com-md-3 ">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn cursor-pointer" (click)="driverSettings()">
+              <i class="icon-user"></i>
+              <p matTooltip="Driver Settings">Driver Settings</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-3 com-md-3 ">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn cursor-pointer" (click)="deliveryDriverManager()">
+              <i class="icon-user"></i>
+              <p matTooltip="Delivery Manager">Delivery Manager</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-3 com-md-3 ">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn cursor-pointer" (click)="deliveryReport()">
+              <i class="zmdi zmdi-assignment"></i>
+              <p matTooltip="Delivery Manager">Delivery Report</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="right-dasboard p-3">
+
+          <div class="total_box">
+            <div class="row">
+              <div class="col-12 col-sm-12 col-md-12 col-lg-7">
+                <div class="row">
+                  <div class="col-12 col-sm-12 col-md-6 ">
+                    <div
+                      class="chart-area py-5 py-sm-5 py-md-5 py-lg-5 px-5 d-flex align-items-center animate__animated animate__zoomIn wow"
+                      data-wow-duration="1s">
+                      <img src="assets/images/ic_energy.png" class="img-fluid">
+                      <div class="text_box">
+                        <h3>New Orders</h3>
+                        <h2>{{newOrders}}</h2>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-12 col-md-6">
+                    <div
+                      class="chart-area py-5 py-sm-5 py-md-5  py-lg-5 px-lg-3 px-xl-5 px-5  d-flex align-items-center animate__animated animate__zoomIn wow"
+                      data-wow-duration="1s">
+                      <img src="assets/images/ic_Serving.png" class="img-fluid">
+                      <div class="text_box">
+                        <h3>Assigned Orders</h3>
+                        <h2>{{assignedOrders}}</h2>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-12 col-md-6">
+                    <div
+                      class="chart-area py-5 py-sm-5 py-md-5 py-lg-5 px-5  d-flex align-items-center animate__animated animate__zoomIn wow"
+                      data-wow-duration="1s">
+                      <img src="assets/images/ic_fastfood.png" class="img-fluid">
+                      <div class="text_box">
+                        <h3>Accepted Orders</h3>
+                        <h2>{{acceptedOrders}}</h2>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-12 col-md-6">
+                    <div
+                      class="chart-area py-5 py-sm-5 py-md-5 py-lg-5 px-5  d-flex align-items-center animate__animated animate__zoomIn wow"
+                      data-wow-duration="1s">
+                      <img src="assets/images/ic_energy.png" class="img-fluid">
+                      <div class="text_box">
+                        <h3>Delivered Orders</h3>
+                        <h2>{{completedOrders}}</h2>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-sm-12 col-md-12 col-lg-5">
+                <div
+                  class="text_box chart-area top-selling-items p-4 p-xl-5 pb-5  animate__animated animate__zoomIn wow "
+                  style="height: 95%;align-items: center;" data-wow-duration="1s">
+                  <h3>Order Data</h3>
+                  <div id="chart2" *ngIf="series.length>0;else nodata">
+                    <apx-chart [series]="donutchartOptions.series" [chart]="donutchartOptions.chart"
+                      [labels]="donutchartOptions.labels" [responsive]="donutchartOptions.responsive">
+                    </apx-chart>
+                  </div>
+                  <ng-template #nodata>
+                    <div id="chart2">
+                      <h3>No orders today.</h3>
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="total_box">
+            <div class="row">
+              <div class="col-12 col-sm-12 col-md-12 col-lg-3">
+                <div
+                  class="text_box chart-area top-selling-items p-4 p-xl-5 pb-5  animate__animated animate__zoomIn wow"
+                  data-wow-duration="1s">
+                  <h3>Offline Drivers</h3>
+                  <div
+                    class="progress-bar-box d-block d-md-flex align-items-center mb-5 animate__animated animate__fadeInUp wow"
+                    data-wow-duration="1s">
+                    <div class="img_box pb-3">
+                      <img src="assets/images/ic_delivery.png">
+                    </div>
+                    <div class="bar-box d-flex w-100 align-items-center">
+                      <h2>{{offlineDrivers}}</h2>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <div class="col-12 col-sm-12 col-md-12 col-lg-3">
+                <div
+                  class="text_box chart-area top-selling-items p-4 p-xl-5 pb-5  animate__animated animate__zoomIn wow"
+                  data-wow-duration="1s">
+                  <h3>Online Drivers</h3>
+
+                  <div
+                    class="progress-bar-box d-block d-md-flex align-items-center mb-5 animate__animated animate__fadeInUp wow"
+                    data-wow-duration="1s">
+                    <div class="img_box pb-3">
+                      <img src="assets/images/ic_delivery.png">
+                    </div>
+                    <div class="bar-box d-flex w-100 align-items-center">
+                      <h2>{{activeDrivers}}</h2>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <div class="col-12 col-sm-12 col-md-12 col-lg-6">
+                <div
+                  class="text_box chart-area top-selling-items p-4 p-xl-5 pb-5  animate__animated animate__zoomIn wow"
+                  data-wow-duration="1s">
+                  <h3>Active Drivers</h3>
+
+                  <div
+                    class="progress-bar-box d-block d-md-flex align-items-center mb-5 animate__animated animate__fadeInUp wow"
+                    data-wow-duration="1s">
+                    <div class="img_box pb-3">
+                      <img src="assets/images/ic_delivery.png">
+                    </div>
+                    <div class="bar-box d-flex w-100 align-items-center">
+                      <!-- <span class="h6 m-0">{{branchsale.name}}</span> -->
+                      <div class="progress" style="height: 20px;width: 100%">
+                        <div class="progress-bar bg-success" role="progressbar" [style.width]="activeDriversPercentage"
+                          aria-valuenow="92" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                      <span style="min-width: 100px;" class="text-right">{{activeDrivers}}
+                        <span>({{activeDriversPercentage}})</span></span>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12 col-sm-12 col-md-12 col-lg-6">
+                <div
+                  class="text_box chart-area top-selling-items p-4 p-xl-5 pb-5  animate__animated animate__zoomIn wow"
+                  data-wow-duration="1s">
+                  <h3>Assigned Orders</h3>
+                  <div
+                    class="progress-bar-box d-block d-md-flex align-items-center mb-5 animate__animated animate__fadeInUp wow"
+                    data-wow-duration="1s">
+                    <div class="img_box pb-3">
+                      <img src="assets/images/ic_delivery.png">
+                    </div>
+                    <div class="bar-box d-flex w-100 align-items-center">
+                      <!-- <span class="h6 m-0">{{staffsale.name}}</span> -->
+                      <div class="progress" style="height: 20px;width: 100%">
+                        <div class="progress-bar bg-success" role="progressbar" [style.width]="assignedOrdersPercentage"
+                          aria-valuenow="92" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                      <span style="min-width: 100px;"
+                        class="text-right">{{assignedOrders}}<span>({{assignedOrdersPercentage}})</span></span>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <div class="col-12 col-sm-12 col-md-12 col-lg-6">
+                <div
+                  class="text_box chart-area top-selling-items p-4 p-xl-5 pb-5  animate__animated animate__zoomIn wow"
+                  data-wow-duration="1s">
+                  <h3>Completed Orders</h3>
+
+                  <div
+                    class="progress-bar-box d-block d-md-flex align-items-center mb-5 animate__animated animate__fadeInUp wow"
+                    data-wow-duration="1s">
+                    <div class="img_box pb-3">
+                      <img src="assets/images/ic_delivery.png">
+                    </div>
+                    <div class="bar-box d-flex w-100 align-items-center">
+                      <!-- <span class="h6 m-0">{{branchsale.name}}</span> -->
+                      <div class="progress" style="height: 20px;width: 100%">
+                        <div class="progress-bar bg-success" role="progressbar" [style.width]="activeDriversPercentage"
+                          aria-valuenow="92" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                      <span style="min-width: 100px;" class="text-right">{{completedOrders}}
+                        <span>({{completedOrdersPercentage}})</span></span>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <!-- <div class="row">
+              <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="text_box chart-area top-selling-items p-4 p-xl-5 animate__animated animate__zoomIn wow"
+                  data-wow-duration="1s">
+                  <h3>Order Details</h3>
+                  <div class="media w-100 d-flex align-items-start mb-3 animate__animated animate__fadeInUp wow">
+
+                    <ng-template #message>
+                      <div class="row">
+                        <div class="col-12">
+                          <div class="not-found">
+                            <h3>Sorry :(</h3>
+                            <p>No orders at this moment.</p>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
+                    <div class="col-12 tableStyleMain">
+                      <table mat-table *ngIf="dataSource.data.length > 0; else message" [dataSource]="dataSource"
+                        matSort class="mat-z8">
+                        <ng-container matColumnDef="index">
+                          <th mat-header-cell *matHeaderCellDef>
+                            #
+                          </th>
+                          <td mat-cell *matCellDef="let element">
+                            {{dataSource.data.indexOf(element) + 1}}
+                          </td>
+                        </ng-container>
+                        <ng-container matColumnDef="Order_no">
+                          <th mat-header-cell *matHeaderCellDef>Order no</th>
+                          <td mat-cell *matCellDef="let element">{{ element.Order_no }}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="branch">
+                          <th mat-header-cell *matHeaderCellDef>Branch</th>
+                          <td mat-cell *matCellDef="let element">{{ element.branch }}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="order_time">
+                          <th mat-header-cell *matHeaderCellDef>Order Taken at</th>
+                          <td mat-cell *matCellDef="let element">{{ element.order_time }}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="delivery_area">
+                          <th mat-header-cell *matHeaderCellDef>Delivery Area</th>
+                          <td mat-cell *matCellDef="let element">{{ element.delivery_area }}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="assigned_driver">
+                          <th mat-header-cell *matHeaderCellDef>Assigned Driver</th>
+                          <td mat-cell *matCellDef="let element">{{ element.assigned_driver }}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="assigned_time">
+                          <th mat-header-cell *matHeaderCellDef>Assigned Time</th>
+                          <td mat-cell *matCellDef="let element">{{ element.assigned_time }}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="delivered_time">
+                          <th mat-header-cell *matHeaderCellDef>Delivered Time</th>
+                          <td mat-cell *matCellDef="let element">{{ element.delivered_time }}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="elapsed_time">
+                          <th mat-header-cell *matHeaderCellDef>Elapsed Time</th>
+                          <td mat-cell *matCellDef="let element">{{ element.elapsed_time }}</td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                      </table>
+                      <mat-paginator [ngClass]="{ show: dataSource.data.length <= 0 }" [pageSize]="10"
+                        [pageSizeOptions]="[2, 4, 6, 10, 20]">
+                      </mat-paginator>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div> -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <!-- <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                Setup
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/location">
+                Locations
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/{{ id }}/editLocation">
+                Location Setup
+              </li> -->
+              <li class="breadcrumb-item cursor-pointer" aria-current="page"
+                routerLink="/setup/delivery_settings">
+                Delivery Settings
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                Delivery Manager
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag">
+            <h4 class="flex-gr-1">
+              <i class="icon-arrow-left mr-1 cursor-pointer" (click)="back()"></i>Delivery Manager
+            </h4>
+
+            <div class="d-flex" style="padding-bottom: 15px; padding-left: 5px">
+              <button class="btn-setup-sucess" (click)="reload()">
+                <i class="icon-refresh mr-1"></i>Reload</button>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+      <div>
+        <mat-tab-group>
+          <mat-tab label="New Orders">
+            <div class="tableStyleMain">
+
+              <ng-template #messageorders>
+                <div class="col-12">
+                  <div class="not-found">
+                    <h3>Sorry :(</h3>
+                    <p>No orders yet.</p>
+                  </div>
+                </div>
+              </ng-template>
+              <table *ngIf="newOrdersList.length; else messageorders">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Order No.</th>
+                    <th scope="col">Order Taken At</th>
+                    <th scope="col">Delivery Area</th>
+                    <th scope="col">Amount ({{currency_symbol}})</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of newOrdersList;let i=index;">
+                    <td>{{i+1}}</td>
+                    <td class="cursor-pointer click-edit" (click)="showDetails(item)">
+                      <span>{{getorderNo(item.order.order_json)}}</span>
+                      <div *ngIf="item.customer">{{item.customer.name}}</div>
+                      <div *ngIf="item.customer.contact_number">{{item.customer.contact_number}}</div>
+                    </td>
+
+                    <td>{{item.order.date|date}} {{item.order.time}}</td>
+                    <td>{{getDeliveryAreaName(item)}}</td>
+                    <td>{{getTotal(item.order.order_json)}}</td>
+                    <td>
+                      <button class="btn-setup-sucess" (click)="OrderReady(item)">Ready ?</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </mat-tab>
+          <mat-tab label="Driver Orders">
+
+            <div class="tableStyleMain">
+              <ng-template #pickorders>
+                <div class="col-12">
+                  <div class="not-found">
+                    <h3>Sorry :(</h3>
+                    <p>No orders for pickup.</p>
+                  </div>
+                </div>
+              </ng-template>
+              <table *ngIf="waitingOrdersList.length; else pickorders">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Order No.</th>
+                    <th scope="col">Order Taken At</th>
+                    <th scope="col">Driver</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Amount ({{currency_symbol}})</th>
+                    <th scope="col">Otp for pickup</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of waitingOrdersList;let i=index;">
+                    <td>{{i+1}}</td>
+                    <td class="cursor-pointer click-edit" (click)="showDetails(item)">
+                      <span>{{getorderNo(item.order.order_json)}}</span>
+                      <div *ngIf="item.customer">{{item.customer.name}}</div>
+                      <div *ngIf="item.customer.contact_number">{{item.customer.contact_number}}</div>
+                    </td>
+                    <td>{{item.order.date|date}} {{item.order.time}}</td>
+
+                    <td>{{item.driver?item.driver.user.name:'--'}}</td>
+                    <td>{{getDeliveryAreaName(item)}}</td>
+                    <td>{{getTotal(item.order.order_json)}}</td>
+                    <td>{{item.driver_otp?item.driver_otp:'--'}}</td>
+                    <!-- <td>
+                      <button class="btn-setup-sucess" [disabled]="item.driver_status==3" (click)="Orderdelivering(item)">Ready for Pickup</button>
+                    </td> -->
+                    <td >
+                      <button class="btn-setup-sucess" *ngIf="item.driver_status==2 || item.driver_status==3" (click)="reassign(item)">Reassign Driver</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </mat-tab>
+          <mat-tab label="Delivery-In Progress">
+            <div class="tableStyleMain">
+              <ng-template #deliveringorders>
+                <div class="col-12">
+                  <div class="not-found">
+                    <h3>Sorry :(</h3>
+                    <p>No items for delivery.</p>
+                  </div>
+                </div>
+              </ng-template>
+              <table *ngIf="deliveringOrdersList.length; else deliveringorders">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Order No.</th>
+                    <th scope="col">Order Taken At</th>
+                    <th scope="col">Driver</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Amount ({{currency_symbol}})</th>
+                   
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of deliveringOrdersList;let i=index;">
+                    <td>{{i+1}}</td>
+                    <td class="cursor-pointer click-edit" (click)="showDetails(item)">
+                      <span>{{getorderNo(item.order.order_json)}}</span>
+                      <div *ngIf="item.customer">{{item.customer.name}}</div>
+                      <div *ngIf="item.customer.contact_number">{{item.customer.contact_number}}</div>
+                    </td>
+                    <td>{{item.order.date|date}} {{item.order.time}}</td>
+                    <td>{{item.driver.user.name}}</td>
+                    <td>{{getDeliveryAreaName(item)}}</td>
+                    <td>{{getTotal(item.order.order_json)}}</td>
+                   
+                    <td>
+                      <button class="btn-setup-sucess" (click)="Orderdelivered(item)">Mark as Delivered</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </mat-tab>
+          <mat-tab label="Driver Insights">
+            <div class="tableStyleMain">
+              <ng-template #deliveredorders>
+                <div class="col-12">
+                  <div class="not-found">
+                    <h3>Sorry :(</h3>
+                    <p>No Orders delivered.</p>
+                  </div>
+                </div>
+              </ng-template>
+              <table *ngIf="driverRecords.length; else deliveredorders">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Driver Name</th>
+                    <th scope="col">Commission Rate ({{currency_symbol}})</th>
+                    <th scope="col">Commission Type</th>
+                    <th scope="col">Delivery Area</th>
+                    <th scope="col">Total Delivered</th>
+                    <th scope="col">Total Amount ({{currency_symbol}})</th>
+                    <th scope="col">Actions</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let driver of driverRecords;let i=index;">
+                    <td>{{i+1}}</td>
+                    <td>{{driver.driver_name}}</td>
+                    <td>{{driver.commision_rate}}</td>
+                    <td>{{driver.commision_type}}</td>
+                    <td>{{getDeliveryArea(driver)}}</td>
+                    <td>{{driver.driver_total_order_count}}</td>
+                    <td>{{driver.driver_total_order_amount?driver.driver_total_order_amount:0}}</td>
+                    <td>
+                      <span *ngIf="driver.driver_total_order_count<=0">--</span>
+                      <button *ngIf="driver.driver_total_order_count>0" class="btn-setup-sucess"
+                        (click)="deliveredDriverDetails(driver)">Show Details</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

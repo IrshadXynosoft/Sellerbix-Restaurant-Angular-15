@@ -1,0 +1,154 @@
+/* Structure */
+.table {
+  border-collapse: unset !important;
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.bg-card-grey {
+  color: grey;
+  text-align: center;
+  margin-left: 0px;
+  text-shadow: gray;
+  font-size: 0.8rem;
+}
+.mat-nav-list .mat-mdc-list-item {
+  height: 1.7rem;
+  color: #063044;
+  font-size: 14px;
+}
+.mat-mdc-list-item:hover {
+  background-color: var(--primary);
+  color: white !important;
+}
+
+.card {
+  background-color: rgb(247, 247, 252);
+  width: 15.5rem;
+  border-radius: 0.5rem;
+  border-width: 1px;
+  padding: 24px;
+}
+.cardselected {
+  background: var(--primary);
+  color: white !important;
+}
+.mat-mdc-list-item:hover .zmdi-edit {
+  display: block;
+}
+
+img {
+  width: 100px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.mat-mdc-header-cell {
+  font-weight: bold;
+  font-size: medium;
+  color: rgb(20, 20, 20);
+  text-align: center;
+}
+.mat-mdc-cell {
+  font-size: 15px;
+  text-align: center;
+}
+.message {
+  font-size: 15px;
+  padding-top: 10%;
+  text-align: center;
+  font-style: italic;
+}
+.not-found {
+  background: #d7d7d7;
+  padding: 15px;
+  margin-top: 20px;
+  h3 {
+    font-size: 30px;
+    color: #565656;
+    font-weight: 600;
+  }
+  p {
+    font-size: 16px;
+    color: #727070;
+    font-weight: 400;
+  }
+}
+.positionFieldWrapper {
+  position: relative;
+  padding-left: 36px;
+  padding-right: 71px;
+
+  .positionFieldWrapperPos1 {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: var(--primary);
+    height: 100%;
+    width: 37px;
+    display: flex;
+    color: var(--white);
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px 0px 0px 6px;
+  }
+  .positionFieldWrapperPos2 {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 59%;
+    height: 100%;
+  }
+  select.form-control {
+    color: #495057 !important;
+    border: 1px solid #ced4da !important;
+    font-weight: 500 !important;
+    border-radius: 0px;
+    padding: 12px;
+    height: 46px;
+    width: 100px !important;
+    display: block;
+    margin-bottom: 0px;
+  }
+
+  .fieldInput {
+    height: 46px;
+    border-radius: 0px;
+    padding: 0 22px;
+    margin-bottom: 0;
+  }
+}
+.tableStyleMain {
+  margin-top: 7px;
+
+  th {
+    padding: 10px;
+    // border-right: 1px #e2e3e3 solid;
+    text-align: center;
+  }
+
+  td {
+    padding: 10px;
+    // border-right: 1px #eceeee solid;
+    text-align: center;
+  }
+}
+
+.btn-wrp-equal button {
+  width: 34px;
+  margin-bottom: 10px;
+  display: inline-block;
+  height: 34px;
+  border-radius: 50%;
+}
+.show {
+  visibility: hidden;
+}
+.commonBtnStyle {
+  height: 35px;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 5px;
+}

@@ -1,0 +1,286 @@
+<style>
+  @page {
+    size: 210mm 297mm;
+  }
+
+  /* output size */
+  body.receipt .sheet {
+    width: 210mm;
+    /* A4 width */
+    height: 297mm;
+    /* A4 height */
+  }
+
+  /* sheet size */
+  @media print {
+    body.receipt {
+      width: 210mm;
+    }
+  }
+
+</style>
+<mat-dialog-content>
+
+  <body id="page_setup" class="receipt">
+    <!-- Body Wrapper Start -->
+    <div class="body_wrapper container-fluid">
+      <div id="print-section" style="border: 1px solid grey;">
+        <div class="food-cost-container">
+          <div class="heading">
+            <div class="row">
+              <div class="col-12">
+                <h3>FOOD COST CALCULATOR</h3>
+              </div>
+            </div>
+          </div>
+          <div class="row details">
+            <div class="col-7">
+              <!-- <div class="label">Date</div>
+              <div class="value">{{date}}</div>
+              <div class="label">Dish name</div>
+              <div class="value">{{type== 'recipe' ? recordsArray.item?.name : recordsArray.name}}</div>
+              <div class="label">EST.Sale price</div>
+              <div class="value">{{currency_symbol}} {{recordsArray.sugg_sale_price?.toFixed(2)}}</div>
+              <div class="label">Total Cost</div>
+              <div class="value">{{currency_symbol}} {{recordsArray.cost_price?.toFixed(2)}}</div>
+              <div class="label">Cost Margin</div>
+              <div class="value"> % {{recordsArray.food_cost_percentage?.toFixed(2)}}</div>
+              <div class="label">Net Profit</div>
+              <div class="value">{{currency_symbol}} {{recordsArray.gross_profit_amount?.toFixed(2)}}</div> -->
+              <h4>Item Details</h4>
+              <table>
+                <tbody>
+                  <tr>
+                    <td>Date</td>
+                    <td>{{date}}</td>
+                  </tr>
+                  <tr>
+                    <td>Dish name</td>
+                    <td>{{type== 'recipe' ? recordsArray.item?.name : recordsArray.name}}</td>
+                  </tr>
+                  <tr>
+                    <td>EST.Sale price</td>
+                    <td>{{currency_symbol}} {{recordsArray.sugg_sale_price?.toFixed(2)}}</td>
+                  </tr>
+                  <tr>
+                    <td>Total Cost</td>
+                    <td>{{currency_symbol}} {{recordsArray.cost_price?.toFixed(2)}}</td>
+                  </tr>
+                  <tr>
+                    <td>Cost Margin</td>
+                    <td>% {{recordsArray.food_cost_percentage?.toFixed(2)}}</td>
+                  </tr>
+                  <tr>
+                    <td>Net Profit</td>
+                    <td>{{currency_symbol}} {{recordsArray.gross_profit_amount?.toFixed(2)}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-5">
+              <h3 class="ml-2">COST DISTRIBUTION</h3>
+              <div id="chart">
+                <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [labels]="chartOptions.labels"
+                  [responsive]="chartOptions.responsive" [colors]="chartOptions.colors"></apx-chart>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-7">
+              <table class="ml-2">
+                <thead>
+                  <tr>
+                    <th class="primary" colspan="4">
+                      PRIMARY INCREDIENTS
+                    </th>
+                  </tr>
+                  <tr>
+                    <th>ITEM #</th>
+                    <th>QTY</th>
+                    <th>COST</th>
+                    <th>TOTAL COST</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="type == 'recipe'">
+                  <tr *ngFor="let item of recordsArray?.recipe_ingredient">
+                    <td>{{item.ingredient_name}}</td>
+                    <td>{{item.qty}}</td>
+                    <td>{{item.cost_per_unit}} / {{item.measurement_unit_name}}</td>
+                    <td>{{item.total_cost}}</td>
+                  </tr>
+                  <tr>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                  </tr>
+                  <tr>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                  </tr>
+                </tbody>
+                <tbody *ngIf="type == 'modifier'">
+                  <tr *ngFor="let item of recordsArray?.modifier_ingredient">
+                    <td>{{item.ingredient_name}}</td>
+                    <td>{{item.qty}}</td>
+                    <td>{{item.cost_per_unit}} / {{item.measurement_unit_name}}</td>
+                    <td>{{item.total_cost}}</td>
+                  </tr>
+                  <tr>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                  </tr>
+                  <tr>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                  </tr>
+                </tbody>
+                <thead>
+                  <th class="primary" colspan="3">Total</th>
+                  <th class="primary">{{currency_symbol}}&nbsp; {{recipeTotal}}</th>
+                </thead>
+              </table>
+            </div>
+            <div class="col-5">
+              <div class="image">
+                <div *ngIf="recordsArray?.item?.item_image != null">
+                  <img src="{{recordsArray?.item?.item_image}}" alt="">
+                </div>
+                <div *ngIf="recordsArray?.item?.item_image == null" class="mt-2 px-4">
+                  <img src="assets/images/no-image-png.png" width="250" height="250" alt="">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-7">
+              <table class="ml-2 mt-2">
+                <thead>
+                  <tr>
+                    <th class="secondary" colspan="4">
+                      SECONDARY INCREDIENTS
+                    </th>
+                  </tr>
+                  <tr>
+                    <th>ITEM #</th>
+                    <th>QTY</th>
+                    <th>UNIT PRICE</th>
+                    <th>TOTAL</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="type == 'recipe'">
+                  <tr *ngFor="let item of recordsArray?.recipe_sub_recipe">
+                    <td>{{item.ingredient_name}}</td>
+                    <td>{{item.qty}}</td>
+                    <td>{{item.cost_per_unit}} / {{item.measurement_unit_name}}</td>
+                    <td>{{item.total_cost}}</td>
+                  </tr>
+                  <tr>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                  </tr>
+                  <tr>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                  </tr>
+                </tbody>
+                <tbody *ngIf="type == 'modifier'">
+                  <tr *ngFor="let item of recordsArray?.modifier_sub_recipe">
+                    <td>{{item.ingredient_name}}</td>
+                    <td>{{item.qty}}</td>
+                    <td>{{item.cost_per_unit}} / {{item.measurement_unit_name}}</td>
+                    <td>{{item.total_cost}}</td>
+                  </tr>
+                  <tr>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                  </tr>
+                  <tr>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                    <td class="blank"></td>
+                  </tr>
+                </tbody>
+                <thead>
+                  <th class="primary" colspan="3">Total</th>
+                  <th class="primary">{{currency_symbol}} &nbsp;{{subRecipeTotal}}</th>
+                </thead>
+              </table>
+            </div>
+            <div class="col-5">
+              <div class="image mt-2">
+                <h4 class="ml-2 px-4" *ngIf="recordsArray?.recipe_item_preference?.recipe_preparation_method">PREPARATION STEPS</h4>
+                <p *ngIf="recordsArray?.recipe_item_preference?.recipe_preparation_method == null">No preparation steps added.</p>
+                <p *ngIf="recordsArray?.recipe_item_preference?.recipe_preparation_method" class="ml-2">{{recordsArray.recipe_item_preference.recipe_preparation_method}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-7">
+              <table class="ml-2 mt-2">
+                <thead>
+                  <tr>
+                    <th class="utility" colspan="4">
+                      UTILITY & PREP.COST
+                    </th>
+                  </tr>
+                  <tr>
+                    <th colspan="3">ITEM #</th>
+                    <th>TOTAL COST</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="type=='recipe'">
+                  <tr *ngFor="let item of recordsArray?.recipe_utility">
+                    <td colspan="3">{{item.utility_name}}</td>
+                    <td>{{item.cost}}</td>
+                  </tr>
+                </tbody>
+                <tbody *ngIf="type=='modifier'">
+                  <tr *ngFor="let item of recordsArray?.modifier_utility">
+                    <td colspan="3">{{item.utility_name}}</td>
+                    <td>{{item.cost}}</td>
+                  </tr>
+                </tbody>
+                <thead>
+                  <th class="utility" colspan="3">Total</th>
+                  <th class="utility">{{currency_symbol}} &nbsp;{{utilityTotal}}</th>
+                </thead>
+              </table>
+            </div>
+          </div>
+          <!-- <div class="row px-4 mt-4">
+              <div class="col-6">
+                <h4>Prepared by :</h4>
+              </div>
+              <div class="col-6">
+                <h4>Approved by :</h4>
+              </div>
+            </div> -->
+        </div>
+      </div>
+
+    </div>
+  </body>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button style="width: 120px;" class="btn-setup-danger mr-2" (click)="close()">
+    Close
+  </button>
+  <button style="width: 120px;" class="btn-setup-sucess" [useExistingCss]="true" printSectionId="print-section"
+    printTitle="Food Cost" ngxPrint>
+    Print
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,106 @@
+.close-button {
+  float: right;
+  top: -20px;
+  right: -20px;
+}
+
+.close-icon {
+  transition: 1s ease-in-out;
+}
+
+.close-icon:hover {
+  transform: rotate(180deg);
+}
+
+::ng-deep .icon-outside .close-button {
+  float: right;
+  top: -52px;
+  right: -52px;
+}
+
+::ng-deep .icon-outside .mat-mdc-dialog-container {
+  overflow: unset;
+}
+
+
+// tree
+.combo-tree {
+  .tree-holder {
+    margin-left: -45px;
+    font-size: 12px;
+  }
+
+  .tree li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0px 0px 0 10px;
+    position: relative;
+    border-bottom: none;
+  }
+
+  .tree li::before,
+  .tree li::after {
+    content: '' !important;
+    left: -25px !important;
+    position: absolute !important;
+    right: auto !important;
+  }
+
+  .tree li::before {
+    border-left: 1px solid #999 !important;
+    bottom: 50px !important;
+    height: 100% !important;
+    top: 0 !important;
+    width: 1px !important;
+  }
+
+  .tree li::after {
+    border-top: 1px solid #999 !important;
+    height: 20px !important;
+    top: 10px !important;
+    width: 15px !important;
+  }
+
+  .tree li span {
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    display: inline-block;
+    text-decoration: none;
+  }
+
+  .tree li.parent_li>span {
+    cursor: pointer;
+  }
+
+  .tree>ul>li::before,
+  .tree>ul>li::after {
+    border: 0 !important;
+  }
+
+  .tree li:last-child::before {
+    height: 10px !important;
+  }
+
+  .tree li.parent_li>span:hover,
+  .tree li.parent_li>span:hover+ul li span {
+    background: #eee;
+    border: 1px solid #94a0b4;
+    color: #000;
+  }
+
+  .sub-modifier {
+    margin-left: -15px;
+  }
+}
+
+.size {
+  font-size: 20px;
+  margin-top: 10px;
+}
+
+.commonBtnStyle {
+  height: 2.5rem;
+  width: 7.5rem;
+  padding: 0;
+}

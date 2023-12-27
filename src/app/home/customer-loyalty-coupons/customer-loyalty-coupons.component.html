@@ -1,0 +1,37 @@
+<div class="modal-wrapper">
+  <button mat-icon-button class="close-button" (click)="close()">
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+  </button>
+  <h2 mat-dialog-title>Add Loyalty Coupon</h2>
+  <mat-dialog-content>
+    <ng-template #noorder>
+      <div class="not-found">
+        <h3>Sorry :(</h3>
+        <p>There's no coupons available.</p>
+      </div>
+    </ng-template>
+    <div *ngIf="couponRecords.length > 0;else noorder">
+      <div class="row">
+        <div class="col-4" *ngFor="let coupon of couponRecords">
+          <mat-card appearance="outlined" class="surcharge-card" (click)="addingSurcharge(coupon)">
+            CODE- {{coupon.coupon_code}}
+            <h4>{{coupon.coupon_value}} %
+            </h4>
+            <h4>Discounted Value - {{currency_symbol}} {{coupon.applied_discount.toFixed(2)}}</h4>
+          </mat-card>
+        </div>
+      </div>
+      <!-- <div class="col">
+        <div class="row">
+          <div class="box grey"></div>
+          <div style="padding-left: 5px;">Disabled</div>&nbsp;&nbsp;&nbsp;
+          <div class="box orange"></div>
+          <div style="padding-left: 5px;">Active</div>
+        </div>
+      </div> -->
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+  </mat-dialog-actions>
+</div>

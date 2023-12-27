@@ -1,0 +1,68 @@
+.dinein-hd {
+  ul {
+    list-style: none;
+    display: flex;
+    padding: 0;
+    li {
+      margin-right: 0px;
+      cursor: pointer;
+      font-size: 14px;
+      padding: 5px 15px !important;
+      border-radius: 30px;
+    }
+
+    .active {
+      background: var(--primary);
+      color: var(--white);
+      border-radius: 30px !important;
+    }
+  }
+}
+
+.hd-running-orders {
+  h3 {
+    font-weight: 500;
+    color: #565656;
+    font-size: 24px;
+    margin: 5px 0;
+  }
+}
+
+.click-edit {
+  background-color: var(--primary);
+  border: 1px solid #f8f9fd;
+  color: var(--white);
+}
+
+.card {
+  margin-bottom: 10px;
+  height: 100%;
+  padding: 0 !important;
+}
+.commonBtnStyle {
+  padding: 6px 13px;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.completed{
+  background-color: var(--primary);
+}
+.actions {
+  display: flex;
+  flex-wrap: nowrap;
+}
+/* Style for the fixed div */
+.fixed-div {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  background-color: #f0f0f0; /* You can change the background color */
+  padding-top: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Optional: Add a shadow */
+  z-index: 1;
+  margin: 0;
+  top: 48px;
+}

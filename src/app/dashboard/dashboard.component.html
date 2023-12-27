@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+
+<body id="page_dashboard">
+
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper pt-2">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="container-fluid  align-items-start p-0">
+      <div class="page_title">
+        <div class="row align-items-center mx-0">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-8 col-xl-8 p-0">
+            <div class="title_inner d-flex">
+              <h1 class="d-flex align-items-center">Dashboard
+                <!--                            <span class="ml-4">$987.50</span>-->
+              </h1>
+              <!--                            <button type="button" class="btn"><a href="upload_item.html">Add New</a></button>-->
+            </div>
+          </div>
+          <div class="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 p-0 d-flex">
+            <form
+              class="search_box col-12 col-sm-12 col-md-12 col-lg-8 col-xl-7 p-0 px-lg-3 mt-0 mt-lg-0 pb-3 pb-md-0 ml-auto">
+              <div class="form-group mt-3 mb-0">
+                <div class="select_box  d-flex">
+                  <select #id (change)="filterData(id.value)">
+                    <option value="0">Today</option>
+                    <option value="1">This Month</option>
+                  </select>
+                  <i class="zmdi zmdi-caret-down"></i>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-dasboard ">
+        <div class="total_box">
+          <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-7">
+              <div class="row">
+                <div class="col-12 col-sm-12 col-md-6 ">
+                  <div
+                    class="chart-area py-4 px-4 d-flex align-items-center animate__animated animate__zoomIn wow"
+                    data-wow-duration="1s">
+                    <img src="assets/images/ic_energy.png" class="img-fluid">
+                    <div class="text_box">
+                      <h3>Total Orders</h3>
+                      <h2>{{totalOrders}}</h2>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-6">
+                  <div
+                    class="chart-area py-4 px-4  d-flex align-items-center animate__animated animate__zoomIn wow"
+                    data-wow-duration="1s">
+                    <img src="assets/images/ic_Serving.png" class="img-fluid">
+                    <div class="text_box">
+                      <h3>Total Sales</h3>
+                      <h2>{{currency_symbol}}&nbsp;{{orderSum}}</h2>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-6">
+                  <div
+                    class="chart-area py-4 px-4 d-flex align-items-center animate__animated animate__zoomIn wow"
+                    data-wow-duration="1s">
+                    <img src="assets/images/ic_fastfood.png" class="img-fluid">
+                    <div class="text_box">
+                      <h3>Items Sold</h3>
+                      <h2>{{itemsSold}}</h2>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-6">
+                  <div
+                    class="chart-area py-4 px-4  d-flex align-items-center animate__animated animate__zoomIn wow"
+                    data-wow-duration="1s">
+                    <img src="assets/images/ic_energy.png" class="img-fluid">
+                    <div class="text_box">
+                      <h3>Cancelled Orders</h3>
+                      <h2>{{cancelledOrders}}</h2>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-12 col-md-12 col-lg-5">
+              <div
+                class="text_box orders_insights chart-area top-selling-items p-4  animate__animated animate__zoomIn wow"
+                data-wow-duration="1s">
+                <h3>Orders Insights</h3>
+                <div id="chart2" *ngIf="dashboardRecords.entity_sales?.series;else nodata">
+                  <apx-chart [series]="donutchartOptions.series" [chart]="donutchartOptions.chart"
+                    [labels]="donutchartOptions.labels" [responsive]="donutchartOptions.responsive">
+                  </apx-chart>
+                </div>
+                <ng-template #nodata>
+                  <div class="not-found">
+                    <h3>Sorry :(</h3>
+                    <p>There's no Orders today.</p>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chart-area p-3 p-xl-4 animate__animated animate__zoomIn wow" data-wow-duration="1s">
+          <div class="row no-gutters align-items-center ">
+            <div class="col-12 col-sm-12 col-md-8 col-lg-12 col-xl-12">
+              <div class="menus pb-2">
+                <ul class="d-flex list-unstyled text-muted m-0">
+                  <li class="active">Orders</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="graph_container d-flex"> -->
+          <div id="chart">
+            <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart"
+              [dataLabels]="chartOptions.dataLabels" [plotOptions]="chartOptions.plotOptions"
+              [yaxis]="chartOptions.yaxis" [legend]="chartOptions.legend" [fill]="chartOptions.fill"
+              [stroke]="chartOptions.stroke" [tooltip]="chartOptions.tooltip" [xaxis]="chartOptions.xaxis"></apx-chart>
+          </div>
+          <!-- </div> -->
+        </div>
+        <div class="total_box">
+          <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6">
+              <div
+                class="text_box min-scroll chart-area top-selling-items p-4 animate__animated animate__zoomIn wow"
+                data-wow-duration="1s">
+                <h3>Staff Sales</h3>
+                <div *ngIf="dashboardRecords.staff_sales?.length < 1;else staffdata"
+                  class="progress-bar-box d-block d-md-flex align-items-center mb-5 animate__animated animate__fadeInUp wow"
+                  data-wow-duration="1s">
+                  <div class="not-found">
+                    <h3>Sorry :(</h3>
+                    <p>There's no staff sales today.</p>
+                  </div>
+                </div>
+                <ng-template #staffdata>
+                  <div
+                    class="progress-bar-box d-block d-md-flex align-items-center mb-5 animate__animated animate__fadeInUp wow"
+                    data-wow-duration="1s" *ngFor="let staffsale of dashboardRecords.staff_sales">
+                    <div class="img_box pb-3">
+                      <img src="assets/images/ic_delivery.png">
+                    </div>
+                    <div class="bar-box d-flex w-100 align-items-center">
+                      <span class="h6 m-0">{{staffsale.name}}</span>
+                      <div class="progress" style="height: 20px;width: 100%">
+                        <div class="progress-bar bg-success" role="progressbar" [style.width]="staffsale.percentage"
+                          aria-valuenow="92" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                      <span style="min-width: 100px;"
+                        class="text-right">{{staffsale.count}}<span>({{staffsale.percentage}})</span></span>
+                    </div>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6">
+              <div
+                class="text_box min-scroll chart-area top-selling-items p-4 animate__animated animate__zoomIn wow"
+                data-wow-duration="1s">
+                <h3>Branch Sales</h3>
+                <div *ngIf="dashboardRecords.branch_sales?.length < 1; else branchsaledata"
+                  class="progress-bar-box d-block d-md-flex align-items-center mb-5 animate__animated animate__fadeInUp wow"
+                  data-wow-duration="1s">
+                  <div class="not-found">
+                    <h3>Sorry :(</h3>
+                    <p>There's no branch sale today.</p>
+                  </div>
+                </div>
+                <ng-template #branchsaledata>
+                  <div
+                    class="progress-bar-box d-block d-md-flex align-items-center mb-5 animate__animated animate__fadeInUp wow"
+                    data-wow-duration="1s" *ngFor="let branchsale of dashboardRecords.branch_sales">
+                    <div class="img_box pb-3">
+                      <img src="assets/images/ic_dine_in.png">
+                    </div>
+                    <div class="bar-box d-flex w-100 align-items-center">
+                      <span class="h6 m-0">{{branchsale.name}}</span>
+                      <div class="progress" style="height: 20px;width: 100%">
+                        <div class="progress-bar bg-success" role="progressbar" [style.width]="branchsale.percentage"
+                          aria-valuenow="92" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                      <span style="min-width: 100px;" class="text-right">{{branchsale.count}}
+                        <span>({{branchsale.percentage}})</span></span>
+                    </div>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6">
+              <div
+                class="text_box min-scroll chart-area top-selling-items p-4 animate__animated animate__zoomIn wow"
+                data-wow-duration="1s">
+                <h3>Top Selling items</h3>
+                <div class="media w-100 d-flex align-items-start mb-3 animate__animated animate__fadeInUp wow"
+                  *ngFor="let items of topsellingarray">
+                  <div class="img_box center_img">
+                    <img *ngIf="items.image; else noimage" src='{{imageBasePath}}{{items.image}}' class="crop_img"
+                      alt="">
+                    <ng-template #noimage>
+                      <img class="crop_img" src="assets/images/no-image (1).jpg" />
+                    </ng-template>
+                  </div>
+                  <div class="media-body">
+                    <h5 class="pb-1">{{items.name}}</h5>
+                    <h6>{{items.qty}} times</h6>
+                  </div>
+                </div>
+                <div *ngIf="topsellingarray.length <1" class="not-found">
+                  <h3>Sorry :(</h3>
+                  <p>There's no items.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-6">
+              <div
+                class="text_box min-scroll chart-area top-selling-items p-4 animate__animated animate__zoomIn wow"
+                data-wow-duration="1s">
+                <h3>Announcements</h3><br>
+                <div>
+                  <form>
+                    <div class="row">
+                      <div class="col-11">
+                        <input type="text" class="form-control" placeholder="Announcements" />
+                      </div>
+                      <div class="col-1">
+                        <button type="button" class="btn-announcement">
+                          <a>Post</a>
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- Body Wrapper End -->
+  <!-- Require Javascript End -->
+
+</body>
+
+
+<!-- Mirrored from hungerz.opuslab.works/dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 19 Jul 2021 13:59:21 GMT -->
+
+</html>

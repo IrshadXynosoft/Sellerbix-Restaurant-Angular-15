@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+  <!-- Body Wrapper Start -->
+  <form [formGroup]="staffPointForm">
+    <div class="body_wrapper container-fluid">
+      <!-- Header Start -->
+      <app-header></app-header>
+      <!-- Header End -->
+      <div class="px-4">
+        <div class="row pt-4">
+          <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item cursor-pointer" routerLink="/callcenter">
+                  Home
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                  Setup
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/addons">
+                  Add-Ons
+                </li>
+                <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                  Staff points
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-12">
+            <div class="d-flex align-items-center head-tag ">
+              <h4 class="flex-gr-1">
+                <i class="icon-arrow-left mr-1 cursor-pointer" routerLink="/setup/addons"> </i>Staff points
+              </h4>
+            </div>
+          </div>
+
+          <div class="row col-12">
+            <div class="col-3 currency-wrap float-right">
+              <span class="currency-code"> {{currency_symbol}}</span>
+              <input type="text" placeholder="Point" class="form-control text-currency w-70"
+                formControlName="amount_to_point" />
+            </div>
+            <div class="col-1" style="top: 0.5rem;">=</div>
+
+            <div class="col-3 currency-wrap">
+              <span class="currency-code-loyalty">1  point</span>
+              <input type="text" class="form-control text-currency w-70" formControlName="loyaltyValue" />
+            </div>
+
+          </div>
+          <div class="row col-12">
+            <div class="col-3 currency-wrap">
+              <span class="currency-code-loyalty">1 point</span>
+              <input type="text" class="form-control text-currency w-70" formControlName="loyaltyValue" />
+            </div>
+            <div class="col-1" style="top: 0.5rem;">=</div>
+
+
+            <div class="col-3 currency-wrap float-right">
+              <span class="currency-code"> {{currency_symbol}}</span>
+              <input type="text" placeholder="amount" class="form-control text-currency w-70"
+                formControlName="point_to_amount" />
+            </div>
+          </div>
+          <div class="col-7">
+            <div class="row d-flex justify-content-end">
+              <button class="btn-setup-sucess" [disabled]="!staffPointForm.valid || staffPointForm.pristine"
+                (click)="submit()">Update</button>
+            </div>
+          </div>
+
+
+        </div>
+
+      </div>
+    </div>
+  </form>
+</body>
+
+</html>

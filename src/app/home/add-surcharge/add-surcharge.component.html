@@ -1,0 +1,36 @@
+<div class="modal-wrapper">
+    <button mat-icon-button class="close-button" (click)="close()">
+        <mat-icon class="close-icon" color="warn">close</mat-icon>
+    </button>
+    <h2 mat-dialog-title>Add Surcharge</h2>
+    <mat-dialog-content>
+        <ng-template #noorder>
+            <div class="not-found">
+                <h3>Sorry :(</h3>
+                <p>There's no surcharges available.</p>
+            </div>
+        </ng-template>
+        <div *ngIf="surchargeRecords.length > 0;else noorder">
+            <div class="row">
+                <div class="col-3" *ngFor="let surcharge of surchargeRecords">
+                    <mat-card appearance="outlined" class="surcharge-card" [ngClass]="surcharge.status==0 ? 'card-disable' : ''"
+                        (click)="addingSurcharge(surcharge)">
+                        {{surcharge.name}} <br>
+                        <h4>{{surcharge.rate}} &nbsp; {{surcharge.type== 'value'? currency_symbol: '%'}}
+                        </h4>
+                    </mat-card>
+                </div>
+            </div>
+            <br>
+            <div class="col">
+                <div class="row">
+                  <div class="box grey"></div>
+                  <div style="padding-left: 5px;">Disabled</div>&nbsp;&nbsp;&nbsp;
+                  <div class="box orange"></div>
+                  <div style="padding-left: 5px;">Active</div>
+                </div>
+              </div>
+        </div>
+    </mat-dialog-content>
+   
+</div>

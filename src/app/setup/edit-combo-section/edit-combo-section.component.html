@@ -1,0 +1,21 @@
+<form  [formGroup]="editcomboForm">
+    <div class="modal-wrapper">
+        <h2 mat-dialog-title>Edit Combo Section</h2>
+        <div mat-dialog-content>
+        <input type="text" class="form-control" placeholder="Combo Section Name:" formControlName="name" />
+        <span class="error-message" *ngIf="!editcomboForm.controls.name.valid && editcomboForm.controls.name.touched">*required</span>
+        <input type="number" class="form-control" placeholder="Sequence No:" formControlName="sequence_number" />
+        <span class="error-message" *ngIf="!editcomboForm.controls.sequence_number.valid && editcomboForm.controls.sequence_number.touched">*required</span>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="1" id="flexCheckChecked" formControlName="is_allow_skip">
+            <label class="form-check-label" for="flexCheckChecked">
+                Allows Skip:
+            </label>
+          </div>
+                </div>
+        <div mat-dialog-actions>
+            <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+            <button class="btn-setup-sucess" (click)="editCombo()">Update</button>
+        </div>
+    </div>
+    </form>

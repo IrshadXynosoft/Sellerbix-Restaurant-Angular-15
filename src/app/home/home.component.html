@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_home">
+  <div class="body_wrapper container-fluid">
+    <!-- Order Section Start -->
+    <app-header></app-header>
+    <div class="posAllWrapper">
+      <div class="button-container" *ngIf="SelectedItems.length>0">
+        <!-- <select class="form-control pax" [formControl]="paxNo" *ngIf="SelectedItems.length > 0 && !showPrintFlag">
+          <option value="">Select Pax</option>
+          <option [value]="1">1</option>
+          <option [value]="2">2</option>
+          <option [value]="3">3</option>
+          <option [value]="4">4</option>
+          <option [value]="5">5</option>
+          <option [value]="6">6</option>
+          <option [value]="7">7</option>
+          <option [value]="8">8</option>
+          <option [value]="9">9</option>
+          <option [value]="10">10</option>
+        </select> -->
+        <input type="text" class="form-control pax" placeholder="Pax Number" maxlength="3" [formControl]="paxNo"
+          *ngIf="SelectedItems.length > 0 && !showPrintFlag" />
+        <select class="form-control pax capital"
+          *ngIf="SelectedItems.length > 0 && !showPrintFlag && assignWaiter == true" [formControl]="waiterChoosen">
+          <option value="" disabled>Select Waiter</option>
+          <option [ngValue]="i" *ngFor="let i of waiterRecords">
+            {{i.name}}</option>
+
+        </select>
+        <button class="medium-button primary" *ngIf="SelectedItems.length > 0 && !showPrintFlag" (click)="addNotes()">
+          <!-- <i class="zmdi zmdi-comments"></i> -->
+          Notes
+        </button>
+        <button class="medium-button discount" (click)="addDiscount()"
+          *ngIf="SelectedItems.length > 0 && !showPrintFlag" [disabled]="orderDiscountFlag">
+          <!-- <i class="zmdi zmdi-plus"></i> -->
+          Discount
+        </button>
+        <button class="medium-button surcharge" *ngIf="SelectedItems.length > 0 && !showPrintFlag"
+          (click)="getSurcharges()">
+          <!-- <i class="zmdi zmdi-plus"></i> -->
+          Surcharges
+        </button>
+        <button class="medium-button coupon" *ngIf="(SelectedItems.length > 0 && !showPrintFlag) && showCoupon == true"
+          (click)="getLoyaltyCoupons()">
+          <!-- <i class="zmdi zmdi-plus"></i> -->
+          Coupons
+        </button>
+        <button *ngIf="showPrintFlag" class="surcharge medium-button" [matMenuTriggerFor]="menu">
+          <!-- <i class="icon-print mr-1"></i> -->
+          Print
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="invoiceReprint()">
+            Invoice Print
+          </button>
+          <!-- <button mat-menu-item (click)="kotPrint()">
+            Kot Print
+          </button> -->
+          <button *ngIf="branch_settings?.label_print == 1" mat-menu-item (click)="labelPrint()">
+            Label Print
+          </button>
+        </mat-menu>
+      </div>
+      <div class="order_section">
+        <div class="order_item_container">
+          <div class="fixed-hd-tag-scn">
+            <div class="pt-4">
+              <div class="col-12">
+                <div class="head1-tag">
+                  <h2 *ngIf="editdineinFlag">
+                    <span class="tag-h-1">{{ waiterChoosen.value ? waiterChoosen.value.name : staff }} </span> /
+                    <span class="tag-h-1">Table - {{ tableName }} </span> /
+                    <span class="tag-h-1"> # {{ orderNumber }}</span><br />
+                    <span class="tag-h-1">
+                      <!-- <button class="btn-split commonBtnStyle mr-2" (click)="splitTable()">
+                        Split Table
+                      </button> -->
+                      <!-- <button class="btn-move commonBtnStyle mr-2" (click)="moveTable()">
+                        Move Table
+                      </button> -->
+                      <!-- <button *ngIf="invoiceID" class="btn-setup-sucess bg-grey mr-2 ">
+                      <i class="icon-add mr-1"></i>Re print
+                    </button> -->
+                    </span>
+                  </h2>
+                  <h2 class="classH3Main" *ngIf="crmFlag">
+                    <span class="tag-h-1" *ngIf="crmRecords.customer_name">{{
+                      crmRecords.customer_name
+                      }}</span>
+                    /<span class="tag-h-1">{{ crmRecords.customer_contact_no }}
+                    </span>
+                    <!-- <span class="tag-h-1">Branch: <select>
+                        <option *ngFor="let address of branchrecords" value="{{address.id}}"
+                          (click)="OnBranchChange(address.id,address.name)">
+                          {{address.name}}
+                        </option>
+                      </select></span> -->
+                    <span class="pickUpFlagSpan" *ngIf="!pickupFlag">
+                      <mat-icon style="margin-bottom: -10px" *ngIf="crmRecords.locationDetails.building_or_villa">home
+                      </mat-icon>
+                      {{
+                      crmRecords.locationDetails.building_or_villa
+                      }}&nbsp;{{
+                      crmRecords.locationDetails.delivery_area
+                      }}&nbsp;{{ crmRecords.locationDetails.street }}&nbsp;
+                      {{ crmRecords.locationDetails.country_name }}
+                    </span>
+                    <span class="pickUpFlagSpan" *ngIf="
+                          pickupFlag &&
+                          url != '/home/crm/entity/' + this.custom_entity_id
+                        ">pickup from restaurant</span>
+                  </h2>
+                  <h2 *ngIf="editcrmFlag">
+                    <span class="tag-h-1" *ngIf="crmRecords.customer_name">{{ crmRecords.customer_name }}
+                    </span>
+                    /<span class="tag-h-1">
+                      {{ crmRecords.customer_contact_no }}
+                    </span>
+                    <!-- <span class="tag-h-1">Branch: <select>
+                        <option *ngFor="let address of branchrecords" value="{{address.id}}"
+                          (click)="OnBranchChange(address.id,address.name)">
+                          {{address.name}}
+                        </option>
+                      </select></span> <br> -->
+                    <p class="tag-h-1" *ngIf="!pickupFlag">
+                      <mat-icon>home</mat-icon>
+                      {{
+                      crmRecords.locationDetails.building_or_villa
+                      }}&nbsp;{{
+                      crmRecords.locationDetails.delivery_area
+                      }}&nbsp;{{ crmRecords.locationDetails.street }}&nbsp;
+                      {{ crmRecords.locationDetails.country_name }}
+                    </p>
+                  </h2>
+                  <h2 *ngIf="dineinFlag">
+                    <span class="tag-h-1">{{ waiterChoosen.value.name ? waiterChoosen.value.name : staff }} </span> /
+                    <span class="tag-h-1">Table - {{ tableName }} </span> /
+                    <span class="tag-h-1">New</span><br />
+                  </h2>
+                  <h2 *ngIf="url == '/home/walkin'">
+                    <span class="tag-h-2" style="display: flex;
+                      align-items: center;
+                      justify-content: center;">{{ branchName }}</span>
+                  </h2>
+              
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="no-order active p-4 p-sm-4 p-md-4" *ngIf="SelectedItems.length <= 0 && !flagCartItem">
+            <!-- <div class="banner_img">
+              <img src="assets/images/img_noorder.png" class="img-fluid" />
+            </div> -->
+            <h2>You've no order in process from <br />Counter Desk.</h2>
+            <div class="quick-menu-direct">
+              <button type="button" class="btn btn-square-md" style="width:92% !important"
+                (click)="gotoPage('walkin/entity-orders')">
+                Orders List
+              </button>
+              <!-- <button type="button" class="btn btn-square-md" (click)="gotoPage('callcenter/order-list')">
+                CRM Orders
+              </button> -->
+              <button type="button" class="btn btn-square-md" (click)="gotoPage('dinein')">
+                Dine In
+              </button>
+              <button type="button" class="btn btn-square-md" (click)="gotoPage('delivery_settings')">
+                Delivery Manager
+              </button>
+              <button type="button" class="btn btn-square-md" (click)="gotoPage('dashboard')">
+                View Dashboard
+              </button>
+              <button type="button" class="btn btn-square-md" (click)="refreshMenu()">
+                Refresh Menu
+              </button>
+              <button type="button" class="btn btn-square-md" (click)="gotoPage('dinein/tableReservations')">
+                Table Reservations
+              </button>
+              <button type="button" class="btn btn-square-md" (click)="gotoPage('party_orders/new_order/list')">
+                Party Orders
+              </button>
+            </div>
+
+            <!--
+          <div class="btn_box">
+            <div class="row">
+              <div class="col-6 col-sm-6 col-md-6 px-1 px-md-2">
+                <button type="button" class="btn order-status">
+                  <a routerLink="../order-status">Walkin Orders</a>
+                </button>
+              </div>
+            </div>
+          </div> -->
+          </div>
+          <div style="position: absolute; bottom: 0; left: 0; padding-left: 10px">
+            <h4>
+              <b>Version :&nbsp;{{ appVersion }}</b>
+            </h4>
+          </div>
+          <!-- Tab Items Start -->
+          <div *ngIf="flagCartItem" class="item_list active">
+            <div class="order_header">
+              <div class="row align-items-center">
+                <div class="col-4">
+                  <h2>Item</h2>
+                </div>
+                <div class="col-3 text-center">
+                  <h2>Qty.</h2>
+                </div>
+                <div class="col-2 text-center">
+                  <h2>Price</h2>
+                </div>
+                <div class="col-2 text-right">
+                  <h2>Total({{ currency_symbol }})</h2>
+                </div>
+              </div>
+            </div>
+
+            <!-- Food List Start -->
+            <ul class="cart-item-list">
+              <li *ngFor="let items of SelectedItems; let i = index">
+                <div class="row">
+                  <div class="col-4 edit-item" (click)="editItem(items, i)">
+                    <h2 style="text-transform: capitalize;">{{ items.name }}</h2>
+                  </div>
+                  <div class="col-3 text-center">
+                    <h3 class="d-flex align-items-center">
+                      <i class="zmdi zmdi-minus pointer" (click)="quantityMinus(items.qty, i)"></i>&nbsp;
+                      <!-- <strong>{{ items.qty }}</strong> -->
+                      <input type="text" [(ngModel)]="items.qty" class="qty" [disabled]="
+                            items.order_status == 'old' ? true : false
+                          " maxlength="3" (input)="qtyInputChange(items.qty, i)" />&nbsp;
+                      <i class="zmdi zmdi-plus pointer" (click)="quantityPlus(i)"></i>
+                    </h3>
+                  </div>
+                  <div class="col-2 text-center">
+                    <h3 *ngIf="items.is_editable != 1">{{ items.price }}</h3>
+                    <h3 *ngIf="items.is_editable == 1">
+                      <input type="text" class="price" (input)="checkForItemprice(items, i)" [(ngModel)]="items.price"
+                        maxlength="6" />
+                    </h3>
+                  </div>
+                  <div class="col-2 text-right">
+                    <h4>{{ items.total }}</h4>
+                  </div>
+                  <div class="col-1 paddingDelete text-right">
+                    <mat-icon class="delete_item_icon" (click)="deleteCartItem(i)">delete</mat-icon>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 combo-tree">
+                    <div class="tree">
+                      <h2 *ngIf="items.item_discount_rate">(Discount - {{items.item_discount_rate}})</h2>
+                      <ul class="tree-holder" *ngFor="let modifierlist of items.modifiers">
+                        <li *ngIf="checkForValidTree(modifierlist)">
+                          <span><i class="fa fa-folder-open"></i>
+                            {{ modifierlist.name }}</span>
+                          <ul>
+                            <div *ngFor="let list of modifierlist.list">
+                              <li *ngIf="list.status">
+                                <span class="sub-modifier"><i class="fa fa-minus-square"></i>{{ list.modifier_list }}
+                                  +{{
+                                  currency_symbol
+                                  }}{{ list.rate }}</span> <span *ngIf="list.list_qty">&nbsp;
+                                  x{{list.list_qty}}</span>
+                              </li>
+                            </div>
+                          </ul>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <!-- Food List End -->
+
+            <div class="order_footer">
+              <div class="amount_details row">
+                <div class="col-4">
+                  <form [formGroup]="paymentForm">
+                    <input type="text" class="form-control" placeholder="Customer Name" formControlName="name" />
+                    <input type="text" #ip title="Please enter valid phone number" class="form-control"
+                      [ngClass]="{ invalid: invalidFlag }" placeholder="Mobile Number" formControlName="phone_number"
+                      (input)="phonenumberValidCheck(ip.value)" />
+                  </form>
+                </div>
+                <div class="col-8">
+                  <h2 class="d-flex text-right">
+                    <span class="text">Sub Total </span>&nbsp;&nbsp;
+                    <span class="mr-0 ml-auto">{{ Cart.subTotal }}</span>
+                  </h2>
+                  <!-- <h2 class="d-flex text-right combo-tree">
+                    <div class="tax-container col-12">
+                      <ul class="tax-list" *ngFor="let tax of effectedTax">
+                        <li class="tax-item">{{tax.name}}: {{tax.effected_price}}</li>
+                        <ul class="subtax-list" *ngIf="tax.tax_split.length>0">
+                          <li class="subtax-item" *ngFor="let split of tax.tax_split">{{split.name}} : {{split.rate}}
+                          </li>
+                        </ul>
+                      </ul>
+                    </div>
+                  </h2> -->
+
+                  <div *ngFor="let tax of effectedTax" class="pointer" (click)="changeTax()">
+                    <h2 class="d-flex text-right" *ngFor="let split of tax?.tax_split">
+                      <span class="text">{{split.name}}</span>&nbsp;&nbsp;
+                      <span class="mr-0 ml-auto"> {{ split.effected_price }}</span>
+                    </h2>
+                    <h2 class="d-flex text-right editable">
+                      <span class="text">{{tax.name}}</span>&nbsp;&nbsp;
+                      <span class="mr-0 ml-auto"> {{ tax.effected_price }}</span>
+                    </h2>
+                  </div>
+                  <!-- <span *ngIf="Cart.otherCharge!=0">&nbsp;&nbsp; -->
+                  <h2 class="d-flex text-right" *ngFor="let charge of effectedSurcharge">
+                    <span class="text">{{ charge.name }} </span>&nbsp;&nbsp;
+                    <span class="mr-0 ml-auto">{{
+                      charge.effected_price
+                      }}</span>&nbsp;&nbsp;
+                    <mat-icon class="surcharge-remove" color="warn" (click)="deleteSurcharge()">close</mat-icon>
+                  </h2>
+                  <h2 class="d-flex text-right" *ngIf="couponSelected">
+                    <span class="text">Coupon</span>&nbsp;&nbsp;
+                    <span class="mr-0 ml-auto">{{ couponSelected.applied_discount.toFixed(2) }}</span>&nbsp;&nbsp;
+                    <mat-icon class="surcharge-remove" color="warn" (click)="deleteCoupon()">close</mat-icon>
+                  </h2>
+                  <h2 class="d-flex text-right" *ngIf="advancePaid">
+                    <span class="text" style="color: red">Advance Paid </span>&nbsp;&nbsp;
+                    <span class="mr-0 ml-auto" style="color: red">{{
+                      advancePaid
+                      }}</span>
+                  </h2>
+                  <h2 class="d-flex text-right" *ngIf="selectedDiscount.discount_type">
+                    <span class="text">Discount ({{ selectedDiscount.name }})</span>
+                    <span class="mr-0 ml-auto">{{ Cart.discount }}</span>
+                    <mat-icon class="discount-remove" color="warn" (click)="deleteOrderdiscount()">close</mat-icon>
+                  </h2>
+                  <!-- </span> -->
+                </div>
+              </div>
+
+              <div class="amount_payble">
+                <h2 class="d-flex text-right">
+                  <span class="text">Amount to Pay</span>
+                  <span class="mr-0 ml-auto">{{ currency_symbol }}&nbsp;{{ Cart.amount }}</span>
+                </h2>
+              </div>
+
+              <div class="btn_box">
+                <div class="row no-gutter mx-0">
+                  <button type="button" class="btn col-6 Cancel" id="cancel_order" (click)="newOrder()">
+                    <a href="javascript:void(0)">Cancel</a>
+                  </button>
+                  <button type="button" [disabled]="disabledFlag" class="btn col-6 place_order" id="place-order"
+                    (click)="checkWaiterChoosed()">
+                    {{showBtnName()}}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Tab Items End -->
+
+          <!-- Tab Items Start -->
+          <div *ngIf="flagCartPayment" class="amount_to_Pay active">
+            <div class="order_header">
+              <div class="row align-items-center">
+                <div class="col-6">
+                  <h2>Item</h2>
+                </div>
+                <div class="col-3 text-center">
+                  <h2>Qty.</h2>
+                </div>
+                <div class="col-3 text-center">
+                  <h2>Price</h2>
+                </div>
+              </div>
+            </div>
+            <ul class="cart-item-list">
+              <li *ngFor="let items of SelectedItems; let i = index">
+                <div class="row">
+                  <div class="col-6">
+                    <h2 style="text-transform: capitalize;">{{ items.name }}</h2>
+                    <br />
+                    <h5>{{ items.note }}</h5>
+                  </div>
+                  <div class="col-3 text-center">
+                    <h3 class="d-flex align-items-center">
+                      <strong>{{ items.qty }}</strong>
+                    </h3>
+                  </div>
+                  <div class="col-3 text-center">
+                    <h3>{{ items.price }}</h3>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 combo-tree">
+                    <div class="tree">
+                      <ul class="tree-holder" *ngFor="let modifierlist of items.modifiers">
+                        <li *ngIf="checkForValidTree(modifierlist)">
+                          <span><i class="fa fa-folder-open"></i>
+                            {{ modifierlist.name }}</span>
+                          <ul>
+                            <div *ngFor="let list of modifierlist.list">
+                              <li *ngIf="list.status">
+                                <span class="sub-modifier"><i class="fa fa-minus-square"></i>{{ list.modifier_list }}
+                                  +{{
+                                  currency_symbol
+                                  }}{{ list.rate }}</span>
+                                <span *ngIf="list.list_qty">&nbsp; x{{list.list_qty}}</span>
+                              </li>
+                            </div>
+                          </ul>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <!-- <div *ngIf="notes">
+              <h3>Notes: {{notes}}</h3>
+            </div> -->
+
+            <div class="order_footer bg-white">
+              <div class="amount_payble">
+                <h2 class="d-flex">
+                  <span class="text">Amount to Pay</span>
+                  <span class="mr-0 ml-auto">{{ currency_symbol }}&nbsp;{{ Cart.amount }}</span>
+                </h2>
+              </div>
+              <div class="btn_box">
+                <div class="row no-gutter mx-0">
+                  <button type="button" [ngClass]="accept_payment == 'false' ? 'col-12' : 'col-6'" class="btn  Cancel"
+                    id="edit_order" (click)="newOrder()">
+                    <a href="javascript:void(0)">New Order</a>
+                  </button>
+                  <button *ngIf="accept_payment == 'true'" type="button" class="btn col-6 place_order"
+                    (click)="checkWaiterChoosed()">
+                    Make Payment
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Tab Items end -->
+        </div>
+      </div>
+      <!-- Order Section End -->
+      <!-- Food Item Section Start -->
+      <div class="item_section mt-4 mt-md-0">
+        <div class="item_section_header">
+          <drag-scroll>
+            <div class="carousel-cell" drag-scroll-item *ngFor="let category of CategoryRecords">
+              <div class="tab_btn_container" (click)="OnCategoryChange(category)">
+                <div class="nav nav-tabs">
+                  <div class="tab nav-item animate__animated animate__zoomIn wow pointer" [ngClass]="{
+                        active: classactive == category.category_id
+                      }" data-wow-duration=".5s" role="presentation">
+                    <a class="nav-link">
+                      <img *ngIf="category.image_url" src="{{ imageBasePath + category.image_url}}" />
+                      <img *ngIf="category.icon_name && !category.image_url" src="{{imageBasePath }}/icons/{{
+                        category.icon_name}}">
+                      <!-- <ng-template #noimage> -->
+                      <img *ngIf="!category.icon_name && !category.image_url" src="assets/images/ic_fastfood.png" />
+                      <!-- </ng-template> -->
+                      <h5>{{ category.category_name }}</h5>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="utensil_status == 'true'" class="carousel-cell" drag-scroll-item>
+              <div class="tab_btn_container" (click)="getUtensils()">
+                <div class="nav nav-tabs">
+                  <div class="tab nav-item animate__animated animate__zoomIn wow pointer" data-wow-duration=".5s"
+                    role="presentation">
+                    <a class="nav-link">
+                      <img src="assets/images/ic_fastfood.png" />
+                      <h5>Utensils</h5>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </drag-scroll>
+
+          <form class="search_box animate__animated animate__zoomIn wow">
+            <div class="form-group d-flex">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <i class="zmdi zmdi-search"></i>
+                </div>
+              </div>
+              <input #Searchitem type="search" class="form-control" placeholder="Search Items"
+                (keyup)="filterItems(Searchitem.value)" />
+              <button type="button" class="btn" (click)="filterItems(Searchitem.value)">
+                <a>Search</a>
+              </button>
+            </div>
+          </form>
+        </div>
+        <div *ngIf="CategoryItems.length < 1">
+          <div class="col-12">
+            <div class="not-found">
+              <h3>Sorry :(</h3>
+              <p>No Data Found.</p>
+            </div>
+          </div>
+        </div>
+        <div class="tab-content">
+          <div class="floatMainDiv1 paddingSpaceMain pointer" *ngFor="let categoryitems of CategoryItems">
+            <!-- <i style="padding:5px;" class="zmdi zmdi-info-outline"></i> -->
+            <div class="productBox1" (click)="checkforModifier(categoryitems)">
+              <h2>
+                {{ categoryitems.item_name }}
+              </h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Food Item Section End -->
+  </div>
+  <!-- Body Wrapper End -->
+</body>
+
+</html>

@@ -1,0 +1,102 @@
+<style>
+  @page {
+    size: 210mm 297mm;
+  }
+
+  /* output size */
+  body.receipt .sheet {
+    width: 210mm;
+    /* A4 width */
+    height: 297mm;
+    /* A4 height */
+  }
+
+  /* sheet size */
+  @media print {
+    body.receipt {
+      width: 210mm;
+    }
+  }
+</style>
+
+<div class="modal-wrapper">
+  <button mat-icon-button class="close-button" (click)="close()">
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+  </button>
+  <div id="print-section-modal">
+    <h2 mat-dialog-title>Batch Pocess {{ showProcessList?.batch_process_reference_no }}</h2>
+    <mat-dialog-content>
+      <div class="row">
+        <table class="table tableStyleMain bordered">
+          <thead>
+            <tr>
+              <th scope="col">Item Name</th>
+              <th scope="col">Inventory Type</th>
+              <th scope="col">Cost/Unit ({{ currency_symbol }})</th>
+              <th scope="col">Stock On Hand</th>
+              <th scope="col">Processed Quantity</th>
+              <th scope="col">Total ({{ currency_symbol }})</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of showProcessList.recipe; let i = index">
+              <td>
+                {{ item.name }}
+              </td>
+              <td>Recipe</td>
+              <td>
+                {{ item.cost_per_unit }}/{{item.measurement_unit_name}}
+              </td>
+              <td>
+                {{ item.stock_on_hand }} {{item.measurement_unit_name}}
+              </td>
+              <td>
+                {{ item.qty }} {{item.measurement_unit_name}}
+              </td>
+              <td>
+                {{ item.total }}
+              </td>
+            </tr>
+            <tr *ngFor="let item of showProcessList.sub_recipe; let i = index">
+              <td>
+                {{ item.name }}
+              </td>
+              <td>Sub Recipe</td>
+              <td>
+                {{ item.cost_per_unit }}/{{item.measurement_unit_name}}
+              </td>
+              <td>
+                {{ item.stock_on_hand }} {{item.measurement_unit_name}}
+              </td>
+              <td>
+                {{ item.qty }} {{item.measurement_unit_name}}
+              </td>
+              <td>
+                {{ item.total }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+
+      <div class="col-12">
+        <span class="float-right">Total Amount {{ currency_symbol }}:<b>{{ total_price }}</b></span>
+      </div>
+
+
+    </mat-dialog-content>
+  </div>
+  <mat-dialog-actions>
+    <div class="text-right">
+      <button *ngIf="showProcessList.recipe?.length>0" class="btn-setup-sucess print-button" [useExistingCss]="true"
+        printSectionId="print-section-modal" printTitle="Batch Process" ngxPrint>
+        <i class="icon-print mr-1"></i> Print
+      </button>
+      <button class="btn-setup-danger commonBtnStyle w-px-100 mr-2" (click)="close()">
+        Cancel
+      </button>
+    </div>
+  </mat-dialog-actions>
+</div>

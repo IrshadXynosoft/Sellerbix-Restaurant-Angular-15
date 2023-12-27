@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                Setup
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                Staff
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1"> <i class="icon-arrow-left cursor-pointer" routerLink="/setup"></i>Staff</h4>
+          </div>
+        </div>
+      </div>
+      <div class="row col-12">
+        <div class="col-12 col-sm-10">
+          <div class="positionFieldWrapper">
+            <div class="positionFieldWrapperPos1">
+              <span class="material-icons">
+                filter_alt
+              </span>
+            </div>
+            <div class="positionFieldWrapperPos2">
+              <input #staff (keyup)="doFilter(staff.value)" type="text" class="form-control fieldInput"
+                placeholder="Search Staff" />
+            </div>
+            <select class="form-control w-100" (change)="roleChanged($event)">
+              <option selected value="0">All</option>
+              <option *ngFor="let role of staffRoleArray" value="{{ role.id }}">
+                {{ role.name }}
+              </option>
+            </select>
+          </div>
+          <ng-template #message>
+            <p *ngIf="dataSource.data.length <= 0" class="message">
+              No Staff Added. <br />
+              Click
+              <a routerLink="/setup/staff" (click)="addNewStaff()">here</a> to
+              add staffs.
+            </p>
+          </ng-template>
+            <table *ngIf="dataSource.data.length > 0; else message" mat-table [dataSource]="dataSource" matSort
+              class="tableStyleMain table bordered">
+              <ng-container matColumnDef="index">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  #
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{dataSource.data.indexOf(element) + 1}}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Staff Name
+                </th>
+                <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="role_id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Staff Role
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.role_id }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="tenant_id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Current Location
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.tenant_id }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Status
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.status ==1 ? 'Active' : 'Non active'}}
+                </td>
+              </ng-container>
+
+
+              <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  E-mail Address
+                </th>
+                <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="button">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td class="btn-wrp-equal" mat-cell *matCellDef="let element">
+                  <button class="btn-setup-sucess bg-grey" (click)="
+                      editstaff(
+                        element.id,
+                        element.user_id,
+                        element.swipe_card_no,
+                        element.email,
+                        element.tenant_id,
+                        element.role_id,
+                        element.name,
+                        element.contact_no
+                      )
+                    ">
+                    <i _ngcontent-trm-c429="" class="zmdi zmdi-edit"></i>
+                  </button>
+                  <button class="btn-setup-sucess" (click)="history(element.user_id, element.name)">
+                    <i _ngcontent-pms-c429="" class="zmdi zmdi-eye"></i>
+                  </button>
+                  <button class="btn-setup-danger" (click)="deleteStaff(element.id, element.name)">
+                    <i _ngcontent-trm-c429="" class="zmdi zmdi-delete"></i>
+                  </button>
+                  <!-- <li class="d-flex animate__animated animate__fadeInUp wow"> -->
+                  <!-- <div class="">
+
+                      <i class="zmdi zmdi-eye"  (click)="
+                      editstaff(
+                        element.id,
+                        element.swipe_card_no,
+                        element.email,
+                        element.tenant_id,
+                        element.role_id,
+                        element.name,
+                        element.contact_no
+                      )
+                    "></i>
+
+                  <button type="button" class="btn">
+                      <a href="#"><i class="zmdi zmdi-delete"></i></a>
+                  </button>
+                  <button type="button" class="btn">
+                      <a href="#"><i class="zmdi zmdi-edit"></i></a>
+                  </button>
+              </div> -->
+                  <!-- </li> -->
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+            <mat-paginator [ngClass]="{ show: dataSource.data.length <= 0 }" [pageSize]="50"
+              [pageSizeOptions]="[2, 4, 6, 10, 50]">
+            </mat-paginator>
+          <!-- <div>
+            <nav class="Pager2" aria-label="pagination example">
+              <ul class="pagination ">
+
+
+                  <li class="page-item disabled">
+                      <a class="page-link" href="#" aria-label="Previous">
+                          <span aria-hidden="true">«</span>
+                          <span class="sr-only">Previous</span>
+                      </a>
+                  </li>
+
+                  <li class="page-item active">
+                      <a class="page-link" href="#">1 <span class="sr-only">(current)</span></a>
+                  </li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item"><a class="page-link" href="#">4</a></li>
+                  <li class="page-item"><a class="page-link" href="#">5</a></li>
+
+                  <li class="page-item">
+                      <a class="page-link" href="#" aria-label="Next">
+                          <span aria-hidden="true">»</span>
+                          <span class="sr-only">Next</span>
+                      </a>
+                  </li>
+              </ul>
+          </nav>
+          </div> -->
+        </div>
+        <div class="col-12 col-sm-2">
+          <button class="btn-setup-sucess commonBtnStyle primary" (click)="addNewStaff()">
+            Add New Staff
+          </button>
+          <mat-nav-list class="card">
+            <p class="bg-card-grey"><b>STAFF ROLES</b></p>
+            <mat-list-item *ngFor="let role of staffRoleArray">
+              {{ role.name }}
+              <i class="zmdi zmdi-edit float-right" (click)="editStaffRole(role.id)"></i>
+            </mat-list-item>
+          </mat-nav-list>
+          <button class="btn-setup-sucess commonBtnStyle primary" (click)="addNewStaffRole()">
+            Add New Staff Role
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

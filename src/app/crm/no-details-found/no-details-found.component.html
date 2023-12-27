@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+    <!-- Body Wrapper Start -->
+    <div class="body_wrapper container-fluid">
+            <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+        <div class="px-4">
+            <div class="row pt-4">
+                <div class="col-lg-4 col-12">
+                    <div class="d-flex align-items-center">
+                        <input type="text" placeholder="Search Here" class="form-control mb-0 mr-2" />
+                        <button class="btn-setup-sucess w-px-200">
+                            <i class="icon-search mr-1"></i>Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="not-found">
+                        <h3>Not Found</h3>
+                        <p>Sorry, we can't find a customer with that telephone number. Click the button below to create
+                            a new customer.</p>
+                        <button class="btn-setup-sucess" (click)="newCustomer()">
+                            <i class="icon-plus mr-1"></i>New Customer
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

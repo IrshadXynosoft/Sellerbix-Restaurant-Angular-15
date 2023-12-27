@@ -1,0 +1,49 @@
+<div class="modal-wrapper">
+    <button mat-icon-button class="close-button" (click)="close()">
+      <mat-icon class="close-icon" color="warn">close</mat-icon>
+    </button>
+    <h2 mat-dialog-title>History</h2>
+    
+    <div mat-dialog-content>
+      <!-- <p><strong>{{data.user_name}}</strong></p> -->
+      <ng-template #nodata>
+        <div class="not-found">
+            <h3>Sorry :(</h3>
+            <p>There's no details available.Add comission to show details.</p>
+        </div>
+    </ng-template>
+  <!-- <span class="float-right" style="margin-bottom: 10px;" *ngIf="allnotsettleFlag">  <button class="btn-setup-sucess" (click)="settleAll()" >Settle All</button><br>
+  </span> -->
+      <table class="tableStyleMain" *ngIf="records.length > 0;else nodata">
+        <thead>
+          <tr>
+            <th scope="col">Invoice no</th>
+            <th scope="col">Payment Status</th>
+            <th scope="col">Commision type</th>
+            <th scope="col">Comission value</th>
+            <th scope="col">Date & Time</th>
+            <th scope="col">Amount({{currency_symbol}})</th>
+            <th scope="col">Settled Date & Time</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let i of records">
+          <td>{{i.order.invoice.invoice_no}}</td>
+          <td *ngIf="i.payment_status == 0">Not Paid</td>
+          <td *ngIf="i.payment_status == 1">Partially Paid</td>
+          <td *ngIf="i.payment_status == 2">Paid</td>
+          <td>{{i.driver.commision_type == 0 ? "Value" : "Percentage"}}</td>
+          <td> {{i.driver.commision_value}}</td>
+          <td>{{i.order.date}} {{timeCheck(i.order.time)}}</td>
+          <td>{{i.earning_value.toFixed(2)}}</td>
+          <td>{{i.settled_date ? i.settled_date : "--"}} {{i.settled_time ? timeCheck(i.settled_time) : "--"}}</td>
+          <!-- <td *ngIf="i.payment_status != 2 "> <button class="btn-setup-sucess" (click)="settle(i.id)">Settle</button> -->
+          <td *ngIf="i.payment_status == 2 "> Settled
+          </td>
+        </tr>
+  
+        </tbody>
+      </table>
+    </div>
+  

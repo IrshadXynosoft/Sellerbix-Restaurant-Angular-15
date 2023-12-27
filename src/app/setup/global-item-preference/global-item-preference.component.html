@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body id="page_setup">
+
+    <!-- Body Wrapper Start -->
+    <div class="body_wrapper container-fluid">
+          <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+
+      <div class="px-4">
+        <div class="row pt-4 px-2">
+          <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                  Home
+                </li>
+                <li class="breadcrumb-item cursor-pointer" routerLink="/setup">
+                  Setup
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/inventorySetup">
+                  Inventory Setup
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page"
+                  routerLink="/setup/inventorySetup/settings">
+                  Inventory Settings
+                </li>
+                <li class="breadcrumb-item active" aria-current="page"
+                  routerLink="/setup/inventorySetup/itemPreferences">
+                  Global Item Preferences
+                </li>
+                
+              </ol>
+            </nav>
+          </div>
+          <div class="col-12">
+            <div class="row">
+              <div class="col-12">
+                <div
+                  class="d-flex align-items-center head-tag"
+                  
+                >
+                  <h4>
+                    <i class="icon-arrow-left mr-1  cursor-pointer" (click)="back()"></i>Global Item Preferences
+                  </h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bordered" style="padding: 20px; background-color: #ffff;width:30%">
+          <form [formGroup]="globalPrefernceForm">
+        
+              <div >
+                <label>Global VAT/Tax Rate <span class="error-message">*</span></label>
+                <input type="text" class="form-control" 
+                [ngClass]="globalPrefernceForm.controls.vat_tax_rate.hasError('required' ) && globalPrefernceForm.controls.vat_tax_rate.touched || 
+                globalPrefernceForm.controls.vat_tax_rate.hasError('pattern' ) ? 'is-invalid' : ''"
+                formControlName="vat_tax_rate" placeholder="5.0 %" />
+                <span class="error-message" *ngIf="globalPrefernceForm.controls.vat_tax_rate.hasError('required' ) && globalPrefernceForm.controls.vat_tax_rate.touched">Required</span>
+                <span class="error-message "  *ngIf="globalPrefernceForm.controls.vat_tax_rate.hasError('pattern' )">*Invalid Input</span> 
+               
+              </div>
+              <div>
+                <label>Global Targeted Food Cost
+                <span class="error-message">*</span></label>
+                <input type="text" class="form-control" 
+                [ngClass]="globalPrefernceForm.controls.food_cost.hasError('required' ) && globalPrefernceForm.controls.food_cost.touched || 
+                globalPrefernceForm.controls.food_cost.hasError('pattern' ) ? 'is-invalid' : ''"
+                formControlName="food_cost" placeholder="5.0 %" />
+                <span class="error-message" *ngIf="globalPrefernceForm.controls.food_cost.hasError('required' ) && globalPrefernceForm.controls.food_cost.touched">Required</span>
+                <span class="error-message"  *ngIf="globalPrefernceForm.controls.food_cost.hasError('pattern' )">*Invalid Input</span> 
+               
+              </div>
+              <div >
+                <label>Global Wastage</label>
+                <span class="error-message">*</span>
+                <input type="text" class="form-control" 
+                [ngClass]="globalPrefernceForm.controls.wastage.hasError('required' ) && globalPrefernceForm.controls.wastage.touched || 
+                globalPrefernceForm.controls.wastage.hasError('pattern' ) ? 'is-invalid' : ''"
+                formControlName="wastage" placeholder="5.0 %" />
+                <span class="error-message" *ngIf="globalPrefernceForm.controls.wastage.hasError('required' ) && globalPrefernceForm.controls.wastage.touched">Required</span>
+                <span class="error-message"  *ngIf="globalPrefernceForm.controls.wastage.hasError('pattern' )">Invalid Input</span> 
+               
+              </div>
+              <!-- <div class="col-12">
+                <label>Global Critical Control</label>
+                <input type="text" class="form-control" placeholder="sapaad" />
+              </div> -->
+              <div class="text-right">
+                <button class="btn-setup-sucess mb-2 w-px-100"  [disabled]="!globalPrefernceForm.valid || globalPrefernceForm.pristine" (click)="savePreferences()">
+                  <i class="icon-save mr-1"></i>Save
+                </button>
+              </div>
+
+            </form> 
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

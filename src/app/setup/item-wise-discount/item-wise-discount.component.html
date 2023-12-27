@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+      <!-- Header Start -->
+  <app-header></app-header>
+  <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                Setup
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/location">
+                Locations
+              </li>
+              <li
+              class="breadcrumb-item cursor-pointer"
+              aria-current="page"
+              routerLink="/setup/{{ id }}/editLocation"
+            >
+              Location Setup
+            </li>
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  aria-current="page"
+                  routerLink="/setup/location/{{ id }}/online"
+                >
+                Online Portal Setup
+                </li>
+
+                <li
+                  class="breadcrumb-item active cursor-pointer"
+                  aria-current="page"
+                >
+                Item Wise Discount
+                </li>
+              </ol>
+            </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1"><i class="icon-arrow-left cursor-pointer" (click)="back()"></i> Item Wise Discount </h4>
+            <div class="d-flex">
+              <input type="text" class="form-control" placeholder="Search Dish" #menu (keyup)="doFilter(menu.value)" />
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="d-flex align-items-center head-tag head-tag-light mt-2">
+          <h2 class="fl-basis-100">Menu for {{ branchName }}</h2>
+        </div>
+      </div>
+      <div *ngIf="innerMenuArray.length < 1">
+        <div class="row px-4">
+          <div class="col-12">
+            <div class="not-found">
+              <h3>Sorry :(</h3>
+              <p>There's no Items for {{branchName}}.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <mat-tab-group (selectedTabChange)="roleChanged($event.tab.textLabel)">
+        <mat-tab *ngFor="let tabname of innerMenuArray; let t = index" label="{{ tabname.name }}">
+          <table mat-table [dataSource]="dataSource" matSort class="mat-z8 tableStyleMain">
+            <ng-container matColumnDef="index">
+              <th mat-header-cell *matHeaderCellDef>
+                #
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{dataSource.data.indexOf(element) + 1}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <b>Item Name</b>
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+            </ng-container>
+            <ng-container matColumnDef="branch_price">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <b>Branch Price</b>
+              </th>
+              <td mat-cell *matCellDef="let element">
+                <div>
+                  <input type="text" class="inputClass" placeholder="price" value="{{element.branch_price}}" disabled />
+                  <!-- (input)="priceChanged(price.value, element)" -->
+                </div>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="selected_discount_type">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <b>Type</b>
+              </th>
+              <td mat-cell *matCellDef="let element">
+                <div>
+                  <select class="selectClass" #discountType (change)="discountChanged(discountType.value, element)"
+                    [(ngModel)]="element.selected_discount_type">
+                    <option value="none" selected>None</option>
+                    <option value="percentage">Percentage</option>
+                    <option value="value">Value</option>
+
+                  </select>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="discount_value">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <b>Discount Value/Rate</b>
+              </th>
+              <td mat-cell *matCellDef="let element">
+                <div>
+                  <input type="text" class="inputClass" placeholder="price" value="{{element.discount_value}}" [disabled]="element.selected_discount_type=='none'" #price
+                  (input)="priceChanged(price.value, element)"/>
+                </div>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="amount_after_discount">
+              <th mat-header-cell *matHeaderCellDef>
+                <b>Amount After Discount</b>
+              </th>
+              <td mat-cell *matCellDef="let element">
+                <div class="form-check m-n2">
+                    <input type="text" class="inputClass" placeholder="price" value="{{element.amount_after_discount}}" disabled />
+                </div>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index"></tr>
+          </table>
+          <mat-paginator [length]="datasourceLength" [pageSize]="50" [pageSizeOptions]="[2, 4, 6, 10, 50]">
+          </mat-paginator>
+
+          <div class="b-right">
+            <button class="btn-setup-sucess" (click)="saveBranchMenu(tabname)"><i class="icon-save mr-1"></i>
+              Save
+            </button>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</body>
+
+</html>

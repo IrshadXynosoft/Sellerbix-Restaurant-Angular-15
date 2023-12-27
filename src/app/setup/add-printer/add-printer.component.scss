@@ -1,0 +1,61 @@
+.close-button {
+  float: right;
+  top: -20px;
+  right: -20px;
+}
+
+::ng-deep .icon-outside .close-button {
+  float: right;
+  top: -52px;
+  right: -52px;
+}
+
+.textFieldDivAll {
+  -moz-display: flex;
+  -webkit-display: flex;
+  -o-display: flex;
+  display: flex;
+  -moz-align-items: stretch;
+  -webkit-align-items: stretch;
+  -o-align-items: stretch;
+  align-items: stretch;
+  -moz-justify-content: flex-start;
+  -webkit-justify-content: flex-start;
+  -o-justify-content: flex-start;
+  justify-content: flex-start;
+  -moz-flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  -o-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  span {
+    font-size: 14px;
+    width: 143px;
+    font-weight: normal;
+    color: #333;
+    margin-right: 50px;
+    -moz-display: flex;
+    -webkit-display: flex;
+    -o-display: flex;
+    display: flex;
+    -moz-align-items: center;
+    -webkit-align-items: center;
+    -o-align-items: center;
+    align-items: center;
+    -moz-justify-content: end;
+    -webkit-justify-content: end;
+    -o-justify-content: end;
+    justify-content: end;
+    text-align: right;
+  }
+
+  input {
+    border: 1px #ddd solid;
+    border-radius: 7px;
+    background: var(--white);
+    padding: 6px 16px;
+  }
+}
+.mat-mdc-radio-button ~ .mat-mdc-radio-button {
+  margin-left: 30px;
+}

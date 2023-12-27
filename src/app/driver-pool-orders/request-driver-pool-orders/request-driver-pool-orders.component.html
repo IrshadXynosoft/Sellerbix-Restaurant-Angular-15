@@ -1,0 +1,148 @@
+<div class="modal-wrapper">
+  <form [formGroup]="orderForm">
+    <h2 mat-dialog-title>Order Details</h2>
+    <div mat-dialog-content class="min-scroll pt-4">
+      <!-- <div class="row" *ngIf="roleId == 1">
+        <div class="col-6">
+          <label>Tenant</label>
+          <select class="custom-select w-100"
+            [ngClass]="orderForm.controls.tenant_id.hasError('required' ) && orderForm.controls.tenant_id.touched ? 'is-invalid' : ''"
+            formControlName="tenant_id">
+            <option value="">Select</option>
+            <option value="{{i.id}}" *ngFor="let i of tenantRecords" [selected]="selectedTenant == i.id? true: false">
+              {{i.name}}</option>
+          </select>
+        </div>
+        <div class="col-6">
+          <label>Branch</label>
+          <select class="custom-select w-100"
+            [ngClass]="orderForm.controls.branch_id.hasError('required' ) && orderForm.controls.branch_id.touched ? 'is-invalid' : ''"
+            formControlName="branch_id">
+            <option value="">Select</option>
+            <option value="{{i.id}}" *ngFor="let i of branchRecords" [selected]="selectedBranch == i.id ? true : false">
+              {{i.name}}</option>
+          </select>
+        </div>
+      </div> -->
+      <div class="row">
+        <div class="col-4">
+          <label>Ref.no</label>
+          <span class="error-message">*</span>
+          <span class="error-message float-right"
+            *ngIf="orderForm.controls.ref_no.hasError('required' ) && orderForm.controls.ref_no.touched">required</span>
+          <span class="error-message float-right" *ngIf=" orderForm.controls.ref_no.hasError('pattern')">invalid
+            input</span>
+          <input type="text" class="form-control"
+            [ngClass]="orderForm.controls.ref_no.hasError('required' ) && orderForm.controls.ref_no.touched || orderForm.controls.ref_no.hasError('pattern') || errorMessages.ref_no? 'is-invalid' : ''"
+            placeholder="Ref Number" formControlName="ref_no" />
+        </div>
+        <div class="col-4">
+          <label>Amount</label>
+          <span class="error-message ">*</span>
+          <span class="error-message float-right"
+            *ngIf="orderForm.controls.amount.hasError('required' ) && orderForm.controls.amount.touched">required</span>
+          <span class="error-message float-right" *ngIf=" orderForm.controls.amount.hasError('pattern')">invalid
+            input</span>
+          <input type="text" class="form-control"
+            [ngClass]="orderForm.controls.amount.hasError('required' ) && orderForm.controls.amount.touched || orderForm.controls.amount.hasError('pattern') ? 'is-invalid' : ''"
+            placeholder="amount" formControlName="amount" />
+        </div>
+        <div class="col-4">
+          <label>Branch Mobile Number</label>
+          <span class="error-message ">*</span>
+          <span class="error-message float-right"
+            *ngIf="orderForm.controls.contact_no.hasError('required' ) && orderForm.controls.contact_no.touched">required</span>
+          <span class="error-message float-right" *ngIf=" orderForm.controls.contact_no.hasError('pattern')">invalid
+            input</span>
+          <span class="error-message float-right" *ngIf="errorMessages.contact_no">
+            {{ errorMessages.contact_no }}</span>
+          <input type="text" class="form-control"
+            [ngClass]="orderForm.controls.contact_no.hasError('required' ) && orderForm.controls.contact_no.touched || orderForm.controls.contact_no.hasError('pattern') || errorMessages.contact_no? 'is-invalid' : ''"
+            placeholder="Mobile Number" formControlName="contact_no" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <label>Notes</label>
+          <!-- <span class="error-message float-right">*</span> -->
+          <textarea class="form-control" placeholder="Notes" formControlName="notes"></textarea>
+        </div>
+        <div class="col-6">
+          <label>Description</label>
+          <span class="error-message">*</span>
+          <span class="error-message float-right"
+            *ngIf="orderForm.controls.description.hasError('required' ) && orderForm.controls.description.touched">required</span>
+          <textarea class="form-control"
+            [ngClass]="orderForm.controls.description.hasError('required' ) && orderForm.controls.description.touched || orderForm.controls.description.hasError('pattern') ? 'is-invalid' : ''"
+            placeholder="Item Description" formControlName="description"></textarea>
+        </div>
+      </div>
+      <h2 style="margin-bottom:15px;">Delivery Details</h2>
+      <div style="margin-bottom: 5px;" class="row">
+        <div class="col-4" style="margin-top:27px;">
+          <input id="toggle-on" class="toggle toggle-left" formControlName="type" value="0" type="radio" checked>
+          <label for="toggle-on" class="btn">Pickup now</label>
+          <input id="toggle-off" class="toggle toggle-right" formControlName="type" value="1" type="radio">
+          <label for="toggle-off" class="btn">Pickup later</label>
+        </div>
+        <div class="col-4">
+          <label>Delivery Options</label><br>
+          <input id="any" class="toggle toggle-left" formControlName="vehicle_type" value="0" type="radio" checked>
+          <label for="any" class="btn">Bike</label>
+          <input id="car" class="toggle toggle-right" formControlName="vehicle_type" value="1" type="radio">
+          <label for="car" class="btn">Car</label>
+          <input id="bike" class="toggle toggle-right" formControlName="vehicle_type" value="2" type="radio">
+          <label for="bike" class="btn">Any</label><br>
+        </div>
+        <div class="col-4">
+          <label>Payment Method</label><br>
+          <input id="cod" class="toggle toggle-left" formControlName="payment_status" value="0" type="radio" checked>
+          <label for="cod" class="btn">COD</label>
+          <input id="prepaid" class="toggle toggle-right" formControlName="payment_status" value="1" type="radio">
+          <label for="prepaid" class="btn">Prepaid</label>
+        </div>
+      </div>
+
+      <label *ngIf="this.orderForm.value['type'] =='1'">Date & time</label>
+      <div class="row" *ngIf="this.orderForm.value['type'] =='1'">
+        <div class="col-6">
+          <mat-hint class="float-right">DD/MM/YYYY</mat-hint>
+          <input class="form-control" [formControl]="dateChoosen" [max]="todayDate" [matDatepicker]="releasedAtPicker"
+            (click)="releasedAtPicker.open()">
+          <mat-datepicker #releasedAtPicker [touchUi]="true">
+          </mat-datepicker>
+        </div>
+        <div class="col-6" style="margin-top:19px;">
+          <input type="time" matTimepicker class="form-control" [formControl]="time" />
+        </div>
+      </div>
+      <label>Delivery Address</label>
+      <textarea class="form-control" placeholder="Address" formControlName="address"
+        [ngClass]="orderForm.controls.address.hasError('required' ) && orderForm.controls.address.touched || orderForm.controls.address.hasError('pattern') ? 'is-invalid' : ''"></textarea>
+      <h4 style="text-align: center;cursor: pointer; color: #4c3e95" (click)="showAdvanced()">Show Advanced</h4>
+      <div *ngIf="advancedFlag">
+        <!-- <label>Delivery Address</label> -->
+        <!-- <span class="error-message">*</span> -->
+        <input type="text" class="form-control" placeholder="Building Number" formControlName="building_no"
+          [ngClass]="orderForm.controls.building_no.hasError('required' ) && orderForm.controls.building_no.touched || orderForm.controls.building_no.hasError('pattern') ? 'is-invalid' : ''" />
+        <div class="row">
+          <div class="col-6">
+            <input type="text" class="form-control" placeholder="Zone" formControlName="zone"
+              [ngClass]="orderForm.controls.zone.hasError('required' ) && orderForm.controls.zone.touched || orderForm.controls.zone.hasError('pattern') ? 'is-invalid' : ''" />
+          </div>
+          <div class="col-6">
+            <input type="text" class="form-control" placeholder="Street" formControlName="street"
+              [ngClass]="orderForm.controls.street.hasError('required' ) && orderForm.controls.street.touched || orderForm.controls.street.hasError('pattern') ? 'is-invalid' : ''" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-flat-button class="btn-setup-danger" (click)="close()">Cancel</button>
+      <button mat-flat-button class="btn-setup-sucess"
+        (click)="addOrder()">{{data.operation == 'edit' ? 'Update' : 'Submit'}}</button>
+      <!-- <button *ngIf="data.operation == 'edit'" class="btn-setup-sucess" >Update</button> -->
+    </div>
+  </form>
+</div>

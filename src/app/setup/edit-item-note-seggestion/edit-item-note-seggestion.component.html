@@ -1,0 +1,20 @@
+<form [formGroup]="addNoteForm">
+  <div class="modal-wrapper">
+    <h2 mat-dialog-title>Item Note</h2>
+    <mat-dialog-content>
+      <label>Name</label>
+      <span class="error-message">*</span>
+      <span class="error-message float-right"
+        *ngIf="addNoteForm.controls.name.hasError('required' ) && addNoteForm.controls.name.touched">required</span>
+      <span class="error-message float-right" *ngIf="addNoteForm.controls.name.hasError('pattern' )">invalid
+        input</span>
+      <span class="error-message float-right" *ngIf="errorMessages.name">
+        {{errorMessages.name}}</span>
+      <textarea type="text" class="form-control" placeholder="Note" formControlName="name"></textarea>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" (click)="updateNote()">Submit</button>
+    </mat-dialog-actions>
+  </div>
+</form>

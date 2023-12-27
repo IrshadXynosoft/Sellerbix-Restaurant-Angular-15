@@ -1,0 +1,13 @@
+<div class="modal-wrapper">
+    <form [formGroup]="orderNumberForm">
+  <h2 mat-dialog-title>Enter {{data.entity}} order number</h2>
+  <div mat-dialog-content>
+        <input class="form-control" type="text" formControlName="orderno" />
+        <!-- <span *ngIf="invalidFlag" class="error-message">Delivered quantity should be less than actual quantity.</span> -->
+  </div>
+  <div mat-dialog-actions>
+    <button class="btn-setup-danger mr-2 commonBtnStyle" (click)="close()">Cancel</button>
+    <button class="btn-setup-sucess commonBtnStyle" (click)="confirm()" >Confirm</button>
+  </div>
+</form>
+</div>

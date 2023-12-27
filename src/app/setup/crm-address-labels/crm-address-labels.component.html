@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body id="page_setup">
+
+
+    <!-- Body Wrapper Start -->
+    <form>
+      <div class="body_wrapper container-fluid">
+            <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+        <div class="px-4">
+          <div class="row pt-4">
+            <div class="bgSecMainAll">
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                    Home
+                  </li>
+                  <li
+                    class="breadcrumb-item cursor-pointer"
+                    aria-current="page"
+                    routerLink="/setup"
+                  >
+                    Setup
+                  </li>
+                  <li
+                    class="breadcrumb-item cursor-pointer"
+                    aria-current="page"
+                    routerLink="/setup/globalSettings"
+                  >
+                    Global Settings
+                  </li>
+                  <li
+                    class="breadcrumb-item active cursor-pointer"
+                    aria-current="page"
+                  >
+                    CRM
+                  </li>
+                </ol>
+              </nav>
+            </div>
+            <div class="col-12">
+              <div class="d-flex align-items-center head-tag">
+                <h4 >
+                  <i class="icon-arrow-left mr-1 cursor-pointer" (click)="back()"></i> CRM Address Labels
+                </h4>
+              </div>
+            </div>
+            <div class="row ml-2 w-100">
+              <div class="col-12 col-sm-5">
+                <p>
+                  Use this screen to customize the address labels for your CRM
+                  customers to suit your country and location. Leave the fields
+                  blank to take the default values
+                </p>
+                <input
+                  type="text"
+                  placeholder="Address"
+                  class="form-control"
+                  formControlName="address1"
+                />
+                <input
+                  type="text"
+                  placeholder="Address 2"
+                  class="form-control"
+                  formControlName="address2"
+                />
+                <input
+                  type="text"
+                  placeholder="Address 2"
+                  class="form-control"
+                  formControlName="address3"
+                />
+                <input
+                  type="text"
+                  placeholder="Address 2"
+                  class="form-control"
+                  formControlName="address4"
+                />
+                <button class="btn-setup-sucess">
+                  <i class="icon-save mr-1"></i>Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </body>
+</html>

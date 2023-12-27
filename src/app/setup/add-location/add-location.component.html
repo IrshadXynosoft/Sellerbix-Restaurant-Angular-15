@@ -1,0 +1,63 @@
+<form [formGroup]="addressForm">
+  <div class="modal-wrapper">
+    <h2 mat-dialog-title>Add New Location</h2>
+    <div mat-dialog-content>
+        <label>Name</label>
+        <span class="error-message">*</span>
+        <span class="error-message float-right" *ngIf=" addressForm.controls.name.hasError('required') && addressForm.controls.name.touched">required</span>
+        <span class="error-message float-right" *ngIf="addressForm.controls.name.hasError('pattern')">invalid input</span>
+        <input type="text" class="form-control" placeholder="Name" formControlName="name" />
+
+        <label>Address</label>
+        <span class="error-message">*</span>
+        <span class="error-message float-right" *ngIf="addressForm.controls.address.hasError('required') && addressForm.controls.address.touched">required</span>
+        <span class="error-message float-right" *ngIf="addressForm.controls.address.hasError('pattern')">invalid input</span>
+        <input type="text" class="form-control" placeholder="Address" formControlName="address" />
+        
+        <label>Contact Number</label>
+        <span class="error-message">*</span>
+        <span class="error-message float-right" *ngIf="addressForm.controls.contact_no.hasError('required') && addressForm.controls.contact_no.touched">required</span>
+        <span class="error-message float-right" *ngIf="addressForm.controls.contact_no.hasError('pattern')">invalid input</span>
+        <input type="number" class="form-control" placeholder="Contact Number" formControlName="contact_no" />
+
+        <label>City</label>
+        <span class="error-message">*</span>
+        <span class="error-message float-right" *ngIf="addressForm.controls.city.hasError('required') && addressForm.controls.city.touched">required</span>
+        <select class="form-control w-100" aria-label="City" formControlName="city">
+          <option value="" disabled>City</option>
+          <option *ngFor="let i of cityArray" value="{{ i.id }}">
+            {{ i.city }}
+          </option>
+        </select>
+
+        <label>Latitude</label>
+        <input type="number" class="form-control" placeholder="Latitude" formControlName="latitude" />
+
+        <label>Longitude</label>
+        <input type="number" class="form-control" placeholder="Longitude" formControlName="longitude" />
+
+        <label>Country</label>
+        <select class="form-control w-100" aria-label="Country" formControlName="country">
+          <option value="" disabled>Country</option>
+          <option *ngFor="let i of countryArray" value="{{ i.id }}">
+            {{ i.name }}
+          </option>
+        </select>
+
+        <label>Currency</label>
+        <select class="form-control w-100" aria-label="Currency" formControlName="currency">
+          <option value="" disabled>Currency</option>
+          <option *ngFor="let i of currencyArray" value="{{ i.id }}">
+            {{ i.currency }}
+          </option>
+        </select>
+    </div>
+    <div mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" (click)="addressSubmit()"
+        [disabled]="!addressForm.valid || addressForm.pristine">
+        Submit
+      </button>
+    </div>
+  </div>
+</form>

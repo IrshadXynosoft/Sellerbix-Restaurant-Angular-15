@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <form [formGroup]="addIngredientForm">
+    <div class="body_wrapper container-fluid">
+        <!-- Header Start -->
+  <app-header></app-header>
+  <!-- Header End -->
+      <div class="px-4">
+        <div class="row pt-4">
+          <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                  Home
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                  Setup
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/inventorySetup">
+                  Inventory Setup
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page"
+                  routerLink="/setup/inventorySetup/subrecipes">
+                  Ingredient
+                </li>
+                
+              </ol>
+            </nav>
+          </div>
+          <div class="col-12">
+            <div class="d-flex align-items-center head-tag ">
+              <h4 class="flex-gr-1">
+                <i class="icon-arrow-left mr-2 cursor-pointer"  (click)="back()"></i>Edit Ingredient
+              </h4>
+            </div>
+          </div>
+        </div>
+        <div class="row col-12" >
+          <div class="col-12 col-lg-3">
+            <div>
+              <label>Name</label>
+             <input type="text" placeholder="Name" class="form-control" formControlName="name" />
+            </div>
+            <div>
+              <label>Category</label>
+              <select class="form-control w-100" formControlName="ingredient_category_id">
+                <option value="">Select Category</option>
+                <option *ngFor="let category of categoryArray" value="{{ category.id }}">
+                  {{ category.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-12 col-lg-3">
+            <div>
+              <label>Code</label>
+              <input type="text" placeholder="Code" class="form-control" formControlName="code" />
+            </div>
+            <div>
+              <label>Measurement Unit</label>
+              <select class="form-control w-100" formControlName="measurement_unit_id"
+                (change)="measurementChanged($event)">
+                <option value="">Select Measurement Unit</option>
+                <option *ngFor="let unit of measurementArray" value="{{ unit.id }}">
+                  {{ unit.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-12 col-lg-6">
+            <label>Description</label>
+            <textarea class="form-control" placeholder="Description" formControlName="description" rows="4"></textarea>
+          </div>
+        </div>
+        <div class="row col-12">
+          <div class="col-md-12 prf-scn">
+            <h4>Purchase details</h4>
+            <div class="row">
+              <div class="col-3">
+                <label>Supplier Purchase Unit</label>
+                <input type="text" placeholder="Buying Unit" class="form-control" formControlName="buying_unit" />
+
+              </div>
+              <div class="col-2" style="margin-top:40px;">
+                <input class="form-check-input" type="checkbox" value="" id="has_sub_unit"
+                  formControlName="has_sub_unit" />
+                <label class="form-check-label" for="has_sub_unit">
+                  Has Sub Unit
+                </label>
+              </div>
+            </div>
+            <div class="row" *ngIf="ingredientArray.purchase_detail?.has_sub_unit== true">
+              <div class="col-3">
+                <label>Supplier Purchase Sub Unit</label>
+                <input type="text" placeholder="Buying Sub Unit" class="form-control"
+                  formControlName="buying_sub_unit" />
+              </div>
+            </div>
+            <div class="row" *ngIf="ingredientArray.purchase_detail?.has_sub_unit== true">
+              <div class="col-3" style="margin-left:3rem;">
+                <label *ngIf="!ingredientArray.purchase_detail?.buying_unit">Buying Sub Unit</label>
+                <label *ngIf="ingredientArray.purchase_detail?.buying_unit"> How many {{ingredientArray.purchase_detail.buying_sub_unit}} in 1
+                  {{ingredientArray.purchase_detail.buying_unit}}</label>
+               <input type="number" class="form-control" formControlName="unit_equals_sub_unit"
+                  (keyup)="findTotalQty()" />
+              </div>
+              <div class="col-2" style="margin-top:40px;">
+                <label
+                  *ngIf="ingredientArray.purchase_detail?.has_sub_unit== true">{{ingredientArray.purchase_detail.buying_sub_unit}}</label>
+                <label *ngIf="ingredientArray.purchase_detail?.has_sub_unit== false">{{measurementUnit}}</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3" style="margin-left:3rem;">
+                <label *ngIf="!ingredientArray.purchase_detail?.buying_unit">Buying Unit</label>
+                <label *ngIf="ingredientArray.purchase_detail?.has_sub_unit== false">how much {{measurementUnit}} in 1
+                  {{ingredientArray.purchase_detail.buying_unit}}</label>
+                <label *ngIf="ingredientArray.purchase_detail?.has_sub_unit== true">how much {{measurementUnit}} 1
+                  {{ingredientArray.purchase_detail.buying_sub_unit}}</label>
+                <input type="number" class="form-control" formControlName="unit_equals_measurement_unit"
+                  (keyup)="findTotalQty()" />
+              </div>
+              <div class="col-2" style="margin-top:40px;">
+                <label>{{measurementUnit}}</label>
+              </div>
+            </div>
+            <div class="row" *ngIf="ingredientArray.purchase_detail?.has_sub_unit== true">
+              <div class="col-3" style="margin-left:5rem;">
+                <label>{{totalQty}} </label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3" style="margin-left:3rem;">
+                <label>Net {{measurementUnit}}</label>
+                <input type="number" placeholder="Net" class="form-control" formControlName="net_unit"
+                  (keyup)=findCostPerUnit() />
+                <label></label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row col-12">
+          <div class="col-md-12 prf-scn">
+            <h4>Suppliers</h4>
+            <!-- <span class="error-message float-right" *ngIf="!validationSupplier">
+              Required</span>
+            <input type="text" placeholder="Search suppliers, then hit enter to add" aria-label="Suppliers" matInput
+              [formControl]="suppliersData"  /> -->
+            <!-- <mat-autocomplete #auto="matAutocomplete"
+              (optionSelected)='supplierSelected($event.option.value,$event.option.id)'>
+              <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name" [id]="option.id">
+                {{ option.name }}
+              </mat-option>
+            </mat-autocomplete> -->
+            <table class="table tableStyleMain">
+              <thead>
+                <tr>
+                  <th scope="col w-50">Supplier Name</th>
+                  <th scope="col">Price ({{ currency_symbol }})</th>
+                  <th scope="col">Default?</th>
+                  <!-- <th scope="col"></th> -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr formArrayName="suppliersData" *ngFor="
+                      let item of supplierFormGroups.controls;
+                      let i = index
+                    ">
+                  <td>
+                    {{ supplierName(i) }}
+                  </td>
+                  <!-- <td [formGroupName]="i">
+                    <input type="number" class="form-control" placeholder="Price" formControlName="price" [disabled]="true"
+                      (keyup)=findCostPerUnit() />
+                  </td> -->
+                  <td>
+                    {{ price(i) }}
+                  </td>
+                  <td [formGroupName]="i">
+                    <mat-checkbox formControlName="is_default" [disabled]="true" >
+                    </mat-checkbox>
+                  </td>
+
+                  <!-- <td [formGroupName]="i">
+                     <i class="icon-trash mr-1 icon-red cursor-pointer" (click)="clearSupplier(i)"></i>
+                  </td> -->
+                </tr>
+              </tbody>
+            </table>
+            <div class="row pt-4">
+              <div class="col-12 col-lg-3">
+                <label>Last Buying Unit Price ({{ currency_symbol }})</label>
+                <input type="number" placeholder="Last Buying Unit Price" class="form-control"
+                  formControlName="lastBuyingPrice" />
+              </div>
+            
+              <div class="col-12 col-lg-3">
+                <label>Cost Per Measurement Unit ({{ currency_symbol }})</label>
+                <Label class="form-control">{{costPerUnit}}</Label>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 prf-scn">
+            <h4>Inventory</h4>
+            <table class="table tableStyleMain">
+              <thead>
+                        
+                <tr>
+                  <th scope="col">Location</th>
+                  <th scope="col" class="col-7">Opening Balance</th>
+                  <th scope="col" class="col-2">Reorder Level</th>
+                  <th scope="col" class="col-1">Track Inventory?</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr formArrayName="locationData" *ngFor="
+                        let item of locationPricesFormGroups.controls;
+                        let i = index
+                      ">
+                  <td> {{branchname(i)}}</td>
+                  <td [formGroupName]="i">
+                    
+                      <div class="col-3">
+                        <b>{{showOpeningBalance(i)}}</b>  {{measurementUnit}}
+                      </div>
+                  
+                  </td>
+                  <td [formGroupName]="i">
+                    <span class="error-message float-right">{{errorMessageReorder_qty(i)}}</span>
+                    <input type="text" placeholder="" class="form-control" formControlName="reorder_qty" />
+                  </td>
+                  <td [formGroupName]="i">
+                    <div class="form-check">
+                        <mat-checkbox formControlName="is_track_inventory"  >
+                        </mat-checkbox>
+                      <label class="form-check-label" for="flexCheckCheckedt">
+                      </label>
+                    </div>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div class="row">
+      <div class="col-12">
+            <div class="d-flex justify-content-end mb-4">
+              <button class="btn-setup-danger mr-2" (click)="back()">Cancel</button>
+              <button class="btn-setup-sucess"   (click)="saveIngredient()">
+                <i class="icon-save mr-1"></i>Update
+              </button>
+            </div>
+      </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</body>
+
+</html>

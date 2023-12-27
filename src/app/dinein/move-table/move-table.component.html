@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div *ngIf="diningSectionRecords?.length <= 0; else showtable" style="margin-top: 30px;" >
+        <div class="row">
+          <div class="col-12">
+            <div class="not-found">
+              <h3>Sorry :(</h3>
+              <p>There's no dining added yet at this moment.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #showtable>
+        <div *ngFor="let dining of diningSectionRecords;let index= index" style="margin-top: 30px;" [ngStyle]="{'margin-top': index ==  0 ? '70px' : '0px'}">
+          <div class="row dinein-select br-btm">
+            <div class="col-lg-4 col-4">
+              <h1 class="mt-1" style="text-transform:capitalize">{{ dining.dinning_section }}</h1>
+            </div>
+            <div class="col-lg-8 col-8">
+              <ul class="mt-1">
+                <li>
+                  <span class="tag-scn tag-green mr-1"><span>{{checkDinningStatus(dining)}}</span></span>
+                  <span>Available</span>
+                </li>
+                <li>
+                  <span class="tag-scn tag-grey mr-1"><span>{{occupiedCount}}</span></span>
+                  <span>Occupied</span>
+                </li>
+                <!-- <li>
+                                <span class="tag-scn tag-yellow"><span>1</span></span>
+                                <span>Done Soon
+                                </span>
+                            </li> -->
+              </ul>
+            </div>
+          </div>
+          <div class="row dinein-inner-selection m-0 mt-2"
+            *ngIf="dining.branch_dining_table?.length > 0; else shownotable">
+            <div class="col-lg-2 col-2 select-tag-scn cursor-pointer"
+              *ngFor="let table of dining.branch_dining_table;let i = index;"
+              [ngClass]=getColor(table)>
+              <!-- <div *ngIf="table.orders"> -->
+              <div (click)="onTableClick(table)"
+                class="dine-scn-content" style="text-transform:capitalize">{{table.name}}
+              </div>
+              <div *ngIf="table.orders?.length > 0" class="down-ar-scn"
+                (click)="onTableClick(table)"> <span>{{table.orders[0].time}}</span>
+              </div>
+              <!-- <div class="close-scn"
+                *ngIf="dropdownContent == table.table_id && table.orders && table.orders.length > 1" (click)="close()">
+                <i class="zmdi zmdi-close"></i>
+              </div> -->
+              <!-- <div class="drp-content"
+                *ngIf="dropdownContent == table.table_id && table.orders && table.orders.length > 1">
+                <ul>
+                  <li *ngFor="let order of table.orders"
+                    (click)="onOrderIdClick(table,order.order_number,table.table_id,order,order.id)">
+                    {{order.order.customer_details.phone_number? order.order.customer_details.phone_number: order.order_number}}
+                    <span *ngIf="order.order.customer_details.name"> - {{order.order.customer_details.name}}</span>
+                  </li>
+                </ul>
+              </div> -->
+              <!-- </div> -->
+            </div>
+          </div>
+          <ng-template #shownotable>
+            <div class="row">
+              <div class="col-12">
+                <div class="not-found">
+                  <h3>Sorry :(</h3>
+                  <p>There's no table added yet at this moment.</p>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</body>
+
+</html>

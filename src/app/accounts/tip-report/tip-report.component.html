@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body id="page_setup">
+    <!-- Body Wrapper Start -->
+
+    <div class="body_wrapper container-fluid">
+      <!-- Header Start -->
+      <app-header></app-header>
+      <!-- Header End -->
+      <div class="px-4">
+        <div class="row pt-4">
+          <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  routerLink="/home/walkin"
+                >
+                  Home
+                </li>
+                <!-- <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                  Setup
+                </li>
+                <li class="breadcrumb-item  cursor-pointer" aria-current="page" routerLink="/setup/{{ id }}/editLocation">
+                  Location Setup
+                </li> -->
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  aria-current="page"
+                  routerLink="/setup/reports"
+                >
+                  Reports
+                </li>
+                <li
+                  class="breadcrumb-item active cursor-pointer"
+                  aria-current="page"
+                >
+                  Tip Report
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <!-- <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1"> <i class="icon-arrow-left cursor-pointer" routerLink="/setup/reports"></i>Sales
+              Report</h4>
+          </div>
+        </div> -->
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <mat-accordion>
+              <mat-expansion-panel class="mat-elevation-z0 bordered">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>Filter Data</mat-panel-title>
+                </mat-expansion-panel-header>
+                <form [formGroup]="generateSalesReport">
+                  <div class="row">
+                    <div class="col-lg-3">
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Search Type</mat-label>
+                        <mat-select
+                          formControlName="searchBy"
+                          (selectionChange)="searchby($event)"
+                        >
+                          <mat-option [value]="0">Select</mat-option>
+                          <mat-option [value]="1">Date Period</mat-option>
+                          <mat-option [value]="2">Specify Date</mat-option>
+                          <mat-option [value]="3">Business Day</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-lg-3">
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Payment Types</mat-label>
+                        <mat-select formControlName="payment">
+                          <mat-option [value]="0">Select</mat-option>
+                          <mat-option [value]="1"> Cash </mat-option>
+                          <mat-option [value]="2"> Card </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-lg-3" *ngIf="searchByPeriod">
+                      <span
+                        class="error-message float-right"
+                        *ngIf="
+                          generateSalesReport.controls.fromDate.hasError(
+                            'required'
+                          ) && generateSalesReport.controls.fromDate.touched
+                        "
+                      >
+                        Required</span
+                      >
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>From Date</mat-label>
+                        <input
+                          matInput
+                          [min]="minDate"
+                          [matDatepicker]="from"
+                          (click)="from.open()"
+                          [max]="todayDate"
+                          formControlName="fromDate"
+                        />
+                        <mat-datepicker-toggle
+                          matSuffix
+                          [for]="from"
+                          [disabled]="false"
+                        >
+                        </mat-datepicker-toggle>
+                        <mat-datepicker
+                          #from
+                          [touchUi]="true"
+                          [disabled]="false"
+                        >
+                        </mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-lg-3" *ngIf="searchByPeriod">
+                      <span
+                        class="error-message float-right"
+                        *ngIf="
+                          generateSalesReport.controls.toDate.hasError(
+                            'required'
+                          ) && generateSalesReport.controls.toDate.touched
+                        "
+                      >
+                        Required</span
+                      >
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>To Date</mat-label>
+                        <input
+                          [matDatepicker]="to"
+                          (click)="to.open()"
+                          matInput
+                          [min]="minDate"
+                          [max]="todayDate"
+                          formControlName="toDate"
+                        />
+                        <mat-datepicker-toggle
+                          matSuffix
+                          [for]="to"
+                          [disabled]="false"
+                        >
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #to [touchUi]="true" [disabled]="false">
+                        </mat-datepicker>
+                      </mat-form-field>
+                      <span
+                        class="error-message float-right"
+                        *ngIf="generateSalesReport.errors"
+                        >{{ generateSalesReport.errors.dates | json }}</span
+                      >
+                    </div>
+                    <div class="col-lg-3" *ngIf="searchBySpecificDate">
+                      <span
+                        class="error-message float-right"
+                        *ngIf="
+                          generateSalesReport.controls.fromDate.hasError(
+                            'required'
+                          ) && generateSalesReport.controls.fromDate.touched
+                        "
+                      >
+                        Required</span
+                      >
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Date</mat-label>
+                        <input
+                          matInput
+                          [max]="todayDate"
+                          [matDatepicker]="specific"
+                          (click)="specific.open()"
+                          placeholder="Code"
+                          formControlName="date"
+                        />
+                        <mat-datepicker-toggle
+                          matSuffix
+                          [for]="specific"
+                          [disabled]="false"
+                        >
+                        </mat-datepicker-toggle>
+                        <mat-datepicker
+                          #specific
+                          [touchUi]="true"
+                          [disabled]="false"
+                        >
+                        </mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-lg-3" *ngIf="searchByBusinessDay">
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Search by business day</mat-label>
+                        <mat-select formControlName="business_day_id">
+                          <mat-option [value]="" disabled>Select</mat-option>
+                          <mat-option
+                            [value]="day.id"
+                            *ngFor="let day of businessdayRecords"
+                            >{{ day.name }}</mat-option
+                          >
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div class="row actions float-right">
+                    <button
+                      class="primary medium-button"
+                      (click)="generateReport()"
+                    >
+                      <i class="icon-save mr-1"></i>Generate Report
+                    </button>
+                  </div>
+                </form>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div *ngIf="dataSource.data.length <= 0; else showtable">
+            <div class="row">
+              <div class="col-12">
+                <div class="not-found bordered">
+                  <h3>Sorry :(</h3>
+                  <p>No Report available</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ng-template #showtable>
+            <div class="row">
+              <div class="col-12">
+                <button
+                  class="btn-setup-sucess mb-2 float-right"
+                  (click)="exportExcel()"
+                >
+                  Export Excel
+                </button>
+                <span>{{ processingResponseStr }}</span>
+              </div>
+            </div>
+            <table
+              *ngIf="dataSource.data.length > 0"
+              mat-table
+              [dataSource]="dataSource"
+              matSort
+              matTableExporter
+              #exporter="matTableExporter"
+              class="tableStyleMain table bordered"
+            >
+              <ng-container matColumnDef="index">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>#</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ dataSource.data.indexOf(element) + 1 }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="order_no">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Order No
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.order_number }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="staff_name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Staff
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{
+                    element.staff_name
+                     
+                  }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="accepted_balance">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Tip ({{ currency_symbol }})
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.accepted_balance.toFixed(2) }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="tip_payment_type_name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Payment Type
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.tip_payment_type_name }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="balance_amount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Balance Amount</th>
+                <td mat-cell *matCellDef="let element">
+                  {{
+                    element.balance_amount
+                  }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="amount_received">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Amount Received
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.amount_received.toFixed(2) }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="invoice_amount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Invoice Amount
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.invoice_amount.toFixed(2) }}
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+          </ng-template>
+          <mat-paginator
+            [ngClass]="{ show: dataSource.data.length <= 0 }"
+            [pageSize]="50"
+            [pageSizeOptions]="[50, 100, 150, 200]"
+          >
+          </mat-paginator>
+
+          <!-- <div class="b-right col-12 mt-2" [ngClass]="{ show: dataSource.data.length <= 0 }">
+
+          <div class="col-12 row summary-div" *ngFor="let i of paymentSummary">
+            <div class="col-10" *ngIf="i.amount > 0">
+              <span>{{i.name}} ({{currency_symbol}})</span>
+            </div>
+            <div class="col-2" *ngIf="i.amount > 0">
+              <span>{{i.amount.toFixed(2)}}</span>
+            </div>
+          </div>
+        </div> -->
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

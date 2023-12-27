@@ -1,0 +1,67 @@
+<div class="modal-wrapper">
+    <h2 mat-dialog-title>Order Details- {{data.itemData.driver_name}}</h2>
+    <mat-dialog-content>
+      <table class="tableStyleMain w-100">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Order Number</th>
+            <th scope="col">Assigned</th>
+            <th scope="col">Order Type</th>
+            <th scope="col">Delivery Start Time</th>
+            <th scope="col">Delivery End Time</th>
+            <th scope="col">Elapsed TIme</th>
+            <th scope="col">Order Status</th>
+            <th scope="col">Actions</th>
+           
+          </tr>
+        </thead>
+        <tbody >
+          <div *ngIf="itemArray.length <= 0; else showtable" >
+            <div class="row col-12">
+                <div class="col-12">
+                    <div class="not-found">
+                        <h3>Sorry :(</h3>
+                        <p>There's no Orders this moment.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ng-template #showtable>
+          <tr *ngFor="let item of itemArray;let i=index;">
+            <td>{{i+1}}</td>
+            <td>{{getOrderNumber(item.orders_json)}}</td>
+           <td>{{item.driver_assigned==1?'Assigned':'UnAssigned'}}</td>
+            <td>
+                <span *ngIf="item.order_type==null">-</span>
+                <span *ngIf="item.order_type==1">Take Away</span>
+                <span *ngIf="item.order_type==2">In Progress</span>
+                <span *ngIf="item.order_type==3">Dinein</span>
+
+            </td>
+            
+            <td > {{item.delivery_start_time?item.delivery_start_time :'-'}}</td>
+            <td> {{item.delivery_end_time?item.delivery_end_time:'-'}}</td>
+
+            <td>{{item.elapsed_time?item.elapsed_time:'-'}}</td>
+            <td>
+              <span *ngIf="item.driver_status==1">New</span>
+              <span *ngIf="item.driver_status==2">Waiting for Pickup</span>
+              <span *ngIf="item.driver_status==3">In Progress</span>
+              <span *ngIf="item.driver_status==4">Delivered</span>
+
+          </td>
+            <td>
+                <button class="btn-setup-sucess" (click)="showDetails(item,i)">Item Details</button>
+            </td>
+          </tr>
+          </ng-template>
+        </tbody>
+      </table>
+    </mat-dialog-content>
+   
+    <mat-dialog-actions>
+    <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+  </mat-dialog-actions>
+  </div>
+  

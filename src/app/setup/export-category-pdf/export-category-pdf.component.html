@@ -1,0 +1,54 @@
+<div class="modal-wrapper">
+  <mat-dialog-content>
+    <div id="myTableElementId" class="pdfData min-scroll">
+      <div class="row col-12">
+        <div class="col-3">
+          <strong>Date :</strong> {{currentDay()}}<br>
+          <strong>Time :</strong> {{currentTime()}}
+        </div>
+        <div class="col-6" style="text-align: center;">
+          <span style="font-size: 24px;"><strong>{{branchName}}</strong></span><br>
+          <span style="font-size: 18px;"><strong>Category Wise Report</strong></span>
+        </div>
+      </div>
+      <div class="row col-12">
+        <h4 style="margin-top:35px;margin-bottom:25px;margin-left:15px;"><strong>Report Period :
+            {{data.datePeriod}}</strong></h4>
+      </div>
+      <div *ngFor="let item of data.dataSource let index = index">
+        <div class="center">
+            <h4><strong> {{index + 1}} . {{item.category_name}}</strong></h4>
+          </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Item Code</th>
+              <th scope="col">Description</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Sales ({{currency_symbol}})</th>
+              <th scope="col">Cost ({{currency_symbol}})</th>
+              <th scope="col">Tax</th>
+              <th scope="col">Sales + Tax ({{currency_symbol}})</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let i of item.items">
+              <td>{{i.item_code}}</td>
+              <td>{{i.name}}</td>
+              <td>{{i.qty}}</td>
+              <td>{{i.amount}}</td>
+              <td>{{i.cost}}</td>
+              <td>{{ i.tax_rate}}</td>
+              <td>{{i.sales_tax_amount}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <div mat-dialog-actions class="text-right button-sec">
+    <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+    <!-- <button class="btn-setup-sucess" (click)="downloadPdf()">Download
+    </button> -->
+  </div>
+</div>

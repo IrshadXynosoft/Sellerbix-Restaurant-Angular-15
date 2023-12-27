@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+  <!-- Header Start -->
+  <app-header>
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css" />
+  </app-header>
+  <!-- Header End -->
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/inventory">
+                Inventory
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                Reports
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag cursor-pointer">
+            <h4 class="flex-gr-1">
+              <i class="icon-arrow-left" routerLink="/inventory"></i>Reports
+            </h4>
+          </div>
+        </div>
+
+      </div>
+      <div class="row pt-4">
+        <div class="col-12 col-sm-3 com-md-3 cursor-pointer" (click)="purchaseReport()">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn">
+              <i class="zmdi zmdi-storage"></i>
+              <p matTooltip="Purchase Report">Purchase Report</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-3 com-md-3 cursor-pointer" (click)="stockReport()">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn">
+              <i class="zmdi zmdi-storage"></i>
+              <p matTooltip="Stock Report">Stock Report</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-3 com-md-3 cursor-pointer" (click)="batchProductionReport()">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn">
+              <i class="zmdi zmdi-storage"></i>
+              <p matTooltip="Batch Production Report">Batch Production Report</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-3 com-md-3 cursor-pointer" (click)="stockMovementReport()">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn">
+              <i class="zmdi zmdi-storage"></i>
+              <p matTooltip="Stock Movement Report">Stock Movement Report</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-3 com-md-3 cursor-pointer" (click)="reOrderReport()">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn">
+              <i class="zmdi zmdi-storage"></i>
+              <p matTooltip="Threshold Stock Report">Threshold Stock Report</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-3 com-md-3 cursor-pointer" (click)="wastageReport()">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn">
+              <i class="zmdi zmdi-storage"></i>
+              <p matTooltip="Wastage Report">Wastage Report</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-3 com-md-3 cursor-pointer" (click)="stockConsumption()">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn">
+              <i class="zmdi zmdi-storage"></i>
+              <p matTooltip="Stock Consumption Report">Stock Consumption Report</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-3 com-md-3 cursor-pointer" (click)="foodCosting()">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn">
+              <i class="zmdi zmdi-storage"></i>
+              <p matTooltip="Food Costing Report">Food Costing Report</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-3 com-md-3 cursor-pointer" (click)="supplierReport()">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn">
+              <i class="zmdi zmdi-storage"></i>
+              <p matTooltip="Supplier Performance Report">Supplier Performance Report</p>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-12 col-sm-3 com-md-3 cursor-pointer" (click)="itemStockReport()">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn">
+              <i class="zmdi zmdi-storage"></i>
+              <p matTooltip="Item Stock Report">Item Stock Report</p>
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

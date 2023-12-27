@@ -1,0 +1,56 @@
+<div class="modal-wrapper">
+  <form [formGroup]="smsSettingsForm">
+    <h2 mat-dialog-title>New SMS API
+      <span>
+        <button class="btnInstr mr-1"><i class="zmdi zmdi-info mr-1"></i>Instructions</button>
+      </span>
+    </h2>
+
+    <mat-dialog-content>
+      <div class="row col-12">
+        <div class="col-6">
+          <div class="formGroup">
+            <label>Gateway Name</label>
+            <select class="form-control selectBarMain" formControlName="gateway_name">
+              <option value="" selected>Select</option>
+              <option *ngFor="let i of smsGateway" value="{{i.id}}">{{i.name}}</option>
+            </select>
+          </div>
+          <div class="formGroup">
+            <label>Auth Token/Api Secret/Password</label>
+            <input type="password" class="form-control" placeholder="Auth Token/Api Secret/Password"
+              formControlName="auth_token" />
+          </div>
+        </div>
+        <div class="col-6">
+          <!-- <div class="formGroup">
+              <label>Auth ID/auth key/API key/msisdn/account sid/account ID/userame/admin</label>
+              <input type="text" class="form-control" placeholder="Auth ID/auth key/API key/msisdn"
+                formControlName="auth_id" />
+            </div> -->
+          <div class="formGroup">
+            <label>Sender/ Sender Id/Mask/From</label>
+            <input type="text" class="form-control" placeholder="Sender/ Sender Id/Mask/From"
+              formControlName="sender" />
+          </div>
+          <div class="formGroup"> 
+            <label>API ID</label>
+            <input type="text" class="form-control" placeholder="API ID" formControlName="api_id" />
+          </div>
+          <!-- <div class="formGroup">
+              <label>Status</label>
+              <div>
+                <mat-slide-toggle formControlName="status">Active</mat-slide-toggle>
+              </div> -->
+
+          <!-- </div> -->
+        </div>
+      </div>
+
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" [disabled]="!smsSettingsForm.valid" (click)="save()"><i class="icon-save mr-1"></i>Save</button>
+    </mat-dialog-actions>
+  </form>
+</div>

@@ -1,0 +1,65 @@
+::ng-deep input.mat-mdc-input-element {
+  background-color: white;
+  height: 35px;
+  width: 100%;
+  // border-radius: 0px;
+  // padding: 0 22px;
+  // margin-bottom: 0;
+}
+
+.show {
+  visibility: hidden;
+}
+
+tr:last-child {
+  font-weight: bold;
+}
+
+.btn-wrp-equal button {
+  width: 34px;
+  margin-bottom: 10px;
+  display: inline-block;
+  height: 34px;
+  border-radius: 50%;
+}
+
+h4 {
+  font-size: 20px;
+}
+
+.center {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tableStyleMain {
+  margin-top: 7px;
+
+  th {
+    padding: 10px;
+    //border-right: 1px #e2e3e3 solid;
+    text-align: center;
+  }
+
+  td {
+    padding: 10px;
+    //border-right: 1px #eceeee  solid;
+    text-align: center;
+  }
+}
+
+.table {
+  border-collapse: unset !important;
+}
+
+.commonBtnStyle {
+  width: 50px;
+  background: var(--primary);
+  border: none;
+  margin: 0;
+  padding: 7px 8px;
+  border-radius: 5px;
+  color: #fff;
+}

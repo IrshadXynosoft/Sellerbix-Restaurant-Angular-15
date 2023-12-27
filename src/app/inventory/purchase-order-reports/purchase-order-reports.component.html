@@ -1,0 +1,253 @@
+<style>
+  @page {
+    size: 210mm 297mm;
+  }
+
+  /* output size */
+  body.receipt .sheet {
+    width: 210mm;
+    /* A4 width */
+    height: 297mm;
+    /* A4 height */
+  }
+
+  /* sheet size */
+  @media print {
+    body.receipt {
+      width: 210mm;
+    }
+  }
+</style>
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/inventory">
+                Inventory
+              </li>
+
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page" routerLink="/inventory/reports">
+                Reports
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                Purchase Order Report
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1"> <i class="icon-arrow-left cursor-pointer"
+                routerLink="/inventory/reports"></i>Purchase Order Report</h4>
+                <div class="d-flex" style="padding-bottom: 15px; padding-left: 5px">
+                  <button style="width: 120px;float: right;" *ngIf="dataSource.data.length>0" class="btn-setup-sucess"
+                    [useExistingCss]="true" printSectionId="print-section" printTitle="Purchase Orders" ngxPrint>
+                    <i class="icon-print mr-1"></i>Print
+                  </button>
+                </div>
+          </div>
+        </div>
+      </div>
+      <!-- <mat-accordion>
+        <mat-expansion-panel class="mat-elevation-z0">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Filter Data</mat-panel-title>
+          </mat-expansion-panel-header> -->
+          <form [formGroup]="generatePurchaseOrderReport">
+            <div class="row col-12 ">
+              <div class="col-lg-2">
+                <label>Location</label>
+                <select class="form-control w-100" formControlName="branch_id">
+                  <option value="">Select</option>
+                  <option *ngFor="let i of branchRecords" value="{{ i.id }}">
+                    {{ i.name }}
+                  </option>
+                </select>
+              </div>
+              <div class="col-lg-2">
+                <label>Order Type</label>
+                <select class="form-control w-100" formControlName="status" 
+                  >
+                  <option value=null selected>All</option>
+                  <option value=0>Open</option>
+                  <option value=1>Send</option>
+                  <option value=2>Received</option>
+                  <option value=3>Rejected</option>
+                </select>
+              </div>
+              <div class="col-lg-2">
+                <label>Supplier</label>
+                <select class="form-control w-100" formControlName="supplier_id">
+                  <option value=null>All</option>
+                  <option *ngFor="let i of supplierArray" value="{{ i.id }}">
+                    {{ i.name }}
+                  </option>
+                </select>
+              </div>
+              <div class="col-lg-2">
+                <label>Search by</label>
+                <select class="form-control w-100" formControlName="searchBy" (change)="searchby($event)">
+                  <option value=0>Current Date</option>
+                  <option value=1>Date Period</option>
+                  <option value=2>Specify Date</option>
+                </select>
+              </div>
+              <div class="col-lg-3" style="margin-top:1.7rem">
+                <button class="btn-setup-sucess" (click)="generateReport()">
+                  <i class="icon-save mr-1"></i>Generate Report
+                </button>
+              </div>
+            </div>
+            <div class="row col-12">
+
+              <div class="col-lg-2" *ngIf="searchBySpecificDate">
+                <label>Date</label>
+                <span class="error-message">*</span>
+                <span class="error-message float-right"
+                  *ngIf="generatePurchaseOrderReport.controls.fromDate.hasError('required') && generatePurchaseOrderReport.controls.fromDate.touched">
+                  Required</span>
+                <input type="date" placeholder="Code" class="form-control" formControlName="date" />
+              </div>
+              <div class="col-lg-2" *ngIf="searchByPeriod">
+                <label>From Date</label>
+                <span class="error-message">*</span>
+                <span class="error-message float-right"
+                  *ngIf="generatePurchaseOrderReport.controls.fromDate.hasError('required') && generatePurchaseOrderReport.controls.fromDate.touched">
+                  Required</span>
+
+               <input type="date" placeholder="Code" [min]="minDate" [max]="todayDate" class="form-control"
+              formControlName="fromDate" />
+              </div>
+              <div class="col-lg-2" *ngIf="searchByPeriod">
+                <label>To Date</label>
+                <span class="error-message">*</span>
+                <span class="error-message float-right"
+                  *ngIf="generatePurchaseOrderReport.controls.toDate.hasError('required') && generatePurchaseOrderReport.controls.toDate.touched">
+                  Required</span>
+               <input type="date" placeholder="Code" [min]="minDate" [max]="todayDate" class="form-control"
+              formControlName="toDate" />
+                <span class="error-message float-right" *ngIf="generatePurchaseOrderReport.errors">{{
+                  generatePurchaseOrderReport.errors.dates | json }}</span>
+              </div>
+            </div>
+          </form>
+        <!-- </mat-expansion-panel>
+      </mat-accordion> -->
+      <div *ngIf="dataSource.data.length <= 0; else showtable">
+        <div class="row col-12">
+          <div class="col-12">
+            <div class="not-found bordered">
+              <h3>Sorry :(</h3>
+              <p>No Report available</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <ng-template #showtable>
+          <div id="print-section">
+           <table
+          mat-table
+           [dataSource]="dataSource"
+          matSort
+          class="tableStyleMain table  w-100 bordered"
+        >
+          
+            <ng-container matColumnDef="index">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                #
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{dataSource.data.indexOf(element) + 1}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="purchase_order_no">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Purchase Order No
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.purchase_order_no }}</td>
+            </ng-container>
+            <ng-container matColumnDef="branch_name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Ordered by
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.branch_name}}</td>
+            </ng-container>
+            <ng-container matColumnDef="supplier_name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Supplier
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.supplier_name }}</td>
+            </ng-container>
+            <ng-container matColumnDef="staff_name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Created by
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.staff_name }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="due_date">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Due Date
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.due_date| date }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Status
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.status }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="amount">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Amount({{currency_symbol}})
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.amount }}</td>
+            </ng-container>
+            <ng-container matColumnDef="button">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td class="btn-wrp-equal" mat-cell *matCellDef="let element">
+                <button class="btn-setup-sucess" matTooltip="View Order Details"
+                 (click)="viewDetails(element.id)">
+                  <i _ngcontent-pms-c429="" class="zmdi zmdi-eye"></i>
+                </button>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+          </div>
+        </ng-template>
+        <mat-paginator
+        [ngClass]="{ show: dataSource.data.length <= 0 }"
+        [pageSize]="50"
+        [pageSizeOptions]="[2, 4, 6, 10, 20]"
+      >
+      </mat-paginator>
+    </div>
+
+  </div>
+
+</body>
+
+</html>

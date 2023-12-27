@@ -1,0 +1,24 @@
+<div class="modal-wrapper">
+    <form [formGroup]="unitsForm">
+      <h2 mat-dialog-title>Delivery Entity</h2>
+      <label>Entity Name</label>
+      <div mat-dialog-content>
+        <span class="error-message float-right">*</span>
+      <span class="error-message float-right"
+        *ngIf="unitsForm.controls.name.hasError('required') && unitsForm.controls.name.touched">
+        Required</span>
+      <span class="error-message float-right" *ngIf="unitsForm.controls.name.hasError('maxlength')">
+        You have reached your maximum limit of characters allowed</span>
+      <span class="error-message float-right" *ngIf="unitsForm.controls.name.hasError('pattern')">
+        Invalid input</span>
+      <span class="error-message float-right" *ngIf="unitsErrorArray.name">
+        {{unitsErrorArray.name}}</span>
+        <input type="text" class="form-control" [ngClass]="unitsForm.controls.name.hasError('required') && unitsForm.controls.name.touched || unitsForm.controls.name.hasError('maxlength') || unitsForm.controls.name.hasError('pattern') ? 'is-invalid' : ''" placeholder="Name" formControlName="name" />
+        
+      </div>
+      <div mat-dialog-actions>
+        <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+        <button class="btn-setup-sucess"  [disabled]="!unitsForm.valid || unitsForm.pristine" (click)="editUnits()">Update</button>
+      </div>
+    </form>
+  </div>

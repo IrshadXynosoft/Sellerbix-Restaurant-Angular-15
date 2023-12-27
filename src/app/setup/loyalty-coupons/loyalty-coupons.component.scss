@@ -1,0 +1,38 @@
+table {
+  width: 100%;
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+.mat-mdc-header-cell {
+  font-weight: bold;
+  font-size: medium;
+  color: rgb(20, 20, 20);
+}
+.mat-mdc-cell {
+  font-size: 15px;
+  padding-top: 7px;
+}
+.btn {
+  float: right;
+}
+.message {
+  font-size: 15px;
+  padding-top: 10%;
+  text-align: center;
+  font-style: italic;
+}
+
+.btn-wrp-equal button {
+  width: 34px;
+  margin-bottom: 10px;
+  display: inline-block;
+  height: 34px;
+  border-radius: 50%;
+}
+
+.show {
+  visibility: hidden;
+}

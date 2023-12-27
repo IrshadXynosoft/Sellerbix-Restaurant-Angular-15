@@ -1,0 +1,264 @@
+.tableStyleMain{ margin-top: 7px ;
+
+  th{
+    //padding: 10px; 
+    border-right: 1px #e2e3e3 solid; text-align: center;
+  }
+
+  td{
+    //padding: 10px; 
+    border-right: 1px #eceeee  solid; text-align: center;
+    border-bottom:1px #eceeee  solid; ;
+    background-color: #ffff;
+  }
+}
+.table-shadow {
+  box-shadow: rgb(251, 175, 3) 0px 0px 0px 1px;
+}
+.viewScreen {
+  background: var(--white);
+  margin: 15px 0;
+  padding: 15px;
+}
+.b-right {
+  float: right;
+}
+
+// purchase print scss
+.purchase-order {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  // border: 1px solid #ccc;
+  background-color: #fff !important;
+  .company-name {
+    font-size: 35px;
+    margin-bottom: 10px;
+    letter-spacing: 3px;
+  }
+  p {
+    margin: 0 !important;
+    font-size: 15px;
+  }
+  .heading {
+    text-align: end;
+    font-size: 37px;
+    font-weight: 600;
+    color: #6d72a4;
+  }
+  .date {
+    margin-bottom: 3px !important;
+    font-size: 15px;
+    text-align: end;
+    span {
+      border: 2px solid grey !important;
+      padding: 2px;
+    }
+  }
+  .vendor {
+    background-color: #3b4185 !important;
+    color: #fff;
+    text-transform: uppercase;
+    padding-left: 10px;
+    margin-top: 20px;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 3rem;
+    border: 1px solid #ccc;
+  }
+
+  th,
+  td {
+    border: 1px solid black;
+    padding: 4px;
+    text-align: left;
+    background-color: #fff;
+  }
+
+  th {
+    background-color: #3b4185 !important;
+    font-weight: bold;
+    color: #fff;
+    text-transform: capitalize;
+  }
+  .blank {
+    height: 2rem;
+  }
+
+  .comments {
+    width: 80%;
+    border: 3px solid #ccc !important;
+    height: 150px;
+    margin-top: 2rem;
+    .head {
+      font-weight: 600;
+      border-bottom: 2px solid #ccc !important;
+      background-color: #ccc !important;
+      padding: 3px;
+    }
+  }
+
+  .label {
+    display: inline-block;
+    width: 50%;
+  }
+
+  .value {
+    display: inline-block;
+    text-align: right;
+    width: 50%;
+  }
+
+  .total {
+    font-weight: bold;
+  }
+
+  .total-value {
+    font-weight: bold;
+    color: #3b4185 !important; /* Customize the total value color as needed */
+  }
+
+  .description {
+    font-size: 12px;
+    text-align: center;
+    margin: 10px;
+  }
+}
+
+// purchase print converted scss to css below
+
+// .purchase-order {
+//   font-family: Arial, sans-serif;
+//   margin: 0;
+//   padding: 20px;
+//   border: 1px solid #ccc;
+//   width: 210mm; /* A4 width */
+//   height: 297mm; /* A4 height */
+//   background-color: #fff !important;
+// }
+
+// .purchase-order .company-name {
+//   font-size: 35px;
+//   margin-bottom: 10px;
+//   letter-spacing: 3px;
+// }
+
+// .purchase-order p {
+//   margin: 0 !important;
+//   font-size: 15px;
+// }
+
+// .purchase-order .heading {
+//   text-align: end;
+//   font-size: 37px;
+//   font-weight: 600;
+//   color: #6d72a4;
+// }
+
+// .purchase-order .date {
+//   margin-bottom: 5px !important;
+//   font-size: 15px;
+//   text-align: end;
+// }
+
+// .purchase-order .date span {
+//   border: 1px solid grey;
+//   padding: 2px;
+// }
+
+// .purchase-order .vendor {
+//   background-color: #3b4185 !important;
+//   color: #fff;
+//   text-transform: uppercase;
+//   padding-left: 10px;
+//   margin-top: 3rem;
+// }
+
+// .purchase-order table {
+//   border-collapse: collapse;
+//   width: 100%;
+//   margin-top: 4rem;
+//   border: 1px solid #ccc;
+//   th {
+//     background-color: #3b4185 !important;
+//     font-weight: bold;
+//     color: #fff;
+//     text-transform: capitalize;
+//   }
+// }
+
+// .purchase-order th,
+// .purchase-order td {
+//   border: 1px solid black !important;
+//   padding: 4px;
+//   text-align: left;
+//   background-color: #fff !important;
+// }
+
+// .purchase-order th {
+//   background-color: #3b4185 !important;
+//   font-weight: bold;
+//   color: #fff;
+//   text-transform: capitalize;
+// }
+// .purchase-order .blank {
+//   height: 2rem;
+// }
+// .purchase-order .comments {
+//   width: 80%;
+//   border: 2px solid #ccc !important;
+//   height: 150px;
+//   margin-top: 2rem;
+// }
+
+// .purchase-order .comments .head {
+//   font-weight: 600;
+//   border-bottom: 2px solid #ccc !important;
+//   background-color: #ccc !important;
+//   padding: 3px;
+// }
+
+// .purchase-order .label {
+//   display: inline-block;
+//   width: 50%;
+// }
+
+// .purchase-order .value {
+//   display: inline-block;
+//   text-align: right;
+//   width: 50%;
+// }
+
+// .purchase-order .total {
+//   font-weight: bold;
+// }
+
+// .purchase-order .total-value {
+//   font-weight: bold;
+//   color: #3b4185; /* Customize the total value color as needed */
+// }
+
+// .purchase-order .description {
+//   font-size: 12px;
+//   text-align: center;
+//   margin: 10px;
+// }
+
+#print-section {
+  width: 210mm; /* A4 width */
+  height: 297mm; /* A4 height */
+  border: 1px solid black;
+  background-color: #fff !important;
+}
+
+@media print {
+  @page {
+    size: 210mm 297mm; /* landscape */
+    margin: 1mm;
+    border: 1px solid black;
+  }
+}

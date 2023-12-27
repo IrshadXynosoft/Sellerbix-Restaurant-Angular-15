@@ -1,0 +1,17 @@
+<form  [formGroup]="addModifyReasonForm">
+<div class="modal-wrapper">
+    <h2 mat-dialog-title>Add Modify Reason</h2>
+    <div mat-dialog-content>
+        <span class="error-message float-right">*</span>
+        <span class="error-message float-right" *ngIf="addModifyReasonForm.controls.reason.hasError('required' ) && addModifyReasonForm.controls.reason.touched">Required</span>
+        <span class="error-message float-right" *ngIf="ErrorArray.reason">
+            {{ ErrorArray.reason }}</span
+          >
+        <input type="text" class="form-control" [ngClass]="addModifyReasonForm.controls.reason.hasError('required' ) && addModifyReasonForm.controls.reason.touched ? 'is-invalid' : ''" placeholder="Enter Reason" formControlName="reason"  />
+    </div>
+    <div mat-dialog-actions>
+        <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+        <button class="btn-setup-sucess" (click)="addModifyReason()">Submit</button>
+    </div>
+</div>
+</form>

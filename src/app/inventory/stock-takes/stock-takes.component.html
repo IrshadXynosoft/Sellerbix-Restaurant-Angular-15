@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <app-inventory-header></app-inventory-header>
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/inventory">
+                Inventory
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                Stock Takes
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag cursor-pointer">
+            <h4 class="flex-gr-1"> <i class="icon-arrow-left" routerLink="/inventory"></i> Stock Takes</h4>
+            <div class="d-flex align-items-center justify-content-end"
+              *ngIf="inCompleteStockTakeArray.length == 0 && underReviewStockTakeArray==0">
+              <button class="btn-setup-sucess btn-ht-custom" (click)="newStockTake()">
+                <i class="icon-plus mr-1"></i> New Stock Take
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <mat-tab-group>
+        <mat-tab label="Draft">
+          <div class="row col-12">
+            <div class="row pt-3 col-12">
+              <div class="col-12 col-lg-6">
+                <select class="form-control w-70 bordered" [(ngModel)]="branch_id" >
+                  <option value="" selected disabled>Select</option>
+                  <option *ngFor="let branch of branches" value={{branch.id}} (click)="getStockTakeByBranch(branch.id)">
+                    {{branch.name}}</option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+          <ng-template #message>
+
+            <div class="col-12">
+              <div class="not-found bordered">
+                <h3>Sorry :(</h3>
+                <p>You currently have no Incompleted Stock Take.</p>
+                <!-- <p>Click <a (click)="newStockTake()" style="color: var(--primary);cursor: pointer;">here</a> to add
+                  Stock take. </p> -->
+              </div>
+            </div>
+
+          </ng-template>
+          <table class="tableStyleMain table bordered" *ngIf="dataSourceinCompleteStockTakeArray.data.length > 0; else message"
+            mat-table [dataSource]="dataSourceinCompleteStockTakeArray" matSort
+              >
+              <ng-container matColumnDef="index">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  #
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{dataSourceinCompleteStockTakeArray.data.indexOf(element) + 1}}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="number">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Stock Take No.
+                </th>
+                <td mat-cell *matCellDef="let element">{{ element.stock_take_number }}</td>
+              </ng-container>
+              <ng-container matColumnDef="location">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  For Location
+                </th>
+                <td mat-cell *matCellDef="let element">{{ element.branch_name}}</td>
+              </ng-container>
+              <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Date
+                </th>
+                <td mat-cell *matCellDef="let element">{{ element.date|date }}</td>
+              </ng-container>
+              <ng-container matColumnDef="created">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Created By
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.staff_name }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="updated">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Updated By
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.updated_staff }}
+                </td>
+              </ng-container>
+             <ng-container matColumnDef="button">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td class="btn-wrp-equal" mat-cell *matCellDef="let element">
+                  <button class="btn-setup-sucess"  (click)="editStockTake(element.id)"
+                   >
+                    <i _ngcontent-pms-c429="" class="zmdi zmdi-edit"></i>
+                  </button>
+                  <button class="btn-setup-danger"
+                  (click)="deleteStocktake(element.id,element.stock_take_number)">
+                  <i class="icon-trash"></i> 
+                </button>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsInComplete"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsInComplete"></tr>
+
+          </table>
+        </mat-tab>
+        <mat-tab label="Under Review">
+          <div class="row pt-3 col-12">
+            <div class="col-12 col-lg-6">
+                <div class="d-flex align-items-center">
+                  <select class="form-control w-70 bordered" [(ngModel)]="branch_id" >
+                    <option value="" selected disabled>Select</option>
+                    <option *ngFor="let branch of branches" value={{branch.id}} >{{branch.name}}</option>
+                  </select>
+                
+                </div>
+              </div> 
+          </div>
+          <ng-template #reviewmessage>
+
+            <div class="col-12">
+              <div class="not-found bordered">
+                <h3>Sorry :(</h3>
+                <p>You currently have no Stock Take for Review.</p>
+              </div>
+            </div>
+
+          </ng-template>
+          <table class="tableStyleMain table bordered" *ngIf="dataSourceunderReviewStockTakeArray.data.length > 0; else reviewmessage"
+            mat-table [dataSource]="dataSourceunderReviewStockTakeArray" matSort
+              >
+              <ng-container matColumnDef="index">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  #
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{dataSourceunderReviewStockTakeArray.data.indexOf(element) + 1}}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="number">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Stock Take No.
+                </th>
+                <td mat-cell *matCellDef="let element">{{ element.stock_take_number }}</td>
+              </ng-container>
+              <ng-container matColumnDef="location">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  For Location
+                </th>
+                <td mat-cell *matCellDef="let element">{{ element.branch_name}}</td>
+              </ng-container>
+              <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Date
+                </th>
+                <td mat-cell *matCellDef="let element">{{ element.date|date }}</td>
+              </ng-container>
+              <ng-container matColumnDef="created">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Created By
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.staff_name }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="updated">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Updated By
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.updated_staff }}
+                </td>
+              </ng-container>
+             <ng-container matColumnDef="button">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td class="btn-wrp-equal" mat-cell *matCellDef="let element">
+                  <button class="btn-setup-sucess"  (click)="reviewStockTake(element)"
+                   >
+                    <i _ngcontent-pms-c429="" class="zmdi zmdi-edit"></i>
+                  </button>
+
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsForUnderReview"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsForUnderReview"></tr>
+
+          </table>
+        
+        </mat-tab>
+        <mat-tab label="Completed">
+          <div class="row pt-3 col-12">
+            <div class="col-12 col-lg-6">
+                <div class="d-flex align-items-center">
+                  <select class="form-control w-70 bordered" [(ngModel)]="branch_id" >
+                    <option value="" selected disabled>Select</option>
+                    <option *ngFor="let branch of branches" value={{branch.id}} >{{branch.name}}</option>
+                  </select>
+                
+                </div>
+              </div> 
+          </div>
+          <ng-template #completedmessage>
+
+            <div class="col-12">
+              <div class="not-found bordered">
+                <h3>Sorry :(</h3>
+                <p>You currently have no Completed Stock Take.</p>
+              </div>
+            </div>
+
+          </ng-template>
+
+          <table class="tableStyleMain table bordered" *ngIf="dataSourcecompletedStockTakeArray.data.length > 0; else completedmessage"
+            mat-table [dataSource]="dataSourcecompletedStockTakeArray" matSort
+              >
+              <ng-container matColumnDef="index">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  #
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{dataSourcecompletedStockTakeArray.data.indexOf(element) + 1}}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="number">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Stock Take No.
+                </th>
+                <td mat-cell *matCellDef="let element">{{ element.stock_take_number }}</td>
+              </ng-container>
+              <ng-container matColumnDef="location">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  For Location
+                </th>
+                <td mat-cell *matCellDef="let element">{{ element.branch_name}}</td>
+              </ng-container>
+              <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Date
+                </th>
+                <td mat-cell *matCellDef="let element">{{ element.date|date }}</td>
+              </ng-container>
+              <ng-container matColumnDef="created">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Created By
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.staff_name }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="completed">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Completed By
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.updated_staff }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="reconciled">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Reconciled by
+                </th>
+                <td mat-cell *matCellDef="let element">{{ element.reconciled_staff }}</td>
+              </ng-container>
+             <ng-container matColumnDef="button">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td class="btn-wrp-equal" mat-cell *matCellDef="let element">
+                  <button class="btn-setup-sucess" matTooltip="View Details" (click)="viewStockTake(element.id)"
+                   >
+                    <i _ngcontent-pms-c429="" class="zmdi zmdi-eye"></i>
+                  </button>
+                  <button class="btn-setup-danger"
+                    (click)="deleteStocktake(element.id,element.stock_take_number)">
+
+                    <i _ngcontent-pms-c429="" class="icon-trash"></i>
+                  </button>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsForCompleted"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsForCompleted"></tr>
+
+          </table>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</body>
+
+</html>

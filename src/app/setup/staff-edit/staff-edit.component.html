@@ -1,0 +1,95 @@
+<div class="modal-wrapper ">
+  <form [formGroup]="editForm">
+    <h2 mat-dialog-title>Update Staff</h2>
+    <div mat-dialog-content>
+      <div class="row">
+        <div class="col-6">
+          <label>Name</label>
+          <span class="error-message float-right">*</span>
+          <span class="error-message float-right"
+            *ngIf="editForm.controls.name.hasError('required' ) && editForm.controls.name.touched">required</span>
+          <span class="error-message float-right" *ngIf="editForm.controls.name.hasError('pattern' )">invalid
+            input</span>
+          <span class="error-message float-right" *ngIf="errorMessages.name">
+            {{ errorMessages.name }}</span>
+          <input type="text" class="form-control"
+            [ngClass]="editForm.controls.name.hasError('required' ) && editForm.controls.name.touched || editForm.controls.name.hasError('pattern' ) || errorMessages.name ? 'is-invalid' : ''"
+            placeholder="Name" formControlName="name" />
+        </div>
+        <div class="col-6">
+          <label>Email</label>
+          <span class="error-message float-right">*</span>
+          <span class="error-message float-right"
+            *ngIf="editForm.controls.email.hasError('required' ) && editForm.controls.email.touched">required</span>
+          <span class="error-message float-right" *ngIf="editForm.controls.email.hasError('pattern' )">invalid
+            input</span>
+          <span class="error-message float-right" *ngIf="errorMessages.email">
+            {{ errorMessages.email }}</span>
+          <input type="email" class="form-control"
+            [ngClass]="editForm.controls.email.hasError('required' ) && editForm.controls.email.touched || editForm.controls.email.hasError('pattern' ) || errorMessages.email ? 'is-invalid' : ''"
+            placeholder="Email" formControlName="email" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <label>Contact Number</label>
+          <span class="error-message float-right">*</span>
+          <span class="error-message float-right"
+            *ngIf="editForm.controls.contact_no.hasError('required' ) && editForm.controls.contact_no.touched">required</span>
+          <span class="error-message float-right" *ngIf="editForm.controls.contact_no.hasError('pattern' )">invalid
+            input</span>
+          <input type="text" class="form-control"
+            [ngClass]="editForm.controls.contact_no.hasError('required' ) && editForm.controls.contact_no.touched || editForm.controls.contact_no.hasError('pattern' ) ? 'is-invalid' : ''"
+            placeholder="Contact Number" formControlName="contact_no" />
+        </div>
+        <div class="col-6">
+          <label>Swipe card Number</label>
+          <input type="number" class="form-control" placeholder="Swipe card Number" formControlName="swipe_card_no" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <span class="error-message float-right">*</span>
+          <span class="error-message float-right"
+            *ngIf="editForm.controls.branch_id.hasError('required' ) && editForm.controls.branch_id.touched">required</span>
+          <label>Default Assigned Location:</label>
+          <select class="custom-select w-100"
+            [ngClass]="editForm.controls.branch_id.hasError('required' ) && editForm.controls.branch_id.touched ? 'is-invalid' : ''"
+            formControlName="branch_id">
+            <option value="" disabled>Select</option>
+            <option *ngFor="let i of branchRecords" value={{i.id}}>{{i.name}}</option>
+          </select>
+        </div>
+        <div class="col-6">
+          <span class="error-message float-right">*</span>
+          <span class="error-message float-right"
+            *ngIf="editForm.controls.role_id.hasError('required' ) && editForm.controls.role_id.touched">required</span>
+          <label>Role</label>
+          <select class="custom-select w-100"
+            [ngClass]="editForm.controls.role_id.hasError('required' ) && editForm.controls.role_id.touched ? 'is-invalid' : ''"
+            formControlName="role_id">
+            <option value="">Select</option>
+            <option *ngFor="let i of roleRecords" value={{i.id}}>{{i.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <label>Upload User Image:</label>
+          <input type="file" class="form-control" placeholder="Upload" formControlName="image" accept="image/*" />
+        </div>
+        <div class="col-6" style="margin-top: 2rem;">
+          <button class="btn-setup-danger commonBtnStyle mr-2"
+            (click)="staffActivateStatus()">{{this.staffArray?.status == 1 ? 'Deactivate' : 'Activate'}}</button>
+          <button class="btn-setup-danger commonBtnStyle" (click)="resetPassword()">Reset Password</button>
+        </div>
+      </div>
+
+    </div>
+    <mat-dialog-actions align="end">
+      <button class="btn-setup-danger commonBtnStyle mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess commonBtnStyle mr-2" (click)="assignPrinters()">Assign Printers</button>
+      <button class="btn-setup-sucess commonBtnStyle" (click)="editStaff()">Update</button>
+    </mat-dialog-actions>
+  </form>
+</div>

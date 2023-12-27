@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body id="page_setup">
+
+
+    <!-- Body Wrapper Start -->
+    <div class="body_wrapper container-fluid">
+          <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+      <div class="px-4">
+        <div class="row pt-4">
+          <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                  Home
+                </li>
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  aria-current="page"
+                  routerLink="/setup"
+                >
+                  Setup
+                </li>
+                <li
+                  class="breadcrumb-item active cursor-pointer"
+                  aria-current="page"
+                >
+                  Partner
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1"   >
+              <i class="icon-arrow-left mr-1 cursor-pointer" routerLink="/setup"></i>Partner Integrations
+            </h4>
+          </div>
+        </div>
+        
+        <div class="row pt-4">
+          <div
+            class="col-12 col-sm-3 com-md-3 cursor-pointer"
+            (click)="partners()"
+          >
+            <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+              <div class="text-center card-inner-scn">
+                <i class="icon-group"></i>
+                <p matTooltip="Accounting Partners">Accounting Partners</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

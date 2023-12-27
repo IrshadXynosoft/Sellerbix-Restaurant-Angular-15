@@ -1,0 +1,46 @@
+<div class="modal-wrapper">
+  <div id="print-section" [ngClass]="data.printData.length == 1 ? 'fixed-height' : ''" class="container modal-height">
+    <div class="content" *ngFor="let i of data.printData">
+      <!-- <h3>{{branchname}}</h3> -->
+      <!-- <h6>{{today_date}}</h6> -->
+      <h4>{{i.name}}</h4>
+      <div class="row">
+        <div class="col-6">
+          <h5 style="float:right">Calorie</h5>
+        </div>
+        <div class="col-6">
+          <h5>{{i.calorie}}</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <h5 style="float:right">Carbs</h5>
+        </div>
+        <div class="col-6">
+          <h5>{{i.carbs}}</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <h5 style="float:right">Fat</h5>
+        </div>
+        <div class="col-6">
+          <h5 >{{i.fat}}</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <h5 style="float:right">Proteins</h5>
+        </div>
+        <div class="col-6">
+          <h5>{{i.protiens}}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:8px;text-align: center;">
+    <button class="btn-setup-danger mr-2" style="width:100px" (click)="close()">Cancel</button>
+    <button [useExistingCss]="true" printSectionId="print-section" ngxPrint
+      class="btn-setup-sucess" style="width:100px"> <i class="icon-print mr-1"></i>Print</button>
+  </div>
+</div>

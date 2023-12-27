@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  
+    <div class="body_wrapper container-fluid">
+      <!-- Header Start -->
+      <app-header></app-header>
+      <!-- Header End -->
+      <app-inventory-header></app-inventory-header>
+
+      <div class="px-4">
+
+        <div class="row pt-4">
+          <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                  Home
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/inventory">
+                  Inventory
+                </li>
+                <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                  New Stock Reciept
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-12">
+            <div class="d-flex align-items-center head-tag cursor-pointer">
+              <h4 class="flex-gr-1"> <i class="icon-arrow-left" routerLink="/inventory/stockReceipts"></i> New Stock
+                Reciept</h4>
+            </div>
+          </div>
+        </div>
+        <form [formGroup]="newReceiptForm">
+        <div class="row">
+          <div class="col-3">
+            <label>Recieving No/Ref</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right" *ngIf="
+                newReceiptForm.controls.receipt_reference_number.hasError(
+                  'required'
+                ) && newReceiptForm.controls.receipt_reference_number.touched
+              ">required</span>
+
+            <input type="text" class="form-control" formControlName="receipt_reference_number" />
+          </div>
+          <div class="col-3">
+            <label>Receiving Type</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right" *ngIf="
+                newReceiptForm.controls.receiving_type.hasError(
+                  'required'
+                ) && newReceiptForm.controls.receiving_type.touched
+              ">required</span>
+            <select class="form-control w-100" formControlName="receiving_type">
+              <option value="">Select Receiving Type</option>
+              <option value=0>Cash Purchase</option>
+              <option value=1>Card Purchase</option>
+            </select>
+          </div>
+          <div class="col-3">
+            <label>For Location</label>
+            <input type="text" class="form-control" formControlName="branch_selected" />
+          </div>
+          <div class="col-3">
+            <label>Comments</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right" *ngIf="
+              newReceiptForm.controls.comments.hasError(
+                'required'
+              ) && newReceiptForm.controls.comments.touched
+            ">required</span>
+            <input type="text" placeholder="Enter Your Comments" class="form-control" formControlName="comments"  />
+          </div>
+        </div>
+          <div class="row">
+          <div class="col-12 mt-3">
+            <input type="text" class="form-control w-100" placeholder="Search Ingredient,finished Good or Sub Recipe" 
+              [formControl]="itemArray" [matAutocomplete]="auto" #autoInput  
+              (keyup)="searchItem(autoInput.value)"/>
+
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let option of options" [value]="option.name"
+                [id]="option.id" (click)='itemSelected(option,autoInput)'>
+                {{ option.name }}
+              </mat-option>
+            </mat-autocomplete>
+          </div>
+        </div>
+        <div >
+          <div *ngIf="!isItemsSelected; else message">
+            <div class="not-found bordered">
+              <h3>Sorry :(</h3>
+              <p>No Items Selected.</p>
+            </div>
+          </div>
+          <ng-template #message>
+            <table class="table tableStyleMain bordered col-12">
+              <thead>
+                <tr>
+                  <th scope="col">Sr. No.</th>
+                  <th scope="col">Item</th>
+                  <th scope="col">Stock On Hand</th>
+                  <th scope="col">Price / Unit</th>
+                  <!-- <th scope="col">Unit Value</th> -->
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Total ({{currency_symbol}})</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+
+                <tr formArrayName="stockData" *ngFor="
+                    let item of stocktotalFormGroups.controls;
+                    let i = index
+                  ">
+                  <td>
+                    {{ i + 1 }}
+                  </td>
+                  <td>
+                    {{ itemName(i) }}
+                  </td>
+                  <td>
+                    {{ stockOnHand(i) }}
+                  </td>
+
+                  <td [formGroupName]="i">
+                    <span class="error-message">{{errorMessageforPrice(i)}}</span>
+                    <div class="col-12 row">
+                    <div class="d-flex">
+                        <input type="text" class="form-control" style="width:120px" placeholder="" formControlName="receiving_price"
+                          maxlength="7" (input)="findTotal(i)" />
+                        </div>
+                        <div class="d-flex mt-2 ml-1">
+                        {{currency_symbol}}/{{ measurementunit(i) }}
+                    </div>
+                    </div>
+                  </td>
+        
+                  <td [formGroupName]="i">
+                    <span class="error-message">{{errorMessage(i)}}</span>
+                    <div class="col-12 row">
+                      <div class="d-flex">
+                        <input type="text" class="form-control" style="width:120px" placeholder="Qty"
+                          formControlName="qty" (input)="findTotal(i)" /><span class="unit-space">{{measurementunit(i)}}</span>
+                      </div>
+                      <!-- <div class="d-flex ml-2">
+                        <select class="form-control w-100" (change)="unitSelected($event,i)" >
+                           <option value="{{unit.id}}" *ngFor="let unit of unitSelect(i)">{{unit.name}}</option>
+                        </select>
+                        
+                      </div> -->
+                    </div>
+                  </td>
+                  <td>{{ subTotal(i) }}</td>
+                  <td [formGroupName]="i">
+                     <i class="icon-trash mr-1 icon-red cursor-pointer" (click)="clearSupplier(i)"></i>
+                  </td>
+                </tr>
+
+
+              </tbody>
+            </table>
+            <div class="col-12 row">
+              <div class="col-12">
+                <span class="float-right">Total Amount {{ currency_symbol }}: &nbsp;<b>{{ total_price }}</b></span>
+              </div>
+
+            </div>
+          </ng-template>
+        </div>
+      </form>
+      </div>
+      <div class="b-right m-2">
+        <button class="btn-setup-danger  mr-2" (click)="back()">Cancel</button>
+        <button class="btn-setup-sucess" (click)="stockReceive()"
+          [disabled]="!newReceiptForm.valid || newReceiptForm.pristine">Receive</button>
+      </div>
+    </div>
+ 
+</body>
+
+</html>

@@ -1,0 +1,91 @@
+<div class="modal-wrapper">
+  <h2 mat-dialog-title>Purchase Order :
+    {{purchase_order_number}}</h2>
+  <mat-dialog-content>
+    <div class="row">
+      <div class="col-12 col-md-3">
+        <label>Order No/Ref:</label>
+        <input type="text" class="form-control" [(ngModel)]="purchase_order_number" [disabled]="true">
+      </div>
+
+      <div class="col-12 col-md-3">
+        <label>Due Date</label>
+        <input type="text" class="form-control" [(ngModel)]="due_date" [disabled]="true">
+      </div>
+      <div class="col-12 col-md-3">
+        <label>Comments</label>
+        <input type="text" class="form-control" [(ngModel)]="comments" [disabled]="true">
+      </div>
+      <div class="col-12 col-md-3">
+        <label>Delivered To</label>
+        <input type="text" class="form-control" [(ngModel)]="branch" [disabled]="true">
+      </div>
+    </div>
+    <table class="table tableStyleMain bordered">
+      <thead>
+        <tr>
+          <th scope="col">Sr. No.</th>
+          <th scope="col">Item</th>
+          <th scope="col">Supplier </th>
+          <th scope="col" *ngIf="isSupplierPrice">Supplier Price / Unit</th>
+          <th scope="col">Unit Value</th>
+          <th scope="col">Opening Balance</th>
+          <th scope="col">Ordered Quantity</th>
+          <th scope="col">Received Quantity</th>
+          <th scope="col">Closing Balance</th>
+          <th scope="col">Total ({{currency_symbol}})</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of ViewPOArray;let i=index">
+          <td>
+            {{i+1}}
+          </td>
+          <td>
+            {{item.name}}
+          </td>
+
+          <td>
+            {{item.supplier}}
+          </td>
+          <td *ngIf="isSupplierPrice">
+            {{getSupplierPrice(item.received_price,item.buying_unit)}}
+            <!-- {{item.received_price}} {{currency_symbol}}/ {{item.measurement_unit_name}} -->
+          </td>
+          <td>
+            {{item.measurement_unit_name}}
+          </td>
+          <td>
+            {{findOpeningBalance(item)}}
+          </td>
+          <td>
+            {{item.buying_qty}} {{item.buying_unit}}
+          </td>
+          <td>
+            {{item.received_buying_qty?item.received_buying_qty:0}} {{item.buying_unit}}
+          </td>
+          <td>
+            {{item.on_hand_qty}} {{item.measurement_unit_name}}
+
+          </td>
+          <td>
+            {{findTotal(item)}}
+          </td>
+
+
+        </tr>
+
+      </tbody>
+    </table>
+
+    <div class="col-12 mb-4" style="text-align: end;">
+      <span class="float-right">Total Amount {{currency_symbol}}:<b>{{total_price}}</b></span>
+
+    </div>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button class="btn-setup-danger mr-2" (click)="back()">Close</button>
+  </mat-dialog-actions>
+</div>

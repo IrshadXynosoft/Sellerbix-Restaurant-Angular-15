@@ -1,0 +1,18 @@
+.map {
+	height: 400px;
+	/* The height is 400 pixels */
+	width: 100%;
+	/* The width is the width of the web page */
+}
+.content {
+    background: white;
+    padding: 30px;
+    border: 1px solid #ccc;
+    overflow: auto;
+    margin-top: 10px;
+  }
+  img{
+    height: 200px !important;
+    width: 300px !important;
+  }
+ 

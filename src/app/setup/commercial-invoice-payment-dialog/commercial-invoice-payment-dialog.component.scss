@@ -1,0 +1,96 @@
+.remove {
+    color: rgb(241, 26, 26);
+    cursor: pointer;
+  }
+  
+  .close-icon {
+    float: right;
+    cursor: pointer;
+  }
+  
+  .amount {
+    text-align: center;
+    font-size: 70px;
+    font-weight: revert;
+  }
+  
+  .payment-card {
+  
+    cursor: pointer;
+    background-color: rgb(113, 216, 113);
+    color: white;
+    text-align: center;
+    margin-bottom: 10px;
+    width: 9.3rem;
+  
+    h4 {
+      font-size: 14px !important;
+    }
+  }
+  
+  .payment-card-active {
+    cursor: pointer;
+    background-color: var(--primary);
+    color: white;
+    text-align: center;
+    margin-bottom: 10px;
+  
+    h4 {
+      font-size: 14px !important;
+    }
+  }
+  
+  .disabled {
+    pointer-events: none;
+    background-color: rgb(149, 228, 149);
+    color: white;
+    width: 9.3rem;
+    text-align: center;
+    margin-bottom: 10px;
+  
+    h4 {
+      font-size: 14px !important;
+    }
+  }
+  
+  .commonBtnStyle {
+    height: 2.5rem;
+    width: 7rem;
+    padding: 0;
+  }
+  
+  .my-checkfield {
+    border: solid 1px black;
+    color: black;
+    border-radius: 5px;
+    position: relative;
+  }
+  
+  .my-checkfield-selected {
+    border: solid 1px green;
+  }
+  
+  .my-checkfield-selected::before,
+  .my-checkfield-selected::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-color: transparent;
+    border-style: solid;
+  }
+  
+  .my-checkfield-selected::after {
+    content: '\2713';
+    font-size: 13px;
+    line-height: 13px;
+    font-weight: bold;
+    color: white;
+  }
+  
+  .my-checkfield-selected::before {
+    border-radius: 0;
+    border-width: 12px;
+    border-left-color: green;
+    border-top-color: green;
+  }

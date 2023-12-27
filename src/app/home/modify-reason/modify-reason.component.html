@@ -1,0 +1,57 @@
+<div class="modal-wrapper">
+  <h2 mat-dialog-title>You are updating ({{ data.item.name }})</h2>
+  <form [formGroup]="modifyReasonForm">
+    <mat-dialog-content>
+      <div class="quantityDiv">
+        <div class="number">
+          <span class="minus" style="cursor: pointer" (click)="qtyMinus()"
+            >-</span
+          >
+          <input
+            type="text"
+            tabindex="-1"
+            minlength="1"
+            formControlName="quantity"
+            (input)="qtyInput()"
+            maxlength="3"
+            #input
+          />
+          <span class="plus" style="cursor: pointer" (click)="qtyPlus()"
+            >+</span
+          >
+        </div>
+      </div>
+      <label class="mt-2">Reason:</label>
+      <span class="error-message float-right">*</span>
+      <select class="form-control w-100" formControlName="reason">
+        <option value="" disabled>Reason</option>
+        <option *ngFor="let reason of modifierRecords" value="{{ reason.id }}">
+          {{ reason.reason }}
+        </option>
+      </select>
+      <!-- <div *ngIf="this.data.action == 'minus'"> -->
+      <label class="mt-2">Inventory Status:</label>
+      <span class="error-message float-right">*</span>
+      <select class="form-control w-100" formControlName="inventory_status">
+        <option value="" disabled selected>Select</option>
+        <option value="1">Return to inventory</option>
+        <option value="2">Wasted</option>
+        <option value="3">No change</option>
+      </select>
+      <!-- </div> -->
+      <label class="mt-2">Supervisor password</label>
+      <span class="error-message float-right">*</span>
+      <input type="password" class="form-control" formControlName="password" />
+    </mat-dialog-content>
+  </form>
+  <div mat-dialog-actions>
+    <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+    <button
+      class="btn-setup-sucess"
+      (click)="modifyItem()"
+      [disabled]="!modifyReasonForm.valid"
+    >
+      {{ btnName }}
+    </button>
+  </div>
+</div>

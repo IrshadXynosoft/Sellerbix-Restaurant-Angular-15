@@ -1,0 +1,203 @@
+<div class="modal-wrapper">
+  <h2 mat-dialog-title>Split Bill</h2>
+  <mat-dialog-content>
+    <div class="row" cdkDropListGroup>
+      <div class="col-4" *ngIf="!editFlag">
+        <label for>Items</label>
+        <button (click)="addBill()" class="btn-setup-sucess primary" style="float: right">
+          Split bill
+        </button>
+        <div class="bordered mt-2">
+          <table [cdkDropListData]="items" id="first" (cdkDropListDropped)="drop($event,null)" class="table" cdkDropList>
+            <thead>
+              <tr>
+                <th scope="col">Item Name</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Price</th>
+                <th scope="col">Line Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="items?.length <= 0" style="height: 80px">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr *ngFor="let item of items" cdkDrag>
+                <td style="text-transform: capitalize">
+                  <span>{{ item.name }}</span>
+                  <div *ngIf="item.modifiers" class="col-12 combo-tree">
+                    <div class="tree">
+                      <ul *ngFor="let modifier of item.modifiers; let i = index" class="tree-holder">
+                        <li *ngIf="modifiercheck(modifier.list)">
+                          <span>
+                            <i class="fa fa-folder-open"></i>
+                            {{ modifier.name }}
+                          </span>
+                          <ul *ngFor="let list of modifier.list">
+                            <li *ngIf="list.status">
+                              <span>
+                                <i class="fa fa-minus-square"></i>
+                                {{ list.modifier_list }}&nbsp;
+                                {{ currency_symbol }}{{ list.rate }}
+                              </span>
+                              <span *ngIf="list.list_qty" style="text-transform: none">
+                                &nbsp; x{{ list.list_qty }}
+                              </span>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </td>
+                <td>{{ item.qty }}</td>
+                <td>{{ item.price }} {{ currency_symbol }}</td>
+                <td>{{ item.total }} {{ currency_symbol }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="d-flex br-btm pb-2 px-2">
+            <div class="flex-grow-1">Sub Total:</div>
+            <div>
+              {{ orderRecords?.order?.Cart?.subTotal }} {{ currency_symbol }}
+            </div>
+          </div>
+          <div *ngFor="let split of taxArray?.tax_split" class="d-flex px-2">
+            <div class="flex-grow-1">{{ split.name }}:</div>
+            <div>
+              {{split.effected_price }} {{ currency_symbol }}
+            </div>
+          </div>
+          <div class="d-flex br-btm pt-2 pb-2 px-2">
+            <div class="flex-grow-1">{{ taxArray.name }} :</div>
+            <div>
+              {{ taxArray.effected_price }} {{ currency_symbol }}
+            </div>
+          </div>
+          <div class="d-flex br-btm pt-2 capital pb-2 px-2" *ngIf="orderRecords?.order?.applied_surcharge[0]?.effected_price > 0">
+            <div class="flex-grow-1">{{orderRecords?.order?.applied_surcharge[0]?.name }} :</div>
+            <div>
+             <span  style="color:green;font-weight: bold;">+</span> {{ orderRecords?.order?.applied_surcharge[0]?.effected_price }} {{ currency_symbol }}
+            </div>
+          </div>
+          <div class="d-flex br-btm pt-2 capital pb-2 px-2" *ngIf="orderRecords?.order?.discount?.effected_value > 0">
+            <div class="flex-grow-1">{{ orderRecords?.order?.discount?.name }} :</div>
+            <div>
+              <span  style="color:red;font-weight: bold;">-</span> {{ orderRecords?.order?.discount?.effected_value }} {{ currency_symbol }}
+            </div>
+          </div>
+          <div class="d-flex  pb-2 px-2">
+            <div class="flex-grow-1">Total:</div>
+            <div>
+              <strong>{{orderRecords?.order?.Total}} {{ currency_symbol }}</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngFor="let i of targetArrays; let index = index" class="col-4">
+        <label for>Bill {{ index + 1 }}</label>
+        <span (click)="deleteBill(index)" class="close">
+          <i class="zmdi zmdi-close-circle-o"></i>
+        </span>
+
+        <div class="bordered mt-1">
+          <table [cdkDropListData]="i.items"  (cdkDropListDropped)="drop($event,i)" class="table" cdkDropList>
+            <thead>
+              <tr>
+                <th scope="col">Item Name</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Price</th>
+                <th scope="col">Line Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="i?.items?.length <= 0" style="height: 50px">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr *ngFor="let item of i?.items" cdkDrag [cdkDragDisabled]="i.payments ? true : false">
+                <td style="text-transform: capitalize">
+                  <span>{{ item.name }}</span>
+                  <div *ngIf="item.modifiers" class="col-12 combo-tree">
+                    <div class="tree">
+                      <ul *ngFor="let modifier of item.modifiers; let i = index" class="tree-holder">
+                        <li *ngIf="modifiercheck(modifier.list)">
+                          <span>
+                            <i class="fa fa-folder-open"></i>
+                            {{ modifier.name }}
+                          </span>
+                          <ul *ngFor="let list of modifier.list">
+                            <li *ngIf="list.status">
+                              <span>
+                                <i class="fa fa-minus-square"></i>
+                                {{ list.modifier_list }}&nbsp;
+                                {{ currency_symbol }}{{ list.rate }}
+                              </span>
+                              <span *ngIf="list.list_qty" style="text-transform: none">
+                                &nbsp; x{{ list.list_qty }}
+                              </span>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </td>
+                <td>{{ item?.qty }}</td>
+                <td>{{ item?.price }} {{ currency_symbol }}</td>
+                <td>{{ item?.total }} {{ currency_symbol }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="d-flex br-btm pb-2 px-2">
+            <div class="flex-grow-1">Sub Total:</div>
+            <div>{{ subTotal(i) }} {{ currency_symbol }}</div>
+          </div>
+          <div *ngFor="let split of i.cart?.applied_tax?.tax_split" class="d-flex px-2">
+            <div class="flex-grow-1" *ngIf="i?.items?.length > 0">{{ split?.name }}:</div>
+            <div  *ngIf="i?.items?.length > 0">
+              {{ split?.effected_price }} {{ currency_symbol }}
+            </div>
+          </div>
+          <div class="d-flex br-btm pt-2 pb-2 px-2" *ngIf="i.cart?.applied_tax && i?.items?.length > 0" >
+            <div class="flex-grow-1">{{ i.cart?.applied_tax?.name }} :</div>
+            <div>
+              {{ i.cart?.applied_tax?.effected_price }} {{ currency_symbol }}
+            </div>
+          </div>
+          <div class="d-flex br-btm pt-2 capital pb-2 px-2" *ngIf="i.cart?.surcharge?.value > 0 && i?.items?.length > 0">
+            <div class="flex-grow-1">{{ i.cart?.surcharge?.name }} :</div>
+            <div>
+             <span  style="color:green;font-weight: bold;">+</span> {{ i.cart?.surcharge?.value }} {{ currency_symbol }}
+            </div>
+          </div>
+          <div class="d-flex br-btm pt-2 capital pb-2 px-2" *ngIf="i.cart?.discount?.effected_value > 0 && i?.items?.length > 0">
+            <div class="flex-grow-1">{{ i.cart?.discount?.name }} :</div>
+            <div>
+              <span  style="color:red;font-weight: bold;">-</span> {{ i.cart?.discount?.effected_value }} {{ currency_symbol }}
+            </div>
+          </div>
+          <div class="d-flex pb-2 px-2">
+            <div class="flex-grow-1">Total:</div>
+            <div>
+              <strong>{{i.cart?.Total}} {{ currency_symbol }}</strong>
+            </div>
+          </div>
+        </div>
+        <button *ngIf="i.items.length > 0" [disabled]="i.payments ? true : false" (click)="makePayment(i.cart?.Total,index)" class="btn-setup-sucess print" style="float: right">
+          {{i.payments ? 'Paid' : 'Pay'}}
+        </button>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button class="addModifier mr-2"(click)="updateOrder()">Save</button>
+    <button (click)="close()" class="btnCancelMain mr-2">
+      Close
+    </button>
+  </mat-dialog-actions>
+</div>

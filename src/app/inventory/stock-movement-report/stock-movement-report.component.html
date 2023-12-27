@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/inventory">
+                Inventory
+              </li>
+
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page" routerLink="/inventory/reports">
+                Reports
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                Stock Movement Report
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1"> <i class="icon-arrow-left cursor-pointer" routerLink="/inventory/reports"></i>Stock Movement
+              Report</h4>
+          </div>
+        </div>
+      </div>
+
+      <form [formGroup]="generateReportForm">
+        <div class="row col-12 ">
+
+          <div class="col-lg-3">
+            <label>Inventory Type</label>
+            <select class="form-control w-100" formControlName="inventory_type" (change)="fetchInventoryData($event)">
+              <option value='1'>Finished Good</option>
+              <option value='2'>Ingredient</option>
+              <option value='3'>Sub-Recipe</option>
+            </select>
+          </div>
+          <div class="col-lg-3">
+            <label>Location</label>
+            <select class="form-control m-0 mr-2 w-100" formControlName="branch_id">
+              <option value="" disabled> Select</option>
+              <option *ngFor="let i of branchRecords" value="{{ i.id }}">
+                {{ i.name }}
+              </option>
+            </select>
+          </div>
+          <div class="col-lg-3">
+            <label>Search by</label>
+            <select class="form-control w-100" formControlName="searchBy" (change)="searchby($event)">
+              <option value=0>Current Date</option>
+              <option value=1>Date Period</option>
+              <option value=2>Specify Date</option>
+            </select>
+          </div>
+         
+
+          <div class="col-lg-3" style="margin-top:1.7rem;">
+            <button class="btn-setup-sucess" (click)="generateReport()">
+              <i class="icon-save mr-1"></i>Generate Report
+            </button>
+          </div>
+
+        </div>
+         <div class="col-12 row mt-2">
+          <div class="col-lg-3" *ngIf="searchBySpecificDate">
+            <label>Date</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="generateReportForm.controls.fromDate.hasError('required') && generateReportForm.controls.fromDate.touched">
+              Required</span>
+            <input type="date" placeholder="Code" class="form-control" formControlName="date" />
+          </div>
+          <div class="col-lg-3" *ngIf="searchByPeriod">
+            <label>From Date</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="generateReportForm.controls.fromDate.hasError('required') && generateReportForm.controls.fromDate.touched">
+              Required</span>
+
+           <input type="date" placeholder="Code" [min]="minDate" [max]="todayDate" class="form-control"
+              formControlName="fromDate" />
+          </div>
+          <div class="col-lg-3" *ngIf="searchByPeriod">
+            <label>To Date</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="generateReportForm.controls.toDate.hasError('required') && generateReportForm.controls.toDate.touched">
+              Required</span>
+           <input type="date" placeholder="Code" [min]="minDate" [max]="todayDate" class="form-control"
+              formControlName="toDate" />
+            <span class="error-message float-right" *ngIf="generateReportForm.errors">{{
+              generateReportForm.errors.dates | json }}</span>
+          </div>
+         </div>
+        <div class="col-12 row mt-2" >
+          <div class="col-lg-12">
+            
+              <label>Items <span class="error-message">*</span> <span class="error-message float-right" *ngIf="itemValidation">
+                Required</span></label><br>
+            <input type="text" placeholder="Search Items, then hit enter to add" aria-label="Items" #autoInput
+              [formControl]="itemData" [matAutocomplete]="auto" class="form-control w-100" 
+              (keyup)="itemFilter(autoInput.value)" />
+            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" #autoComplete>
+              <mat-option *ngFor="let option of options" [value]="option.name" [id]="option.id"
+                (click)="itemSelected(option,autoInput)">
+                {{ option.name }}
+              </mat-option>
+            </mat-autocomplete>
+          </div>
+          <div class="col-12" *ngIf="selectedStockIDs.length>0">
+            <table class="tableStyleMain table table-shadow">
+              <thead>
+                <tr>
+                  <th scope="col ">No</th>
+                  <th scope="col w-50">Items</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr formArrayName="itemData" *ngFor="
+                            let item of itemFormGroups.controls;
+                            let i = index
+                          ">
+                  <td>
+                    {{ i+1 }}
+                  </td>
+                  <td>
+                    {{ ItemName(i) }}
+                  </td>
+
+                  <td [formGroupName]="i">
+                    <button class="btn-setup-danger cust-pos-btn" (click)=clearItem(i);>
+                      <i class="icon-remove"></i>
+                    </button>
+                  </td>
+
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </form>
+      <div *ngIf="processeddata.length <= 0; else showdata">
+        <div class="row col-12">
+          <div class="col-12">
+            <div class="not-found bordered">
+              <h3>Sorry :(</h3>
+              <p>No Report available </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #showdata>
+      <div class="col-12 row mt-2">
+        <div class="col-lg-12">
+        <mat-accordion >
+          <mat-expansion-panel *ngFor="let item of processeddata">
+            <mat-expansion-panel-header (click)="setTableData(item.movement_history)">
+              <mat-panel-title> {{item.item_name}} </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div *ngIf="dataSource.data.length <= 0; else showingredienttable">
+              <div class="row col-12">
+                <div class="col-12">
+                  <div class="not-found bordered">
+                    <h3>Sorry :(</h3>
+                    <p>No Stock Movement available for {{item.item_name}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <ng-template #showingredienttable>
+              <table mat-table [dataSource]="dataSource" matSort class="tableStyleMain mat-z8 table bordered">
+                <ng-container matColumnDef="index">
+                  <th mat-header-cell *matHeaderCellDef>
+                    #
+                  </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{dataSource.data.indexOf(element) + 1}}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="date">
+                  <th mat-header-cell *matHeaderCellDef>Date</th>
+                  <td mat-cell *matCellDef="let element">{{ element.date }}</td>
+                </ng-container>
+                <ng-container matColumnDef="location">
+                  <th mat-header-cell *matHeaderCellDef>Location</th>
+                  <td mat-cell *matCellDef="let element">{{ element.location }}</td>
+                </ng-container>
+                <ng-container matColumnDef="opening_balance">
+                  <th mat-header-cell *matHeaderCellDef>Opening Balance</th>
+                  <td mat-cell *matCellDef="let element">{{ element.opening_balance }}</td>
+                </ng-container>
+                <ng-container matColumnDef="stock_in">
+                  <th mat-header-cell *matHeaderCellDef>Stock In</th>
+                  <td mat-cell *matCellDef="let element">{{ element.stock_in }}</td>
+                </ng-container>
+                <ng-container matColumnDef="stock_out">
+                  <th mat-header-cell *matHeaderCellDef>Stock Out</th>
+                  <td mat-cell *matCellDef="let element">{{ element.stock_out }}</td>
+                </ng-container>
+                <ng-container matColumnDef="closing_balance">
+                  <th mat-header-cell *matHeaderCellDef>Closing Balance</th>
+                  <td mat-cell *matCellDef="let element">{{ element.closing_balance }}</td>
+                </ng-container>
+                <ng-container matColumnDef="movement_type">
+                  <th mat-header-cell *matHeaderCellDef>Movement Type</th>
+                  <td mat-cell *matCellDef="let element">{{ element.movement_type }}</td>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                  <th mat-header-cell *matHeaderCellDef>Status</th>
+                  <td mat-cell *matCellDef="let element">{{ element.status }}</td>
+                </ng-container>
+                <ng-container matColumnDef="source">
+                  <th mat-header-cell *matHeaderCellDef>Source</th>
+                  <td mat-cell *matCellDef="let element">{{ element.source }}</td>
+                </ng-container>
+                <ng-container matColumnDef="staff">
+                  <th mat-header-cell *matHeaderCellDef>Staff</th>
+                  <td mat-cell *matCellDef="let element">{{ element.staff }}</td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+              </table>
+              <mat-paginator #stockTable [ngClass]="{ show: dataSource.data.length <= 0 }" [pageSize]="50"
+                [pageSizeOptions]="[2, 4, 6, 10, 20]">
+              </mat-paginator>
+            </ng-template>
+  
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+      </div>
+      
+      </ng-template>
+    </div>
+
+  </div>
+
+</body>
+
+</html>

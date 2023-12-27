@@ -1,0 +1,17 @@
+<div class="modal-wrapper">
+    <h2 mat-dialog-title>You are updating the items. ({{this.data.name}})</h2>
+    <form [formGroup]="modifyReasonForm"> 
+        <div mat-dialog-content>
+            <label>Reason:</label>
+            <span class="error-message float-right">*</span>
+            <select class="form-control w-100" formControlName="reason">
+                <option value="" >Reason</option>
+                <option *ngFor="let reason of modifierRecords" value="{{reason.id}}">{{reason.reason}}</option>
+            </select>
+        </div>
+    </form>
+    <div mat-dialog-actions>
+        <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+        <button class="btn-setup-sucess" (click)="modifyItem()">Ok</button>
+    </div>
+</div>

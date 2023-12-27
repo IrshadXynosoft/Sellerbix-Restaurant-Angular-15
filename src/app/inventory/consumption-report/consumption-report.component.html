@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <form [formGroup]="newStockRequestForm">
+    <div class="body_wrapper container-fluid">
+      <!-- Header Start -->
+      <app-header></app-header>
+      <!-- Header End -->
+      <app-inventory-header></app-inventory-header>
+      <div class="px-4">
+        <div class="row pt-4">
+          <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                  Home
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/inventory">
+                  Inventory
+                </li>
+                <li class="breadcrumb-item active cursor-pointer" aria-current="page" routerLink="/inventory/reports">
+                  Reports
+                </li>
+                <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                  Stock Consumption Report
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-12">
+            <div class="d-flex align-items-center head-tag cursor-pointer">
+              <h4 class="flex-gr-1"> <i class="icon-arrow-left" routerLink="/inventory/reports"></i> Stock Consumption
+                Report <span *ngIf="SelectedOption?.name"> For {{SelectedOption.name}}</span></h4>
+            </div>
+          </div>
+        </div>
+
+        <div>
+
+         
+          <div class="row col-12">
+            <div class="col-12">
+              <label>Ingredient/Sub Recipe </label><br>
+              <input type="text" class="form-control w-100" placeholder="Search Ingredient/Sub Recipe by name, then hit enter to add" 
+                [formControl]="suppliersData" [matAutocomplete]="auto" #autoInput  
+                (keyup)="searchItem(autoInput.value)"/>
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let option of options" [value]="option.name"
+                  [id]="option.id" (click)='itemSelected(option,autoInput)'>
+                  {{ option.name }}
+                </mat-option>
+              </mat-autocomplete>
+            </div>
+          </div>
+          <div class="col-12 mt-2" *ngIf="consumptionRecord<=0; else message">
+            <div class="not-found bordered">
+              <h3>Sorry :(</h3>
+              <p>No Records Found.</p>
+            </div>
+          </div>
+          <ng-template #message>
+            <div class="row mt-2">
+              <div class=" col-6" *ngFor="let data of Records; ">
+                <table class="tables">
+                  <thead>
+                    <tr>
+                      <th scope="col">Recipe/Sub recipe_ingredient</th>
+                      <th scope="col">Inventory Type</th>
+                      <th scope="col">Stock On Hand</th>
+                      <th scope="col">Cost ({{ currency_symbol }})</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+
+                      <td>
+                        {{ data.name }}
+                      </td>
+                      <td>
+                        {{data.type}}
+                      </td>
+                      <td>
+                        {{data.stock_on_hand}} {{data.measurement_unit}}
+                      </td>
+                      <td>
+                        {{data.cost}}
+                      </td>
+                    <tr>
+                      <td><b>Ingredient/Sub Recipe</b></td>
+                      <td><b>Inventory Type</b></td>
+                      <td><b>Required</b></td>
+                      <td><b>Available</b></td>
+                    </tr>
+                    <tr *ngFor="let item of data.inventory">
+                      <td>{{ item.name }}</td>
+                      <td>{{item.type}}</td>
+                      <td>
+                        {{ item.required }}{{ item.unit }}
+                      </td>
+                      <td>
+                        {{ item.available }}{{ item.unit }}
+                      </td>
+
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </ng-template>
+        </div>
+
+      </div>
+    </div>
+  </form>
+</body>
+
+</html>

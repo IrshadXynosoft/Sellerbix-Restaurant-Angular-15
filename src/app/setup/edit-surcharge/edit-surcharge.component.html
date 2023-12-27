@@ -1,0 +1,95 @@
+<div class="modal-wrapper">
+  <form [formGroup]="surchargeForm">
+    <h2 mat-dialog-title>Edit Surcharge</h2>
+    <div mat-dialog-content>
+      <Label>Name</Label>
+      <span class="error-message">*</span>
+      <span class="error-message float-right"
+        *ngIf="surchargeForm.controls.name.hasError('required' ) && surchargeForm.controls.name.touched">Required</span>
+      <span class="error-message float-right" *ngIf="surchargeForm.controls.name.hasError('pattern' )">Invalid
+        input</span>
+      <span class="error-message float-right" *ngIf="ErrorArray.name">
+        {{ ErrorArray.name }}</span>
+      <input type="text" class="form-control"
+        [ngClass]="surchargeForm.controls.name.hasError('required' ) && surchargeForm.controls.name.touched || surchargeForm.controls.name.hasError('pattern' ) || ErrorArray.name ? 'is-invalid' : ''"
+        placeholder="Name" formControlName="name" />
+      <Label>Surcharge Type</Label>
+      <select class="form-control w-100" aria-label="Surcharge Type" formControlName="type" ngModel="Percentage">
+        <option value="percentage">Percentage</option>
+        <option value="value">Value</option>
+      </select>
+      <Label>Rate</Label>
+      <span class="error-message">*</span>
+      <span class="error-message"
+        *ngIf="surchargeForm.controls.rate.hasError('required') && surchargeForm.controls.rate.touched">Required</span>
+      <span class="error-message float-right" *ngIf="surchargeForm.controls.rate.hasError('pattern')">Invalid
+        input</span>
+      <input type="text" class="form-control"
+        [ngClass]="surchargeForm.controls.rate.hasError('required' ) && surchargeForm.controls.rate.touched || surchargeForm.controls.rate.hasError('pattern' ) ? 'is-invalid' : ''"
+        placeholder="Rate" formControlName="rate" />
+
+      <p>Enable For
+        <span class="error-message">*</span>
+        <span class="error-message float-right" *ngIf="isCheckboxErrorMessage">Required</span>
+      </p>
+      <div class="row">
+        <div class="col-12 col-sm-4">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked0" formControlName="walkin"
+              (change)="onChangewalkin($event)">
+            <label class="form-check-label" for="flexCheckChecked1">
+              Walk in
+            </label>
+          </div>
+        </div>
+        <div class="col-12 col-sm-4">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked1" formControlName="dinein"
+              (change)="onChangedinein($event)">
+            <label class="form-check-label" for="flexCheckChecked1">
+              Dine In
+            </label>
+          </div>
+        </div>
+        <div class="col-12 col-sm-4">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked2" formControlName="callcenter"
+              (change)="onChangecallcenter($event)">
+            <label class="form-check-label" for="flexCheckChecked2">
+              Call Center
+            </label>
+          </div>
+        </div>
+        <div class="col-12 col-sm-4">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked3" formControlName="takeaway"
+              (change)="onChangetakeaway($event)">
+            <label class="form-check-label" for="flexCheckChecked3">
+              Take Away
+            </label>
+          </div>
+        </div>
+        <div class="col-12 col-sm-4">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked4" formControlName="eorder"
+              (change)="onChangeeorder($event)">
+            <label class="form-check-label" for="flexCheckChecked4">
+              E-Order
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="1" id="flexCheckChecked" formControlName="is_taxable">
+        <label class="form-check-label" for="flexCheckChecked">
+          Is Taxable
+        </label>
+      </div>
+    </div>
+    <div mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" (click)="editSurcharge()"
+        [disabled]="!surchargeForm.valid || surchargeForm.pristine">Update</button>
+    </div>
+  </form>
+</div>

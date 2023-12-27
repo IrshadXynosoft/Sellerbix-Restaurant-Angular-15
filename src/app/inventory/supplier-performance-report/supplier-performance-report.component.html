@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/inventory">
+                Inventory
+              </li>
+
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page" routerLink="/inventory/reports">
+                Reports
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                Supplier Performance Report
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1"> <i class="icon-arrow-left cursor-pointer"
+                routerLink="/inventory/reports"></i>Supplier Performance Report</h4>
+          </div>
+        </div>
+      </div>
+      <!-- <mat-accordion>
+        <mat-expansion-panel class="mat-elevation-z0">
+          <mat-expansion-panel-header>
+            <mat-panel-title>Filter Data</mat-panel-title>
+          </mat-expansion-panel-header> -->
+          <form [formGroup]="SupplierForm">
+            <div class="row col-12 ">
+              <div class="col-lg-4">
+                <label>Supplier</label>
+                <select class="form-control w-100" formControlName="supplier_id">
+                  <option value=''>Select</option>
+                  <option *ngFor="let i of supplierArray" value="{{ i.id }}">
+                    {{ i.name }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="col-lg-3" style="margin-top:1.7rem">
+                <button class="btn-setup-sucess" (click)="generateReport(1)">
+                  <i class="icon-save mr-1"></i>Generate Report
+                </button>
+              </div>
+            </div>
+
+          </form>
+        <!-- </mat-expansion-panel>
+      </mat-accordion> -->
+      <div *ngIf="dataSource.data.length <= 0; else showtable">
+        <div class="row col-12">
+          <div class="col-12">
+            <div class="not-found bordered">
+              <h3>Sorry :(</h3>
+              <p>No Report available</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <ng-template #showtable>
+          <div infinite-scroll
+          [infiniteScrollDistance]="scrollDistance"
+          [infiniteScrollUpDistance]="scrollUpDistance"
+          [infiniteScrollThrottle]="throttle"
+          (scrolled)="onScrollDown($event)"  
+        >
+           <table
+          mat-table
+           [dataSource]="dataSource"
+          matSort
+          class="tableStyleMain table  w-100 bordered"
+        >
+       
+            <ng-container matColumnDef="index">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                #
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{dataSource.data.indexOf(element) + 1}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Name
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.ingredient?element.ingredient.ingredient_name:element.finished_good?.name}}</td>
+            </ng-container>
+            <ng-container matColumnDef="inventory_type">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Inventory Type
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.stock_type==2?'Ingredient':'Finished Good'}}</td>
+            </ng-container>
+            <ng-container matColumnDef="stock_on_hand">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+               Available Stock
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.on_hand_qty }} {{ element.purchase_detail?.measurement_unit_name }}</td>
+            </ng-container>
+            <ng-container matColumnDef="cost_unit">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Cost ({{currency_symbol}})
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.cost_per_unit }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="reorder_qty">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+               Reorder Qty
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.reorder_qty }} {{ element.purchase_detail?.measurement_unit_name }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="buying_unit">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Buying Unit
+              </th>
+              <td mat-cell *matCellDef="let element">{{ element.purchase_detail?.buying_unit }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="unit_value">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Unit Value
+              </th>
+              <td mat-cell *matCellDef="let element">1 {{ element.purchase_detail?.buying_unit }} = {{element.purchase_detail?.unit_equals_measurement_unit}} {{ element.purchase_detail?.measurement_unit_name }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="button">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td class="btn-wrp-equal" mat-cell *matCellDef="let element">
+                <button class="btn-setup-sucess" matTooltip="View performance graph"
+                 (click)="viewDetails(element.stock_id,element.item_supplier[0].supplier_id,element.ingredient?element.ingredient.ingredient_name:element.finished_good?.name)">
+                  <i _ngcontent-pms-c429="" class="zmdi zmdi-eye"></i>
+                </button>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+          </div>
+        </ng-template>
+      
+    </div>
+
+  </div>
+
+</body>
+
+</html>

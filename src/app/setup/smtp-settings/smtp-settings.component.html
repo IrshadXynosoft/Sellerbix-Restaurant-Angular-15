@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">Home</li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                Setup
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/addons">
+                Add-Ons
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                SMTP Settings
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag">
+            <h4 class="flex-gr-1"><i class="icon-arrow-left cursor-pointer" routerLink="/setup/addons"></i> SMTP
+              Settings</h4>
+
+          </div>
+          <div class="content">
+            <form [formGroup]="smtpForm">
+              <div class="col-12">
+                <div class="formGroup">
+                  <label><i class="zmdi zmdi-email mr-1"></i>Sender Email Adress</label>
+                  <span class="error-message">*</span>
+                  <span class="error-message float-right"
+                    *ngIf="smtpForm.controls.sender_email.hasError('required' ) && smtpForm.controls.sender_email.touched">Required</span>
+                  <span class="error-message float-right"
+                    *ngIf="smtpForm.controls.sender_email.hasError('pattern' )">invalid input</span>
+                  <input type="text" class="form-control"
+                    [ngClass]="smtpForm.controls.sender_email.hasError('required' ) && smtpForm.controls.sender_email.touched || smtpForm.controls.sender_email.hasError('pattern' ) ? 'is-invalid' : ''"
+                    placeholder="Sender email address" formControlName="sender_email" />
+                </div>
+              </div>
+              <div class="col-12 row">
+                <div class="col-6">
+                  <div class="formGroup">
+                    <label><i class="zmdi zmdi-email mr-1"></i>SMTP Host</label>
+                    <span class="error-message ">*</span>
+                    <span class="error-message float-right"
+                      *ngIf="smtpForm.controls.smtp_host.hasError('required' ) && smtpForm.controls.smtp_host.touched">Required</span>
+                    <input type="text" class="form-control"
+                      [ngClass]="smtpForm.controls.smtp_host.hasError('required' ) && smtpForm.controls.smtp_host.touched  ? 'is-invalid' : ''"
+                      placeholder="SMTP Host" formControlName="smtp_host" />
+                  </div>
+                  <div class="formGroup">
+                    <label><i class="zmdi zmdi-account-circle mr-1"></i>SMTP User</label>
+                    <span class="error-message ">*</span>
+                    <span class="error-message float-right"
+                      *ngIf="smtpForm.controls.smtp_user.hasError('required' ) && smtpForm.controls.smtp_user.touched">Required</span>
+                    <input type="text" class="form-control"
+                      [ngClass]="smtpForm.controls.smtp_user.hasError('required' ) && smtpForm.controls.smtp_user.touched  ? 'is-invalid' : ''"
+                      placeholder="SMTP User" formControlName="smtp_user" />
+                  </div>
+                  <div class="formGroup">
+                    <label><i class="zmdi zmdi-shield-security mr-1"></i>Connection Type?</label>
+                    <div class="d-flex ">
+                      <div class="align-self-start mr-auto">
+                        <mat-slide-toggle style="display: flex;justify-content: center;" formControlName="default">
+                          Default
+                        </mat-slide-toggle>
+                      </div>
+                      <div class="align-self-center mx-auto">
+                        <mat-slide-toggle style="align-items:center;" formControlName="tls">TLS</mat-slide-toggle>
+                      </div>
+                      <div class="align-self-end ml-auto ">
+                        <mat-slide-toggle style="align-items:end;" formControlName="ssl">SSL</mat-slide-toggle>
+                      </div>
+                    </div>
+                    <!-- <div class="d-flex ">
+                        <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
+                        formControlName="smtp_connection">
+                        <mat-radio-button class="example-radio-button mr-4"   value="Default" >
+                          Default
+                        </mat-radio-button>
+                        <mat-radio-button class="example-radio-button mr-4"  value="tls" >
+                          TLS
+                        </mat-radio-button>
+                        <mat-radio-button class="example-radio-button"  value="ssl">
+                          SSL
+                        </mat-radio-button>
+                      </mat-radio-group>
+                    </div> -->
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="formGroup">
+                    <label><i class="zmdi zmdi-email-open mr-1"></i>SMTP Port</label>
+                    <span class="error-message">*</span>
+                    <span class="error-message float-right"
+                      *ngIf="smtpForm.controls.smtp_port.hasError('required' ) && smtpForm.controls.smtp_port.touched">Required</span>
+                    <input type="text" class="form-control"
+                      [ngClass]="smtpForm.controls.smtp_port.hasError('required' ) && smtpForm.controls.smtp_port.touched  ? 'is-invalid' : ''"
+                      placeholder="SMTP Port" formControlName="smtp_port" />
+                  </div>
+                  <div class="formGroup">
+                    <label><i class="zmdi zmdi-key mr-1"></i>SMTP Password</label>
+                    <span class="error-message">*</span>
+                    <span class="error-message float-right"
+                      *ngIf="smtpForm.controls.smtp_password.hasError('required' ) && smtpForm.controls.smtp_password.touched">Required</span>
+                    <input type="password" class="form-control"
+                      [ngClass]="smtpForm.controls.smtp_password.hasError('required' ) && smtpForm.controls.smtp_password.touched ? 'is-invalid' : ''"
+                      placeholder="SMTP Password" formControlName="smtp_password" />
+                  </div>
+                  <div class="formGroup">
+                    <label><i class="zmdi zmdi-email mr-1"></i>Send SMTP Test Mail</label>
+                    <span class="error-message">*</span>
+                    <span class="error-message float-right"
+                      *ngIf="smtpForm.controls.test_email.hasError('required' ) && smtpForm.controls.test_email.touched">Required</span>
+                    <span class="error-message float-right"
+                      *ngIf="smtpForm.controls.test_email.hasError('pattern' )">invalid input</span>
+                    <div class="row">
+                      <div class="col-12">
+                        <input type="text" class="form-control"
+                          [ngClass]="smtpForm.controls.test_email.hasError('required' ) && smtpForm.controls.test_email.touched || smtpForm.controls.test_email.hasError('pattern' ) ? 'is-invalid' : ''"
+                          placeholder="Email address for sent this SMTP settings for testing"
+                          formControlName="test_email" />
+                      </div>
+                      <span> <button style="position: fixed;
+                        right: 110px;
+                        width: 95px;
+                        height: 37px;" class="btn-setup-sucess" (click)="sendMail()">Test</button>
+                      </span>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <div class="row d-flex justify-content-end mt-4">
+                <button class="btn-setup-danger mr-2" routerLink="/setup/addons">Cancel</button>
+                <button class="btn-setup-sucess" [disabled]="!smtpForm.valid || smtpForm.pristine"
+                  (click)="saveSettings()">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</body>
+
+</html>

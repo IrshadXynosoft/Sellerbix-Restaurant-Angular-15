@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                Setup
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/location">
+                Locations
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                Location Setup
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag">
+            <h4>
+              <i class="icon-arrow-left cursor-pointer" (click)="location()"></i>
+              Location Setup
+            </h4>
+          </div>
+        </div>
+        <div class="col-12 col-sm-3 com-md-3">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn cursor-pointer" (click)="generalDetails()">
+              <i class="icon-map-marker"></i>
+              <p matTooltip="General Details">General Details</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-3 com-md-3">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn cursor-pointer" (click)="menu()">
+              <i class="zmdi zmdi-cutlery"></i>
+              <p matTooltip="Menu Management">Menu Management</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-3 com-md-3">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn cursor-pointer" (click)="staff()">
+              <i class="zmdi zmdi-accounts-alt"></i>
+              <p matTooltip="Staff">Staff</p>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-12 col-sm-3 com-md-3">
+            <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+              <div
+                class="text-center card-inner-scn cursor-pointer"
+                (click)="reports()"
+              >
+                <i class="zmdi zmdi-assignment"></i>
+                <p matTooltip="Reports">Reports</p>
+              </div>
+            </div>
+          </div> -->
+        <div class="col-12 col-sm-3 com-md-3">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn">
+            <div class="text-center card-inner-scn cursor-pointer" (click)="dining()">
+              <i class="zmdi zmdi-settings"></i>
+              <p matTooltip="Dining Sections">Dining Sections</p>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-12 col-sm-3 com-md-3">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn cursor-pointer" (click)="delivery()">
+            <div class="text-center card-inner-scn">
+              <i class="zmdi zmdi-bike"></i>
+              <p matTooltip="Delivery Settings">Delivery Settings</p>
+            </div>
+          </div>
+        </div> -->
+        <div class="col-12 col-sm-3 com-md-3">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn cursor-pointer" (click)="print()">
+            <div class="text-center card-inner-scn">
+              <i class="icon-print"></i>
+              <p matTooltip="Printer & Peripheral Settings">
+                Printer & Peripheral Settings
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-3 com-md-3">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn cursor-pointer" (click)="customers()">
+            <div class="text-center card-inner-scn">
+              <i class="zmdi zmdi-accounts-alt"></i>
+              <p matTooltip="Customers">Customers</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-3 com-md-3">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn cursor-pointer" (click)="onlineMenus()">
+            <div class="text-center card-inner-scn">
+              <i class="icon-globe"></i>
+              <p matTooltip="Online Portal Setup">Online Portal Setup</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-3 com-md-3">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn cursor-pointer" (click)="settings()">
+            <div class="text-center card-inner-scn">
+              <i class="zmdi zmdi-settings"></i>
+              <p matTooltip="Online Portal Setup">Settings</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-3 com-md-3">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn cursor-pointer" (click)="loyaltyGroup()">
+            <div class="text-center card-inner-scn">
+              <i class="zmdi zmdi-accounts-alt"></i>
+              <p matTooltip="Loyalty Group">Loyalty Group</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-3 com-md-3">
+          <div class="card p-3 p-xl-4 mb-3 tag-hvr-scn cursor-pointer" (click)="loyaltyCoupon()">
+            <div class="text-center card-inner-scn">
+              <i class="zmdi zmdi-assignment"></i>
+              <p matTooltip="Loyalty Coupons">Loyalty Coupons</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

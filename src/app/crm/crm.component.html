@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body id="page_setup">
+    <!-- Body Wrapper Start -->
+    <div class="body_wrapper container-fluid">
+      <!-- Header Start -->
+      <app-header></app-header>
+      <!-- Header End -->
+      <div class="px-4 mt-20">
+        <div
+          *ngIf="!isCustomerSelected && !showNotexistDialog"
+          class="searchno"
+        >
+          <div *ngIf="!isCustomerSelected" class="inner">
+            <div class="outer">
+              <!-- <div class="logoMainAll">
+              <img style="width: 10rem;height: 10rem;" *ngIf="isLogoImage;else noimage" src='{{tenant_logo}}' />
+              <ng-template #noimage>
+                <img src="assets/images/logo.png" />
+              </ng-template>
+            </div> -->
+              <!-- <span class="error-message float-right">{{contactNumberErrorMessage}}</span> -->
+              <input
+                type="text"
+                placeholder="Search Here For Customer Mobile Number"
+                class="form-control mb-0 mr-2"
+                #contactNumber
+                (keyup)="searchContactNumber(contactNumber.value)"
+                matInput
+                [formControl]="customerData"
+                [matAutocomplete]="auto"
+              />
+              <mat-autocomplete
+                autoActiveFirstOption
+                #auto="matAutocomplete"
+                (optionSelected)="customerSelected($event.option.id)"
+              >
+                <mat-option
+                  *ngFor="let list_options of customerArray"
+                  [value]="list_options.contact_no"
+                  [id]="list_options.id"
+                >
+                  {{ list_options.contact_no + " - " + list_options.name }}
+                </mat-option>
+              </mat-autocomplete>
+
+              <div class="pt-2 mt-50">
+                <button class="btn-setup-sucess" (click)="createNew()">
+                  <i class="icon-plus mr-1"></i>New Customer
+                </button>
+              </div>
+              <div class="pt-2 mt-50">
+                <ul class="quick-btn">
+                  <li 
+                  routerLink="/setup/delivery_settings"
+                  class="cursor-pointer"
+                  matTooltip="View Delivery Manager">
+                    <p class="cnt">{{ deliveryCount }}</p>
+                    <img
+                      *ngIf="deliveryCount == null"
+                      src="assets/loader.gif"
+                      width="35"
+                    />
+                    <p>Delivery</p>
+                  </li>
+                  <li class="ml-2">
+                    <p class="cnt">{{ takeAwayCount }}</p>
+                    <img
+                      *ngIf="takeAwayCount == null"
+                      src="assets/loader.gif"
+                      width="35"
+                    />
+                    <p>Take Away</p>
+                  </li>
+                  <li
+                    routerLink="/party_orders/new_order/list"
+                    class="cursor-pointer ml-2"
+                    matTooltip="View Party Orders"
+                  >
+                    <p class="cnt">{{ bulkOrderCount }}</p>
+                    <img
+                      *ngIf="takeAwayCount == null"
+                      src="assets/loader.gif"
+                      width="35"
+                    />
+                    <p>Party Orders</p>
+                  </li>
+                  <li
+                    routerLink="/dinein/tableReservations"
+                    class="cursor-pointer ml-2"
+                    matTooltip="View Reservations"
+                  >
+                    <p class="cnt">{{ reservationCount }}</p>
+                    <img
+                      *ngIf="takeAwayCount == null"
+                      src="assets/loader.gif"
+                      width="35"
+                    />
+                    <p>Reservations</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- </div> -->
+    <div *ngIf="!isCustomerSelected && !showNotexistDialog" class="searchno">
+      <div
+        style="width: 50%; margin: 0 auto"
+        class="row"
+        *ngIf="isCustomerSelected"
+      >
+        <!-- <span class="error-message float-right">{{contactNumberErrorMessage}}</span> -->
+        <input
+          type="text"
+          placeholder="Search Here For Customer Mobile Number"
+          class="form-control m-0 w-60"
+          #contactNumber
+          (keyup)="searchContactNumber(contactNumber.value)"
+          matInput
+          [formControl]="customerData"
+          [matAutocomplete]="auto"
+        />
+
+        <mat-autocomplete
+          autoActiveFirstOption
+          #auto="matAutocomplete"
+          (optionSelected)="customerSelected($event.option.id)"
+        >
+          <mat-option
+            *ngFor="let list_options of customerArray"
+            [value]="list_options.contact_no"
+            [id]="list_options.id"
+          >
+            {{ list_options.contact_no + "-" + list_options.name }}
+          </mat-option>
+        </mat-autocomplete>
+
+        <div class="pt-2 mt-50">
+          <button class="btn-setup-sucess" (click)="createNew()">
+            <i class="icon-plus mr-1"></i>New Customer
+          </button>
+        </div>
+        <div class="pt-2 mt-50">
+          <ul class="quick-btn">
+            <li>
+              <p class="cnt">{{ deliveryCount }}</p>
+              <p>Delivery</p>
+            </li>
+            <li>
+              <p class="cnt">{{ takeAwayCount }}</p>
+              <p>Take Away</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- </div> -->
+
+    <div
+      style="width: 50%; margin: 0 auto"
+      class="row"
+      *ngIf="isCustomerSelected"
+    >
+      <!-- <span class="error-message float-right">{{contactNumberErrorMessage}}</span> -->
+      <input
+        type="text"
+        placeholder="Search Here For Customer Mobile Number"
+        class="form-control m-0 w-60"
+        #contactNumber
+        (keyup)="searchContactNumber(contactNumber.value)"
+        matInput
+        [formControl]="customerData"
+        [matAutocomplete]="auto"
+      />
+
+      <mat-autocomplete
+        autoActiveFirstOption
+        #auto="matAutocomplete"
+        (optionSelected)="customerSelected($event.option.id)"
+      >
+        <mat-option
+          *ngFor="let list_options of customer_filteredOptions | async"
+          [value]="list_options.contact_no"
+          [id]="list_options.id"
+        >
+          {{ list_options.contact_no }}
+        </mat-option>
+      </mat-autocomplete>
+
+      <!-- <div class="col-4">
+                    <button class="btn-setup-sucess bg-grey"(click)="createNew()" >
+                        <i class="icon-plus mr-1"></i>Add Customer </button>
+                </div> -->
+    </div>
+    <div class="customer-list mat-card-noexist" *ngIf="showNotexistDialog">
+      <div class="row p-4">
+        <div class="col-12">
+          <div class="not-found">
+            <h3>Not Found</h3>
+            <p>
+              Sorry, we can't find a customer with that telephone number. Click
+              the button below to create a new customer.
+            </p>
+            <button class="btn-setup-sucess" (click)="createNew()">
+              <i class="icon-plus mr-1"></i>New Customer
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="isCustomerSelected" class="container-fluid">
+      <!-- <div class="customer-list" *ngFor="let i of customerDataList" >
+                     <div class="row c_list">
+                      <div class="col-lg-10 col-10 mx-0">
+                        <div class="profileInfoContainer">
+                          <p class="nameLink">{{i.name}}</p>
+                          <p class="addressLink">{{i.building_or_villa}}, {{i.delivery_area}}, {{i.street}}, {{i.nearest_landmark}}, {{i.branch_name}}, {{i.country_name}}</p>
+                        </div>
+                      </div>
+                      <div class="col-lg-2 col-2 mx-0" >
+                          <button class="btn-setup-sucess select-cust-btn" (click)="viewCusomerDetails(i.id)">
+                              <i class="icon-check mr-1"></i>Select
+                          </button>
+                      </div>
+                    </div>
+                  </div> -->
+
+      <div class="row" *ngIf="isShowCustomerData">
+        <div class="col-lg-7 col-12 mx-0">
+          <div
+            class="prf-scn"
+            *ngFor="let i of customerDetails"
+            style="min-height: 450px"
+          >
+            <div class="row">
+              <div class="col-lg-2">
+                <img src="assets/images/user-icon.jpg" class="img-thumbnail" />
+                <p class="prof-icon-edit" (click)="editCustomer(i.id)">
+                  Edit <i class="icon-edit"></i>
+                </p>
+              </div>
+              <div class="col-lg-6">
+                <h3 class="m-0">{{ i.name }}</h3>
+                <p class="m-0">
+                  Not {{ i.name }} ?
+                  <span (click)="createNew()">Create New Customer</span>
+                </p>
+              </div>
+              <div class="col-lg-4 col-12 text-right">
+                <div>
+                  <h5 class="m-0">PHONE NUMBER:</h5>
+                  <p>{{ i.contact_no }}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="d-flex align-items-center br-btm pb-2">
+                  <h4 class="flex-grow-1 mb-0">Select Delivery Address:</h4>
+                  <button
+                    class="medium-btn btn-clr-2"
+                    (click)="addAddress(i.id)"
+                  >
+                    <i class="icon-plus mr-1"></i>Add Address
+                  </button>
+                </div>
+                <div class="d-flex address-holder">
+                  <div
+                    class="address-scn col-lg-4 mb-3"
+                    *ngFor="let address of addressList; let i = index"
+                  >
+                    <div class="d-flex">
+                      <mat-checkbox
+                        class="flex-grow-1"
+                        (change)="locationSelected($event, address)"
+                      ></mat-checkbox>
+                      <p class="text-right">
+                        <!-- <i class="icon-map-marker mr-3"></i> -->
+                        <i
+                          class="icon-edit mr-3"
+                          (click)="editAddress(address.id)"
+                        ></i
+                        ><i
+                          class="icon-trash"
+                          (click)="
+                            deleteAddress(address.id, address.building_or_villa)
+                          "
+                        ></i>
+                      </p>
+                    </div>
+                    <h6 class="w-100">
+                      Building No : {{ address.building_or_villa }}<br />
+                      Street : {{ address.street }}<br />Zone :
+                      {{ address.delivery_area_name }}<br />
+                      Landmark : {{ address.nearest_landmark }} <br />
+                      Country : {{ address.country_name }} <br />
+                      Branch : {{ address.branch_name }}<br />
+                    </h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="btn-grp">
+              <button class="medium-btn btn-clr-1" (click)="storePickup()">
+                Take Away
+              </button>
+              <button class="medium-btn btn-clr-2" (click)="placeNewOrder()">
+                Delivery
+              </button>
+              <button class="medium-btn btn-clr-3" (click)="tableReservation()">
+                Table Reservation
+              </button>
+              <button class="medium-btn btn-clr-4" (click)="partyOrders()">
+                Party Orders
+              </button>
+              <button
+              *ngIf="customerDetails[0].price_plan_id"
+              class="medium-btn btn-clr-1"
+              (click)="b2bCustomer()"
+            >
+              B2B
+            </button>
+            </div>
+            <div class="btn-grp">
+              <button
+                class="medium-btn btn-clr-5"
+                *ngFor="let i of customEntities"
+                (click)="entityPlaceNewOrder(i)"
+              >
+                {{ i.name }}
+              </button>
+            </div>
+            <span class="error-message" *ngIf="!flag || partyOrderDeliveryFlag"
+              >Please select address to place an order</span
+            >
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <div class="rgt-scn" style="min-height: 450px">
+            <div class="inner-scn">
+              <h4 class="mt-2">CUSTOMER INSIGHTS</h4>
+              <div class="row">
+                <div class="col-lg-6">
+                  <mat-card appearance="outlined" class="discount-card" style="height: 80px">
+                    <h5>LOYALTY</h5>
+                    <h6>
+                      {{
+                        customerInsights.loyalty
+                          ? customerInsights.loyalty
+                          : 0.0
+                      }}
+                    </h6>
+                  </mat-card>
+                </div>
+                <div class="col-lg-6">
+                  <mat-card appearance="outlined" class="discount-card" style="height: 80px">
+                    <h5>TOTAL BUSINESS</h5>
+                    <h6>
+                      {{
+                        customerInsights.total_business
+                          ? customerInsights.total_business
+                          : 0
+                      }}
+                    </h6>
+                  </mat-card>
+                </div>
+
+                <div class="col-lg-6">
+                  <mat-card appearance="outlined" class="discount-card" style="height: 80px">
+                    <h5>TOTAL AMOUNT</h5>
+                    <h6>
+                      {{ currency_symbol }}
+                      {{
+                        customerInsights.total_amount
+                          ? customerInsights.total_amount
+                          : 0
+                      }}
+                    </h6>
+                  </mat-card>
+                </div>
+                <div class="col-lg-6">
+                  <mat-card appearance="outlined" class="discount-card" style="height: 80px">
+                    <h5>RUNNING</h5>
+                    <h6>{{ runningOrders.length }}</h6>
+                  </mat-card>
+                </div>
+                <div class="col-lg-6">
+                  <mat-card appearance="outlined" class="discount-card" style="height: 80px">
+                    <h5>UNPAID ORDERS / Sum</h5>
+                    <h6>
+                      {{ customerInsights.unpaid_orders }}/{{ currency_symbol }}
+                      {{ customerInsights.unpaid_amount }}
+                    </h6>
+                  </mat-card>
+                </div>
+                <div class="col-lg-6">
+                  <mat-card appearance="outlined" class="discount-card" style="height: 80px">
+                    <h5>Utensil used</h5>
+                    <h6>{{ customerInsights.utensil_used }}</h6>
+                  </mat-card>
+                </div>
+              </div>
+
+              <mat-card
+                appearance="outlined"
+                class="discount-card"
+                style="height: 130px; overflow-y: scroll"
+              >
+                <h5>
+                  Notes
+                  <i
+                    class="icon-plus cursor-pointer float-right"
+                    style="font-size: 1rem; font-weight: 500"
+                    (click)="addNote()"
+                  ></i>
+                </h5>
+                <ng-template #message>
+                  <p *ngIf="!notesList" class="message">
+                    No Notes yet.<br />Click + to add Note
+                  </p>
+                </ng-template>
+                <div *ngIf="notesList; else message">
+                  <div *ngFor="let i of notesList; let index = index">
+                    <p>
+                      <span>{{ index + 1 }} .</span>{{ i.message }}
+                    </p>
+                  </div>
+                </div>
+              </mat-card>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="margin-top: 15px" *ngIf="isShowCustomerData">
+        <div class="col-12 tab_section view-order-btn" *ngIf="!viewOrdersFlag">
+          <button class="medium-btn btn-clr-4" (click)="viewOrders()">
+            View Orders
+          </button>
+        </div>
+        <div class="col-12 tab_section" *ngIf="viewOrdersFlag">
+          <mat-tab-group>
+            <mat-tab label="Running Orders">
+              <ng-template #message>
+                <div class="col-12">
+                  <div class="not-found">
+                    <h3>Sorry :(</h3>
+                    <p>There's no Orders.</p>
+                  </div>
+                </div>
+              </ng-template>
+              <div class="bordered">
+                <table
+                  class="table"
+                  *ngIf="runningOrders.length > 0; else message"
+                >
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Order Number</th>
+                      <th scope="col">Date and Time</th>
+                      <th scope="col">Type</th>
+                      <th scope="col">Amount</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let i of runningOrders; let index = index">
+                      <td>{{ index + 1 }}</td>
+                      <td
+                        class="cursor-pointer click-edit"
+                        (click)="showDetails(i)"
+                      >
+                        <strong>{{ i.order_number }}</strong>
+                      </td>
+                      <td>{{ i.date | date }} {{ i.time }}</td>
+                      <td>
+                        <span *ngIf="i.order.store_pickup">Take Away</span>
+                        <span *ngIf="!i.order.store_pickup">
+                          {{ i.entity_name }}</span
+                        >
+                      </td>
+                      <td>{{ i.order.Total }}</td>
+                      <td><span class="badge badge-primary">Running</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </mat-tab>
+            <mat-tab label="Unpaid Orders">
+              <ng-template #unpaidmessage>
+                <div class="col-12">
+                  <div class="not-found">
+                    <h3>Sorry :(</h3>
+                    <p>There's no Orders.</p>
+                  </div>
+                </div>
+              </ng-template>
+              <button
+                *ngIf="unpaidOrders.length >= 2"
+                class="medium-btn btn-clr-4 mb-2"
+                (click)="commercialInvoice()"
+              >
+                Generate Commercial INV
+              </button>
+              <div class="bordered">
+                <table
+                  class="table"
+                  *ngIf="unpaidOrders.length > 0; else unpaidmessage"
+                >
+                  <thead>
+                    <tr>
+                      <th scope="col">Order Number</th>
+                      <th scope="col">Date and Time</th>
+                      <th scope="col">Type</th>
+                      <!-- <th scope="col">Paid Amt({{currency_symbol}})</th> -->
+                      <th scope="col">Due Amt({{ currency_symbol }})</th>
+                      <th scope="col">Total Amt({{ currency_symbol }})</th>
+                      <th scope="col">Payment Status</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let i of unpaidOrders">
+                      <td
+                        (click)="showDetails(i)"
+                        class="cursor-pointer click-edit"
+                      >
+                        <strong>{{ i.order_number }}</strong>
+                      </td>
+                      <td>{{ i.date | date }} {{ i.time }}</td>
+                      <td>
+                        <span *ngIf="i.order.store_pickup">Take Away</span>
+                        <span *ngIf="!i.order.store_pickup">
+                          {{ i.entity_name }}</span
+                        >
+                      </td>
+                      <!-- <td>{{i.payment_status==1 ? i.invoice.amount_received : 0.00}}</td> -->
+                      <td>{{ dueAmountCheck(i) }}</td>
+                      <td>{{ i.order.Total }}</td>
+                      <td>
+                        <span *ngIf="i.payment_status == 0">{{
+                          i.invoice?.credit_flag ? "Credit" : "Unpaid"
+                        }}</span>
+                        <span *ngIf="i.payment_status == 1"
+                          >Partially Paid</span
+                        >
+                        <span *ngIf="i.payment_status == 2">Paid</span>
+                        <span *ngIf="i.payment_status == 3">CINV</span>
+                      </td>
+                      <td>
+                        <button
+                          class="medium-btn w-50 btn-clr-2"
+                          (click)="makePayment(i)"
+                        >
+                          Pay
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </mat-tab>
+            <mat-tab label="Past Orders">
+              <ng-template #noDatamessage>
+                <div class="col-12">
+                  <div class="not-found">
+                    <h3>Sorry :(</h3>
+                    <p>There's no Orders.</p>
+                  </div>
+                </div>
+              </ng-template>
+              <div class="bordered">
+                <table
+                  class="table"
+                  *ngIf="pastOrders.length > 0; else noDatamessage"
+                >
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Order Number</th>
+                      <th scope="col">Date and Time</th>
+                      <th scope="col">Type</th>
+                      <th scope="col">Amount</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let i of pastOrders; let index = index">
+                      <td>{{ index + 1 }}</td>
+                      <td
+                        class="cursor-pointer click-edit"
+                        (click)="showDetails(i)"
+                      >
+                        <strong>{{ i.order_number }}</strong>
+                      </td>
+                      <td>{{ i.date | date }} {{ i.time }}</td>
+                      <td>
+                        <span *ngIf="i.order.store_pickup">Take Away</span>
+                        <span *ngIf="!i.order.store_pickup">
+                          {{ i.entity_name }}</span
+                        >
+                      </td>
+                      <td>{{ i.order.Total }}</td>
+                      <td>
+                        <span class="badge badge-success">Completed</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </mat-tab>
+            <mat-tab label="Table Reservations">
+              <ng-template #reservationmessage>
+                <div class="col-12">
+                  <div class="not-found">
+                    <h3>Sorry :(</h3>
+                    <p>There's no Orders.</p>
+                  </div>
+                </div>
+              </ng-template>
+              <div class="bordered">
+                <table
+                  class="table"
+                  *ngIf="reservations.length > 0; else reservationmessage"
+                >
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Booking Date and Time</th>
+                      <th scope="col">Pax Number</th>
+                      <th scope="col">Table Details</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let i of reservations; let index = index">
+                      <td>{{ index + 1 }}</td>
+                      <td>{{ i.booking_date | date }} {{ i.booking_time }}</td>
+                      <td>{{ i.no_of_pax }}</td>
+                      <td class="capital">
+                        {{ i.branch_dining_name }}
+                        <span *ngIf="i.branch_dining_table_name"
+                          >- {{ i.branch_dining_table_name }}</span
+                        >
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </mat-tab>
+            <mat-tab label="Party Orders">
+              <ng-template #bulkmessage>
+                <div class="col-12">
+                  <div class="not-found">
+                    <h3>Sorry :(</h3>
+                    <p>There's no Orders.</p>
+                  </div>
+                </div>
+              </ng-template>
+              <div class="bordered">
+                <table
+                  class="table"
+                  *ngIf="bulkOrders.length > 0; else bulkmessage"
+                >
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Booking Date</th>
+                      <th scope="col">Delivery Date</th>
+                      <th scope="col">Delivery Time</th>
+                      <th scope="col">Delivery type</th>
+                      <th scope="col">Est.Amount ({{ currency_symbol }})</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let i of bulkOrders; let index = index">
+                      <td>{{ index + 1 }}</td>
+                      <td>{{ i.booking_order_json.current_date | date }}</td>
+                      <td>{{ i.delivery_date | date }}</td>
+                      <td>{{ i.time }}</td>
+                      <td *ngIf="i.booking_order_json.order_type == 2">
+                        Dine in
+                      </td>
+                      <td *ngIf="i.booking_order_json.order_type == 4">
+                        Take Away
+                      </td>
+                      <td *ngIf="i.booking_order_json.order_type == 3">
+                        Delivery
+                      </td>
+                      <td>{{ i.booking_order_json.Total }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </mat-tab>
+            <mat-tab label="Commercial Invoices">
+              <ng-template #message>
+                <p *ngIf="commercialInvoices.length <= 0" class="message">
+                  No invoices.
+                </p>
+              </ng-template>
+              <div class="bordered">
+                <table
+                  class="table"
+                  *ngIf="commercialInvoices.length > 0; else message"
+                >
+                  <thead>
+                    <tr>
+                      <th scope="col">Invoice Number</th>
+                      <th scope="col">Date and Time</th>
+                      <th scope="col">Amount({{ currency_symbol }})</th>
+                      <th scope="col">
+                        Amount Received({{ currency_symbol }})
+                      </th>
+                      <th scope="col">Payment Status</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let i of commercialInvoices">
+                      <td
+                        (click)="
+                          showcommercialDetails(
+                            i.commercial_invoice_item,
+                            i.amount_received
+                          )
+                        "
+                        class="cursor-pointer click-edit"
+                      >
+                        <strong>{{ i.invoice_no }}</strong>
+                      </td>
+                      <td>{{ i.date | date }} {{ i.time }}</td>
+                      <td>{{ i.amount }}</td>
+                      <td>{{ i.amount_received }}</td>
+                      <td>
+                        <span
+                          *ngIf="i.payment_status == 0"
+                          class="badge badge-danger"
+                          >Unpaid</span
+                        >
+                        <span
+                          *ngIf="i.payment_status == 1"
+                          class="badge badge-warning"
+                          >Partially Paid</span
+                        >
+                        <span
+                          *ngIf="i.payment_status == 2"
+                          class="badge badge-success"
+                          >Paid</span
+                        >
+                        <span
+                          *ngIf="i.payment_status == 3"
+                          class="badge badge-info"
+                          >CINV</span
+                        >
+                      </td>
+                      <td>
+                        <button
+                          *ngIf="i.payment_status == 0 || i.payment_status == 1"
+                          class="medium-btn w-50 btn-clr-2"
+                          (click)="payInvoice(i)"
+                        >
+                          Pay
+                        </button>
+                        <button
+                          *ngIf="i.payment_status == 0"
+                          class="medium-btn w-50 btn-clr-2"
+                          (click)="
+                            editInvoice(
+                              i.commercial_invoice_item,
+                              i.id,
+                              i.customer_id,
+                              i.amount_received
+                            )
+                          "
+                        >
+                          Edit
+                        </button>
+                        <button
+                          class="medium-btn w-50 btn-clr-1"
+                          (click)="printInvoice(i.id)"
+                        >
+                          Print
+                        </button>
+                      </td>
+                      <!-- <td> <button class="btn-setup-sucess w-px-100" (click)="makePayment(i)">Pay
+                              </button></td>  -->
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+    </div>
+
+    <!-- </div> -->
+    <!-- </div> -->
+  </body>
+</html>

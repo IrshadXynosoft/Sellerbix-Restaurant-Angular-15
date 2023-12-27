@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+    <!-- Body Wrapper Start -->
+    <div class="body_wrapper container-fluid">
+        <!-- Header Start -->
+        <app-header></app-header>
+        <!-- Header End -->
+
+        <app-inventory-header></app-inventory-header>
+        <div class="px-4">
+            <div class="row pt-4">
+                <div class="bgSecMainAll">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                                Home
+                            </li>
+                            <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/inventory">
+                                Inventory
+                            </li>
+                            <li class="breadcrumb-item cursor-pointer" aria-current="page"
+                                routerLink="/inventory/stockTakes">
+                                Stock Takes
+                            </li>
+                            <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                                New Stock Take
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="col-12">
+                    <div class="d-flex align-items-center head-tag cursor-pointer">
+                        <h4 class="flex-gr-1"> <i class="icon-arrow-left" routerLink="/inventory/stockTakes"></i> New
+                            Stock Take</h4>
+                    </div>
+                </div>
+            </div>
+            <form [formGroup]="stocktakeForm">
+
+                <div class="row">
+                    <div class="col-3">
+                        <label>Date</label>
+                        <label class="form-control  ">{{todayDate}}</label>
+                    </div>
+                    <div class="col-3">
+                        <label>Stock Take Number / Reference</label>
+                        <span class="error-message">*</span>
+                        <span class="error-message float-right" *ngIf="
+                                            stocktakeForm.controls.stockno.hasError('required') &&
+                                            stocktakeForm.controls.stockno.touched
+                                          ">required</span>
+                        <input type="text" class="form-control" placeholder="Supplier or Email"
+                            formControlName="stockno" />
+
+                    </div>
+                    <div class="col-3">
+                        <label>Comments</label>
+                        <span class="error-message">*</span>
+                        <span class="error-message float-right" *ngIf="
+                        stocktakeForm.controls.comments.hasError('required') &&
+                        stocktakeForm.controls.comments.touched
+                      ">required</span>
+                        <input type="text" placeholder="Enter Your Comments" class="form-control"
+                            formControlName="comments" />
+                    </div>
+                </div>
+                <div *ngIf="stockItems.length <= 0; else showfinishedGoods">
+                    <div class="row col-12">
+                        <div class="col-12">
+                            <div class="not-found bordered">
+                                <h3>Sorry :(</h3>
+                                <p>There's no items at this moment.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ng-template #showfinishedGoods>
+
+                    <mat-tab-group class="mt-2">
+                        <mat-tab *ngFor="let item of stockItems" label={{item.category_name}}>
+                            <table class="tableStyleMain table bordered"
+                                *ngIf="item.items?.length>0 || item.ingredient?.length>0 ||item.sub_recipe?.length>0 ; else message">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Item</th>
+                                        <th scope="col">Count</th>
+                                        <th scope="col">Total Counted</th>
+
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr *ngFor="let items of getItemsArray(item)">
+                                        <td>
+                                            <h4 class="m-0 mb-2">{{getItemsName(items)}}</h4>
+                                        </td>
+                                        <td>
+                                            <div class="col-12 row">
+                                                <div class="col-4" *ngIf="items.buying_unit">
+                                                    <span
+                                                        class="error-message float-right">{{items.errorMessage1}}</span>
+                                                    <input type="text" class="form-control" #unit
+                                                        (input)="calculateTotal(items,unit.value,1)" /><span>{{items.buying_unit}}</span>
+                                                </div>
+                                                <div class="col-4" *ngIf="items.has_sub_unit">
+                                                    <span
+                                                        class="error-message float-right">{{items.errorMessage2}}</span>
+                                                    <input type="text" class="form-control" #subUnit
+                                                        (input)="calculateTotal(items,subUnit.value,2)" /><span>{{items.buying_sub_unit}}</span>
+                                                </div>
+                                                <div class="col-4">
+                                                    <span
+                                                        class="error-message float-right">{{items.errorMessage3}}</span>
+                                                    <input type="text" class="form-control" #measurementUnit
+                                                        (input)="calculateTotal(items,measurementUnit.value,3)" /><span>{{items.measurement_unit_name}}</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>{{items.total}} &nbsp; <span>{{items.measurement_unit_name}}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <ng-template #message>
+
+                                <div class="col-12">
+                                    <div class="not-found bordered">
+                                        <h3>Sorry :(</h3>
+                                        <p>You currently have no items in {{item.category_name}}.</p>
+
+                                    </div>
+                                </div>
+
+                            </ng-template>
+                        </mat-tab>
+                    </mat-tab-group>
+
+                </ng-template>
+
+            </form>
+            <div class="row col-12">
+                <div class="col-12">
+                    <button class="btn-setup-danger mr-2 float-right" routerLink="/inventory/stockTakes">Cancel</button>
+                    <button class="btn-setup-sucess mr-2 float-right" (click)="save()"
+                        [disabled]="!stocktakeForm.valid || stocktakeForm.pristine">Save And Draft</button>
+                    <button class="btn-setup-sucess mr-2 float-right" (click)="submitForReview()"
+                        [disabled]="!stocktakeForm.valid || stocktakeForm.pristine">Submit for Review</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>

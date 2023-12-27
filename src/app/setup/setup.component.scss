@@ -1,0 +1,45 @@
+.card:hover {
+  background-color: var(--primary);
+  color: var(--white);
+}
+.card {
+  background-color: rgb(247, 247, 252);
+}
+.img-company-det {
+  border: none !important;
+  img {
+    width: 141px;
+    border-radius: 50%;
+  }
+}
+.company-detinner-scn {
+  h3 {
+    font-size: 26px;
+  }
+  i {
+    font-size: 12px;
+    background: var(--primary);
+    padding: 7px;
+    border-radius: 21px;
+    position: relative;
+    top: -5px;
+    color: var(--white);
+  }
+}
+
+.mn-item {
+  padding: 8px 25px;
+  background: var(--white);
+  margin-right: 5px;
+  border-left: 3px solid #f7daa8;
+  margin-bottom: 20px;
+  p {
+    margin: 0;
+    font-weight: normal;
+    font-size: 14px;
+  }
+  span {
+    color: var(--primary);
+    font-size: 20px;
+  }
+}

@@ -1,0 +1,80 @@
+<div class="modal-wrapper">
+    <button mat-icon-button class="close-button" (click)="close()">
+        <mat-icon class="close-icon" color="warn">close</mat-icon>
+    </button>
+    <h2 *ngIf="data.method == 'add'" mat-dialog-title>Add New Printer</h2>
+    <h2 *ngIf="data.method == 'update'" mat-dialog-title>Update Printer</h2>
+    <mat-dialog-content>
+      <form [formGroup]="addPrinterForm">
+        <div class="row">
+            <div class="textFieldDivAll">
+                <span>Printer Name:
+                </span>
+                <input placeholder="Name" type="text" formControlName="name" >
+            </div>
+        </div>
+        <div class="row">
+            <div class="textFieldDivAll">
+                <span>Printer Type:
+                </span>
+                <mat-radio-group aria-label="Select an option" formControlName="printer_type" >
+                    <mat-radio-button value="1">USB</mat-radio-button>
+                    <mat-radio-button value="2">NETWORK</mat-radio-button>
+                    <mat-radio-button value="3">Serial</mat-radio-button>
+                  </mat-radio-group>
+            </div>
+        </div>
+        <div class="row" *ngIf="this.addPrinterForm.value['printer_type'] == '1'">
+            <div class="textFieldDivAll">
+                <span>System Printer Name:
+                </span>
+                <input placeholder="System printer name" type="text" formControlName="system_printer_name">
+            </div> 
+        </div>
+        <div class="row" *ngIf="this.addPrinterForm.value['printer_type'] == '2'">
+            <div class="textFieldDivAll">
+                <span>Printer IP:
+                </span>
+                <input placeholder="eg: 192.168.100.7" type="text" formControlName="ip">
+            </div> 
+        </div>
+        <div class="row" *ngIf="this.addPrinterForm.value['printer_type'] == '2'">
+            <div class="textFieldDivAll">
+                <span>Printer port_no:
+                </span>
+                <input placeholder="eg:  9100" type="text" formControlName="port_no">
+            </div> 
+        </div>
+        <div class="row" *ngIf="this.addPrinterForm.value['printer_type'] == '3'">
+            <div class="textFieldDivAll">
+                <span>Printercomport_name:
+                </span>
+                <input placeholder="eg:  COM3" type="text" formControlName="comport_name">
+            </div> 
+        </div>
+        <div class="row" *ngIf="this.addPrinterForm.value['printer_type'] == '3'">
+            <div class="textFieldDivAll">
+                <span>printerbaud_rate:
+                </span>
+                <input placeholder="eg:  115200" type="text" formControlName="baud_rate">
+            </div> 
+        </div>
+        <div class="row" *ngIf="this.addPrinterForm.value['printer_type'] == '3'">
+            <div class="textFieldDivAll">
+                <span>printprinter_task_sec:
+                </span>
+                <input placeholder="eg:  5000" type="text" formControlName="printer_task_sec">
+            </div> 
+        </div>
+      </form>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <div class="text-right button-sec">
+            <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+        </div>
+        <div class="text-right button-sec">
+            <button *ngIf="data.method== 'add'" class="btn-setup-sucess mr-2" [disabled]="!addPrinterForm.valid" (click)="printerSave()">SAVE</button>
+            <button *ngIf="data.method== 'update'" class="btn-setup-sucess mr-2" [disabled]="!addPrinterForm.valid" (click)="updatePrinter()">Update</button>
+        </div>
+    </mat-dialog-actions>
+</div>

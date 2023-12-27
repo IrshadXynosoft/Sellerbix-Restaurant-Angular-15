@@ -1,0 +1,22 @@
+<div class="modal-wrapper">
+  <button mat-icon-button class="close-button" (click)="close()">
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+  </button>
+  <h2 mat-dialog-title>Select Waiter</h2>
+  <mat-dialog-content>
+    <div class="row">
+      <div class="col-12">
+        <select class="custom-select w-100"
+          [ngClass]="waiter.hasError('required') && waiter.touched ? 'is-invalid' : ''" [formControl]="waiter">
+          <option value="">Select</option>
+          <option [ngValue]="i" *ngFor="let i of records" [selected]="selectedWaiter == i.id ? true : false">
+            {{i.name}}</option>
+        </select>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+    <button class="btn-setup-sucess " (click)="save()">Save</button>
+  </mat-dialog-actions>
+</div>

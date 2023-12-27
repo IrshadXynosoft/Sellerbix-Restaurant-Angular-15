@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body id="page_setup">
+    <!-- Body Wrapper Start -->
+    <div class="body_wrapper container-fluid">
+      <!-- Header Start -->
+      <app-header></app-header>
+      <!-- Header End -->
+      <div class="px-4">
+        <div class="row pt-4 px-2">
+          <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  routerLink="/home/walkin"
+                >
+                  Home
+                </li>
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  aria-current="page"
+                  routerLink="/setup"
+                >
+                  Setup
+                </li>
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  aria-current="page"
+                  routerLink="/setup/location"
+                >
+                  Location
+                </li>
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  aria-current="page"
+                  routerLink="/setup/location/{{ id }}/printers"
+                >
+                  Printers
+                </li>
+                <li
+                  class="breadcrumb-item active cursor-pointer"
+                  aria-current="page"
+                >
+                  Printer Settings
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-12">
+            <div
+              class="d-flex align-items-center head-tag cursor-pointer"
+              (click)="back()"
+            >
+              <h4 class="flex-gr-1">
+                <i class="icon-arrow-left"></i>Printers and Receipts
+              </h4>
+            </div>
+          </div>
+        </div>
+        <div class="tabs">
+          <!-- <div class="tab">
+            <input type="radio" id="tab-1" name="tab-group-1" checked />
+            <label for="tab-1">Invoice Templates</label>
+
+            <div class="content">
+              <div class="allDivMain">
+                <div class="floatMainTab">
+                  <h3>Invoice Templates</h3>
+                </div>
+                <div class="floatMainTabBtn">
+                  <button (click)="newTemplate()">Create New Template</button>
+                </div>
+                <div
+                  class="printerDivBg"
+                  *ngIf="templatesRecords.length < 1; else showtemplate"
+                >
+                  <h3>No Template Found</h3>
+                  <p>Add a new one by clicking the Create New Template.</p>
+                </div>
+                <ng-template #showtemplate>
+                  <div class="row clearDiv">
+                    <div
+                      class="col-sm-4"
+                      style="padding-bottom: 10px"
+                      *ngFor="let i of templatesRecords"
+                    >
+                      <div class="invoiceBorder">
+                        <h2>{{ i.name }}</h2>
+                        <div class="doubleBorder">
+                          <h4>{{ i.printer_template_detail.title_label }}</h4>
+                          <ul class="invoiceNav">
+                            <li>
+                              {{ i.printer_template_detail.customer_label }}:
+                              Customer Name
+                            </li>
+                            <li>
+                              {{ i.printer_template_detail.served_by_label }}:
+                              Asim
+                            </li>
+                            <li>
+                              {{ i.printer_template_detail.inv_number_label }}
+                              000982
+                            </li>
+                          </ul>
+                        </div>
+                        <ul class="invoiceNav1">
+                          <li>
+                            <a
+                              class="editBtn cursor-pointer"
+                              (click)="editTemplate(i.id)"
+                              >Edit</a
+                            >
+                          </li>
+                          <li>
+                            <a
+                              class="deleteBtn cursor-pointer"
+                              (click)="deleteInvoice(i.id, i.name)"
+                              >Delete</a
+                            >
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+          </div> -->
+          <div class="tab">
+            <input type="radio" id="tab-2" name="tab-group-1" checked />
+            <label for="tab-2">Add Printer</label>
+
+            <div class="content">
+              <div class="allDivMain">
+                <div class="floatMainTab">
+                  <h3>Add Printers</h3>
+                </div>
+                <div class="floatMainTabBtn">
+                  <button (click)="addPrinter()">Add Printer</button>
+                </div>
+
+                <div
+                  class="printerDivBg"
+                  *ngIf="printerRecords.length < 1; else showprinter"
+                >
+                  <h3>No Printer Found</h3>
+                  <p>Add a new one by clicking the Add Printer button.</p>
+                </div>
+                <ng-template #showprinter>
+                  <div class="printerDivBg">
+                    <div class="row">
+                      <div class="col-12">
+                        <strong>Printer Name</strong>
+                      </div>
+                    </div>
+                    <div class="row" *ngFor="let i of printerRecords">
+                      <div class="col-8 invoiceNav1" style="padding-left: 20px">
+                        {{ i.name }}
+                      </div>
+                      <div class="col-4 invoiceNav1">
+                        <li>
+                          <a
+                            class="editBtn cursor-pointer"
+                            (click)="editPrinter(i.id)"
+                            >Edit</a
+                          >
+                        </li>
+                        <li>
+                          <a
+                            class="deleteBtn cursor-pointer"
+                            (click)="deleteprinter(i.id, i.name)"
+                            >Delete</a
+                          >
+                        </li>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+
+                <div class="cloudprinterDivBg">
+                  <h3>Sellerbix Cloud Print Agent</h3>
+                  <p>
+                    Download
+                    <em><strong>Sellerbix Cloud Print Agent</strong></em> to
+                    start printing your invoice remotely.
+                    <strong>API KEY: </strong>{{ mqttToken }}
+                  </p>
+
+                  <div class="col-12 row">
+                    <div class="col-12 col-sm-5">
+                      <p>
+                        <strong>Minimum Requirements:</strong><br />
+                        Windows 10<br />
+                        2 GB of RAM<br />
+                        1024 × 768 Screen Resolution
+                      </p>
+                    </div>
+                    <div class="col-12 col-sm-7">
+                      <p>
+                        You need to add printer first before you can download
+                        this application.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab">
+            <input type="radio" id="tab-3" name="tab-group-1" />
+            <label for="tab-3">Printing rules</label>
+
+            <div class="content">
+              <div class="allDivMain">
+                <div class="floatMainTab">
+                  <h3>Printing Rules</h3>
+                </div>
+                <div class="floatMainTabBtn">
+                  <button (click)="saveAll()">Save All</button>
+                </div>
+
+                <form [formGroup]="printerRulesForm">
+                  <div class="contentTxtAll">
+                    <!-- <h4>Call Center</h4> -->
+                    <p><strong>KOT</strong></p>
+                    <div class="bordered bgGreyMain">
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <i>To Printer</i>
+                          <select
+                            class="form-control selectBarMain"
+                            formControlName="kot_printer"
+                          >
+                            <option value="" selected>Select</option>
+                            <option
+                              *ngFor="let i of printerRecords"
+                              [ngValue]="{ id: i.id, name: i.name }"
+                              class="ng-star-inserted"
+                            >
+                              {{ i.name }}
+                            </option>
+                          </select>
+                        </div>
+                        <!-- <div class="col-sm-3">
+                        <i>Print Template</i>
+                        <select class="form-control selectBarMain" formControlName="kot_template">
+                          <option value="" selected>Select</option>
+                          <option *ngFor="let i of templatesRecords" [ngValue]="{id:i.id,name:i.name}"> {{i.name}}
+                          </option>
+                        </select>
+                      </div> -->
+                        <div class="col-sm-3">
+                          <i>Print Type</i>
+                          <select
+                            class="form-control selectBarMain"
+                            formControlName="print_type"
+                            (change)="printTypeChange()"
+                          >
+                            <option value="" selected>Select</option>
+                            <option value="1">Category</option>
+                            <option value="2">Entity</option>
+                            <option value="0">None</option>
+                          </select>
+                        </div>
+                        <div
+                          class="col-sm-4"
+                          *ngIf="printerRulesForm.value['print_type'] == 1"
+                        >
+                          <i>Category</i>
+                          <mat-select
+                            class="form-control"
+                            (openedChange)="openedChange($event)"
+                            placeholder="Select"
+                            [formControl]="category"
+                            multiple
+                          >
+                            <mat-select-trigger>
+                              {{
+                                category.value?.length > 0
+                                  ? category.value[0]?.name
+                                  : ""
+                              }}
+                              <span
+                                *ngIf="category.value?.length > 1"
+                                class="additional-selection"
+                              >
+                                (+{{ category.value.length - 1 }}
+                                {{
+                                  category.value?.length === 2
+                                    ? "other"
+                                    : "others"
+                                }})
+                              </span>
+                            </mat-select-trigger>
+                            <div class="select-container">
+                              <mat-optgroup>
+                                <mat-form-field style="width: 100%">
+                                  <input
+                                    #search
+                                    autocomplete="off"
+                                    placeholder="Search"
+                                    aria-label="Search"
+                                    matInput
+                                    [formControl]="searchTextboxControl"
+                                  />
+                                  <button
+                                    [disableRipple]="true"
+                                    *ngIf="search.value"
+                                    matSuffix
+                                    mat-icon-button
+                                    aria-label="Clear"
+                                    (click)="clearSearch($event)"
+                                  >
+                                    <mat-icon>close</mat-icon>
+                                  </button>
+                                </mat-form-field>
+                              </mat-optgroup>
+                              <mat-optgroup
+                                *ngIf="
+                                  (categoryFilteredOptions | async)?.length == 0
+                                "
+                              >
+                                <div>No results found!</div>
+                              </mat-optgroup>
+                              <mat-option
+                                (onSelectionChange)="
+                                  categorySelectionChange($event)
+                                "
+                                *ngFor="
+                                  let option of categoryFilteredOptions | async
+                                "
+                                [value]="option"
+                              >
+                                {{ option.name }}
+                              </mat-option>
+                            </div>
+                          </mat-select>
+                        </div>
+                        <div
+                          class="col-sm-4"
+                          *ngIf="printerRulesForm.value['print_type'] == 2"
+                        >
+                          <i>Entity</i>
+                          <mat-select
+                            class="form-control"
+                            (openedChange)="openedChange($event)"
+                            placeholder="Select"
+                            [formControl]="entity"
+                            multiple
+                          >
+                            <mat-select-trigger>
+                              {{
+                                entity.value?.length > 0
+                                  ? entity.value[0]?.name
+                                  : ""
+                              }}
+                              <span
+                                *ngIf="entity.value?.length > 1"
+                                class="additional-selection"
+                              >
+                                (+{{ entity.value.length - 1 }}
+                                {{
+                                  entity.value?.length === 2
+                                    ? "other"
+                                    : "others"
+                                }})
+                              </span>
+                            </mat-select-trigger>
+                            <div class="select-container">
+                              <mat-optgroup>
+                                <mat-form-field style="width: 100%">
+                                  <input
+                                    #searchEntity
+                                    autocomplete="off"
+                                    placeholder="Search"
+                                    aria-label="Search"
+                                    matInput
+                                    [formControl]="searchEntityTextboxControl"
+                                  />
+                                  <button
+                                    [disableRipple]="true"
+                                    *ngIf="searchEntity.value"
+                                    matSuffix
+                                    mat-icon-button
+                                    aria-label="Clear"
+                                    (click)="clearSearch($event)"
+                                  >
+                                    <mat-icon>close</mat-icon>
+                                  </button>
+                                </mat-form-field>
+                              </mat-optgroup>
+                              <mat-optgroup
+                                *ngIf="
+                                  (entityFilteredOptions | async)?.length == 0
+                                "
+                              >
+                                <div>No results found!</div>
+                              </mat-optgroup>
+                              <mat-option
+                                (onSelectionChange)="
+                                  entitySelectionChange($event)
+                                "
+                                *ngFor="
+                                  let option of entityFilteredOptions | async
+                                "
+                                [value]="option"
+                              >
+                                {{ option.name }}
+                              </mat-option>
+                            </div>
+                          </mat-select>
+                        </div>
+                        <div class="col-sm-2">
+                          <button
+                            class="btn-setup-sucess"
+                            style="margin-top: 40px"
+                            (click)="addkotprintRule()"
+                          >
+                            Add
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-12" *ngIf="kotArray.length > 0">
+                        <table class="table bordered">
+                          <thead>
+                            <tr>
+                              <td>Kot Printer</td>
+                              <td>Print Type</td>
+                              <td>Category / Entity</td>
+                              <td></td>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let i of kotArray">
+                              <td>{{ i.printername }}</td>
+                              <td>
+                                <span *ngIf="i.kot_type == 1">Category</span>
+                                <span *ngIf="i.kot_type == 2">Entity</span>
+                                <span *ngIf="i.kot_type == 0">None</span>
+                              </td>
+                              <td *ngIf="i.kot_type == 1">
+                                <span *ngFor="let g of i.categories"
+                                  >{{ g.name }} <br />
+                                </span>
+                              </td>
+                              <td *ngIf="i.kot_type == 2">
+                                <span *ngFor="let g of i.entities"
+                                  >{{ g.name }} <br />
+                                </span>
+                              </td>
+                              <td *ngIf="i.kot_type == 0">
+                                <span>None</span>
+                              </td>
+                              <td>
+                                <mat-icon
+                                  class="delete_item_icon"
+                                  (click)="deleteKotdata(i)"
+                                  >delete</mat-icon
+                                >
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <p><strong>Invoice</strong></p>
+                    </div>
+                    <div class="bordered bgGreyMain">
+                      <div class="row">
+                        <div class="col-sm-5">
+                          <i>To Printer</i>
+                          <select
+                            class="form-control selectBarMain"
+                            formControlName="invoice_printer"
+                          >
+                            <option value="" selected>Select</option>
+                            <option
+                              *ngFor="let i of printerRecords"
+                              [ngValue]="{ id: i.id, name: i.name }"
+                            >
+                              {{ i.name }}
+                            </option>
+                          </select>
+                        </div>
+                        <!-- <div class="col-sm-5">
+                          <i>Print Template</i>
+                          <select
+                            class="form-control selectBarMain"
+                            formControlName="invoice_template"
+                          >
+                            <option value="" selected>Select</option>
+                            <option
+                              *ngFor="let i of templatesRecords"
+                              [ngValue]="{ id: i.id, name: i.name }"
+                              class="ng-star-inserted"
+                            >
+                              {{ i.name }}
+                            </option>
+                          </select>
+                        </div> -->
+                        <div class="col-sm-2">
+                          <button
+                            class="btn-setup-sucess"
+                            style="margin-top: 40px"
+                            (click)="addInvoiceprintRule()"
+                          >
+                            Add
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-12" *ngIf="invoiceArray.length > 0">
+                        <table class="table bordered">
+                          <thead>
+                            <tr>
+                              <td>Invoice Printer</td>
+                              <!-- <td>Invoice Template</td> -->
+                              <td></td>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let i of invoiceArray">
+                              <td>{{ i.printername }}</td>
+                              <!-- <td>
+                                {{ i.templatename }}
+                              </td> -->
+                              <td>
+                                <mat-icon
+                                  class="delete_item_icon"
+                                  (click)="deleteInvoicedata(i)"
+                                  >delete</mat-icon
+                                >
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="tab">
+          <input type="radio" id="tab-4" name="tab-group-1">
+          <label for="tab-4">Category Printings</label>
+
+          <div class="content">
+            <div class="allDivMain">
+              <div class="floatMainTab">
+                <h3>Category Printing Rules</h3>
+              </div>
+
+              <div class="radioBtnFloat">
+                <h3>Category Printing Rules is</h3>
+                <mat-slide-toggle></mat-slide-toggle>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

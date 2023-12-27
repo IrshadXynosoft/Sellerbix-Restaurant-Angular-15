@@ -1,0 +1,105 @@
+.header {
+    text-align: center;
+    color: #000;
+}
+.header h3 {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+}
+.header h5 {
+    font-size: 10px;
+    margin: 0;
+}
+.header img {
+    width: 100px;
+}
+.header .strong h4 {
+    font-size: 12px !important;
+    font-weight: bold !important;
+    margin-bottom: 3px !important;
+}
+.header p {
+    font-size: 12px;
+    margin: 0;
+    text-align: left;
+    font-weight: bold;
+}
+.date h4 {
+    font-size: 12px;
+    font-weight: bold;
+    margin: 0;
+}
+.items h4 {
+    font-size: 11px;
+    font-weight: bold;
+    margin: 0;
+}
+.items h5 {
+    font-size: 11px;
+    margin: 0;
+}
+.items p {
+    font-size: 10px;
+    margin: 0;
+}
+.total h5 {
+    font-size: 12px;
+    margin: 0;
+    text-align: end;
+}
+.total h4 {
+    font-size: 12px;
+    margin: 0;
+    text-align: start;
+}
+.total .bordertop {
+    border-top: 1px dashed;
+    margin: 0;
+}
+.footer h4 {
+    font-size: 12px;
+    margin: 0;
+    text-align: start;
+}
+.modal-height {
+    height: 500px;
+    overflow-y: scroll;
+    border: 1px solid black;
+    width: 8cm;
+}
+
+.row{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+
+.col-1 {
+    flex: 0 0 8.333333%;
+    max-width: 8.333333%;
+}
+.col-2 {
+    flex: 0 0 16.666667%;
+    max-width: 16.666667%;
+}
+.col-5 {
+    flex: 0 0 41.666667%;
+    max-width: 41.666667%;
+}
+.col-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+
+
+@media print {  
+    @page {
+      size: 80mm auto; /* landscape */
+      margin: .5mm; 
+    }
+  }

@@ -1,0 +1,81 @@
+<style>
+  @page {
+    size: 210mm 297mm;
+  }
+
+  /* output size */
+  body.receipt .sheet {
+    width: 210mm;
+    /* A4 width */
+    height: 297mm;
+    /* A4 height */
+  }
+
+  /* sheet size */
+  @media print {
+    body.receipt {
+      width: 210mm;
+    }
+  }
+</style>
+
+<div class="modal-wrapper">
+  <h2 mat-dialog-title>{{data.item_name}} Stock Movement</h2>
+  <mat-dialog-content>
+    <div *ngIf="historyArray.length <= 0; else showtable">
+      <div class="row col-12">
+        <div class="col-12">
+          <div class="not-found bordered">
+            <h3>Sorry :(</h3>
+            <p>There's no stock movement for {{data.item_name}} at this moment.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #showtable>
+      <div id="print-section-modal">
+      <table class="tableStyleMain bordered table  w-100">
+        <thead>
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Location</th>
+            <th scope="col">Opening Balance </th>
+            <th scope="col">Out</th>
+            <th scope="col">In</th>
+            <th scope="col">Closing Balance</th>
+             <th scope="col">Status</th>
+            <th scope="col">Movement Type</th>
+            <th scope="col">Source</th>
+            <th scope="col">Staff</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of historyArray">
+            <td>{{item.created_at | date: 'dd-MMM-yy hh:mm a'}}</td>
+            <td>{{item.branch}}</td>
+            <td>{{item.opening_balance}} <span *ngIf="item.opening_balance">{{item.measurement_unit}}</span></td>
+            <td>{{item.stock_out?item.stock_out:'--'}} <span *ngIf="item.stock_out">{{item.measurement_unit}}</span>
+            </td>
+            <td>{{item.stock_in?item.stock_in:'--'}} <span *ngIf="item.stock_in">{{item.measurement_unit}}</span></td>
+            <td>{{item.closing_balance}} <span *ngIf="item.closing_balance">{{item.measurement_unit}}</span></td>
+            <td>{{item.status}}</td>
+            <td>{{item.movement_type}}</td>
+            <td>{{item.sourse}}</td>
+            <td>{{item.staff}}</td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+    </ng-template>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button style="width: 120px;float: right;" *ngIf="historyArray.length>0"
+                  class="btn-setup-sucess" [useExistingCss]="true" printSectionId="print-section-modal" printTitle="Stock Movement for {{data.item_name}}"
+                  ngxPrint>
+                  <i class="icon-print mr-1"></i> Print
+                </button>
+    <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+  </mat-dialog-actions>
+</div>

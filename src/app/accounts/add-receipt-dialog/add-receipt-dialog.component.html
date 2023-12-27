@@ -1,0 +1,82 @@
+<form>
+  <div class="modal-wrapper">
+    <h2 *ngIf="data.operation== 'add'" mat-dialog-title>Add Receipt</h2>
+    <h2 *ngIf="data.operation== 'edit'" mat-dialog-title>Update Receipt</h2>
+    <h2 *ngIf="data.operation== 'view' || data.operation== 'viewforledger'" mat-dialog-title>View Details</h2>
+    <div mat-dialog-content>
+      <form [formGroup]="addexpenseForm">
+        <!-- <select class="form-control w-100" formControlName="expense_category_id">
+                  <option value="" disabled>Select</option>
+                  <option *ngFor="let i of expenseRecords" value="{{i.id}}">{{i.name}}</option>
+              </select> -->
+        <span class="error-message float-right">*</span>
+        <!-- <span class="error-message float-right"
+          *ngIf="addexpenseForm.controls.date.hasError('required' ) && addexpenseForm.controls.date.touched">required</span> -->
+        <label>Date</label>
+        <mat-hint class="float-right">DD/MM/YYYY</mat-hint>
+        <input class="form-control" [formControl]="dateChoosen" [max]="todayDate" [matDatepicker]="releasedAtPicker"
+          (click)="releasedAtPicker.open()">
+        <mat-datepicker #releasedAtPicker [touchUi]="true">
+        </mat-datepicker>
+        <span class="error-message float-right">*</span>
+        <span class="error-message float-right"
+          *ngIf="addexpenseForm.controls.option.hasError('required' ) && addexpenseForm.controls.option.touched">Required</span>
+        <label id="example-radio-group-label">Option</label>
+        <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
+          formControlName="option">
+          <mat-radio-button class="example-radio-button" value="1" [checked]="checkedOption== 1">
+            Cash
+          </mat-radio-button>
+          <mat-radio-button class="example-radio-button" value="2" [checked]="checkedOption== 2">
+            Card
+          </mat-radio-button>
+        </mat-radio-group>
+        <div class="row">
+          <div class="col-6">
+            <span class="error-message float-right">*</span>
+            <span class="error-message float-right"
+              *ngIf="addexpenseForm.controls.name.hasError('required' ) && addexpenseForm.controls.name.touched">Required</span>
+            <label>Title</label>
+            <input type="text" class="form-control" [ngClass]="addexpenseForm.controls.name.hasError('required' ) && addexpenseForm.controls.name.touched ? 'is-invalid' : ''" formControlName="name" />
+          </div>
+          <div class="col-6">
+            <label>Reference</label>
+            <input type="text" class="form-control" formControlName="reference" />
+          </div>
+        </div>
+        <label>Ledger</label>
+        <span class="error-message float-right">*</span>
+        <span class="error-message float-right"
+          *ngIf="addexpenseForm.controls.ledger.hasError('required' ) && addexpenseForm.controls.ledger.touched">Required</span>
+        <!-- <input *ngIf="data.operation == 'add' || data.operation== 'edit'" type="text" class="form-control custom-border"
+            placeholder="Search a category" matInput [formControl]="categoryArray" [matAutocomplete]="auto" #autoInput /> -->
+        <!-- <mat-autocomplete #auto="matAutocomplete" (optionSelected)="
+              categorySelected($event.option.value, $event.option.id)
+            ">
+            <mat-option *ngFor="let option of category_filteredOptions | async" [value]="option.name" [id]="option.id">
+              {{ option.name }}
+            </mat-option>
+          </mat-autocomplete> -->
+        <select class="custom-select w-100" [ngClass]="addexpenseForm.controls.ledger.hasError('required' ) && addexpenseForm.controls.ledger.touched ? 'is-invalid' : ''" formControlName="ledger">
+          <option value="">Select</option>
+          <option value="{{i.id}}" *ngFor="let i of expenseRecords" [selected] = "selectedLedger == i.id ? true : false">{{i.name}}</option>
+        </select>
+
+        <!-- <input *ngIf="data.operation == 'view' || data.operation== 'viewforledger'" type="text" class="form-control"
+          formControlName="expensename" /> -->
+        <label>Amount</label>
+        <span class="error-message float-right">*</span>
+        <span class="error-message float-right"
+          *ngIf="addexpenseForm.controls.amount.hasError('required' ) && addexpenseForm.controls.amount.touched">Required</span>
+        <input type="text" class="form-control" [ngClass]="addexpenseForm.controls.amount.hasError('required' ) && addexpenseForm.controls.amount.touched ? 'is-invalid' : ''" placeholder="Enter amount" formControlName="amount" />
+        <label>Description</label>
+        <textarea class="form-control" placeholder="Type Description (If Any)" formControlName="description" maxlength="50"></textarea>
+      </form>
+    </div>
+    <div mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button *ngIf="data.operation == 'add'" class="btn-setup-sucess" (click)="onSubmit()">Submit</button>
+      <button *ngIf="data.operation == 'edit'" class="btn-setup-sucess" (click)="onUpdate()">Update</button>
+    </div>
+  </div>
+</form>

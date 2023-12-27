@@ -1,0 +1,73 @@
+<form [formGroup]="staffroleForm">
+  <div class="modal-wrapper modal-ht-custom">
+    <h2 mat-dialog-title>Add New Role</h2>
+    <div mat-dialog-content>
+      <div class="row">
+        <div class="col-12 col-sm-6">
+          <label>Role Name</label>
+          <span class="error-message">*</span>
+          <span class="error-message float-right"
+            *ngIf="staffroleForm.controls.rolename.hasError('required' ) && staffroleForm.controls.rolename.touched">required</span>
+          <span class="error-message float-right" *ngIf="staffroleForm.controls.rolename.hasError('pattern' )">invalid
+            input</span>
+          <span class="error-message float-right" *ngIf="requestErrorArray">{{requestErrorArray.name}}</span>
+          <input type="text" class="form-control"
+            [ngClass]="staffroleForm.controls.rolename.hasError('required' ) && staffroleForm.controls.rolename.touched || staffroleForm.controls.rolename.hasError('pattern' ) || requestErrorArray.name ? 'is-invalid' : ''"
+            placeholder="name" formControlName="rolename" />
+        </div>
+        <div class="col-12 col-sm-6">
+          <label>Start Page</label>
+          <input type="text" class="form-control" placeholder="Start page" formControlName="startpage" />
+        </div>
+
+      </div>
+      <p><strong>Access Rights </strong>
+        <span class="error-message">*</span></p>
+      <span class="error-message float-right" *ngIf="showrequired">required</span>
+      <div class="row">
+        <div class="col-6" *ngFor="let menu of menuArray;let i=index">
+          <div class="form-check">
+            <p><strong>
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"
+                  (change)="menuSelected($event,menu.id)">
+                <label class="form-check-label" for="flexCheckChecked">
+                  {{menu.name}}
+                </label>
+              </strong></p>
+            <div class="row">
+              <div class="col-6" *ngFor="let pages of menu.menu_page">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value=""
+                    (change)="PermissionSelected($event,pages.id)">
+                  <label class="form-check-label" for="flexCheckChecked1">
+                    {{pages.name}}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <strong>Permissions</strong><br><br>
+          <div class="row">
+            <div class="col-6" *ngFor="let i of permissionsArray;let index = index;">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" (change)="permissionSelected($event, i.id)">
+                <label class="form-check-label" for="flexCheckChecked1">
+                  {{i.name}}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" [disabled]="!staffroleForm.valid || staffroleForm.pristine"
+        (click)="AddNewStaffRole()">Submit</button>
+    </div>
+  </div>
+</form>

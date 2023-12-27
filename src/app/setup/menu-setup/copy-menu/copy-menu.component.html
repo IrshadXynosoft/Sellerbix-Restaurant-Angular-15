@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid add-menu-wrp">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag cursor-pointer" (click)="back()">
+            <h4><i class="icon-arrow-left mr-1"></i> Add Menu Item</h4>
+          </div>
+        </div>
+      </div>
+      <div>
+        <mat-tab-group animationDuration="0ms">
+          <form [formGroup]="addmenuForm">
+            <mat-tab *ngIf="regularMenuFlag" label="Regular Menu">
+              <mat-accordion>
+                <mat-expansion-panel [expanded]="true">
+                  <mat-expansion-panel-header style="background-color: lavender">
+                    <mat-panel-title> Item Details </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="row">
+                    <div class="col-md-8">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <label>Name</label>
+                          <span class="error-message">*</span>
+                          <span class="error-message float-right"
+                            *ngIf="addmenuForm.controls.item_name.hasError('required' ) && addmenuForm.controls.item_name.touched">Required</span>
+                          <span class="error-message float-right"
+                            *ngIf="addmenuForm.controls.item_name.hasError('pattern' )">Invalid input</span>
+                          <input type="text" class="form-control" placeholder="Name"
+                            [ngClass]="validationCheck(addmenuForm,'item_name')" formControlName="item_name" />
+
+                        </div>
+                        <div class="col-md-6">
+                          <label>Secondary Name</label>
+                          <input type="text" class="form-control" placeholder="Secondary Name"
+                            formControlName="secondary_name" />
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <label>Item Code </label>
+                          <span class="error-message">*</span>
+                          <span class="error-message float-right"
+                            *ngIf="addmenuForm.controls.item_code.hasError('required' ) && addmenuForm.controls.item_code.touched">Required</span>
+                          <input type="text" class="form-control" placeholder="Item Code"
+                            [ngClass]="validationCheck(addmenuForm,'item_code')" formControlName="item_code" />
+
+                        </div>
+                        <div class="col-md-6">
+                          <label>Barcode</label>
+                          <span class="error-message float-right"
+                            *ngIf="addmenuForm.controls.barcode.hasError('required' ) && addmenuForm.controls.barcode.touched">Required</span>
+                          <input type="text" class="form-control" placeholder="Barcode" formControlName="barcode" />
+                        </div>
+                      </div>
+                      <div class="row">
+
+                        <div class="col-md-6">
+                          <label>Item Category</label>
+                          <span class="error-message">*</span>
+                          <span class="error-message float-right"
+                            *ngIf="addmenuForm.controls.category_id.hasError('required' ) && addmenuForm.controls.category_id.touched">Required</span>
+                          <select class="custom-select w-100" [ngClass]="validationCheck(addmenuForm,'category_id')"
+                            formControlName="category_id">
+                            <option value="">Select Category</option>
+                            <option *ngFor="let i of categoryrecords" value="{{ i.id }}">
+                              {{ i.name }}
+                            </option>
+                          </select>
+                        </div>
+                        <div class="col-md-6">
+                          <label>Item Schedule</label>
+                          <!-- <span class="error-message">*</span>
+                          <span class="error-message float-right"
+                            *ngIf="addmenuForm.controls.category_id.hasError('required' ) && addmenuForm.controls.category_id.touched">required</span> -->
+                          <mat-select [formControl]="schedule" multiple class="form-control w-100">
+                            <mat-option *ngFor="let schedule of scheduleList" [value]="schedule.id">{{schedule.name}}
+                            </mat-option>
+                          </mat-select>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <label>Default Price</label>
+                          <span class="error-message">*</span>
+                          <span class="error-message float-right"
+                            *ngIf="addmenuForm.controls.default_price.hasError('required' ) && addmenuForm.controls.default_price.touched">Required</span>
+                          <span class="error-message float-right"
+                            *ngIf="addmenuForm.controls.default_price.hasError('pattern' )">Invalid input</span>
+                          <input type="number" class="form-control" placeholder="Default Price"
+                            [ngClass]="validationCheck(addmenuForm,'default_price')" formControlName="default_price" />
+
+                        </div>
+                        <div class="col-md-6">
+                          <div class="row" style="margin-top: 40px">
+                            <div class="col-md-6">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"
+                                  formControlName="allow_all_location" />
+                                <label class="form-check-label" for="flexCheckChecked">Change all locations</label>
+                              </div>
+                            </div>
+                            <!-- <div class="col-md-6">
+                              <mat-slide-toggle formControlName="item_status">Status</mat-slide-toggle>
+                              <span class="error-message">*</span>
+                            </div> -->
+                          </div>
+                        </div>
+                        <table class="col-12 table" *ngIf="
+                              !this.addmenuForm.value['allow_all_location'] ==
+                              true
+                            ">
+                          <tr>
+                            <th>Location</th>
+                            <th>Price<span class="error-message">*</span></th>
+                          </tr>
+                          <tr formArrayName="location_prices" *ngFor="
+                                let item of locationPricesFormGroups.controls;
+                                let i = index
+                              ">
+                            <td>{{ branchname(i) }}</td>
+                            <td [formGroupName]="i">
+                              <input type="text" class="form-control" formControlName="location_price" #ip
+                                (input)="locationValidCheck(ip.value)" placeholder="Enter Price" />
+                            </td>
+                          </tr>
+                        </table>
+                        <span class="error-message float-right"
+                          *ngIf="!this.addmenuForm.value['allow_all_location'] == true && branchPriceValidityCheck">Location
+                          Price required</span>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-8">
+                          <label>Description</label>
+                          <textarea type="text" class="form-control" placeholder="Description"
+                            formControlName="description"></textarea>
+                        </div>
+                        <div class="col-md-4" style="margin-top:3rem">
+                          <mat-slide-toggle formControlName="is_editable">Is price editable</mat-slide-toggle>
+                          <span class="error-message">*</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <mat-card appearance="outlined">
+                        <img *ngIf="ImageBaseDataNew;else altimage" src={{ImageBaseDataNew}} class="img" />
+                        <ng-template #altimage>
+                          <img *ngIf="ImageBaseDataRegular;else noimage" src={{ImageBaseDataRegular}} class="img" />
+                          <ng-template #noimage>
+                            <img src="assets/images/no-image (1).jpg" class="img" />
+                          </ng-template>
+                        </ng-template>
+
+                        <br><br>
+                        <input type="file" placeholder="please click here to upload" formControlName="image"
+                          (change)="handleFileInput($event)" />
+                      </mat-card>
+                      <label class="mt-2 mb-2" *ngIf="imageChangedEvent">Crop Image</label>
+                      <image-cropper 
+                      [imageChangedEvent]="imageChangedEvent" 
+                      [maintainAspectRatio]="true" 
+                      [aspectRatio]="4 / 4"
+                      [resizeToWidth]="256" 
+                      format="png" 
+                      (imageCropped)="imageCropped($event)" 
+                      (imageLoaded)="imageLoaded()"
+                      (cropperReady)="cropperReady()" 
+                      (loadImageFailed)="loadImageFailed()"></image-cropper>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+              <mat-accordion>
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+                  [expanded]="true">
+                  <mat-expansion-panel-header style="background-color: lavender">
+                    <mat-panel-title> Item Availability<span class="error-message">*</span> </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="table-responsive-sm">
+                    <table class="col-12 table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Locations</th>
+                          <th scope="col" *ngFor="let entity of entitiesarray">
+                            {{ entity.name }}
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr formArrayName="entities" *ngFor="
+                              let item of entitiesFormGroups.controls;
+                              let i = index
+                            ">
+                          <td>{{ branchname(i) }}</td>
+                          <td colspan="4" [formGroupName]="i">
+                            <div class="row">
+                              <div class="col-3 col-sm-3">
+                                <mat-checkbox formControlName="walk_in">
+                                </mat-checkbox>
+                              </div>
+                              <div class="col-3 col-sm-3">
+                                <mat-checkbox formControlName="dine_in">
+                                </mat-checkbox>
+                              </div>
+                              <div class="col-3 col-sm-3">
+                                <mat-checkbox formControlName="call_center">
+                                </mat-checkbox>
+                              </div>
+                              <div class="col-3 col-sm-3">
+                                <mat-checkbox formControlName="e_order">
+                                </mat-checkbox>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <span class="error-message" *ngIf="!entitiesValidityCheck">Please select atleast One entity in each
+                    branch. </span>
+                </mat-expansion-panel>
+              </mat-accordion>
+              <mat-accordion>
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+                  [expanded]="true">
+                  <mat-expansion-panel-header style="background-color: lavender">
+                    <mat-panel-title> Food Symbols <span class="error-message">*</span> </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <!-- <div class="row">
+                   <div  formArrayName="food_symbols" *ngFor="let foodsymbol of foodsymbolsFormGroups.controls;let i=index;">
+                    <div   [formGroupName]="i" class="col-12 col-sm-4 mb-2" >
+                      <mat-checkbox formControlName="name" (change)="onChange($event,  foodsymbol)">
+                        Name
+                      </mat-checkbox>
+                    </div>
+                   </div>
+                  </div> -->
+                  <div class="row">
+                    <div *ngFor="let foodsymbol of tempfoodsymbol; let i = index">
+                      <div class="col-12 col-sm-4 mb-2">
+                        <mat-checkbox (change)="onChange($event, foodsymbol)" [checked]="foodsymbol.is_selected">
+                          {{ foodsymbol.food_symbol_name }}
+                        </mat-checkbox>
+                      </div>
+                    </div>
+                  </div>
+                  <span class="error-message float-left" *ngIf="foodsymbolSelected.length <= 0">Please select atleast
+                    one FoodSymbol</span>
+                </mat-expansion-panel>
+              </mat-accordion>
+              <mat-accordion>
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+                  [expanded]="true">
+                  <mat-expansion-panel-header style="background-color: lavender">
+                    <mat-panel-title> Item Modifiers </mat-panel-title>
+                  </mat-expansion-panel-header>&nbsp;
+                  <span class="error-message float-left"
+                    *ngIf="!this.list_autocomplete.value && list_autocomplete.touched || modifierListForm.controls.item_price.hasError('required' ) && modifierListForm.controls.item_price.touched">Please
+                    add Item name and price to add.</span>
+                  <span class="error-message float-left"
+                    *ngIf="modifierListForm.controls.item_price.hasError('pattern' )">Invalid input</span>
+                  <span *ngIf="!modifierListZeroEntryCheck && AddedModifierGroupRecords.length>0"
+                    class="error-message float-right">*Please add modifier list
+                  </span>
+                  <div class="row">
+                    <div class="col-4" *ngFor="
+                          let modifiergroup of AddedModifierGroupRecords;
+                          let groupindex = index
+                        ">
+                      <div class="add-grp-container mb-3 p-0">
+                        <div class="d-flex align-items-top bc-orange p-3">
+                          <div class="flex-gr-1">
+                            <h3 class="m-0">
+                              {{ modifiergroup.modifier_group_name }}
+                            </h3>
+                            <p class="m-0">
+                              Min: {{ modifiergroup.limit_minimum }}/ Max:
+                              {{ modifiergroup.limit_maximum }}
+                            </p>
+                          </div>
+                          <div (click)="addGroup('edit', groupindex)">
+                            <i class="zmdi zmdi-settings"></i>
+                          </div>
+                          <div>
+                            <mat-icon class="delete" (click)="deleteModifier(groupindex)">delete</mat-icon>
+
+                          </div>
+                        </div>
+                        <form [formGroup]="modifierListForm">
+                          <div class="d-flex align-items-center bc-orange-light p-3">
+                            <!-- <input type="text" placeholder="Enter Item Name" class="form-control w-100 m-0 mr-1"
+                              formControlName="item_name" /> -->
+                            <div class="form-control w-100 m-0 mr-1">
+                              <input type="text" placeholder="Enter Item Name" matInput
+                                [formControl]="list_autocomplete" [matAutocomplete]="auto" />
+                              <mat-autocomplete #auto="matAutocomplete">
+                                <mat-option *ngFor="
+                                      let list_options of modifierlist_filteredOptions
+                                        | async
+                                    " [value]="list_options.name" [id]="list_options.id">
+                                  {{ list_options.name }}
+                                </mat-option>
+                              </mat-autocomplete>
+                            </div>
+                            <input type="text" placeholder="Price" class="form-control w-25 m-0 mr-1"
+                              formControlName="item_price" />
+                            <button class="btn-setup-sucess btn-ht-custom" (click)="addmodifierlist(groupindex)">
+                              <i class="icon-plus"></i>
+                            </button>
+                          </div>
+                        </form>
+                        <div>
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">Item Name</th>
+                                <th scope="col">Additional Price</th>
+                                <th></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="
+                                    let modifierlist of modifiergroup.modifier_list;
+                                    let listindex = index
+                                  ">
+                                <!-- {{modifierlist}} -->
+                                <td class="w-100">
+                                  <div class="form-check">
+                                    <label class="form-check-label" for="flexCheckChecked1">{{ modifierlist.item_name }}
+                                    </label>
+                                  </div>
+                                </td>
+                                <td>
+                                  <input type="text" class="form-control" #listprice value="{{modifierlist.item_price}}"
+                                    (input)="updateListValue(groupindex,listindex, listprice.value)" />
+                                </td>
+                                <td>
+                                  <button class="btn-setup-danger btn-ht-custom" (click)="
+                                        deletemodifierlist(
+                                          groupindex,
+                                          listindex
+                                        )
+                                      ">
+                                    <i class="icon-trash"></i>
+                                  </button>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <span *ngIf="!ValidModifierList && AddedModifierGroupRecords.length>0" class="error-message">*Please
+                    add list with Group's max count.</span>
+                  <div>
+                    <button class="btn-setup-sucess" (click)="addGroup('add')">
+                      Add Group
+                    </button>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+              <mat-accordion>
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+                  [expanded]="true">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title> Item Specification </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div>
+                    <div class="row" *ngFor="let spec of specificationArray;let specindex= index">
+                      <div class="col-md-6">
+                        <!-- <label>Title</label> -->
+                        <p style="color:black !important"> {{spec.name}}
+                        </p>
+                      </div>
+                      <div class="col-md-6">
+                        <!-- <label>Value</label> -->
+                        <input type="text" class="form-control" value="{{spec.value}}" #ip1
+                          (input)="valueCheck(specindex,ip1.value)" />
+                      </div>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+              <mat-accordion>
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+                  [expanded]="true">
+                  <mat-expansion-panel-header style="background-color: lavender">
+                    <mat-panel-title> Tags </mat-panel-title>
+                  </mat-expansion-panel-header>
+
+                  <div>
+                    <mat-form-field class="example-chip-list" appearance="fill">
+                      <mat-label>Type Tag and hit enter to Add</mat-label>
+                      <mat-chip-grid #chipList aria-label="Fruit selection">
+                        <mat-chip-row *ngFor="let tag of tags" (removed)="remove(tag)">
+                          {{ tag.name }}
+                          <button matChipRemove>
+                            <mat-icon>cancel</mat-icon>
+                          </button>
+                        </mat-chip-row>
+                        <input placeholder="" [matChipInputFor]="chipList"
+                          [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                          (matChipInputTokenEnd)="add($event)" formControlName="tags" />
+                      </mat-chip-grid>
+                    </mat-form-field>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+              <div class="d-flex mb-2 btn-ft-wrp">
+                <button class="btn-setup-danger mr-2" (click)="back()">Cancel</button>
+                <button class="btn-setup-sucess" (click)="UpdateMenuItem()">
+                  Add
+                </button>
+              </div>
+            </mat-tab>
+          </form>
+          <form [formGroup]="addGroupedmenuForm">
+            <mat-tab *ngIf="groupedMenuFlag" label="Grouped Menu">
+              <mat-accordion>
+                <mat-expansion-panel [expanded]="true">
+                  <mat-expansion-panel-header style="background-color: lavender">
+                    <mat-panel-title> Item Details </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="row">
+                    <div class="col-md-8">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <label>Name</label>
+                          <span class="error-message">*</span>
+                          <span class="error-message float-right"
+                            *ngIf="addGroupedmenuForm.controls.item_name.hasError('required' ) && addGroupedmenuForm.controls.item_name.touched">Required</span>
+                          <span class="error-message float-right"
+                            *ngIf="addGroupedmenuForm.controls.item_name.hasError('pattern' )">Invalid input</span>
+                          <input type="text" class="form-control" placeholder="Name" formControlName="item_name"
+                            [ngClass]="validationCheck(addGroupedmenuForm,'item_name')" />
+
+                        </div>
+                        <div class="col-md-6">
+                          <label>Secondary Name</label>
+                          <input type="text" class="form-control" placeholder="Secondary Name"
+                            formControlName="secondary_name" />
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <label>Item Code </label>
+                          <span class="error-message">*</span>
+                          <span class="error-message float-right"
+                            *ngIf="addGroupedmenuForm.controls.item_code.hasError('required' ) && addGroupedmenuForm.controls.item_code.touched">Required</span>
+                          <input type="text" class="form-control"
+                            [ngClass]="validationCheck(addGroupedmenuForm,'item_code')" placeholder="Item Code"
+                            formControlName="item_code" />
+                        </div>
+                        <div class="col-md-3" style="margin-top:2rem">
+                          <mat-slide-toggle formControlName="is_editable">Is price editable</mat-slide-toggle>
+                          <span class="error-message">*</span>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <label>Item Category</label>
+                          <span class="error-message">*</span>
+                          <span class="error-message float-right"
+                            *ngIf="addGroupedmenuForm.controls.category_id.hasError('required' ) && addGroupedmenuForm.controls.category_id.touched">Required</span>
+                          <select class="custom-select w-100"
+                            [ngClass]="validationCheck(addGroupedmenuForm,'category_id')"
+                            (input)="getMenuItemsCategoryFromEvent($event)" formControlName="category_id">
+                            <option value="">Select Category</option>
+                            <option *ngFor="let i of categoryrecords" value="{{ i.id }}">
+                              {{ i.name }}
+                            </option>
+                          </select>
+
+                        </div>
+                        <div class="col-md-6">
+                          <label>Item Schedule</label>
+                          <!-- <span class="error-message">*</span>
+                          <span class="error-message float-right"
+                            *ngIf="addmenuForm.controls.category_id.hasError('required' ) && addmenuForm.controls.category_id.touched">required</span> -->
+                          <mat-select [formControl]="groupedSchedule" multiple class="form-control w-100">
+                            <mat-option *ngFor="let schedule of scheduleList" [value]="schedule.id">{{schedule.name}}
+                            </mat-option>
+                          </mat-select>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <label>Description</label>
+                          <textarea type="text" class="form-control" placeholder="Description"
+                            formControlName="description"></textarea>
+
+                        </div>
+                        <!-- <div class="col-md-3" style="margin-top:3rem">
+                          <mat-slide-toggle formControlName="item_status">Status</mat-slide-toggle>
+                        </div> -->
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <mat-card appearance="outlined">
+                        <img *ngIf="ImageBaseDataNew;else altimage" src={{ImageBaseDataNew}} class="img" />
+                        <ng-template #altimage>
+                          <img *ngIf="ImageBaseDataGroup;else noimage" src={{ImageBaseDataGroup}} class="img" />
+                          <ng-template #noimage>
+                            <img src="assets/images/no-image (1).jpg" class="img" />
+                          </ng-template>
+                        </ng-template>
+
+                        <br><br>
+                        <input type="file" placeholder="please click here to upload" formControlName="image"
+                          (change)="handleFileInput($event)" />
+                      </mat-card>
+                      <label class="mt-2 mb-2" *ngIf="imageChangedEvent">Crop Image</label>
+                      <image-cropper 
+                      [imageChangedEvent]="imageChangedEvent" 
+                      [maintainAspectRatio]="true" 
+                      [aspectRatio]="4 / 4"
+                      [resizeToWidth]="256" 
+                      format="png" 
+                      (imageCropped)="imageCropped($event)" 
+                      (imageLoaded)="imageLoaded()"
+                      (cropperReady)="cropperReady()" 
+                      (loadImageFailed)="loadImageFailed()"></image-cropper>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+              <mat-accordion>
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+                  [expanded]="true">
+                  <mat-expansion-panel-header style="background-color: lavender">
+                    <mat-panel-title> Item Availability<span class="error-message">*</span> </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <table class="col-12 table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Locations</th>
+                        <th scope="col" *ngFor="let entity of entitiesarray">
+                          {{ entity.name }}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr formArrayName="entities" *ngFor="
+                            let item of entitiesFormGroups.controls;
+                            let i = index
+                          ">
+                        <td>{{ branchname(i) }}</td>
+                        <td colspan="4" [formGroupName]="i">
+                          <div class="row">
+                            <div class="col-3 col-sm-3">
+                              <mat-checkbox formControlName="walk_in">
+                              </mat-checkbox>
+                            </div>
+                            <div class="col-3 col-sm-3">
+                              <mat-checkbox formControlName="dine_in">
+                              </mat-checkbox>
+                            </div>
+                            <div class="col-3 col-sm-3">
+                              <mat-checkbox formControlName="call_center">
+                              </mat-checkbox>
+                            </div>
+                            <div class="col-3 col-sm-3">
+                              <mat-checkbox formControlName="e_order">
+                              </mat-checkbox>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <span class="error-message" *ngIf="!entitiesValidityCheck">Please select atleast One entity in each
+                    branch. </span>
+                </mat-expansion-panel>
+              </mat-accordion>
+              <mat-accordion>
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+                  [expanded]="true">
+                  <mat-expansion-panel-header style="background-color: lavender">
+                    <mat-panel-title> Food Symbols <span class="error-message">*</span></mat-panel-title>
+                  </mat-expansion-panel-header>
+
+                  <div class="row">
+                    <div *ngFor="let foodsymbol of tempfoodsymbol; let i = index">
+                      <div class="col-12 col-sm-4 mb-2">
+                        <mat-checkbox (change)="onChange($event, foodsymbol)" [checked]="foodsymbol.is_selected">
+                          {{ foodsymbol.food_symbol_name }}
+                        </mat-checkbox>
+                      </div>
+                    </div>
+                  </div>
+                  <span class="error-message float-left" *ngIf="foodsymbolSelected.length <= 0">Please select atleast
+                    one FoodSymbol</span>
+                </mat-expansion-panel>
+              </mat-accordion>
+
+              <mat-accordion>
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+                  [expanded]="true">
+                  <mat-expansion-panel-header style="background-color: lavender">
+                    <mat-panel-title> Items in this group <span class="error-message">*</span></mat-panel-title>
+                  </mat-expansion-panel-header>
+
+                  <table class="col-12 table">
+                    <tr>
+                      <th>Name</th>
+                      <th></th>
+                      <th>Price</th>
+                      <th>List as individual item</th>
+                    </tr>
+                    <tr *ngFor="let categoryitem of categoryItemRecords;let catIndex = index">
+                      <td>
+                        <mat-checkbox [checked]="categoryitem.deleted_at == true" value="{{ categoryitem.id }}"
+                          (change)="onChangeCategoryItem($event, categoryitem)">
+                          {{ categoryitem.name }}
+                        </mat-checkbox>
+                      </td>
+                      <td></td>
+                      <td>{{ categoryitem.default_price }}</td>
+                      <td>
+                        <mat-slide-toggle [disabled]="showSlide(catIndex,categoryitem)"
+                          [checked]="categoryitem.items_list_status ==1 ? true : false"
+                          (change)="groupedItemStatusChange($event,catIndex,categoryitem)"></mat-slide-toggle>
+                      </td>
+                    </tr>
+                  </table>
+                  <span class="error-message float-left"
+                    *ngIf="GroupItems.length <= 0 && addGroupedmenuForm.value['category_id']">Please Select atleast One
+                    item</span>
+                </mat-expansion-panel>
+              </mat-accordion>
+              <mat-accordion>
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+                  [expanded]="true">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title> Item Specification </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div>
+                    <div class="row" *ngFor="let spec of specificationArray;let specindex= index">
+                      <div class="col-md-6">
+                        <!-- <label>Title</label> -->
+                        <p style="color:black !important"> {{spec.name}}
+                        </p>
+                      </div>
+                      <div class="col-md-6">
+                        <!-- <label>Value</label> -->
+                        <input type="text" class="form-control" value="{{spec.value}}" #ip1
+                          (input)="valueCheck(specindex,ip1.value)" />
+                      </div>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+              <div class="d-flex mb-2 btn-ft-wrp">
+                <button class="btn-setup-danger mr-2" (click)="back()">Cancel</button>
+                <button class="btn-setup-sucess" (click)="UpdateGroupMenuItem()">
+                  Add
+                </button>
+                <!-- <button class="btn-setup-sucess" (click)="UpdateGroupMenuItem()">Update</button> -->
+              </div>
+            </mat-tab>
+          </form>
+          <form [formGroup]="addCombomenuForm">
+            <mat-tab *ngIf="comboMenuFlag" label="Combo Menu">
+              <mat-accordion>
+                <mat-expansion-panel [expanded]="true">
+                  <mat-expansion-panel-header style="background-color: lavender">
+                    <mat-panel-title> Item Details </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="row">
+                    <div class="col-md-8">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <label>Name</label>
+                          <span class="error-message">*</span>
+                          <span class="error-message float-right"
+                            *ngIf="addCombomenuForm.controls.item_name.hasError('required' ) && addCombomenuForm.controls.item_name.touched">Required</span>
+                          <span class="error-message float-right"
+                            *ngIf="addCombomenuForm.controls.item_name.hasError('pattern' )">Invalid input</span>
+                          <input type="text" class="form-control" placeholder="Name"
+                            [ngClass]="validationCheck(addCombomenuForm,'item_name')" formControlName="item_name" />
+
+                        </div>
+                        <div class="col-md-6">
+                          <label>Secondary Name</label>
+                          <input type="text" class="form-control" placeholder="Secondary Name"
+                            formControlName="secondary_name" />
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <label>Item Code </label>
+                          <span class="error-message">*</span>
+                          <span class="error-message float-right"
+                            *ngIf="addCombomenuForm.controls.item_code.hasError('required' ) && addCombomenuForm.controls.item_code.touched">Required</span>
+                          <input type="text" class="form-control" placeholder="Item Code"
+                            [ngClass]="validationCheck(addCombomenuForm,'item_code')" formControlName="item_code" />
+
+                        </div>
+                        <div class="col-md-6">
+                          <label>Barcode</label>
+                          <input type="text" class="form-control" placeholder="Barcode" formControlName="barcode" />
+
+                        </div>
+                      </div>
+                      <div class="row">
+
+                        <div class="col-md-6">
+                          <label>Item Category</label>
+                          <span class="error-message">*</span>
+                          <span class="error-message float-right"
+                            *ngIf="addCombomenuForm.controls.category_id.hasError('required' ) && addCombomenuForm.controls.category_id.touched">Required</span>
+                          <select class="custom-select w-100"
+                            [ngClass]="validationCheck(addCombomenuForm,'category_id')" formControlName="category_id">
+                            <option value="">Select Category</option>
+                            <option *ngFor="let i of categoryrecords" value="{{ i.id }}">
+                              {{ i.name }}
+                            </option>
+                          </select>
+
+                        </div>
+                        <div class="col-md-6">
+                          <label>Item Schedule</label>
+                          <!-- <span class="error-message">*</span>
+                          <span class="error-message float-right"
+                            *ngIf="addmenuForm.controls.category_id.hasError('required' ) && addmenuForm.controls.category_id.touched">required</span> -->
+                          <mat-select [formControl]="comboSchedule" multiple class="form-control w-100">
+                            <mat-option *ngFor="let schedule of scheduleList" [value]="schedule.id">{{schedule.name}}
+                            </mat-option>
+                          </mat-select>
+                        </div>
+                      </div>
+                      <div class="row" style="margin-top: 40px">
+                        <div class="col-md-6">
+                          <label>Default Price</label>
+                          <span class="error-message">*</span>
+                          <span class="error-message float-right"
+                            *ngIf="addCombomenuForm.controls.default_price.hasError('required' ) && addCombomenuForm.controls.default_price.touched">Required</span>
+                          <span class="error-message float-right"
+                            *ngIf="addCombomenuForm.controls.item_name.hasError('pattern' )">Invalid input</span>
+                          <input type="number" class="form-control" placeholder="Default Price"
+                            [ngClass]="validationCheck(addCombomenuForm,'default_price')"
+                            formControlName="default_price" />
+                        </div>
+                        <div class="col-md-6">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"
+                                  formControlName="allow_all_location" />
+                                <label class="form-check-label" for="flexCheckChecked">
+                                  Change all locations
+                                </label>
+                              </div>
+                            </div>
+                            <!-- <div class="col-md-6">
+                              <mat-slide-toggle formControlName="item_status">Status</mat-slide-toggle>
+                            </div> -->
+                          </div>
+                        </div>
+                      </div>
+                      <table class="col-12 table" *ngIf="
+                            !this.addCombomenuForm.value[
+                              'allow_all_location'
+                            ] == true
+                          ">
+                        <tr>
+                          <th>Location</th>
+                          <th>Price<span class="error-message">*</span></th>
+                        </tr>
+                        <tr formArrayName="location_prices" *ngFor="
+                              let item of locationPricesFormGroups.controls;
+                              let i = index
+                            ">
+                          <td>{{ branchname(i) }}</td>
+                          <td [formGroupName]="i">
+                            <input type="text" class="form-control" formControlName="location_price" #value
+                              (input)="locationValidCheck(value.value)" placeholder="Enter Price" />
+                          </td>
+                        </tr>
+                        <span class="error-message float-left"
+                          *ngIf="!this.addCombomenuForm.value['allow_all_location'] && branchPriceValidityCheck">Location
+                          Price required</span>
+                      </table>
+                      <div class="row">
+                        <div class="col-md-8">
+                          <label>Description</label>
+                          <textarea type="text" class="form-control" placeholder="Description"
+                            formControlName="description"></textarea>
+                        </div>
+                        <div class="col-md-4" style="margin-top:3rem">
+                          <mat-slide-toggle formControlName="is_editable">Is price editable</mat-slide-toggle>
+                          <span class="error-message">*</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <mat-card appearance="outlined">
+                        <img *ngIf="ImageBaseDataNew;else altimage" src={{ImageBaseDataNew}} class="img" />
+                        <ng-template #altimage>
+                          <img *ngIf="ImageBaseDataCombo;else noimage" src={{ImageBaseDataCombo}} class="img" />
+                          <ng-template #noimage>
+                            <img src="assets/images/no-image (1).jpg" class="img" />
+                          </ng-template>
+                        </ng-template>
+
+                        <br><br>
+                        <input type="file" placeholder="please click here to upload" formControlName="image"
+                          (change)="handleFileInput($event)" />
+                      </mat-card>
+                      <label class="mt-2 mb-2" *ngIf="imageChangedEvent">Crop Image</label>
+                      <image-cropper 
+                      [imageChangedEvent]="imageChangedEvent" 
+                      [maintainAspectRatio]="true" 
+                      [aspectRatio]="4 / 4"
+                      [resizeToWidth]="256" 
+                      format="png" 
+                      (imageCropped)="imageCropped($event)" 
+                      (imageLoaded)="imageLoaded()"
+                      (cropperReady)="cropperReady()" 
+                      (loadImageFailed)="loadImageFailed()"></image-cropper>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+              <mat-accordion>
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+                  [expanded]="true">
+                  <mat-expansion-panel-header style="background-color: lavender">
+                    <mat-panel-title> Item Availability <span class="error-message">*</span> </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <table class="col-12 table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Locations</th>
+                        <th scope="col" *ngFor="let entity of entitiesarray">
+                          {{ entity.name }}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr formArrayName="entities" *ngFor="
+                            let item of entitiesFormGroups.controls;
+                            let i = index
+                          ">
+                        <td>{{ branchname(i) }}</td>
+                        <td colspan="4" [formGroupName]="i">
+                          <div class="row">
+                            <div class="col-3 col-sm-3">
+                              <mat-checkbox formControlName="walk_in">
+                              </mat-checkbox>
+                            </div>
+                            <div class="col-3 col-sm-3">
+                              <mat-checkbox formControlName="dine_in">
+                              </mat-checkbox>
+                            </div>
+                            <div class="col-3 col-sm-3">
+                              <mat-checkbox formControlName="call_center">
+                              </mat-checkbox>
+                            </div>
+                            <div class="col-3 col-sm-3">
+                              <mat-checkbox formControlName="e_order">
+                              </mat-checkbox>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <span class="error-message" *ngIf="!entitiesValidityCheck">Please select atleast One entity in each
+                    branch. </span>
+                </mat-expansion-panel>
+              </mat-accordion>
+              <mat-accordion>
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+                  [expanded]="true">
+                  <mat-expansion-panel-header style="background-color: lavender">
+                    <mat-panel-title> Food Symbols <span class="error-message">*</span></mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="row">
+                    <div *ngFor="let foodsymbol of tempfoodsymbol; let i = index">
+                      <div class="col-12 col-sm-4 mb-2">
+                        <mat-checkbox (change)="onChange($event, foodsymbol)" [checked]="foodsymbol.is_selected">
+                          {{ foodsymbol.food_symbol_name }}
+                        </mat-checkbox>
+                      </div>
+                    </div>
+                  </div>
+                  <span class="error-message float-left" *ngIf="foodsymbolSelected.length <= 0">Please select atleast
+                    one FoodSymbol</span>
+                </mat-expansion-panel>
+              </mat-accordion>
+              <mat-accordion>
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+                  [expanded]="true">
+                  <mat-expansion-panel-header style="background-color: lavender">
+                    <mat-panel-title> Combo Sections <span class="error-message">*</span> </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <mat-form-field class="example-full-width" appearance="fill">
+                    <mat-label>Items</mat-label>
+                    <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="combo_items"
+                      [matAutocomplete]="auto" />
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="
+                          productSelected($event.option.value, $event.option.id)
+                        ">
+                      <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name" [id]="option.id">
+                        {{ option.name }}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                  <table class="col-12 table">
+                    <tr>
+                      <th>Item Name</th>
+                      <!-- <th>Pre-Selected</th> -->
+                      <!-- <th>Hide in Pos</th>
+                      <th>Show in Web</th> -->
+                      <th>List as individual item</th>
+                      <th>Affect Price By <span class="error-message">*</span></th>
+                      <th>Quantity<span class="error-message">*</span></th>
+                      <th></th>
+                    </tr>
+
+                    <tr formArrayName="combo_items" *ngFor="
+                          let item of comboFormGroups.controls;
+                          let i = index
+                        ">
+                      <td>
+                        {{ comboName(i) }}
+                      </td>
+
+                      <!-- <td [formGroupName]="i">
+                        <mat-checkbox formControlName="pre_selected">
+                        </mat-checkbox>
+                      </td> -->
+
+                      <!-- <td [formGroupName]="i">
+                        <mat-checkbox formControlName="hide_in_pos">
+                        </mat-checkbox>
+                      </td>
+
+                      <td [formGroupName]="i">
+                        <mat-checkbox formControlName="show_in_web">
+                        </mat-checkbox>
+                      </td> -->
+
+                      <td [formGroupName]="i">
+                        <mat-slide-toggle formControlName="hide_in_pos"></mat-slide-toggle>
+                      </td>
+
+                      <td [formGroupName]="i">
+                        <input type="text" class="form-control" placeholder="Enter Price"
+                          formControlName="affected_price_by" #combo (input)="affectedPriceValidCheck(combo.value)" />
+                      </td>
+                      <td [formGroupName]="i">
+                        <input type="text" class="form-control" placeholder="Enter quantity" formControlName="quantity"
+                          #quantity (input)="affectedPriceValidCheck(quantity.value)" />
+                      </td>
+                      <!-- <span class="error-message float-right"
+                      *ngIf="!input.value"></span> -->
+                      <td [formGroupName]="i">
+                        <mat-icon class="delete_item_icon" (click)="deleteComboItem(i)">delete</mat-icon>
+                      </td>
+                    </tr>
+                  </table>
+                  <span class="error-message float-left" *ngIf="affectedPriceValidityCheck">Please add affect by
+                    price</span>
+                </mat-expansion-panel>
+              </mat-accordion>
+              <mat-accordion>
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+                  [expanded]="true">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title> Item Specification </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div>
+                    <div class="row" *ngFor="let spec of specificationArray;let specindex= index">
+                      <div class="col-md-6">
+                        <!-- <label>Title</label> -->
+                        <p style="color:black !important"> {{spec.name}}
+                        </p>
+                      </div>
+                      <div class="col-md-6">
+                        <!-- <label>Value</label> -->
+                        <input type="text" class="form-control" value="{{spec.value}}" #ip1
+                          (input)="valueCheck(specindex,ip1.value)" />
+                      </div>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+              <mat-accordion>
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+                  [expanded]="true">
+                  <mat-expansion-panel-header style="background-color: lavender">
+                    <mat-panel-title> Tags </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div>
+                    <mat-form-field class="example-chip-list" appearance="fill">
+                      <mat-label>Type Tag and hit enter to Add</mat-label>
+                      <mat-chip-grid #chipList1 aria-label="Fruit selection">
+                        <mat-chip-row *ngFor="let tag of tags" (removed)="remove(tag)">
+                          {{ tag.name }}
+                          <button matChipRemove>
+                            <mat-icon>cancel</mat-icon>
+                          </button>
+                        </mat-chip-row>
+                        <input placeholder="" [matChipInputFor]="chipList1"
+                          [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                          (matChipInputTokenEnd)="add($event)" formControlName="tags" />
+                      </mat-chip-grid>
+                    </mat-form-field>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+              <div class="d-flex mb-2 btn-ft-wrp">
+                <button class="btn-setup-danger mr-2" (click)="back()">Cancel</button>
+                <button class="btn-setup-sucess" (click)="updateComboMenuItem()">
+                  Add
+                </button>
+                <!-- <button class="btn-setup-sucess" (click)="updateComboMenuItem()">Update</button> -->
+              </div>
+            </mat-tab>
+          </form>
+        </mat-tab-group>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

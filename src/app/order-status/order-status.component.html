@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+
+<body id="page_orders_status">
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="col-12">
+      <div class="d-flex align-items-center head-tag">
+        <h4 class="flex-gr-1" style="padding:10px;">
+          {{heading}}
+        </h4>
+      </div>
+      <div *ngIf="filteredOrderList.length < 1">
+        <div class="col-12">
+          <div class="not-found">
+            <h3>Sorry :(</h3>
+            <p>There's no orders yet at this moment.</p>
+          </div>
+        </div>
+      </div>
+      <div class="order_container" *ngIf="filteredOrderList.length > 0">
+        <div class="order animate__animated animate__zoomIn wow"
+          *ngFor="let order of filteredOrderList;let orderIndex=index" [ngClass]=checkStatusColour(orderIndex)>
+          <div class="order_inner">
+            <div class="order_header d-flex align-items-center">
+              <!-- <h2>{{order.order_number}}
+              </h2>
+              <span style="padding-left: 15px;text-transform: capitalize;">{{getEntity(order.entity_id)}}</span>
+              <h4 class="ml-auto">{{order.time}}</h4> -->
+              <div class="col-4">
+                <h2>{{order.order_number}}
+                </h2>
+              </div>
+              <div class="col-4">
+                <span style="text-transform: uppercase;font-size: 14px;">{{getEntity(order.entity_id)}}</span>
+              </div>
+              <div class="col-4">
+                <h5 class="ml-auto" style="margin:0;">{{order.time}}</h5>
+              </div>
+            </div>
+            <div>
+              <div *ngFor="let i of order.order_item;let itemIndex=index" class="item row"
+                [ngClass]="i.kitchen_status == 1 ? 'item order_done' : 'item'">
+                <div class="col-8">
+                  <div class="row no-gutters " style="flex-wrap:inherit">
+                    <!-- <h4 class="ion-text-start">{{itemIndex+1}}. &nbsp;</h4> -->
+                    <h4 class="ion-text-start">{{i.quantity}}x&nbsp;</h4>
+                    <h4> {{i.item.name}}
+                      <div style="text-transform: capitalize;" *ngFor="let modifier of i.order_item_modifier">
+                        <div class="modifier">{{getListNames(modifier.order_item_modifier_list) ? modifier.modifier_group.name + ':' : ''}}
+                        {{getListNames(modifier.order_item_modifier_list)}}</div>
+                      </div>
+                    </h4>
+                    <!-- <span class="quantity">x{{i.quantity}}</span> -->
+                  </div>
+                </div>
+                <div class="col-2">
+                  <i *ngIf="i.note != 'null'" class="zmdi zmdi-collection-text zmdi-hc-lg"
+                    (click)="openItemNote(i,'item')"></i>
+                </div>
+                <div class="col-2">
+                  <div class="float-right" *ngIf="order.kitchen_status == 1 || order.kitchen_status == 2">
+                    <button *ngIf="i.kitchen_status == 0" class="btn-setup-sucess cust-pos-btn"
+                      (click)="itemStatus(i,1)">
+                      <i class="icon-ok"></i>
+                    </button>
+                    <button *ngIf="i.kitchen_status == 1" class="btn-setup-danger cust-pos-btn"
+                      (click)="itemStatus(i,0)">
+                      <i class="icon-remove"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="row">
+                  <div *ngIf="order.notes" class="col-2" style="align-items: center;">
+                    <button class="btn-setup-sucess" (click)="openItemNote(order,'ordernote')"><i
+                        class="zmdi zmdi-collection-text cursor-pointer zmdi-hc-lg"></i></button>
+                  </div>
+                  <div class="col-10" [ngClass]="{'col-12' : !order.notes}">
+                    <button class="btn-setup-sucess full_width_btn" *ngIf="order.kitchen_status == 0"
+                      (click)="startProecessingIndex(order)">Start</button>
+                    <button class="btn-setup-sucess full_width_btn" *ngIf="checkAllItemsDone(order)"
+                      (click)="FinishProecessing(order)">Finished</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="button-row">
+      <button class="full-width-button btn-setup-sucess mat-flat-button" style="background: #0056b3;"
+        (click)="getOrders()">All</button>
+      <button class="full-width-button btn-setup-danger mat-flat-button" (click)="getNewOrders()">New</button>
+      <button class="btn-setup-sucess mat-flat-button full-width-button" style="background: var(--primary)"
+        (click)="getProcessingOrders()">Processing</button>
+      <button class="btn-setup-sucess mat-flat-button full-width-button" style="background: rgb(68, 162, 68);"
+        (click)="getFinishedOrders()">Completed</button>
+      <button class="btn-setup-sucess mat-flat-button full-width-button" style="background: var(--primary)"
+        (click)="reload()"><i class="icon-refresh mr-1"></i>Reload</button>
+      <button class="btn-setup-sucess mat-flat-button full-width-button" style="background: rgb(44, 62, 44);"
+        (click)="scrollUp()">
+        <i class="zmdi zmdi-caret-up-circle mr-1"></i>Up</button>
+      <button class="btn-setup-sucess mat-flat-button full-width-button" style="background: rgb(115, 134, 168);"
+        (click)="scrollDown()">
+        <i class="zmdi zmdi-caret-down-circle mr-1"></i>Down</button>
+      <button class="btn-setup-sucess mat-flat-button full-width-button" style="background: rgb(63, 86, 125);"
+        (click)="menuStatusChange()">
+        Menu Status</button>
+    </div>
+
+  </div>
+  <!-- Body Wrapper End -->
+</body>
+
+</html>

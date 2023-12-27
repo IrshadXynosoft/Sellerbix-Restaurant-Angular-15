@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body id="page_setup">
+
+
+    <!-- Body Wrapper Start -->
+    <div class="body_wrapper container-fluid">
+          <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+      <app-inventory-header></app-inventory-header>
+      
+      <div class="px-4">
+        <div class="row pt-4">
+          <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                  Home
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/inventory">
+                  Inventory
+                </li>
+                <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                  Stock On Hand
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-12">
+            <div class="d-flex align-items-center head-tag cursor-pointer">
+              <h4 class="flex-gr-1">  <i class="icon-arrow-left"  routerLink="/inventory"></i>Stock On Hand</h4>
+            </div>
+          </div>
+        </div>
+        <div class="row pt-3">
+          <div class="col-6 col-sm-4"></div>
+          <div class="col-6 col-sm-4">
+            <!-- <input
+              type="text"
+              placeholder="Search Inventory  Item"
+              class="form-control"
+              #item
+              (input)="itemSearch(item.value)"
+            /> -->
+          </div>
+
+          <div class="col-6 col-sm-4">
+            <select class="form-control m-0 mr-2 w-100 bordered" (change)="getStockOnHandForLocation($event)" [(ngModel)]="branch_id">
+              <option value="" disabled> Select</option>
+              <option *ngFor="let i of branchRecords" value="{{ i.id }}">
+                {{ i.name }}
+              </option>
+          </select>
+          </div>
+        </div>
+        <mat-tab-group (selectedTabChange)="tabClick($event)">
+          <mat-tab label="Finished Goods">
+            <div *ngIf="stockOnHandArrayFinishedGoods.length <= 0; else showfinishedGoods">
+              <div class="row col-12">
+                  <div class="col-12">
+                      <div class="not-found bordered">
+                          <h3>Sorry :(</h3>
+                          <p>There's no stock at this moment.</p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <ng-template #showfinishedGoods>
+            <mat-accordion  >
+              <mat-expansion-panel *ngFor="let item of stockOnHandArrayFinishedGoods" (opened)="getDetails(item.id,1)">
+                <mat-expansion-panel-header>
+                  <mat-panel-title> {{item.name}} </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div *ngIf="!finishedGoodDetailArray; else showdfinishedGoods">
+                  <div class="row col-12">
+                      <div class="col-12">
+                          <div class="not-found bordered">
+                              <h3>Sorry :(</h3>
+                              <p>There's no stock at this moment.</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <ng-template #showdfinishedGoods>
+                <table class="table tableStyleMain bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col">Item</th>
+                      <th scope="col">Last Updated At</th>
+                      <th scope="col">Businessday Opening Stock</th>
+                      <th scope="col">Stock On Hand</th>
+                       <th scope="col">Stock Value</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="finishedGoodDetailArray">
+                    <tr *ngFor="let items of finishedGoodDetailArray.items">
+                      <td>
+                        <h4>{{items.item_name}} 
+                          <span *ngIf="isLowStock(items)" class="material-icons negativeStockLabel">warning</span>
+                        </h4>
+                     </td>
+                    
+                     <td>
+                      {{items.updated_at?items.updated_at:'--'}} 
+                     </td>
+                     <td>{{items.stock?.business_day_opening_qty}} <span class="sp-light"> {{items.stock?.measurement_unit_name}}</span></td>
+                      <td [ngClass]="isLowStock(items) ? 'negative_qty' : ''">{{items.stock?.on_hand_qty}}<span class="sp-light"> {{items.stock?.measurement_unit_name}}</span></td>
+                      <td>{{totalAmount(items.stock?.on_hand_qty,items.stock?.cost_per_unit)}}<span class="sp-light"> 
+                        {{currency_symbol}}</span></td>
+                       
+                      <td class="float-right"> 
+                        <button
+                          class="btn-setup-sucess btn-ht-custom" 
+                          (click)="addHistory(items.stock?.stock_id,items.item_name)"
+                        >
+                          <i class="icon-bar-chart mr-1"></i>History
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                </ng-template>
+              </mat-expansion-panel>
+            </mat-accordion>
+            </ng-template>
+        
+          </mat-tab>
+          <mat-tab label="Ingredients & Subrecipes">
+            <div *ngIf="stockOnHandArrayIngredients.length <= 0; else showtable">
+              <div class="row col-12">
+                  <div class="col-12">
+                      <div class="not-found">
+                          <h3>Sorry :(</h3>
+                          <p>There's no stock at this moment.</p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <ng-template #showtable>
+            <mat-accordion >
+              <mat-expansion-panel *ngFor="let item of stockOnHandArrayIngredients"  (opened)="getDetails(item.id,2)">
+                <mat-expansion-panel-header>
+                  <mat-panel-title> {{item.name}} </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div *ngIf="!ingredientDetailArray; else showingredients">
+                  <div class="row col-12">
+                      <div class="col-12">
+                          <div class="not-found bordered">
+                              <h3>Sorry :(</h3>
+                              <p>There's no Ingredients data .</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <ng-template #showingredients>
+             
+                <table class="table tableStyleMain bordered w-100">
+                  <thead>
+                    <tr>
+                      <th scope="col">Item</th>
+                      <th scope="col">Last Updated At</th>
+                      <th scope="col">Businessday Opening Stock</th>
+                      <th scope="col">Stock On Hand</th>
+                      <th scope="col">Stock Value</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let items of ingredientDetailArray.ingredient">
+                      <td>
+                        <h4>{{items.ingredient_name}}
+                           <span *ngIf="isLowStock(items)" class="material-icons negativeStockLabel">warning</span>
+                        </h4>
+                     </td>
+                     <td>
+                      {{items.updated_at?items.updated_at:'--'}} 
+                     </td>
+                     <td>{{items.stock?.business_day_qty}}<span class="sp-light">  {{items.stock?.measurement_unit_name}}</span></td>
+
+                      <td [ngClass]="isLowStock(items) ? 'negative_qty' : ''">{{items.stock?.on_hand_qty}}<span class="sp-light">  {{items.stock?.measurement_unit_name}}</span></td>
+                      <td>{{totalAmount(items.stock?.on_hand_qty,items.stock?.cost_per_unit)}}<span class="sp-light"> {{currency_symbol}}</span></td>
+                      <td class="float-right">
+                        <button
+                          class="btn-setup-sucess btn-ht-custom"
+                          (click)="addHistory(items.stock?.stock_id,items.ingredient_name)"
+                        >
+                          <i class="icon-bar-chart mr-1"></i>History
+                        </button>
+                      </td>
+                    </tr>
+                    <tr *ngFor="let items of ingredientDetailArray.sub_recipe">
+                      <td>
+                        <h4>{{items.sub_recipe_name}}  <span *ngIf="isLowStock(items)" class="material-icons negativeStockLabel">warning</span></h4>
+                      </td>
+                      <td>
+                        {{items.updated_at?items.updated_at:'--'}} </td>
+                        <td>{{items.stock?.business_day_qty}} <span class="sp-light">  {{items.stock?.measurement_unit_name}}</span></td>
+                      <td [ngClass]="isLowStock(items) ? 'negative_qty' : ''">{{items.stock?.on_hand_qty}}<span class="sp-light">  {{items.stock?.measurement_unit_name}}</span></td>
+                      <td>{{totalAmount(items.stock?.on_hand_qty,items.stock?.cost_per_unit)}}<span class="sp-light"> {{currency_symbol}}</span></td>
+                     
+                      <td class="float-right">
+                        <button
+                          class="btn-setup-sucess btn-ht-custom"
+                          (click)="addHistory(items.stock?.stock_id,items.sub_recipe_name)"
+                        >
+                          <i class="icon-bar-chart mr-1"></i>History
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                
+                </ng-template>
+              </mat-expansion-panel>
+            </mat-accordion>
+            </ng-template>
+        
+          </mat-tab>
+          <mat-tab label="Batch Processed Recipes">
+            <div *ngIf="stockOnHandArraybatchProccesedItems.length <= 0; else showBatchtable">
+              <div class="row col-12">
+                  <div class="col-12">
+                      <div class="not-found">
+                          <h3>Sorry :(</h3>
+                          <p>There's no stock at this moment.</p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <ng-template #showBatchtable>
+           <mat-accordion >
+              <mat-expansion-panel *ngFor="let item of stockOnHandArraybatchProccesedItems">
+                <mat-expansion-panel-header>
+                  <mat-panel-title> {{item.recipe_name}} </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div infinite-scroll [infiniteScrollDistance]="scrollDistance" [infiniteScrollUpDistance]="scrollUpDistance"
+                [infiniteScrollThrottle]="throttle" (scrolled)="onScrollDown($event)">
+                <table class="table tableStyleMain bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col">Recipe</th>
+                      <th scope="col">Last Updated At</th>
+                      <th scope="col">Businessday Opening Stock</th>
+                      <th scope="col">Stock On Hand</th>
+                      <th scope="col">Stock Value</th>
+                      <th scope="col">Cost Price</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                       {{item.recipe_name}}
+                       <span *ngIf="isLowStock(item)" class="material-icons negativeStockLabel">warning</span>
+                      </td>
+                      <td>
+                        {{item.updated_at?item.updated_at:'--'}} 
+                       </td>
+                       <td>{{item.business_day_qty}} {{item.measurement_unit_name}}</td>
+                      <td [ngClass]="isLowStock(item) ? 'negative_qty' : ''">{{item.stock_on_hand}}  {{item.measurement_unit_name}}</td>
+                      <td>{{item.stock_value}}  {{currency_symbol}}</td>
+                      <td>{{(item.cost_price)}}<span class="sp-light"> {{currency_symbol}}</span></td>
+                     
+                      <td class="float-right">
+                        <button
+                          class="btn-setup-sucess btn-ht-custom"
+                          (click)="addHistorybatchProcessed(item.id,item.recipe_name)"
+                        >
+                          <i class="icon-bar-chart mr-1"></i>History
+                        </button>
+                      </td>
+                    </tr>
+                  
+                  </tbody>
+                </table>
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
+            </ng-template>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+  </body>
+</html>

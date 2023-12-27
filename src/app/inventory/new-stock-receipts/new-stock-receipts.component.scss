@@ -1,0 +1,33 @@
+
+.tableStyleMain{ margin-top: 7px ;
+
+  th{
+    //padding: 10px; 
+    border-right: 1px #e2e3e3 solid; text-align: center;
+  }
+
+  td{
+    //padding: 10px;
+     border-right: 1px #eceeee  solid; text-align: center;
+    border-bottom:1px #eceeee  solid; ;
+    background-color: #ffff;
+  }
+}
+.table-shadow {
+  box-shadow: rgb(251, 175, 3) 0px 0px 0px 1px;
+}
+  .searchinventory{
+    margin-bottom: 30px;
+    margin-top: 30px;
+    background-color: lightgray;
+    padding: px;
+    padding-top: 20px;
+    } 
+
+    .b-right {
+      float: right;
+    }
+    .unit-space {
+      margin-left: 5px;
+      margin-top: 5px;
+    }

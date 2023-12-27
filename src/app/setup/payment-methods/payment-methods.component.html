@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                Setup
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/globalSettings">
+                Global Settings
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                Payment
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1">
+              <i class="icon-arrow-left mr-1 cursor-pointer" (click)="back()"></i>Payment Types
+            </h4>
+            <div class="d-flex">
+              <input type="text" class="form-control" placeholder="Search Payment Types" #payment
+                (keyup)="doFilter(payment.value)" />
+            </div>
+            <div class="d-flex" style="padding-bottom: 15px; padding-left: 5px">
+              <button class="btn-setup-sucess" (click)="addPayment()">
+                <i class="icon-plus mr-1"></i>Add Payment Type
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #showtable>
+        <div class="row">
+          <div class="col-12">
+            <div class="not-found">
+              <h3>Sorry :(</h3>
+              <p>There's no Payment types yet at this moment.</p>
+              <p>Click <a (click)="addPayment()" style="color: var(--primary);cursor: pointer;">here</a> to add Payment.
+              </p>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+      <div class="tableStyleMain">
+        <table mat-table [dataSource]="dataSource" class="mat-z8" *ngIf="dataSource.data.length > 0; else showtable">
+          <ng-container matColumnDef="index">
+            <th mat-header-cell *matHeaderCellDef>
+              #
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{dataSource.data.indexOf(element) + 1}}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="Icon">
+            <th mat-header-cell *matHeaderCellDef>Icon</th>
+            <td mat-cell *matCellDef="let element">
+              <img src="assets/images/icon-card.png" class="img-icon-cd" />
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="Name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+          </ng-container>
+          <ng-container matColumnDef="Isdefault">
+            <th mat-header-cell *matHeaderCellDef>Is Default?</th>
+            <td mat-cell *matCellDef="let element">
+              <mat-checkbox [(ngModel)]="element.is_default" (change)="isDefaultChange(element)"></mat-checkbox>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="isWeb">
+            <th mat-header-cell *matHeaderCellDef>Allow on Web</th>
+            <td mat-cell *matCellDef="let element">
+              <span *ngIf="element.is_web">
+                <i class="icon-ok mr-1"></i>
+              </span>
+              <span *ngIf="!element.is_web">
+                <i class="icon-remove mr-1"></i>
+              </span>
+            </td>
+          </ng-container>
+
+          <!-- <ng-container matColumnDef="reference">
+              <th mat-header-cell *matHeaderCellDef>Capture Reference Code?</th>
+              <td mat-cell *matCellDef="let element">
+                <mat-checkbox [(ngModel)]="element.reference" (change)="isReferenceChange(element)"></mat-checkbox>
+              </td>
+            </ng-container> -->
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td class="btn-wrp-equal align-items-right" mat-cell *matCellDef="let element">
+              <button class="btn-setup-sucess"
+                (click)="editPayment(element.id, element.reference, element.name,element.secondary_name)">
+                <i _ngcontent-trm-c429="" class="zmdi zmdi-edit"></i>
+              </button>
+              <button class="btn-setup-danger" (click)="deletepaymenttype(element.id, element.name)">
+                <i _ngcontent-trm-c429="" class="zmdi zmdi-delete"></i>
+              </button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+        <mat-paginator [ngClass]="{ show: dataSource.data.length <= 0 }" [pageSize]="50"
+          [pageSizeOptions]="[2, 4, 6, 10, 50]">
+        </mat-paginator>
+      </div>
+
+    </div>
+  </div>
+</body>
+
+</html>

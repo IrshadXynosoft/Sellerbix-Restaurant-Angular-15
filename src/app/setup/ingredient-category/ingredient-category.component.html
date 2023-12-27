@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+      <!-- Header Start -->
+  <app-header></app-header>
+  <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
+                Setup
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/inventorySetup">
+                Inventory Setup
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page"
+                routerLink="/setup/inventorySetup/settings">
+                Inventory Settings
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                Ingredient Categories
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1">
+              <i class="icon-arrow-left mr-1 cursor-pointer"  (click)="back()"></i>Ingredient Categories
+            </h4>
+            <div class="d-flex">
+              <input type="text" class="form-control bordered" placeholder="Search Category" #catFilterText
+                (keyup)="doFilter(catFilterText.value)" />
+            </div>
+            <div class="d-flex d-padding">
+              <button class="btn-setup-sucess" (click)="addIngredientCategory()">
+                <i class="icon-plus mr-1"></i>Add Ingredient Category
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div *ngIf="dataSource.data.length <= 0; else showtable">
+        <div class="row">
+          <div class="col-12">
+            <div class="not-found bordered">
+              <h3>Sorry :(</h3>
+              <p> No Category Added. <br />
+                Click
+                <a routerLink="/setup/inventorySetup/ingredientCategory" (click)="addIngredientCategory()">here</a>
+                to add Categories.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #showtable>
+      <table mat-table *ngIf="dataSource.data.length > 0" [dataSource]="dataSource" matSort
+          class="mat-z8 tableStyleMain table bordered">
+          <ng-container matColumnDef="index">
+            <th mat-header-cell *matHeaderCellDef >
+              #
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{dataSource.data.indexOf(element) + 1}}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+          </ng-container>
+          <ng-container matColumnDef="button">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td class="btn-wrp-equal" mat-cell *matCellDef="let element">
+              <button  class="btn-setup-sucess"  (click)="editIngredientCategory(element.id, element.name)">
+                <i _ngcontent-trm-c429="" class="zmdi zmdi-edit"></i>
+            </button>
+
+            <!-- <button class="btn-setup-danger" (click)="deleteIngredientCategory(element.id, element.name)">
+              <i _ngcontent-trm-c429="" class="zmdi zmdi-delete"></i>
+            </button> -->
+            </td>
+          </ng-container>
+
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      
+        </ng-template>
+        <mat-paginator [pageSize]="50" [pageSizeOptions]="[2, 4, 6, 10, 50]">
+        </mat-paginator>
+    
+    </div>
+  </div>
+</body>
+
+</html>

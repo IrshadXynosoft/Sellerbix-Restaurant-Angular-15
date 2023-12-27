@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+
+
+  <!-- Body Wrapper Start -->
+
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page" routerLink="/setup/reports">
+                Reports
+              </li>
+              <li class="breadcrumb-item active" cursor-pointer aria-current="page" routerLink="setup/reports/discounts">
+                Discounts
+              </li>
+              <li class="breadcrumb-item active" aria-current="page">
+                Item Discount Report
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1"> <i class="icon-arrow-left cursor-pointer" routerLink="/setup/reports/discounts"></i>Item Discount Report
+            </h4>
+          </div>
+        </div>
+      </div>
+      <form [formGroup]="discountsReportForm">
+        <div class="row">
+          <div class="col-lg-3">
+            <label>Search by</label>
+            <select class="form-control w-100" formControlName="searchBy" (change)="searchby($event)">
+              <option value=0>Current Date</option>
+              <option value=1>Date Period</option>
+              <option value=2>Specify Date</option>
+              <option value=3>Business Day</option>
+            </select>
+          </div>
+          <div class="col-lg-3" *ngIf="searchByBusinessDay">
+            <label>Search by Business Day</label>
+            <select class="form-control w-100"  formControlName="business_day_id" >
+              <option value="" disabled>Select</option>
+              <option value="{{day.id}}" *ngFor="let day of businessdayRecords">{{day.name}}</option>
+            </select>
+          </div>
+          <div class="col-lg-3" *ngIf="searchBySpecificDate">
+            <label>Date</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="discountsReportForm.controls.fromDate.hasError('required') && discountsReportForm.controls.fromDate.touched">
+              Required</span>
+            <input type="date" placeholder="Code" class="form-control" formControlName="date" />
+          </div>
+          <div class="col-lg-3" *ngIf="searchByPeriod">
+            <label>From Date</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="discountsReportForm.controls.fromDate.hasError('required') && discountsReportForm.controls.fromDate.touched">
+              Required</span>
+
+            <input type="date" placeholder="Code" [min]="minDate" [max]="todayDate" class="form-control"
+              formControlName="fromDate" />
+          </div>
+          <div class="col-lg-3" *ngIf="searchByPeriod">
+            <label>To Date</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="discountsReportForm.controls.toDate.hasError('required') && discountsReportForm.controls.toDate.touched">
+              Required</span>
+            <input type="date" placeholder="Code" [min]="minDate" [max]="todayDate" class="form-control"
+              formControlName="toDate" />
+            <span class="error-message float-right" *ngIf="discountsReportForm.errors">{{
+              discountsReportForm.errors.dates | json }}</span>
+          </div>
+          <div class="col-lg-3" style="margin-top:1.8rem;">
+            <button class="btn-setup-sucess" (click)="generateReport()">
+              <i class="icon-save mr-1"></i>Generate Report
+            </button>
+          </div>
+        </div>
+      </form>
+      <!-- <div class="d-flex float-right" *ngIf="orderDiscounts.length>0 || itemDiscounts.length > 0">
+        <button class="btn-setup-sucess" (click)="export()">Generate Pdf</button>
+      </div> -->
+
+
+      <div *ngIf="dataSourceitemDiscount.data && dataSourceitemDiscount.data.length <= 0; else showitemtable">
+        <div class="row">
+          <div class="col-12">
+            <div class="not-found bordered">
+              <h3>Sorry :(</h3>
+              <p>No report available.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #showitemtable>
+        <table *ngIf="dataSourceitemDiscount.data.length > 0" mat-table matTableExporter #exporter="matTableExporter"
+          [dataSource]="dataSourceitemDiscount" matSort class="tableStyleMain table bordered">
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Discount Name
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+          </ng-container>
+          <ng-container matColumnDef="discounts">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Total Count
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.discounts }}</td>
+          </ng-container>
+          <ng-container matColumnDef="sale">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Sale Amount ({{currency_symbol}})
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.sale_price }}</td>
+          </ng-container>
+          <ng-container matColumnDef="amount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Discount Amount ({{currency_symbol}})
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.amount }}</td>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+            <td mat-cell *matCellDef="let element">
+              <button *ngIf="element.name != 'Total'"
+                class="commonBtnStyle"
+                (click)="details(element)"
+                matTooltip="Info"
+              >
+                <i class="zmdi zmdi-info-outline"></i>
+              </button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </ng-template>
+    </div>
+  </div>
+</body>
+
+</html>

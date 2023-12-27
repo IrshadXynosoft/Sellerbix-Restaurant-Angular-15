@@ -1,0 +1,27 @@
+<div class="modal-wrapper">
+  <button mat-icon-button class="close-button" (click)="close()">
+    <mat-icon class="close-icon" color="warn">close</mat-icon>
+  </button>
+  <h1 class="capital" mat-dialog-title>{{data.name}}</h1>
+
+  <mat-dialog-content>
+    <mat-selection-list [multiple]="false">
+      <mat-list-option *ngFor="let item of data.groupedItems;let index=index;" [value]="item.name"
+        (click)=groupedItemSelect(item,index)>
+       <div class="row">
+         <div class="col-9 capital">
+          {{item.item_name}}
+         </div>
+         <div class="col-3">
+          <b>{{currency_symbol}}{{toPrice(item.item_price)}}</b>
+         </div>
+       </div> 
+      </mat-list-option>
+    </mat-selection-list>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <div class="text-right button-sec">
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+    </div>
+  </mat-dialog-actions>
+</div>

@@ -1,0 +1,14 @@
+<div class="modal-wrapper">
+  <form [formGroup]="voidReasonForm">
+    <h2 mat-dialog-title>Enter Drawer Balance</h2>
+    <mat-dialog-content>
+      <label>Drawer Balance</label>
+      <span class="error-message float-right">*</span>
+      <input type="text" class="form-control" formControlName="balance" />
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" (click)="save()">Ok</button>
+    </mat-dialog-actions>
+  </form>
+</div>

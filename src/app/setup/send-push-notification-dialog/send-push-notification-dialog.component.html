@@ -1,0 +1,35 @@
+<div class="modal-wrapper">
+  <form [formGroup]="notificationForm">
+    <h2 mat-dialog-title>{{this.data.flag == 'edit' ? 'Update' : 'Send'}} Notification</h2>
+    <div mat-dialog-content class="min-scroll">
+      <label>Title</label>
+      <span class="error-message">*</span>
+      <span class="error-message float-right" *ngIf="
+                notificationForm.controls.title.hasError('required') &&
+                notificationForm.controls.title.touched
+              ">Required</span>
+      <span class="error-message float-right" *ngIf="ErrorArray.title">
+        {{ ErrorArray.title }}</span>
+      <input type="text" class="form-control" [ngClass]="notificationForm.controls.title.hasError('required') &&
+            notificationForm.controls.title.touched || ErrorArray.name ? 'is-invalid' : ''" placeholder="Title"
+        formControlName="title" />
+      <label>Message</label>
+      <textarea class="form-control" placeholder="Message" [ngClass]="notificationForm.controls.message.hasError('required') &&
+      notificationForm.controls.message.touched || ErrorArray.message ? 'is-invalid' : ''" formControlName="message" maxlength="200"></textarea>
+      <label>Send to</label>
+      <span class="error-message">*</span>
+      <mat-radio-group aria-label="Select an option" class="example-radio-group" formControlName="type">
+        <!-- <mat-radio-button value="0" class="example-radio-button">All</mat-radio-button> -->
+        <mat-radio-button value="1" class="example-radio-button" [checked]="selectedType == 1">Web</mat-radio-button>
+        <mat-radio-button value="2" class="example-radio-button" [checked]="selectedType == 2">Mobile</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div mat-dialog-actions class="text-right button-sec">
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" [disabled]="!notificationForm.valid" (click)="sendNotification()"
+        >
+        {{this.data.flag == 'edit' ? 'Update' : 'Submit'}}
+      </button>
+    </div>
+  </form>
+</div>

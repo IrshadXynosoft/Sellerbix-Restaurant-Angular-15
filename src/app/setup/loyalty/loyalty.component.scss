@@ -1,0 +1,28 @@
+.currency-wrap{
+    position:relative;
+}
+
+.currency-code{
+    position: absolute;
+    left:10.5rem;
+    top: 0.5rem;
+    
+}
+.currency-code-loyalty{
+    position: absolute;
+    left:8rem;
+    top: 0.5rem;
+}
+.text-currency{
+    padding:10px 20px;
+    border:solid 1px #ccc;
+    border-radius:5px;
+}
+
+.error-color{
+    outline-color: red;
+}
+
+.hint{
+    color:  #786969;;
+}

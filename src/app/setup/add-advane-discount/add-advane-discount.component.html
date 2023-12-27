@@ -1,0 +1,354 @@
+<form [formGroup]="addpromotionForm">
+  <div class="modal-wrapper">
+    <h2 mat-dialog-title *ngIf="!data.id">Add Advanced Promotions</h2>
+    <h2 mat-dialog-title *ngIf="data.id">Edit Advanced Promotions</h2>
+    <div mat-dialog-content>
+      <div class="formGroup">
+        <label>Promotion Title</label>
+        <span class="error-message">*</span>
+        <span class="error-message float-right"
+          *ngIf="addpromotionForm.controls.promotion_title.hasError('required' ) && addpromotionForm.controls.promotion_title.touched">Required</span>
+        <input type="text" class="form-control" placeholder="Promotion Title" formControlName="promotion_title"
+          [ngClass]="addpromotionForm.controls.promotion_title.hasError('required' ) && 
+                    addpromotionForm.controls.promotion_title.touched   ? 'is-invalid' : ''" />
+      </div>
+      <div class="formGroup class-12 row mt-2">
+        <div class="col-6">
+          <div class="formGroup">
+            <label>Trigger Type</label>
+            <select class="custom-select w-100" formControlName="trigger_type">
+              <option value="2">Coupon</option>
+              <!-- <option value="1" selected>Automatic Trigger
+              </option> -->
+
+            </select>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="formGroup">
+            <label>Applies To </label><br />
+            <mat-radio-group aria-label="Select an option" formControlName="applies_to">
+              <mat-radio-button value="1">Everyone</mat-radio-button>&nbsp;&nbsp;
+              <mat-radio-button value="2">First Time Buyer</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+      </div>
+      <div class="formGroup mt-1" *ngIf="addpromotionForm.controls.trigger_type.value=='2'">
+        <div>
+          <label>Coupon Code</label>
+          <span class="error-message">*</span>
+          <span class="error-message float-right"
+            *ngIf="addpromotionForm.controls.trigger_type.value=='2' && addpromotionForm.controls.trigger_type.touched">Required</span>
+          <input type="text" class="form-control" placeholder="Coupon Code" formControlName="promotion_coupon_code"
+            [ngClass]="addpromotionForm.controls.trigger_type.value=='2' && 
+                    addpromotionForm.controls.trigger_type.touched   ? 'is-invalid' : ''" />
+        </div>
+      </div>
+      <div class="formGroup class-12 row mt-2">
+        <div class="col-6">
+          <label>Promotion Start Date</label>
+          <input class="form-control" [formControl]="offer_start_date" [min]="todayDate"
+            [matDatepicker]="releasedAtPicker" (click)="releasedAtPicker.open()" pattern="dd/MM/YYYY">
+          <mat-datepicker-toggle style="margin-top: -55px;float:right" matSuffix [for]="releasedAtPicker">
+          </mat-datepicker-toggle>
+          <mat-datepicker #releasedAtPicker [touchUi]="true">
+          </mat-datepicker>
+        </div>
+        <div class="col-6">
+          <label>Promotion End Date</label>
+          <input class="form-control" [formControl]="offer_end_date" [min]="todayDate"
+            [matDatepicker]="releasedAtendPicker" (click)="releasedAtendPicker.open()" pattern="dd/MM/YYYY">
+          <mat-datepicker-toggle style="margin-top: -55px;float:right" matSuffix [for]="releasedAtendPicker">
+          </mat-datepicker-toggle>
+          <mat-datepicker #releasedAtendPicker [touchUi]="true">
+          </mat-datepicker>
+        </div>
+      </div>
+      <div class="formGroup" *ngIf="!data.id">
+        <label>Promotion Type</label> <br />
+        <mat-radio-group aria-label="Select an option" formControlName="promotion_type"
+          (change)="onChangePromotionType($event)">
+          <mat-radio-button value="2">Product Wise</mat-radio-button>&nbsp;&nbsp;
+          <mat-radio-button value="1">Category Wise</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div class="formGroup" *ngIf="data.id">
+        <label>Promotion Type</label> : {{promotion_type}}
+      </div>
+      <div *ngIf="iscategorywise" class="formGroup row border mt-2">
+        <div class="col-6 mt-1 mb-1">
+          <div class="col-12 col-md-12">
+            <label>Categories to count</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right">{{error_message_category_count}}</span>
+            <input type="text" placeholder="  Search Category by name ,then hit enter to add"
+              [ngClass]="error_message_category_count? 'is-invalid' : ''" class="form-control mb-0 mr-2"
+              aria-label="Categories to count" matInput [formControl]="CategoryData" [matAutocomplete]="autocount"
+              #autoInputcount />
+            <mat-autocomplete #autocount="matAutocomplete">
+              <mat-option *ngFor="let option of filteredOptionsCat | async" [value]="option.name" [id]="option.id"
+                (click)="categoryToCountSelectedSave(option, autoInputcount)">
+                {{ option.name }}
+              </mat-option>
+            </mat-autocomplete>
+          </div>
+          <div class="col-12 row">
+            <div clss="col-10" style="margin-top: 1rem;margin-left: 1rem;">
+              <mat-chip-listbox #chipList aria-label="areas">
+                <mat-chip-option *ngFor="let catcount of CategoryToCountSelected" (removed)="removeCatCount(catcount)">
+                  {{ catcount.name }}
+                  <button matChipRemove>
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip-option>
+              </mat-chip-listbox>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 mt-1 mb-1">
+          <div class="col-12 col-md-12">
+            <label>Categories to Adjust</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right">{{error_message_category_adjust}}</span>
+            <input type="text" placeholder="  Search Category by name ,then hit enter to add"
+              [ngClass]="error_message_category_adjust? 'is-invalid' : ''" class="form-control mb-0 mr-2"
+              aria-label="Categories to count" matInput [formControl]="CategoryData" [matAutocomplete]="auto"
+              #autoInput />
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let option of filteredOptionsCat | async" [value]="option.name" [id]="option.id"
+                (click)="categoryToAdjustSelectedSave(option, autoInput)">
+                {{ option.name }}
+              </mat-option>
+            </mat-autocomplete>
+          </div>
+          <div class="col-12 row">
+            <div clss="col-10" style="margin-top: 1rem;margin-left: 1rem;">
+              <mat-chip-listbox #chipList aria-label="areas">
+                <mat-chip-option *ngFor="let catReceive of CategoryToAdjustSelected" (removed)="removeCatReceive(catReceive)">
+                  {{ catReceive.name }}
+                  <button matChipRemove>
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip-option>
+              </mat-chip-listbox>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+      <div *ngIf="isproductwise" class="formGroup row border mt-2">
+        <div class="col-6 mt-1 mb-1">
+          <div class="col-12 col-md-12">
+            <label>Products to count</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right">{{error_message_product_count}}</span>
+            <input type="text" placeholder="  Search Product by name ,then hit enter to add"
+              class="form-control mb-0 mr-2" aria-label="Products to count" matInput [formControl]="productData"
+              [ngClass]="error_message_product_count? 'is-invalid' : ''" [matAutocomplete]="autoproductCount"
+              #autoInputproductCount />
+            <mat-autocomplete #autoproductCount="matAutocomplete">
+              <mat-option *ngFor="let optionsAdjust of filteredOptionsItem | async " [value]="optionsAdjust.name"
+                [id]="optionsAdjust.id" (click)="productsToCountSelectedSave(optionsAdjust, autoInputproductCount)">
+                {{ optionsAdjust.name }}
+              </mat-option>
+            </mat-autocomplete>
+          </div>
+          <div class="col-12 row">
+            <div clss="col-10" style="margin-top: 1rem;margin-left: 1rem;">
+              <mat-chip-listbox #chipList aria-label="areas">
+                <mat-chip-option *ngFor="let itemCount of ProductsToCountSelected" (removed)="removeItemCount(itemCount)">
+                  {{ itemCount.name }}
+                  <button matChipRemove>
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip-option>
+              </mat-chip-listbox>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 mt-1 mb-1">
+          <div class="col-12 col-md-12">
+            <label>Products to Adjust</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right">{{error_message_product_adjust}}</span>
+            <input type="text" placeholder="  Search Products by name ,then hit enter to add"
+              class="form-control mb-0 mr-2" aria-label="Products to Adjust" matInput [formControl]="productData"
+              [ngClass]="error_message_product_adjust? 'is-invalid' : ''" [matAutocomplete]="autoProductAdjust"
+              #autoInputproductadjust />
+            <mat-autocomplete #autoProductAdjust="matAutocomplete">
+              <mat-option *ngFor="let option of filteredOptionsItem | async" [value]="option.name" [id]="option.id"
+                (click)="productsToAdjustSelectedSave(option, autoInputproductadjust)">
+                {{ option.name }}
+              </mat-option>
+            </mat-autocomplete>
+          </div>
+          <div class="col-12 row">
+            <div clss="col-10" style="margin-top: 1rem;margin-left: 1rem;">
+              <mat-chip-listbox #chipList aria-label="areas">
+                <mat-chip-option *ngFor="let itemReceive of ProductsToAdjustSelected"
+                  (removed)="removeItemReceive(itemReceive)">
+                  {{ itemReceive.name }}
+                  <button matChipRemove>
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip-option>
+              </mat-chip-listbox>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div *ngIf="iscategorywise && data.id" class="formGroup row border mt-2">
+        <div class="col-6 mt-1 mb-1">
+          <label>Categories to count</label>
+          <div class="col-12 row">
+            <div clss="col-10">
+              <mat-chip-list #chipList aria-label="areas">
+                <mat-chip *ngFor="let catcount of CategoryToCountSelected">
+                  {{ catcount.name }}
+                </mat-chip>
+              </mat-chip-list>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 mt-1 mb-1">
+          <label>Categories to Adjust</label>
+          <div class="col-12 row">
+            <div clss="col-10">
+              <mat-chip-list #chipList aria-label="areas">
+                <mat-chip *ngFor="let catReceive of CategoryToAdjustSelected">
+                  {{ catReceive.name }}
+
+                </mat-chip>
+              </mat-chip-list>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+      <div *ngIf="isproductwise && data.id" class="formGroup row border mt-2">
+        <div class="col-6 mt-1 mb-1">
+          <label>Products to count</label>
+          <div class="col-12 row">
+            <div clss="col-10">
+              <mat-chip-list #chipList aria-label="areas">
+                <mat-chip *ngFor="let itemCount of ProductsToCountSelected">
+                  {{ itemCount.name }}
+
+                </mat-chip>
+              </mat-chip-list>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 mt-1 mb-1">
+          <label>Products to Adjust</label>
+          <div class="col-12 row">
+            <div clss="col-10">
+              <mat-chip-list #chipList aria-label="areas">
+                <mat-chip *ngFor="let itemReceive of ProductsToAdjustSelected">
+                  {{ itemReceive.name }}
+
+                </mat-chip>
+              </mat-chip-list>
+            </div>
+          </div>
+        </div>
+      </div> -->
+      <div class="formGroup class-12 row mt-2">
+        <div class="col-6">
+          <div class="formGroup">
+            <label>Purchase Quantity</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="addpromotionForm.controls.purchase_qty.hasError('required' ) && addpromotionForm.controls.purchase_qty.touched">Required</span>
+            <span class="error-message float-right"
+              *ngIf="addpromotionForm.controls.purchase_qty.hasError('pattern' )">Invalid
+              input</span>
+            <input type="text" class="form-control" placeholder="Purchase Quantity" formControlName="purchase_qty"
+              [ngClass]="addpromotionForm.controls.purchase_qty.hasError('required' ) && 
+            addpromotionForm.controls.purchase_qty.touched || 
+            addpromotionForm.controls.purchase_qty.hasError('pattern' )  ? 'is-invalid' : ''" />
+          </div>
+
+          <!-- <div class="formGroup">
+            <label>Minimum Quantity</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="addpromotionForm.controls.min_qty.hasError('required' ) && addpromotionForm.controls.min_qty.touched">Required</span>
+            <span class="error-message float-right"
+              *ngIf="addpromotionForm.controls.min_qty.hasError('pattern' )">Invalid
+              input</span>
+            <input type="text" class="form-control" placeholder="Minimum Quantity" formControlName="min_qty" [ngClass]="addpromotionForm.controls.min_qty.hasError('required' ) && 
+            addpromotionForm.controls.min_qty.touched || 
+            addpromotionForm.controls.min_qty.hasError('pattern' )  ? 'is-invalid' : ''" />
+          </div> -->
+          <div class="formGroup">
+            <label>Discount Type</label>
+            <select class="custom-select w-100" formControlName="discount_type">
+              <option value="percentage" selected>Percentage
+              </option>
+              <option value="value">Value
+              </option>
+              <!-- <option value="price">Price</option> -->
+            </select>
+          </div>
+          <div class="formGroup" style="margin-top:15px;">
+            <mat-checkbox formControlName="is_repeat">Repeating</mat-checkbox>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="formGroup">
+            <label>Receive Quantity</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="addpromotionForm.controls.receive_qty.hasError('required' ) && addpromotionForm.controls.receive_qty.touched">Required</span>
+            <span class="error-message float-right"
+              *ngIf="addpromotionForm.controls.receive_qty.hasError('pattern' )">Invalid
+              input</span>
+            <input type="text" class="form-control" placeholder="Receive Quantity" formControlName="receive_qty"
+              [ngClass]="addpromotionForm.controls.receive_qty.hasError('required' ) && 
+            addpromotionForm.controls.receive_qty.touched || 
+            addpromotionForm.controls.receive_qty.hasError('pattern' )  ? 'is-invalid' : ''" />
+          </div>
+          <!-- <div class="formGroup">
+            <label>Maximum Quantity</label>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="addpromotionForm.controls.max_qty.hasError('required' ) && addpromotionForm.controls.max_qty.touched">Required</span>
+            <span class="error-message float-right"
+              *ngIf="addpromotionForm.controls.max_qty.hasError('pattern' )">Invalid
+              input</span>
+            <input type="text" class="form-control" placeholder="Maximum Quantity" formControlName="max_qty" [ngClass]="addpromotionForm.controls.max_qty.hasError('required' ) && 
+            addpromotionForm.controls.max_qty.touched || 
+            addpromotionForm.controls.max_qty.hasError('pattern' )  ? 'is-invalid' : ''" />
+          </div> -->
+          <div class="formGroup">
+            <label>Discount Value</label>
+            <span *ngIf="addpromotionForm.controls['discount_type'].value=='percentage'"> (%)</span>
+            <span *ngIf="addpromotionForm.controls['discount_type'].value=='value'"> ({{currency_symbol}})</span>
+            <span *ngIf="addpromotionForm.controls['discount_type'].value=='price'"> ({{currency_symbol}})</span>
+            <span class="error-message">*</span>
+            <span class="error-message float-right"
+              *ngIf="addpromotionForm.controls.discount_value.hasError('required' ) && addpromotionForm.controls.discount_value.touched">Required</span>
+            <span class="error-message float-right"
+              *ngIf="addpromotionForm.controls.discount_value.hasError('pattern' )">Invalid
+              input</span>
+            <input type="text" class="form-control" placeholder="Discount Amount" formControlName="discount_value"
+              [ngClass]="addpromotionForm.controls.discount_value.hasError('required' ) && 
+            addpromotionForm.controls.discount_value.touched || 
+            addpromotionForm.controls.discount_value.hasError('pattern' )  ? 'is-invalid' : ''" />
+          </div>
+          <div class="formGroup" style="margin-top:15px;">
+            <mat-checkbox formControlName="status">Status</mat-checkbox>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" (click)="addpromotion()">Submit</button>
+    </div>
+  </div>
+</form>

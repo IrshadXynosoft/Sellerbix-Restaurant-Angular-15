@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body id="page_setup">
+
+
+    <!-- Body Wrapper Start -->
+    <!-- <form [formGroup]="addIngredientForm"> -->
+    <div class="body_wrapper container-fluid">
+          <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+      <div class="px-4">
+        <div class="row pt-4">
+          <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                  Home
+                </li>
+                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/inventory">
+                  Inventory
+                </li>
+                <li class="breadcrumb-item  cursor-pointer" aria-current="page" routerLink="/inventory/purchaseOrders">
+                  Purchase Order
+                </li>
+                <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                  Send Purchase Order
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-12">
+            <div class="d-flex align-items-center head-tag ">
+              <h4 class="flex-gr-1"> <i class="icon-arrow-left cursor-pointer" (click)="back()"></i>Send Purchase Order</h4>
+            </div>
+          </div>
+        </div>
+       
+         <div class="searchno col-12 " >
+          Purchase Order No : <b>{{ purchase_order_number }} </b>
+          <div class="center col-12 discount-card bordered mt-2">
+            <div class="col-12 row">
+              <div class="col-3">
+                <label>To:</label>
+              </div>
+              <div class="col-9">
+                <label class="form-control" style="height:50px">{{ sendAddress }} </label>
+              </div>
+            </div>
+            <div class="col-12 row">
+              <div class="col-3">
+                <label>Subject:</label>
+              </div>
+              <div class="col-9">
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="subjectLine"
+                />
+              </div>
+            </div>
+            <div class="col-12 row mt-2">
+              <div class="col-3">
+                <label>Note:</label>
+              </div>
+              <div class="col-9">
+                <input type="text" class="form-control"  [(ngModel)]="note"/>
+              </div>
+            </div>
+            <div class="col-12 row mt-2">
+              <div class="form-check col-6">
+               
+              </div>
+            
+                <div class="col-6">
+                  <input
+                  class="form-check-input "
+                  type="checkbox"
+                  value=""
+                  id="flexCheckChecked5"
+                />
+                <label class="form-check-label" for="flexCheckChecked5">
+                  Send me a copy
+                </label>
+                  <button
+                    class="btn-setup-danger float-right"
+                    (click)="back()"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                  class="btn-setup-sucess float-right"
+                  (click)="sendPurchaseOrder()"
+                >
+                  Send
+                </button>
+                </div>
+                <!-- <div class="col-3">
+                  <button
+                    class="btn-setup-sucess btn-ht-custom bg-grey d-block mb-2 w-px-100"
+                    (click)="previewOrder()"
+                  >
+                    Preview
+                  </button>
+                </div> -->
+              
+            
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- </form> -->
+  </body>
+</html>

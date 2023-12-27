@@ -1,0 +1,95 @@
+<div class="modal-wrapper">
+    <button mat-icon-button class="close-button" (click)="close()">
+      <mat-icon class="close-icon" color="warn">close</mat-icon>
+    </button>
+    <h2 mat-dialog-title>Order Details</h2>
+    <mat-dialog-content>
+      <div class="row">
+        <div class="col-6">
+          <table class="tableStyleMain table">
+            <thead>
+              <tr>
+                <th scope="col">Order No:</th>
+                <th scope="col">Address</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+               
+                <td>{{data.Orders.order_no}}</td>
+                <td><span>Building No : {{data.Orders.building_no?data.Orders.building_no:'--'}}</span><br>
+                <span>Street : {{data.Orders.street?data.Orders.street:'--'}}</span><br>
+                <span>Zone : {{data.Orders.zone?data.Orders.zone:'--'}}</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-6">
+          <table class="tableStyleMain table">
+            <thead>
+              <tr>
+                <th scope="col">Amount ({{currency_symbol}})</th>
+                <th scope="col">Order Notes</th>
+              
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+               <td>{{data.Orders.amount}}</td>
+               <td>{{data.Orders.notes?data.Orders.notes:'--'}}</td>
+             
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <table class="tableStyleMain table">
+            <thead>
+              <tr>
+                <th scope="col">Driver Commission ({{currency_symbol}})</th>
+                <th scope="col">Driver Commission Settled at</th>
+                <th scope="col">Supplier Commission ({{currency_symbol}})</th>
+                <th scope="col">Supplier Commission Settled at</th>
+              </tr>
+            </thead>
+            <tbody >
+              <tr >
+                <td>{{data.Orders.driver_commission ? data.Orders.driver_commission : '--'}}</td>
+                <td>{{data.Orders.driver_settled_date?data.Orders.driver_settled_date:'--'}}</td>
+                <td>{{data.Orders.supplier_commission ? data.Orders.supplier_commission : '--'}}</td>
+                <td>{{data.Orders.supplier_settled_date?data.Orders.supplier_settled_date:'--'}}</td>
+              </tr>
+            </tbody>
+
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <table class="tableStyleMain table">
+            <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Order Collected at</th>
+                <th scope="col">Delivered at</th>
+                <th scope="col">Elapsed Time</th>
+              </tr>
+            </thead>
+            <tbody >
+              <tr >
+                <td>{{data.Orders.date}}</td>
+                <td>{{data.Orders.order_collected_time?data.Orders.order_collected_time:'--'}}</td>
+                <td>{{data.Orders.delivery_end_time?data.Orders.delivery_end_time:'--'}}</td>
+                <td>{{data.Orders.elapsed_time?data.Orders.elapsed_time:'--'}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+  
+    </mat-dialog-content>
+  
+  </div>
+  

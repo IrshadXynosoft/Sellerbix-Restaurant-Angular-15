@@ -1,0 +1,55 @@
+<div class="modal-wrapper">
+  <form [formGroup]="sectionForm">
+    <h2 mat-dialog-title>Add Home Page Sections</h2>
+    <div mat-dialog-content>
+      <div class="col-12 col-md-12">
+        <label>Name</label>
+        <span class="error-message">*</span>
+        <span class="error-message float-right"
+          *ngIf="sectionForm.controls.name.hasError('required' ) && sectionForm.controls.name.touched">required</span>
+        <span class="error-message float-right" *ngIf="sectionForm.controls.name.hasError('pattern' )">invalid
+          input</span>
+        <span class="error-message float-right" *ngIf="ErrorArray.name">
+          {{ ErrorArray.name }}</span>
+        <input type="text" class="form-control"
+          [ngClass]="sectionForm.controls.name.hasError('required' ) && sectionForm.controls.name.touched || sectionForm.controls.name.hasError('pattern' ) || ErrorArray.name ? 'is-invalid' : ''"
+          placeholder="Name" formControlName="name" />
+      </div>
+      <div class="col-12 col-md-12">
+        <label>Secondary Name</label>
+        <input type="text" class="form-control" placeholder="Secondary Name" formControlName="secondary_name" />
+      </div>
+      <div class="col-12 col-md-12">
+        <label>Items</label>
+        <span class="error-message">*</span>
+        <span class="error-message float-right">{{errorMessage}}</span>
+        <input type="text" placeholder="Search Items by name ,then hit enter to add" aria-label="Items" matInput
+          [formControl]="itemsData" [matAutocomplete]="auto" #autoInput />
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name" [id]="option.id"
+            (click)="itemsSelected(option, autoInput)">
+            {{ option.name }}
+          </mat-option>
+        </mat-autocomplete>
+      </div>
+      <div class="col-12 row">
+        <div clss="col-10" style="margin-top: 1rem;margin-left: 1rem;">
+          <mat-chip-listbox #chipList aria-label="items">
+            <mat-chip-option *ngFor="let item of itemSelected" (removed)="remove(item)">
+              {{ item.name }}
+              <button matChipRemove>
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-option>
+          </mat-chip-listbox>
+        </div>
+
+      </div>
+    </div>
+    <div mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" [disabled]="!sectionForm.valid || sectionForm.pristine"
+        (click)="addSectionHeads()">Submit</button>
+    </div>
+  </form>
+</div>

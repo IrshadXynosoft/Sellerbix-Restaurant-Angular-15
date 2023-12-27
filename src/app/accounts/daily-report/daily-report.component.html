@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+  <!-- Body Wrapper Start -->
+
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/callcenter">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/accounts">
+                Accounts
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page" (click)="back()">
+                Reports
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                Daily Report
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1"> <i class="icon-arrow-left cursor-pointer" (click)="back()"></i>Daily Report</h4>
+            <button class="btn-setup-sucess" (click)="exportExcel()" *ngIf="dataSource.data.length > 0">Export To
+              Excel</button>
+          </div>
+        </div>
+      </div>
+      <form [formGroup]="daybookForm">
+        <div class="row">
+          <div class="col-lg-5">
+            <label>Search by business day</label>
+            <select class="form-control w-100" (change)="filterReport($event)" formControlName="searchBy">
+              <option value="" disabled>Select</option>
+              <option value="{{day.id}}" *ngFor="let day of businessdayRecords">{{day.name}}</option>
+            </select>
+          </div>
+          <div class="col-lg-7" style="margin-top:2rem;">
+            <button class="btn-setup-sucess" style="float: right;" (click)="generateReport()">
+              <i class="icon-save mr-1"></i>Generate Report
+            </button>
+
+          </div>
+        </div>
+      </form>
+      <div *ngIf="dataSource.data.length <= 0; else showtable">
+        <div class="row">
+          <div class="col-12">
+            <div class="not-found bordered">
+              <h3>Sorry :(</h3>
+              <p>No Report available</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #showtable>
+        <table mat-table [dataSource]="dataSource" matSort matTableExporter #exporter="matTableExporter"
+          class="tableStyleMain table bordered">
+          <ng-container matColumnDef="index">
+            <th mat-header-cell *matHeaderCellDef>
+              #
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{dataSource.data.indexOf(element) + 1}}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="entity_name">
+            <th mat-header-cell *matHeaderCellDef>Entity</th>
+            <td mat-cell *matCellDef="let element">{{element.entity_name}}
+              <div class="col-12 combo-tree" *ngIf="element.id==3">
+                <div class="tree">
+                  <ul class="tree-holder">
+                    <li>
+                      <span><i class="fa fa-folder-open"></i></span>
+                      <ul>
+                        <li>
+                          <span><i class="fa fa-minus-square"></i>Take Away&nbsp;
+                          </span>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+                <div class="tree">
+                  <ul class="tree-holder">
+                    <li>
+                      <span><i class="fa fa-folder-open"></i></span>
+                      <ul>
+                        <li>
+                          <span><i class="fa fa-minus-square"></i>Delivery&nbsp;
+                          </span>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </td>
+
+          </ng-container>
+          <ng-container matColumnDef="order_count">
+            <th mat-header-cell *matHeaderCellDef>Orders</th>
+            <td mat-cell *matCellDef="let element">{{element.order_count}}
+              <div class="col-12 combo-tree-amount " *ngIf="element.id==3">
+                <div class="tree">
+                  <ul class="tree-holder">
+                    <li>
+                      <span></span>
+                      <ul>
+                        <li>
+                          <span> {{element.take_away_count}}  &nbsp;
+                          </span>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+                <div class="tree">
+                  <ul class="tree-holder">
+                    <li>
+                      <span></span>
+                      <ul>
+                        <li>
+                          <span>{{element.delivery_count}}&nbsp;
+                          </span>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="order_value">
+            <th mat-header-cell *matHeaderCellDef>Total Amount ({{currency_symbol}})</th>
+            <td mat-cell *matCellDef="let element">{{element.order_value}}
+              <div class="col-12 combo-tree-amount" *ngIf="element.id==3">
+                <div class="tree">
+                  <ul class="tree-holder">
+                    <li>
+                      <span></span>
+                      <ul>
+                        <li>
+                          <span>{{element.take_away_amount}}&nbsp;
+                          </span>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+                <div class="tree">
+                  <ul class="tree-holder">
+                    <li>
+                      <span></span>
+                      <ul>
+                        <li>
+                          <span>{{element.delivery_amount}}&nbsp;
+                          </span>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </td>
+            <!-- <td mat-cell *matCellDef="let element">{{dayCheck(element.date)}} &nbsp; {{timeCheck(element.time)}}</td> -->
+          </ng-container>
+
+          <ng-container matColumnDef="total_discount">
+            <th mat-header-cell *matHeaderCellDef>Total Discount ({{currency_symbol}})</th>
+            <td mat-cell *matCellDef="let element">{{element.total_discount}}
+              <div class="col-12 combo-tree-amount" *ngIf="element.id==3">
+                <div class="tree">
+                  <ul class="tree-holder">
+                    <li>
+                      <span></span>
+                      <ul>
+                        <li>
+                          <span>{{element.take_away_total_discount}}&nbsp;
+                          </span>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+                <div class="tree">
+                  <ul class="tree-holder">
+                    <li>
+                      <span></span>
+                      <ul>
+                        <li>
+                          <span>{{element.delivery_total_discount}}&nbsp;
+                          </span>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="button">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td class="btn-wrp-equal" mat-cell *matCellDef="let element">
+              <button matTooltip="View Details" class="btn-setup-sucess" (click)="viewData(element.id)">
+                <i _ngcontent-trm-c429="" class="zmdi zmdi-eye"></i>
+              </button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </ng-template>
+      <mat-paginator [pageSize]="50" [ngClass]="{ show: dataSource.data.length <= 0 }"
+        [pageSizeOptions]="[2, 4, 6, 15, 50]">
+      </mat-paginator>
+    </div>
+  </div>
+
+</body>
+
+</html>

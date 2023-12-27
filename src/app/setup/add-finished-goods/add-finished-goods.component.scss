@@ -1,0 +1,99 @@
+.mat-mdc-card {
+	height: 15rem;
+	background-color: rgb(244, 246, 250);
+	border-radius: .5rem;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	margin-right: 1rem;
+	margin-top: 1rem;
+
+
+}
+
+// ::ng-deep input.mat-input-element { 
+//     background-color: white; 
+//     height: 40px;
+//     width: 90%;
+// 	  border:1px solid #ced4da;
+//    }
+// ::ng-deep input.mat-input-element {
+// 	background-color: white;
+// 	height: 40px;
+// 	width: 100%;
+// 	border: 1px solid #ced4da;
+//   }
+.note {
+	color: gray;
+	font-size: 12px;
+	margin-left: 10px;
+}
+
+
+// ::ng-deep input.mat-input-element { 
+//     background-color: white; 
+//     height: 40px;
+//     width: 90%;
+// 	border:1px solid #ced4da;
+//    }
+.inner {
+	height: auto;
+	border-radius: 5px;
+	text-align: center;
+}
+
+.searchno {
+	width: 700px;
+	margin: 10% auto;
+	margin-top: 10%;
+	margin-bottom: 10%;
+	text-align: center;
+	background-color: #ffff;
+}
+
+.center {
+	display: block;
+	margin: 0 auto 30px;
+
+}
+
+.prf-scn {
+	background: var(--white);
+	margin: 15px 0;
+	padding: 15px;
+
+	h4 {
+		font-size: 18px;
+		font-weight: 400;
+		color: #565656;
+	}
+
+}
+
+h3 {
+	color: #de5d1d;
+}
+
+// .table{
+
+// //box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+// box-shadow: rgba(143, 148, 135, 0.3) 0px 0px 0px 3px;
+
+// }
+.cost-div {
+	text-align: center;
+	height: 50px;
+	background-color: #e2e3e3;
+	align-content: center;
+	display: grid;
+}
+
+.ex-label {
+	font-size: 12px;
+	color: gray;
+}
+
+.form-check{
+  align-items: center;
+  //display: grid;
+}

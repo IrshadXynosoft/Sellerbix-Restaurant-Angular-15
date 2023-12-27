@@ -1,0 +1,256 @@
+<style>
+  @page {
+    size: 210mm 297mm;
+  }
+
+  /* output size */
+  body.receipt .sheet {
+    width: 210mm;
+    /* A4 width */
+    height: 297mm;
+    /* A4 height */
+  }
+
+  /* sheet size */
+  @media print {
+    body.receipt {
+      width: 210mm;
+    }
+  }
+</style>
+<!DOCTYPE html>
+<html lang="en">
+
+<body id="page_setup">
+  <!-- Body Wrapper Start -->
+  <div class="body_wrapper container-fluid">
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
+    <div class="px-4">
+      <div class="row pt-4">
+        <div class="bgSecMainAll">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
+                Home
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/inventory">
+                Inventory
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page" routerLink="/inventory/reports">
+                Reports
+              </li>
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
+                Stock On Hand Report
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-12">
+          <div class="d-flex align-items-center head-tag ">
+            <h4 class="flex-gr-1"> <i class="icon-arrow-left cursor-pointer" routerLink="/inventory/reports"></i> Stock
+              On Hand Report
+            </h4>
+          </div>
+        </div>
+      </div>
+      <div class="row pt-3">
+        <div class="col-6 col-sm-4"></div>
+        <div class="col-6 col-sm-4">
+          <!-- <input
+                    type="text"
+                    placeholder="Search Inventory  Item"
+                    class="form-control"
+                    #item
+                    (input)="itemSearch(item.value)"
+                    /> -->
+        </div>
+        <div class="col-6 col-sm-4">
+          <select class="form-control m-0 mr-2 w-100 bordered" [(ngModel)]="branch_id">
+            <option value="" disabled> Select</option>
+            <option *ngFor="let i of branchRecords" value="{{ i.id }}" (click)="getStockOnHandForLocation(i.id,i.name)">
+              {{ i.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <mat-tab-group (selectedTabChange)="tabClick($event)">
+        <mat-tab label="Finished Goods">
+          <div *ngIf="dataSource.data.length <= 0; else showtable">
+            <div class="row col-12">
+              <div class="col-12">
+                <div class="not-found bordered ">
+                  <h3>Sorry :(</h3>
+                  <p>No Report available</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ng-template #showtable>
+            <div infinite-scroll [infiniteScrollDistance]="scrollDistance" [infiniteScrollUpDistance]="scrollUpDistance"
+              [infiniteScrollThrottle]="throttle" (scrolled)="onScrollDown($event)">
+              <table *ngIf="dataSource.data.length > 0" mat-table [dataSource]="dataSource" matSort
+                class="tableStyleMain table bordered">
+                <ng-container matColumnDef="index">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    #
+                  </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{dataSource.data.indexOf(element) + 1}}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="item_name">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Item
+                  </th>
+                  <td mat-cell *matCellDef="let element">{{ element.item_name }}</td>
+                </ng-container>
+                <ng-container matColumnDef="category_name">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Category
+                  </th>
+                  <td mat-cell *matCellDef="let element">{{ element.category_name}}</td>
+                </ng-container>
+                <ng-container matColumnDef="branch_name">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Location
+                  </th>
+                  <td mat-cell *matCellDef="let element">{{ element.branch_name }}</td>
+                </ng-container>
+                <ng-container matColumnDef="unit_name">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Unit Name
+                  </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.unit_name }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="stock_on_hand">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Stock On hand
+                  </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.stock_on_hand?element.stock_on_hand:'--' }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="stock_value">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Stock Value ({{currency_symbol}})
+                  </th>
+                  <td mat-cell *matCellDef="let element">{{ element.stock_value?element.stock_value:'--' }}</td>
+                </ng-container>
+                <ng-container matColumnDef="button">
+                  <th mat-header-cell *matHeaderCellDef>Actions</th>
+                  <td class="btn-wrp-equal" mat-cell *matCellDef="let element">
+                    <button class="btn-setup-sucess" matTooltip="View Details"
+                      (click)="addHistory(element.stock_id,element.item_name)">
+                      <i _ngcontent-pms-c429="" class="zmdi zmdi-eye"></i>
+                    </button>
+                  </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+              </table>
+            </div>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="Ingredients & Subrecipes">
+          <div *ngIf="dataSourceForIngredient.data.length <= 0; else showingredienttable">
+            <div class="row col-12">
+              <div class="col-12">
+                <div class="not-found bordered">
+                  <h3>Sorry :(</h3>
+                  <p>No Report available</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ng-template #showingredienttable>
+            <div infinite-scroll [infiniteScrollDistance]="scrollDistance1"
+              [infiniteScrollUpDistance]="scrollUpDistance1" [infiniteScrollThrottle]="throttle1"
+              (scrolled)="onScrollDownIngredients($event)">
+              <div class="row col-12">
+                <div class="col-3 col-sm-3 mt-2">
+                  <input type="text" placeholder="Search" class="form-control bordered" #FilterText
+                    (keyup)="doFilter(FilterText.value)" />
+                </div>
+                <div class="col-7 col-sm-7 "> </div>
+                <div class="col-2 col-sm-2 mt-2"> <button style="width: 120px;float: right;" class="btn-setup-sucess"
+                    [useExistingCss]="true" printSectionId="print-section" printTitle="Stock Report" ngxPrint>
+                    <i class="icon-print mr-1"></i> Print
+                  </button></div>
+              </div>
+              <div id="print-section">
+                <table *ngIf="dataSourceForIngredient.data.length > 0" mat-table [dataSource]="dataSourceForIngredient"
+                  matSort class="tableStyleMain table bordered">
+                  <ng-container matColumnDef="index">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                      #
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                      {{dataSourceForIngredient.data.indexOf(element) + 1}}
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="item_name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                      Item
+                    </th>
+                    <td mat-cell *matCellDef="let element">{{ element.item_name }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="category_name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                      Category
+                    </th>
+                    <td mat-cell *matCellDef="let element">{{ element.category_name}}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="branch_name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                      Location
+                    </th>
+                    <td mat-cell *matCellDef="let element">{{ element.branch_name }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="unit_name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                      Unit Name
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                      {{ element.unit_name }}
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="stock_on_hand">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                      Stock On hand
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                      {{ element.stock_on_hand }}
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="stock_value">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                      Stock Value ({{currency_symbol}})
+                    </th>
+                    <td mat-cell *matCellDef="let element">{{ element.stock_value }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="button">
+                    <th mat-header-cell *matHeaderCellDef>Actions</th>
+                    <td class="btn-wrp-equal" mat-cell *matCellDef="let element">
+                      <button class="btn-setup-sucess" matTooltip="View Details"
+                        (click)="addHistory(element.stock_id,element.item_name)">
+                        <i _ngcontent-pms-c429="" class="zmdi zmdi-eye"></i>
+                      </button>
+                    </td>
+                  </ng-container>
+                  <tr mat-header-row *matHeaderRowDef="displayedColumnsForIngredient"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumnsForIngredient"></tr>
+                </table>
+              </div>
+            </div>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</body>
+
+</html>

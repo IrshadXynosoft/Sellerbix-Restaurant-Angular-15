@@ -1,0 +1,58 @@
+.tableStyleMain {
+  margin-top: 7px;
+
+  th {
+    //padding: 10px;
+   // border-right: 1px #e2e3e3 solid;
+    text-align: center;
+  }
+
+  td {
+    //padding: 10px;
+   // border-right: 1px #eceeee  solid;
+    text-align: center;
+    background-color: #ffff
+    ;
+  }
+
+}
+
+
+
+.table-shadow {
+ box-shadow: rgb(251, 175, 3) 0px 0px 0px 1px;
+}
+  .viewScreen{
+    background: var(--white);
+    margin: 15px 0;
+    padding: 15px;
+  }
+  
+  .radio-label{
+    font-size: 10px;
+  font-weight: normal;
+  }
+
+  /*TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version.*/
+  /*TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version.*/
+  ::ng-deep .mat-radio-outer-circle {
+    box-sizing: border-box;
+    display: block;
+    height: 10px !important;
+    left: 4px !important;
+    position: absolute;
+    top: 5px !important;
+    transition: border-color ease 280ms;
+    width: 10px !important;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 50%;
+  }
+  /*TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version.*/
+  /*TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version.*/
+  ::ng-deep  .mat-radio-inner-circle {
+    height: 10px !important;
+    left: 4px!important;
+    top: 5px !important;
+     width: 10px !important;
+   }

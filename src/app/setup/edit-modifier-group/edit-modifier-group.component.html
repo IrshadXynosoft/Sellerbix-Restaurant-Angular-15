@@ -1,0 +1,34 @@
+<form [formGroup]="editModifierGroupForm">
+  <div class="modal-wrapper">
+    <h2 mat-dialog-title>Modifier Group</h2>
+    <div mat-dialog-content>
+      <label>Name</label>
+      <span class="error-message">*</span>
+      <span class="error-message float-right"
+        *ngIf="editModifierGroupForm.controls.name.hasError('required' ) && editModifierGroupForm.controls.name.touched">Required</span>
+      <span class="error-message float-right" *ngIf="editModifierGroupForm.controls.name.hasError('pattern' )">Invalid
+        input</span>
+      <span class="error-message float-right" *ngIf="ErrorArray.name">
+        {{ ErrorArray.name }}</span>
+      <input type="text" class="form-control"
+        [ngClass]="editModifierGroupForm.controls.name.hasError('required' ) && editModifierGroupForm.controls.name.touched || editModifierGroupForm.controls.name.hasError('pattern' ) || ErrorArray.name ? 'is-invalid' : ''"
+        placeholder="Modifier Group Name:" formControlName="name" />
+      <label>Secondary Name</label>
+      <input type="text" class="form-control" placeholder="Secondary Name" formControlName="secondary_name" />
+      <label>Priority</label>
+      <span class="error-message">*</span>
+      <span class="error-message float-right"
+        *ngIf="editModifierGroupForm.controls.priority.hasError('required') && editModifierGroupForm.controls.priority.touched">Required</span>
+      <span class="error-message float-right"
+        *ngIf="editModifierGroupForm.controls.priority.hasError('pattern')">Invalid
+        input</span>
+        <input type="text" class="form-control" [ngClass]="editModifierGroupForm.controls.priority.hasError('pattern') || editModifierGroupForm.controls.priority.hasError('required') && editModifierGroupForm.controls.priority.touched ? 'is-invalid' : ''" placeholder="Priority" formControlName="priority" />
+
+      <mat-checkbox formControlName="type">Track inventory</mat-checkbox>
+    </div>
+    <div mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" (click)="editModifierGroup()">Update</button>
+    </div>
+  </div>
+</form>

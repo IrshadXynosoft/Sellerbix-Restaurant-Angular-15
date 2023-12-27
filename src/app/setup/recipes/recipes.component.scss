@@ -1,0 +1,68 @@
+table {
+  width: 100%;
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+.mat-mdc-header-cell {
+  font-weight: bold;
+  font-size: medium;
+  color: rgb(20, 20, 20);
+}
+.mat-mdc-cell {
+  font-size: 15px;
+  padding-top: 7px;
+}
+
+.d-padding {
+  padding-bottom: 15px;
+  padding-left: 5px;
+}
+.message {
+  font-size: 15px;
+  padding-top: 10%;
+  text-align: center;
+  font-style: italic;
+}
+::ng-deep input.mat-mdc-input-element {
+  display: block;
+  //width: 25rem;
+  height: calc(1.5em + 0.75rem + 2px);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: var(--white);
+  // background-clip: padding-box;
+  // border: 1px solid #ced4da;
+  // border-radius: 0.25rem;
+  // transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.tableStyleMain{ margin-top: 7px ;
+
+  th{
+    padding-bottom: 15px; 
+    //border-right: 1px #e2e3e3 solid; 
+    text-align: center;
+  }
+
+  td{
+    // padding: 10px; 
+    //border-right: 1px #eceeee  solid; 
+    text-align: center;
+  }
+
+}
+.table{
+  border-collapse: unset !important;
+}
+.btn-wrp-equal button {
+  width: 34px;
+  margin-bottom: 10px;
+  display: inline-block;
+  height: 34px;
+  border-radius: 50%;
+}

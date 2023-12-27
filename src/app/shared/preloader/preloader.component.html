@@ -1,0 +1,17 @@
+<div *ngIf="active" [ngClass]="{'preloader-active preloader-visible': active }" dir="ltr">
+    <div class="preloader-container">
+      <div class="preloader-overlay"></div>
+      <div class="preloader-message-container" aria-live="assertive" aria-atomic="true">
+        <div class="preloader-message">
+          <div class="showbox">
+            <div class="loader">
+              <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10"></circle>
+              </svg>
+            </div>
+          </div>
+          <div class="preloader-message">Loading...</div>
+        </div>
+      </div>
+    </div>
+  </div>

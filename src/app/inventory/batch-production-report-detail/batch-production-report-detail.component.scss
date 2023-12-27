@@ -1,0 +1,42 @@
+.tableStyleMain{ margin-top: 7px ;
+
+    th{
+     // padding: 10px; 
+      border-right: 1px #e2e3e3 solid; text-align: center;
+    }
+  
+    td{
+      //padding: 10px;
+       border-right: 1px #eceeee  solid; text-align: center;
+    }
+  
+  }
+  // .table {
+  //   border-collapse: unset !important;
+  
+  // }
+  
+
+.close-button {
+	float: right;
+	top: -20px;
+	right: -20px;
+  }
+  
+  .close-icon {
+	transition: 1s ease-in-out;
+  }
+  
+  .close-icon:hover {
+	transform: rotate(180deg);
+  }
+  .commonBtnStyle {
+	height: 40px;
+	width: 120px;
+	padding: 0;
+  }
+  .print-button{
+    height: 40px;
+    width: 120px;
+    float: right;
+  }

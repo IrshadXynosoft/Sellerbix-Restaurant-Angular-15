@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body id="page_setup">
+    <!-- Body Wrapper Start -->
+    <div class="body_wrapper container-fluid">
+      <!-- Header Start -->
+      <app-header></app-header>
+      <!-- Header End -->
+      <div class="px-4">
+        <div class="row pt-4">
+          <div class="bgSecMainAll">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  routerLink="/home/walkin"
+                >
+                  Home
+                </li>
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  aria-current="page"
+                  routerLink="/setup"
+                >
+                  Setup
+                </li>
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  aria-current="page"
+                  routerLink="/setup/location"
+                >
+                  Locations
+                </li>
+                <li
+                  class="breadcrumb-item cursor-pointer"
+                  aria-current="page"
+                  routerLink="/setup/{{ id }}/editLocation"
+                >
+                  Location Setup
+                </li>
+                <li
+                  class="breadcrumb-item active cursor-pointer"
+                  aria-current="page"
+                >
+                  Dining
+                </li>
+              </ol>
+            </nav>
+          </div>
+          <div class="col-12">
+            <div class="d-flex align-items-center head-tag">
+              <h4 class="flex-gr-1">
+                <i
+                  class="icon-arrow-left mr-1 cursor-pointer"
+                  (click)="back()"
+                ></i
+                >Dining
+              </h4>
+
+              <div
+                class="d-flex"
+                style="padding-bottom: 15px; padding-left: 5px"
+              >
+                <button class="btn-setup-sucess primary" (click)="addDining()">
+                  <i class="icon-plus mr-1"></i>Add Dining
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="diningArray.length < 1">
+          <div class="col-12">
+            <div class="not-found bordered">
+              <h3>Sorry :(</h3>
+              <p>
+                There's no tables added yet at this moment.<br />
+                Click
+                <a
+                  routerLink="/setup/location/{{ id }}/dining"
+                  (click)="addDining()"
+                  >here</a
+                >
+                to add Dining.
+              </p>
+            </div>
+          </div>
+        </div>
+        <mat-tab-group>
+          <mat-tab
+            *ngFor="let tabname of diningArray; let t = index"
+            label="{{ tabname.name }}"
+          >
+            <div class="mt-2 row m-0" [ngClass]="tabname.branch_dining_table.length > 0 ? 'bordered' : ''">
+              <div class="col-12 col-sm-3 mt-2" *ngIf="tabname.branch_dining_table.length>0">
+                <div
+                  class="d-flex align-items-center"
+                  *ngFor="
+                    let field of tabname.branch_dining_table;
+                    let i = index
+                  "
+                >
+                  {{ field.name }}
+                  <input
+                    class="form-control"
+                    type="text"
+                    placeholder="1"
+                    [(ngModel)]="field.table_name"
+                    name="{{ field.table_name }}"
+                  />
+                  <button
+                    class="btn-setup-danger cust-pos-btn"
+                    (click)="deleteFieldValue(t, i)"
+                  >
+                    <i class="icon-remove"></i>
+                  </button>
+                </div>
+              </div>
+              <div
+                class="col-12 col-sm-7 mt-2"
+                
+              >
+                <button
+                  class="btn-setup-sucess primary mr-2"
+                  (click)="addFieldValue(t)"
+                >
+                  Add Table<i class="icon-plus ml-1"></i>
+                </button>
+                <button
+                  class="btn-setup-sucess"
+                  (click)="saveTable(t, tabname.id)"
+                >
+                  Save Table<i class="icon-save ml-1"></i>
+                </button>
+                <button
+                  class="btn-setup-sucess primary"
+                  (click)="editDining(tabname)"
+                >
+                  Edit Dining
+                </button>
+              </div>
+            </div>
+            <div *ngIf="tabname.branch_dining_table.length < 1">
+              <!-- <div class="row px-4"> -->
+              <div class="col-12">
+                <div class="not-found bordered">
+                  <h3>Sorry :(</h3>
+                  <p>
+                    There's no tables added yet at this moment.<br />
+                    Click
+                    <b
+                      style="color: var(--primary); cursor: pointer"
+                      (click)="addFieldValue(t)"
+                      >here</b
+                    >
+                    to add Table.
+                  </p>
+                </div>
+              </div>
+              <!-- </div> -->
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+  </body>
+</html>
