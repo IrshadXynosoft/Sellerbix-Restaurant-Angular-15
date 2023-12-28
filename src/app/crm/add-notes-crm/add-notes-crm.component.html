@@ -1,13 +1,20 @@
 <form [formGroup]="addNotes">
-<div class="modal-wrapper">
-    <h2>Add notes</h2>
-
-    <div class="col-md-12">
-        <textarea class="form-control" placeholder="Notes" formControlName="note" ></textarea>
-    </div>
-    <div class="text-right button-sec">
+  <div class="modal-wrapper">
+    <h2 mat-dialog-title>Add notes</h2>
+    <mat-dialog-content>
+      <div class="col-md-12">
+        <textarea
+          class="form-control"
+          placeholder="Notes"
+          formControlName="note"
+        ></textarea>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <div class="text-right button-sec">
         <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
         <button class="btn-setup-sucess" (click)="saveNotes()">Save</button>
-    </div>
-</div>
+      </div>
+    </mat-dialog-actions>
+  </div>
 </form>

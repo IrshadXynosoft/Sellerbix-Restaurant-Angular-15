@@ -1,17 +1,20 @@
 <div class="modal-wrapper">
+  <h2 mat-dialog-title>
+    {{ data.item.name }}
     <button mat-icon-button class="close-button" (click)="close()">
-        <mat-icon class="close-icon" color="warn">close</mat-icon>
-      </button>
-    <h2 mat-dialog-title>{{data.item.name}} </h2>
+      <mat-icon class="close-button" color="warn">close</mat-icon>
+    </button>
+  </h2>
 
-    <mat-dialog-content>
-            <div class="col-md-12" style="text-align: center;">
-                <h4>{{data.item.description}}</h4><br>
-            </div>       
-    </mat-dialog-content>
-    <mat-dialog-actions>
-        <div class="text-right button-sec">
-            <button class="btn-setup-danger mr-2" (click)="close()" >Close</button>
-        </div>    
-    </mat-dialog-actions>
+  <mat-dialog-content>
+    <div class="col-md-12" style="text-align: center">
+      <h4>{{ data.item.description }}</h4>
+      <br />
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <div class="text-right button-sec">
+      <button class="btn-setup-danger mr-2" (click)="close()">Close</button>
+    </div>
+  </mat-dialog-actions>
 </div>

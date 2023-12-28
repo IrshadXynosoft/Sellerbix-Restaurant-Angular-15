@@ -101,27 +101,9 @@
   margin-top: 20px;
 }
 
-// close icon mat
-
 .close-button {
   float: right;
-  top: -20px;
-  right: -20px;
-  background: var(--white) !important;
-}
-
-.close-icon {
-  transition: 1s ease-in-out;
-}
-
-::ng-deep .icon-outside .close-button {
-  float: right;
-  top: -52px;
-  right: -52px;
-}
-
-::ng-deep .icon-outside .mat-mdc-dialog-container {
-  overflow: unset;
+  top: 7px;
 }
 
 .mat-mdc-dialog-actions {

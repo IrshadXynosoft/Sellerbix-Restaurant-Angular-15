@@ -30,26 +30,11 @@
   font-size: 15px;
   cursor: pointer;
 }
-
 .close-button {
   float: right;
-  top: -20px;
-  right: -20px;
+  top: 7px;
 }
 
-.close-icon {
-  transition: 1s ease-in-out;
-}
-
-::ng-deep .icon-outside .close-button {
-  float: right;
-  top: -52px;
-  right: -52px;
-}
-
-::ng-deep .icon-outside .mat-mdc-dialog-container {
-  overflow: unset;
-}
 
 .divMainall {
   margin: 0 28px;

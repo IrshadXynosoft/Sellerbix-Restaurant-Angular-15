@@ -1,8 +1,10 @@
 <div class="modal-wrapper">
-  <button mat-icon-button class="close-button" (click)="close()">
-    <mat-icon class="close-icon" color="warn">close</mat-icon>
-  </button>
-  <h2 mat-dialog-title>Your Business Details</h2>
+  <h2 mat-dialog-title>
+    Your Business Details
+    <button mat-icon-button class="close-button" (click)="close()">
+      <mat-icon class="close-button" color="warn">close</mat-icon>
+    </button>
+  </h2>
   <mat-dialog-content>
     <div class="row">
       <div class="col-6">
@@ -15,8 +17,8 @@
           </thead>
           <tbody>
             <tr>
-              <td>{{staff}}</td>
-              <td>{{data.Orders.order_number}}</td>
+              <td>{{ staff }}</td>
+              <td>{{ data.Orders.order_number }}</td>
             </tr>
           </tbody>
         </table>
@@ -26,9 +28,9 @@
           <thead>
             <tr>
               <!-- <th scope="col">PaidBy</th> -->
-              <th scope="col">Amount ({{currency_symbol}})</th>
-              <th scope="col">Collected ({{currency_symbol}})</th>
-              <th scope="col">Returned ({{currency_symbol}})</th>
+              <th scope="col">Amount ({{ currency_symbol }})</th>
+              <th scope="col">Collected ({{ currency_symbol }})</th>
+              <th scope="col">Returned ({{ currency_symbol }})</th>
             </tr>
           </thead>
           <tbody>
@@ -39,9 +41,19 @@
                 <ng-template #elseblock>
                   <td>Not paid</td>
                 </ng-template> -->
-              <td>{{data.Orders.Total}}</td>
-              <td>{{data.Orders.amount_received ? data.Orders.amount_received : '--'}}</td>
-              <td>{{data.Orders.balance_amount ? data.Orders.balance_amount : '--'}}</td>
+              <td>{{ data.Orders.Total }}</td>
+              <td>
+                {{
+                  data.Orders.amount_received
+                    ? data.Orders.amount_received
+                    : "--"
+                }}
+              </td>
+              <td>
+                {{
+                  data.Orders.balance_amount ? data.Orders.balance_amount : "--"
+                }}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -49,29 +61,42 @@
     </div>
     <div class="row">
       <div class="col-12">
-        <table class="tableStyleMain table ">
+        <table class="tableStyleMain table">
           <thead>
             <tr>
               <th scope="col">Item Name</th>
               <th scope="col">Quantity</th>
-              <th scope="col">Price({{currency_symbol}})</th>
-              <th scope="col">Line Total({{currency_symbol}})</th>
+              <th scope="col">Price({{ currency_symbol }})</th>
+              <th scope="col">Line Total({{ currency_symbol }})</th>
             </tr>
           </thead>
-          <tbody *ngIf="data.Orders.entity_id!=5">
+          <tbody *ngIf="data.Orders.entity_id != 5">
             <tr *ngFor="let item of data.Orders.items">
               <td>
-                <span>{{item.name}}</span>
+                <span>{{ item.name }}</span>
                 <div *ngIf="item.modifiers" class="col-12 combo-tree">
                   <div class="tree">
-                    <ul class="tree-holder" *ngFor="let modifier of item.modifiers;let i = index;">
+                    <ul
+                      class="tree-holder"
+                      *ngFor="let modifier of item.modifiers; let i = index"
+                    >
                       <li *ngIf="modifiercheck(modifier.list)">
-                        <span><i class="fa fa-folder-open"></i> {{modifier.name}}</span>
+                        <span
+                          ><i class="fa fa-folder-open"></i>
+                          {{ modifier.name }}</span
+                        >
                         <ul *ngFor="let list of modifier.list">
                           <li *ngIf="list.status">
-                            <span><i class="fa fa-minus-square"></i>{{list.modifier_list}}- {{currency_symbol}}
-                              {{list.rate}}</span>
-                            <span style="text-transform:none" *ngIf="list.list_qty">&nbsp; x{{list.list_qty}}</span>
+                            <span
+                              ><i class="fa fa-minus-square"></i
+                              >{{ list.modifier_list }}- {{ currency_symbol }}
+                              {{ list.rate }}</span
+                            >
+                            <span
+                              style="text-transform: none"
+                              *ngIf="list.list_qty"
+                              >&nbsp; x{{ list.list_qty }}</span
+                            >
                           </li>
                         </ul>
                       </li>
@@ -79,25 +104,38 @@
                   </div>
                 </div>
               </td>
-              <td>{{item.qty}}</td>
-              <td>{{item.orginal_price}}</td>
-              <td>{{item.total}}</td>
+              <td>{{ item.qty }}</td>
+              <td>{{ item.orginal_price }}</td>
+              <td>{{ item.total }}</td>
             </tr>
           </tbody>
-          <tbody *ngIf="data.Orders.entity_id==5">
+          <tbody *ngIf="data.Orders.entity_id == 5">
             <tr *ngFor="let item of data.Orders.cart_items">
               <td>
-                <span>{{item.item.name}}</span>
+                <span>{{ item.item.name }}</span>
                 <div *ngIf="item.modifier_text" class="col-12 combo-tree">
                   <div class="tree">
-                    <ul class="tree-holder" *ngFor="let modifier of item.modifier_text;let i = index;">
+                    <ul
+                      class="tree-holder"
+                      *ngFor="let modifier of item.modifier_text; let i = index"
+                    >
                       <li *ngIf="modifiercheck(modifier.list)">
-                        <span><i class="fa fa-folder-open"></i> {{modifier.name}}</span>
+                        <span
+                          ><i class="fa fa-folder-open"></i>
+                          {{ modifier.name }}</span
+                        >
                         <ul *ngFor="let list of modifier.list">
                           <li *ngIf="list.status">
-                            <span><i class="fa fa-minus-square"></i>{{list.modifier_list}}- {{currency_symbol}}
-                              {{list.rate}}</span>
-                            <span style="text-transform:none" *ngIf="list.list_qty">&nbsp; x{{list.list_qty}}</span>
+                            <span
+                              ><i class="fa fa-minus-square"></i
+                              >{{ list.modifier_list }}- {{ currency_symbol }}
+                              {{ list.rate }}</span
+                            >
+                            <span
+                              style="text-transform: none"
+                              *ngIf="list.list_qty"
+                              >&nbsp; x{{ list.list_qty }}</span
+                            >
                           </li>
                         </ul>
                       </li>
@@ -105,47 +143,73 @@
                   </div>
                 </div>
               </td>
-              <td>{{item.qty}}</td>
-              <td>{{item.item_discounted_price>0?item.item_discounted_price:item.item_branch_price}}</td>
-              <td>{{item.item_price}}</td>
+              <td>{{ item.qty }}</td>
+              <td>
+                {{
+                  item.item_discounted_price > 0
+                    ? item.item_discounted_price
+                    : item.item_branch_price
+                }}
+              </td>
+              <td>{{ item.item_price }}</td>
             </tr>
           </tbody>
         </table>
         <div class="d-flex br-btm pb-2 px-2">
           <div class="flex-grow-1">Sub Total:</div>
-          <div>{{data.Orders.Cart?.subTotal}} {{currency_symbol}}</div>
+          <div>{{ data.Orders.Cart?.subTotal }} {{ currency_symbol }}</div>
         </div>
-        <div class="d-flex br-btm pb-2 px-2" *ngIf="data.Orders.Cart?.tax>0">
+        <div class="d-flex br-btm pb-2 px-2" *ngIf="data.Orders.Cart?.tax > 0">
           <div class="flex-grow-1">Tax Amount:</div>
-          <div>{{data.Orders.Cart?.tax}} {{currency_symbol}}</div>
+          <div>{{ data.Orders.Cart?.tax }} {{ currency_symbol }}</div>
         </div>
-        <div class="d-flex br-btm pb-2 px-2" *ngIf="data.Orders.Cart?.discount>0">
+        <div
+          class="d-flex br-btm pb-2 px-2"
+          *ngIf="data.Orders.Cart?.discount > 0"
+        >
           <div class="flex-grow-1">Discount:</div>
-          <div>{{data.Orders.Cart?.discount}} {{currency_symbol}}</div>
+          <div>{{ data.Orders.Cart?.discount }} {{ currency_symbol }}</div>
         </div>
-        <div class="d-flex br-btm pb-2 px-2" *ngIf="data.Orders.Cart?.otherCharge>0">
+        <div
+          class="d-flex br-btm pb-2 px-2"
+          *ngIf="data.Orders.Cart?.otherCharge > 0"
+        >
           <div class="flex-grow-1">Surcharges:</div>
-          <div>{{data.Orders.Cart?.otherCharge}} {{currency_symbol}}</div>
+          <div>{{ data.Orders.Cart?.otherCharge }} {{ currency_symbol }}</div>
         </div>
         <div class="d-flex br-btm pb-2 px-2" *ngIf="data.Orders.coupon_array">
           <div class="flex-grow-1">Coupon Applied:</div>
-          <div>{{data.Orders.coupon_array.applied_discount}} {{currency_symbol}}</div>
+          <div>
+            {{ data.Orders.coupon_array.applied_discount }}
+            {{ currency_symbol }}
+          </div>
         </div>
-        <div class="d-flex br-btm pb-2 px-2" *ngIf="data.Orders.Cart?.loyalty_coupon">
+        <div
+          class="d-flex br-btm pb-2 px-2"
+          *ngIf="data.Orders.Cart?.loyalty_coupon"
+        >
           <div class="flex-grow-1">Loyalty Coupon:</div>
-          <div>{{data.Orders.Cart?.loyalty_coupon?.applied_discount?.toFixed(2)}} {{currency_symbol}}</div>
+          <div>
+            {{
+              data.Orders.Cart?.loyalty_coupon?.applied_discount?.toFixed(2)
+            }}
+            {{ currency_symbol }}
+          </div>
         </div>
-        <div class="d-flex br-btm pb-2 px-2" *ngIf="data.Orders.delivery_charge>0">
+        <div
+          class="d-flex br-btm pb-2 px-2"
+          *ngIf="data.Orders.delivery_charge > 0"
+        >
           <div class="flex-grow-1">Delivery Charge</div>
-          <div>{{data.Orders.delivery_charge}} {{currency_symbol}}</div>
+          <div>{{ data.Orders.delivery_charge }} {{ currency_symbol }}</div>
         </div>
         <div class="d-flex br-btm pt-2 pb-2 px-2">
           <div class="flex-grow-1">Total:</div>
-          <div><strong>{{data.Orders.Total}} {{currency_symbol}}</strong></div>
+          <div>
+            <strong>{{ data.Orders.Total }} {{ currency_symbol }}</strong>
+          </div>
         </div>
       </div>
     </div>
-
   </mat-dialog-content>
-
 </div>

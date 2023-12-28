@@ -1,35 +1,74 @@
 <div class="commonModalMakinDiv">
   <div class="modal-wrapper">
-    <button mat-icon-button class="close-button" (click)="close()">
-      <mat-icon class="close-icon" color="warn">close</mat-icon>
-    </button>
-    <h2 mat-dialog-title>{{data.item.name}} </h2>
+    <h2 mat-dialog-title>
+      {{ data.item.name }}
+      <button mat-icon-button class="close-button" (click)="close()">
+        <mat-icon class="close-button" color="warn">close</mat-icon>
+      </button>
+    </h2>
     <mat-dialog-content>
       <div class="text-right button-sec">
-        <button mat-button color="yellow" class="mr-2" *ngIf="data.item.item_discount_id ==null;else removeDiscount"
-          [disabled]="this.data.itemdiscountflag" (click)="adddiscount()">Discount</button>
+        <button
+          mat-button
+          color="yellow"
+          class="mr-2"
+          *ngIf="data.item.item_discount_id == null; else removeDiscount"
+          [disabled]="this.data.itemdiscountflag"
+          (click)="adddiscount()"
+        >
+          Discount
+        </button>
         <ng-template #removeDiscount>
-          <button mat-button color="yellow" class="mr-2" (click)="removeItemDiscount()">Remove Discount</button>
+          <button
+            mat-button
+            color="yellow"
+            class="mr-2"
+            (click)="removeItemDiscount()"
+          >
+            Remove Discount
+          </button>
         </ng-template>
-        <button mat-button class=" mat-green mr-2" [disabled]="!data.item.modifiers"
-          (click)="editModifiers()">Modifiers</button>
-        <button class="mat-blue" mat-flat-button color="primary" (click)="itemInfo()">Item Info</button>
+        <button
+          mat-button
+          class="mat-green mr-2"
+          [disabled]="!data.item.modifiers"
+          (click)="editModifiers()"
+        >
+          Modifiers
+        </button>
+        <button
+          class="mat-blue"
+          mat-flat-button
+          color="primary"
+          (click)="itemInfo()"
+        >
+          Item Info
+        </button>
       </div>
 
       <div class="row container-note">
-        <div class="col-3" style="padding-right:5px" *ngFor="let note of options">
+        <div
+          class="col-3"
+          style="padding-right: 5px"
+          *ngFor="let note of options"
+        >
           <ul class="note-suggestions">
-            <li (click)="selectedOptions(note.name)">{{note.name}}</li>
+            <li (click)="selectedOptions(note.name)">{{ note.name }}</li>
           </ul>
         </div>
       </div>
-      <textarea class="form-control" placeholder="Notes" (input)="backspaceEvent($event)"
-        [formControl]="notesData"></textarea>
-
+      <textarea
+        class="form-control"
+        placeholder="Notes"
+        (input)="backspaceEvent($event)"
+        [formControl]="notesData"
+      ></textarea>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
       <div class="text-right button-sec divMainall">
-        <button mat-button class=" mat-green mr-2" (click)="addNote()">Add Note</button>
+        <button mat-button class="mat-green mr-2" (click)="addNote()">
+          Add Note
+        </button>
       </div>
     </mat-dialog-actions>
   </div>

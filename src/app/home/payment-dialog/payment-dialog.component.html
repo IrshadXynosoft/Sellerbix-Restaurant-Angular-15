@@ -58,10 +58,10 @@
       </div>
     </ng-template>
   </mat-dialog-content>
-  <mat-dialog-actions>
+  <mat-dialog-actions align="end">
     <div *ngIf="!balanceFlag;else okbutton">
-      <button class="btn-setup-sucess commonBtnStyle"
-        style="position:absolute;left:1.5rem;background: var(--primary) !important; border-color: var(--primary);"
+      <button class="btn-setup-sucess commonBtnStyle primary mr-6"
+        
         (click)="confirmWithPrint()">Confirm & Print
       </button>
       <button class="btn-setup-sucess  commonBtnStyle" (click)="confirmOrder()">Confirm</button> </div>

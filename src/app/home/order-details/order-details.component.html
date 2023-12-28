@@ -1,8 +1,10 @@
 <div class="modal-wrapper">
-  <button mat-icon-button class="close-button" (click)="close()">
-    <mat-icon class="close-icon" color="warn">close</mat-icon>
-  </button>
-  <h2 mat-dialog-title>Order Details</h2>
+  <h2 mat-dialog-title>
+    Order Details
+    <button mat-icon-button class="close-button" (click)="close()">
+      <mat-icon class="close-button" color="warn">close</mat-icon>
+    </button>
+  </h2>
   <mat-dialog-content>
     <div class="row">
       <div class="col-12">
@@ -49,7 +51,12 @@
           <table class="table tableStyleMain">
             <thead>
               <tr>
-                <th scope="col"><mat-checkbox (change)="selectAll($event)" [ngModel]="isAllSelected()"></mat-checkbox></th>
+                <th scope="col">
+                  <mat-checkbox
+                    (change)="selectAll($event)"
+                    [ngModel]="isAllSelected()"
+                  ></mat-checkbox>
+                </th>
                 <th scope="col">Item Name</th>
                 <th scope="col">Item Note</th>
                 <th scope="col">Quantity</th>
@@ -59,7 +66,13 @@
             </thead>
             <tbody>
               <tr *ngFor="let item of data.Orders.order.items">
-                <td><mat-checkbox class="mt-1" (change)="selectionChange($event,item.id)" [ngModel]="isSelected(item.id)"></mat-checkbox></td>
+                <td>
+                  <mat-checkbox
+                    class="mt-1"
+                    (change)="selectionChange($event, item.id)"
+                    [ngModel]="isSelected(item.id)"
+                  ></mat-checkbox>
+                </td>
                 <td style="text-transform: capitalize">
                   <span>{{ item.name }}</span>
                   <div *ngIf="item.modifiers" class="col-12 combo-tree">

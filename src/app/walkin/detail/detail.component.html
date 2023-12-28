@@ -1,8 +1,10 @@
 <div class="modal-wrapper">
-  <button mat-icon-button class="close-button" (click)="close()">
-    <mat-icon class="close-icon" color="warn">close</mat-icon>
-  </button>
-  <h2 mat-dialog-title>Order Details</h2>
+  <h2 mat-dialog-title>
+    Order Details
+    <button mat-icon-button class="close-button" (click)="close()">
+      <mat-icon class="close-button" color="warn">close</mat-icon>
+    </button>
+  </h2>
   <mat-dialog-content>
     <div class="inline-loader" *ngIf="customPreLoader">
       <img src="assets/loader.gif" />
@@ -24,12 +26,12 @@
             </thead>
             <tbody>
               <tr>
-                <td> {{ orderRecords?.order?.order_number }}</td>
+                <td>{{ orderRecords?.order?.order_number }}</td>
                 <td>
                   {{
-                  orderRecords?.order?.assign_to?.name
-                  ? orderRecords?.order?.assign_to?.name
-                  : data.Orders.staff_name
+                    orderRecords?.order?.assign_to?.name
+                      ? orderRecords?.order?.assign_to?.name
+                      : data.Orders.staff_name
                   }}
                 </td>
                 <td *ngIf="orderRecords.payment_status; else elseblock">
@@ -41,26 +43,32 @@
                 <td>{{ data.Orders.amount }}</td>
                 <td>
                   {{
-                  orderRecords.payment_status == 1
-                  ? orderRecords.invoice.amount_received
-                  : '--'
+                    orderRecords.payment_status == 1
+                      ? orderRecords.invoice.amount_received
+                      : "--"
                   }}
                 </td>
                 <td>
                   {{
-                  data.Orders.invoice.balance_amount
-                  ? data.Orders.invoice.balance_amount
-                  : "--"
+                    data.Orders.invoice.balance_amount
+                      ? data.Orders.invoice.balance_amount
+                      : "--"
                   }}
                 </td>
                 <td>
                   <div>
-                    {{data.Orders.invoice.tip_amount
-                    ? data.Orders.invoice.tip_amount
-                    : "--"}}
+                    {{
+                      data.Orders.invoice.tip_amount
+                        ? data.Orders.invoice.tip_amount
+                        : "--"
+                    }}
                   </div>
                   <div *ngIf="data.Orders.invoice.tip_payment_type">
-                    {{data.Orders.invoice.tip_payment_type == 1 ? '(Cash)' : '(Card)'}}
+                    {{
+                      data.Orders.invoice.tip_payment_type == 1
+                        ? "(Cash)"
+                        : "(Card)"
+                    }}
                   </div>
                 </td>
               </tr>
@@ -68,7 +76,6 @@
           </table>
         </div>
       </div>
-
     </div>
     <div class="row">
       <div class="col-12" *ngIf="showReceipt">
@@ -77,7 +84,10 @@
             <thead>
               <tr>
                 <th scope="col">
-                  <mat-checkbox (change)="selectAll($event)" [ngModel]="isAllSelected()"></mat-checkbox>
+                  <mat-checkbox
+                    (change)="selectAll($event)"
+                    [ngModel]="isAllSelected()"
+                  ></mat-checkbox>
                 </th>
                 <th scope="col">Item Name</th>
                 <th scope="col">Item note</th>
@@ -89,21 +99,38 @@
             </thead>
             <tbody>
               <tr *ngFor="let item of orderRecords?.order?.items">
-                <td><mat-checkbox class="mt-1" (change)="selectionChange($event,item.id)" [ngModel]="isSelected(item.id)"></mat-checkbox></td>
+                <td>
+                  <mat-checkbox
+                    class="mt-1"
+                    (change)="selectionChange($event, item.id)"
+                    [ngModel]="isSelected(item.id)"
+                  ></mat-checkbox>
+                </td>
                 <td style="text-transform: capitalize">
                   <span>{{ item.name }}</span>
                   <div *ngIf="item.modifiers" class="col-12 combo-tree">
                     <div class="tree">
-                      <ul class="tree-holder" *ngFor="let modifier of item.modifiers; let i = index">
+                      <ul
+                        class="tree-holder"
+                        *ngFor="let modifier of item.modifiers; let i = index"
+                      >
                         <li *ngIf="modifiercheck(modifier.list)">
-                          <span><i class="fa fa-folder-open"></i>
-                            {{ modifier.name }}</span>
+                          <span
+                            ><i class="fa fa-folder-open"></i>
+                            {{ modifier.name }}</span
+                          >
                           <ul *ngFor="let list of modifier.list">
                             <li *ngIf="list.status">
-                              <span><i class="fa fa-minus-square"></i>{{ list.modifier_list }}&nbsp;
-                                {{ currency_symbol }}{{ list.rate }}</span>
-                              <span style="text-transform: none" *ngIf="list.list_qty">&nbsp; x{{ list.list_qty
-                                }}</span>
+                              <span
+                                ><i class="fa fa-minus-square"></i
+                                >{{ list.modifier_list }}&nbsp;
+                                {{ currency_symbol }}{{ list.rate }}</span
+                              >
+                              <span
+                                style="text-transform: none"
+                                *ngIf="list.list_qty"
+                                >&nbsp; x{{ list.list_qty }}</span
+                              >
                             </li>
                           </ul>
                         </li>
@@ -112,15 +139,19 @@
                   </div>
                 </td>
                 <td>{{ item.note ? item.note : "--" }}</td>
-                <td>{{timeCheck(item.time)}}</td>
+                <td>{{ timeCheck(item.time) }}</td>
                 <td>{{ item.qty }}</td>
                 <td>{{ item.price }} {{ currency_symbol }}</td>
                 <td>
                   {{ item.total }} {{ currency_symbol }}
-                  <span *ngIf="item.is_utensil && item.is_return == false"><button class="btn-setup-sucess float-right"
-                      (click)="returnUtensil(item)">
+                  <span *ngIf="item.is_utensil && item.is_return == false"
+                    ><button
+                      class="btn-setup-sucess float-right"
+                      (click)="returnUtensil(item)"
+                    >
                       Return
-                    </button></span>
+                    </button></span
+                  >
                 </td>
               </tr>
             </tbody>
@@ -135,42 +166,59 @@
             class="d-flex br-btm pb-2 px-2"
             *ngIf="orderRecords?.order?.Cart?.tax > 0"
           >
-            <div class="flex-grow-1">{{orderRecords?.order.applied_tax[0]?.name}} :</div>
+            <div class="flex-grow-1">
+              {{ orderRecords?.order.applied_tax[0]?.name }} :
+            </div>
             <div>
               {{ orderRecords?.order?.Cart?.tax }} {{ currency_symbol }}
             </div>
           </div>
-          <div class="d-flex br-btm pb-2 px-2" *ngIf="orderRecords?.order?.Cart?.discount > 0">
+          <div
+            class="d-flex br-btm pb-2 px-2"
+            *ngIf="orderRecords?.order?.Cart?.discount > 0"
+          >
             <div class="flex-grow-1">Discount:</div>
             <div>
               {{ orderRecords?.order?.Cart?.discount }} {{ currency_symbol }}
             </div>
           </div>
-          <div class="d-flex br-btm pb-2 px-2" *ngIf="orderRecords?.order?.Cart?.otherCharge > 0">
+          <div
+            class="d-flex br-btm pb-2 px-2"
+            *ngIf="orderRecords?.order?.Cart?.otherCharge > 0"
+          >
             <div class="flex-grow-1">Surcharges:</div>
             <div>
               {{ orderRecords?.order?.Cart?.otherCharge }} {{ currency_symbol }}
             </div>
           </div>
-          <div class="d-flex br-btm pb-2 px-2" *ngIf="orderRecords?.order?.coupon_array">
+          <div
+            class="d-flex br-btm pb-2 px-2"
+            *ngIf="orderRecords?.order?.coupon_array"
+          >
             <div class="flex-grow-1">Coupon Applied:</div>
             <div>
               {{ orderRecords?.order?.coupon_array.applied_discount }}
               {{ currency_symbol }}
             </div>
           </div>
-          <div class="d-flex br-btm pb-2 px-2" *ngIf="orderRecords?.order?.Cart?.loyalty_coupon">
+          <div
+            class="d-flex br-btm pb-2 px-2"
+            *ngIf="orderRecords?.order?.Cart?.loyalty_coupon"
+          >
             <div class="flex-grow-1">Loyalty Coupon:</div>
             <div>
               {{
-              orderRecords?.order?.Cart?.loyalty_coupon?.applied_discount.toFixed(
-              2
-              )
+                orderRecords?.order?.Cart?.loyalty_coupon?.applied_discount.toFixed(
+                  2
+                )
               }}
               {{ currency_symbol }}
             </div>
           </div>
-          <div class="d-flex br-btm pb-2 px-2" *ngIf="orderRecords?.order?.delivery_charge > 0">
+          <div
+            class="d-flex br-btm pb-2 px-2"
+            *ngIf="orderRecords?.order?.delivery_charge > 0"
+          >
             <div class="flex-grow-1">Delivery Charge</div>
             <div>
               {{ orderRecords?.order?.delivery_charge }} {{ currency_symbol }}
@@ -179,12 +227,14 @@
           <div class="d-flex pt-2 pb-2 px-2">
             <div class="flex-grow-1">Total:</div>
             <div>
-              <strong>{{ orderRecords?.order?.Cart.amount }}
+              <strong
+                >{{ orderRecords?.order?.Cart.amount }}
                 {{
-                orderRecords?.order?.amount != "Not Paid"
-                ? currency_symbol
-                : ""
-                }}</strong>
+                  orderRecords?.order?.amount != "Not Paid"
+                    ? currency_symbol
+                    : ""
+                }}</strong
+              >
             </div>
           </div>
         </div>
@@ -200,7 +250,11 @@
     </div>
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button *ngIf="selectedIds.length > 0" class="btn-setup-sucess commonBtnStyle print" (click)="kotReprintSelected()">
+    <button
+      *ngIf="selectedIds.length > 0"
+      class="btn-setup-sucess commonBtnStyle print"
+      (click)="kotReprintSelected()"
+    >
       Kot Reprint
     </button>
     <button
@@ -211,17 +265,27 @@
     </button>
     <mat-menu #actions="matMenu">
       <button mat-menu-item (click)="orderHistory()">History</button>
-      <button *ngIf="order_cancel_permission == 'true'" mat-menu-item style="color: red"
-        (click)="rejectOrder(data.Orders)">
+      <button
+        *ngIf="order_cancel_permission == 'true'"
+        mat-menu-item
+        style="color: red"
+        (click)="rejectOrder(data.Orders)"
+      >
         {{ data.Orders.payment_status == 0 ? "Void" : "Refund" }}
       </button>
     </mat-menu>
-    <button *ngIf="data.Orders.status == 1 && data.Orders.entity_id != 5" class="btn-setup-sucess commonBtnStyle modify"
-      (click)="editOrder()">
+    <button
+      *ngIf="data.Orders.status == 1 && data.Orders.entity_id != 5"
+      class="btn-setup-sucess commonBtnStyle modify"
+      (click)="editOrder()"
+    >
       <i class="icon-edit mr-1 w-px-100"></i>Modify
     </button>
     <div class="text-right">
-      <button class="btn-setup-sucess commonBtnStyle mr-1" [matMenuTriggerFor]="menu">
+      <button
+        class="btn-setup-sucess commonBtnStyle mr-1"
+        [matMenuTriggerFor]="menu"
+      >
         <i class="icon-print"></i>Print
       </button>
       <mat-menu #menu="matMenu">
@@ -229,7 +293,11 @@
           Invoice {{ data.Orders.inv_print_count == 0 ? "Print" : "Reprint" }}
         </button>
         <!-- <button mat-menu-item (click)="KOTreprint()">Kot RePrint</button> -->
-        <button *ngIf="branch_settings?.label_print == 1" mat-menu-item (click)="labelPrint()">
+        <button
+          *ngIf="branch_settings?.label_print == 1"
+          mat-menu-item
+          (click)="labelPrint()"
+        >
           Label RePrint
         </button>
       </mat-menu>

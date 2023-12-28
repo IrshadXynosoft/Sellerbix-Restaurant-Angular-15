@@ -5,13 +5,13 @@
     <div class="modal-wrapper">
         <h1 mat-dialog-title>{{ data.title }}</h1>
     </div>
-    <div mat-dialog-content>
+    <mat-dialog-content>
         <p>{{ data.message }}</p>
-    </div>
-    <div class="d-flex modal-btn-footer b-right divMainall" mat-dialog-action>
+    </mat-dialog-content>
+    <mat-dialog-actions class="d-flex modal-btn-footer b-right divMainall" align="end">
         <button *ngIf="data.cancelText" class="btn-setup-danger commonBtnStyle  mr-2"  (click)="cancel()">{{ data.cancelText }}</button>
         <button class="btn-setup-sucess commonBtnStyle" (click)="confirm()">{{ data.confirmText }}</button>
-    </div>
+    </mat-dialog-actions>
 </div>
 
 

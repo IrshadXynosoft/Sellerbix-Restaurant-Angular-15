@@ -1,16 +1,17 @@
 <div class="modal-wrapper">
-    <button mat-icon-button class="close-button" (click)="close()">
-        <mat-icon class="close-icon" color="warn">close</mat-icon>
-      </button>
-    <h2 mat-dialog-title>Add notes</h2>
+    <h2 mat-dialog-title>Add notes
+        <button mat-icon-button class="close-button" (click)="close()">
+            <mat-icon class="close-button" color="warn">close</mat-icon>
+        </button>
+    </h2>
 
     <mat-dialog-content>
         <form [formGroup]="notesForm">
             <div class="col-md-12">
-                <textarea class="form-control"  placeholder="Notes" formControlName="note" ></textarea>
+                <textarea class="form-control" placeholder="Notes" formControlName="note"></textarea>
             </div>
         </form>
-       
+
     </mat-dialog-content>
     <mat-dialog-actions>
         <div class="text-right button-sec">
