@@ -17,19 +17,11 @@
   // }
   
 
-.close-button {
-	float: right;
-	top: -20px;
-	right: -20px;
+  .close-button {
+    float: right;
+    top: 7px;
   }
   
-  .close-icon {
-	transition: 1s ease-in-out;
-  }
-  
-  .close-icon:hover {
-	transform: rotate(180deg);
-  }
   .commonBtnStyle {
 	height: 40px;
 	width: 120px;
