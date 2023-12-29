@@ -189,6 +189,7 @@
                         ? orders.amount.toFixed(2)
                         : orders.order.Total
                     }}
+                    <div *ngIf="orders?.order?.Cart?.discount>0">Discount - <strong>{{orders?.order?.Cart?.discount}}</strong></div>
                     <div *ngIf="orders.order.advance_paid">
                       Advance Paid - {{ orders.order.advance_paid }}
                     </div>
