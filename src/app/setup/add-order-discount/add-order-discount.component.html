@@ -1,7 +1,7 @@
 <div class="modal-wrapper modal-ht-custom">
   <form [formGroup]="orderdiscountForm">
     <h2 mat-dialog-title>Add Sales Discount</h2>
-    <div mat-dialog-content>
+    <mat-dialog-content>
       <label>Name</label>
       <span class="error-message">*</span>
       <span class="error-message float-right"
@@ -115,11 +115,11 @@
         </div>
     </div>
     <span class="error-message" *ngIf="orderdiscountForm.errors ">{{ orderdiscountForm.errors?.time | json }}</span> -->
-    </div>
-    <div mat-dialog-actions>
-      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button class="btn-setup-danger mr-2" (click)="close()">Close</button>
       <button class="btn-setup-sucess" [disabled]="!orderdiscountForm.valid || orderdiscountForm.pristine"
         (click)="addOrderDiscount()">Submit</button>
-    </div>
+    </mat-dialog-actions>
   </form>
 </div>

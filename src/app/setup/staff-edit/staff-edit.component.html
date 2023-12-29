@@ -78,7 +78,7 @@
           <label>Upload User Image:</label>
           <input type="file" class="form-control" placeholder="Upload" formControlName="image" accept="image/*" />
         </div>
-        <div class="col-6" style="margin-top: 2rem;">
+        <div class="col-6" style="margin-top: 1.5rem;">
           <button class="btn-setup-danger commonBtnStyle mr-2"
             (click)="staffActivateStatus()">{{this.staffArray?.status == 1 ? 'Deactivate' : 'Activate'}}</button>
           <button class="btn-setup-danger commonBtnStyle" (click)="resetPassword()">Reset Password</button>

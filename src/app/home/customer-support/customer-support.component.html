@@ -1,9 +1,9 @@
 <div class="modal-wrapper">
-  <button mat-icon-button class="close-button" (click)="close()">
-    <mat-icon class="close-icon" color="warn">close</mat-icon>
-  </button>
-  <h2 mat-dialog-title style="color: var(--primary);">Customer Support &nbsp;
-    <i class="zmdi zmdi-headset-mic"></i>
+  <h2 mat-dialog-title style="color: var(--primary)">
+    Customer Support &nbsp; <i class="zmdi zmdi-headset-mic"></i>
+    <button mat-icon-button class="close-button" (click)="close()">
+      <mat-icon class="close-button" color="warn">close</mat-icon>
+    </button>
   </h2>
   <mat-dialog-content>
     <div class="row">
@@ -11,13 +11,26 @@
     </div>
     <div class="details">
       <!-- <h3>{{customer_support.name}}</h3> -->
-      <h3><i class="Zmdi-hc-lg zmdi zmdi-phone" style="color: #0bab0b;font-size: 22px;margin-right:12px;"></i>
-        {{customer_support.contact_no}}</h3>
-      <h3><i class="Zmdi-hc-lg zmdi zmdi-whatsapp" style="color: #0bab0b;font-size: 22px;margin-right:12px;"></i>
-        {{customer_support.whatsapp_no}}</h3>
       <h3>
-        <i class="zmdi Zmdi-hc-lg zmdi-email"
-          style="color: var(--primary);font-size: 22px;margin-right:12px;"></i>{{customer_support.email}}
+        <i
+          class="Zmdi-hc-lg zmdi zmdi-phone"
+          style="color: #0bab0b; font-size: 22px; margin-right: 12px"
+        ></i>
+        {{ customer_support.contact_no }}
+      </h3>
+      <h3>
+        <i
+          class="Zmdi-hc-lg zmdi zmdi-whatsapp"
+          style="color: #0bab0b; font-size: 22px; margin-right: 12px"
+        ></i>
+        {{ customer_support.whatsapp_no }}
+      </h3>
+      <h3>
+        <i
+          class="zmdi Zmdi-hc-lg zmdi-email"
+          style="color: var(--primary); font-size: 22px; margin-right: 12px"
+        ></i
+        >{{ customer_support.email }}
       </h3>
     </div>
   </mat-dialog-content>

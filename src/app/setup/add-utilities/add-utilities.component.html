@@ -1,27 +1,33 @@
 <div class="modal-wrapper">
-    <form [formGroup]="unitsForm">
-      <h2 mat-dialog-title >{{isEdit?'Edit Utility':'Add Utility'}}</h2>
+  <form [formGroup]="unitsForm">
+    <h2 mat-dialog-title>{{ isEdit ? "Edit Utility" : "Add Utility" }}</h2>
+    <mat-dialog-content>
       <label>Utility Name <span class="error-message">*</span></label>
-      <div mat-dialog-content>
-        
-        <input type="text" class="form-control"
-          [ngClass]="unitsForm.controls.name.hasError('required') && unitsForm.controls.name.touched || unitsForm.controls.name.hasError('maxlength') || unitsForm.controls.name.hasError('pattern') ? 'is-invalid' : ''"
-          placeholder="Name" formControlName="name" />
-          <span class="error-message"
-          *ngIf="unitsForm.controls.name.hasError('required') && unitsForm.controls.name.touched">
-          Required</span>
-        <span class="error-message" *ngIf="unitsForm.controls.name.hasError('maxlength')">
-          You have reached your maximum limit of characters allowed</span>
-        <span class="error-message" *ngIf="unitsForm.controls.name.hasError('pattern')">
-          Invalid input</span>
-        <span class="error-message " *ngIf="unitsErrorArray.name">
-          {{unitsErrorArray.name}}</span>
-      </div>
-      <div mat-dialog-actions>
-        <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
-        <button class="btn-setup-sucess" [disabled]="!unitsForm.valid || unitsForm.pristine"
-          (click)="addUnits()">Submit</button>
-      </div>
-    </form>
-  </div>
-  
+      <input type="text" class="form-control" [ngClass]="
+          (unitsForm.controls.name.hasError('required') &&
+            unitsForm.controls.name.touched) ||
+          unitsForm.controls.name.hasError('maxlength') ||
+          unitsForm.controls.name.hasError('pattern')
+            ? 'is-invalid'
+            : ''
+        " placeholder="Name" formControlName="name" />
+      <span class="error-message" *ngIf="
+          unitsForm.controls.name.hasError('required') &&
+          unitsForm.controls.name.touched
+        ">
+        Required</span>
+      <span class="error-message" *ngIf="unitsForm.controls.name.hasError('maxlength')">
+        You have reached your maximum limit of characters allowed</span>
+      <span class="error-message" *ngIf="unitsForm.controls.name.hasError('pattern')">
+        Invalid input</span>
+      <span class="error-message" *ngIf="unitsErrorArray.name">
+        {{ unitsErrorArray.name }}</span>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" [disabled]="!unitsForm.valid || unitsForm.pristine" (click)="addUnits()">
+        Submit
+      </button>
+    </mat-dialog-actions>
+  </form>
+</div>

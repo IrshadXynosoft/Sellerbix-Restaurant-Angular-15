@@ -46,9 +46,9 @@
         </div>
       </ng-template>
     </mat-dialog-content>
-    <mat-dialog-actions>
+    <mat-dialog-actions align="end">
       <div *ngIf="!balanceFlag;else okbutton">
-        <button class="btn-setup-danger commonBtnStyle" style="position:absolute;left:2rem;" (click)="payLater()">Pay Later
+        <button class="btn-setup-danger commonBtnStyle mr-2"  (click)="payLater()">Pay Later
           </button>
         <button class="btn-setup-sucess  commonBtnStyle" (click)="confirmOrder()">Confirm</button>
       </div>

@@ -14,16 +14,16 @@ export class Constants {
   constructor() {
 
     // Test Link
-    // this.APIBasePath = "https://test-restaurant.xynosoft.com/api/";
-    // this.imageBasePath = "https://test-restaurant.xynosoft.com/storage";
+    this.APIBasePath = "https://test-restaurant.xynosoft.com/api/";
+    this.imageBasePath = "https://test-restaurant.xynosoft.com/storage";
 
     // Live Unidiner Link
     // this.APIBasePath = "https://api.unidiner.com/api/";
     // this.imageBasePath = "https://api.unidiner.com/storage";
 
     // Live sllerbix Link
-    this.APIBasePath = "https://apir.sellerbix.com/api/";
-    this.imageBasePath = "https://apir.sellerbix.com/storage";
+    // this.APIBasePath = "https://apir.sellerbix.com/api/";
+    // this.imageBasePath = "https://apir.sellerbix.com/storage";
 
     this.driverPoolBasePath = "https://driverpool.unidiner.com/api/"
     this.is_main = true;

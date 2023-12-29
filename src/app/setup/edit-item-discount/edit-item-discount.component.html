@@ -2,7 +2,7 @@
 <div class="modal-wrapper modal-ht-custom">
     <form [formGroup]="itemdiscountForm" >
      <h2 mat-dialog-title>Edit Sales Discount</h2>
-     <div mat-dialog-content>
+     <mat-dialog-content>
         <label>Name</label>
        <span class="error-message">*</span>
         <span class="error-message float-right" *ngIf="itemdiscountForm.controls.name.hasError('required' ) && itemdiscountForm.controls.name.touched">Required</span>
@@ -70,10 +70,10 @@
    
    
      
-    </div>
-     <div mat-dialog-actions>
+    </mat-dialog-content>
+     <mat-dialog-actions align="end">
          <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
          <button class="btn-setup-sucess" [disabled]="!itemdiscountForm.valid || itemdiscountForm.pristine" (click)="edititemDiscount()">Update</button>
-     </div>
+     </mat-dialog-actions>
     </form>
  </div>

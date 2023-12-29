@@ -50,7 +50,7 @@
           <label>Promotion Start Date</label>
           <input class="form-control" [formControl]="offer_start_date" [min]="todayDate"
             [matDatepicker]="releasedAtPicker" (click)="releasedAtPicker.open()" pattern="dd/MM/YYYY">
-          <mat-datepicker-toggle style="margin-top: -55px;float:right" matSuffix [for]="releasedAtPicker">
+          <mat-datepicker-toggle style="margin-top: -40px;float:right" matSuffix [for]="releasedAtPicker">
           </mat-datepicker-toggle>
           <mat-datepicker #releasedAtPicker [touchUi]="true">
           </mat-datepicker>
@@ -59,7 +59,7 @@
           <label>Promotion End Date</label>
           <input class="form-control" [formControl]="offer_end_date" [min]="todayDate"
             [matDatepicker]="releasedAtendPicker" (click)="releasedAtendPicker.open()" pattern="dd/MM/YYYY">
-          <mat-datepicker-toggle style="margin-top: -55px;float:right" matSuffix [for]="releasedAtendPicker">
+          <mat-datepicker-toggle style="margin-top: -40px;float:right" matSuffix [for]="releasedAtendPicker">
           </mat-datepicker-toggle>
           <mat-datepicker #releasedAtendPicker [touchUi]="true">
           </mat-datepicker>

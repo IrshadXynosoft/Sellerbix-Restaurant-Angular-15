@@ -93,7 +93,7 @@
             <div class="mt-2 row m-0" [ngClass]="tabname.branch_dining_table.length > 0 ? 'bordered' : ''">
               <div class="col-12 col-sm-3 mt-2" *ngIf="tabname.branch_dining_table.length>0">
                 <div
-                  class="d-flex align-items-center"
+                  class="d-flex align-items-center mb-2"
                   *ngFor="
                     let field of tabname.branch_dining_table;
                     let i = index
@@ -108,7 +108,7 @@
                     name="{{ field.table_name }}"
                   />
                   <button
-                    class="btn-setup-danger cust-pos-btn"
+                    class="ml-2 btn-setup-danger cust-pos-btn"
                     (click)="deleteFieldValue(t, i)"
                   >
                     <i class="icon-remove"></i>

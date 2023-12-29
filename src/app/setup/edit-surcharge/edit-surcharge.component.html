@@ -1,7 +1,7 @@
 <div class="modal-wrapper">
   <form [formGroup]="surchargeForm">
     <h2 mat-dialog-title>Edit Surcharge</h2>
-    <div mat-dialog-content>
+    <mat-dialog-content>
       <Label>Name</Label>
       <span class="error-message">*</span>
       <span class="error-message float-right"
@@ -85,11 +85,11 @@
           Is Taxable
         </label>
       </div>
-    </div>
-    <div mat-dialog-actions>
-      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button class="btn-setup-danger mr-2" (click)="close()">Close</button>
       <button class="btn-setup-sucess" (click)="editSurcharge()"
         [disabled]="!surchargeForm.valid || surchargeForm.pristine">Update</button>
-    </div>
+    </mat-dialog-actions>
   </form>
 </div>
