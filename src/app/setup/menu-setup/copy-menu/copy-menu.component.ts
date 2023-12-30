@@ -114,17 +114,22 @@ export class CopyMenuComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    // Initialize form controls for different types of menu items
     this.onBuildForm();
     this.onBuildComboForm();
     this.onBuildGroupedMenuForm();
     this.onBuildModifierListForm();
-    this.getMenuCtegory();
-    this.getModifiersGroup();
-    this.getEntities();
-    this.getProducts();
-    this.getMenuEditSingle();
-    this.getModifierList();
-    this.getSchedules();
+
+    // Fetch data needed for the forms
+    this.getMenuCtegory(); // Fetch menu categories
+    this.getModifiersGroup(); // Fetch modifier groups
+    this.getEntities(); // Fetch entities
+    this.getProducts(); // Fetch products
+    this.getMenuEditSingle(); // Fetch data for editing a menu item
+    this.getModifierList(); // Fetch modifier list
+    this.getSchedules(); // Fetch schedules
+
+    // Set up auto-complete for combo items and modifier lists
     this.filteredOptions = this.combo_items.valueChanges.pipe(
       startWith(''),
       map((value) => this._filter(value))
@@ -135,14 +140,34 @@ export class CopyMenuComponent implements OnInit {
         map((value) => this._filterlist(value))
       );
   }
+
+  /**
+   * Filters an array of options based on a provided string value.
+   *
+   * @param value - The string used for filtering.
+   * @returns An array containing the filtered options.
+   */
   private _filter(value: string): string[] {
+    // Convert the input string to lowercase for a case-insensitive search
     const filterValue = value.toLowerCase();
+
+    // Use Array.filter to filter the options array based on name inclusion
     return this.options.filter((option: any) =>
       option.name.toLowerCase().includes(filterValue)
     );
   }
+
+  /**
+   * Filters a list of options based on a provided string value.
+   *
+   * @param value - The string used for filtering.
+   * @returns An array containing the filtered options.
+   */
   private _filterlist(value: string): string[] {
+    // Convert the input string to lowercase for a case-insensitive search
     const filterValue = value.toLowerCase();
+
+    // Use Array.filter to filter the list_options array based on name inclusion
     return this.list_options.filter((option: any) =>
       option.name.toLowerCase().includes(filterValue)
     );
@@ -400,6 +425,9 @@ export class CopyMenuComponent implements OnInit {
     });
   }
 
+  /**
+   * Retrieves details of a menu item for editing and populates corresponding forms and properties.
+   */
   getMenuEditSingle() {
     this.httpService
       .get('item/' + this.route.snapshot.params.id)
@@ -954,6 +982,12 @@ export class CopyMenuComponent implements OnInit {
     }
   }
 
+  /**
+   * Updates an existing regular menu item.
+   * - Validates form fields.
+   * - Checks modifier list, food symbols, branch prices, entities, and other criteria.
+   * - Sends an HTTP PUT request to update the menu item.
+   */
   UpdateMenuItem() {
     // this.RegularEntityValidationCheck();
     if (!this.addmenuForm.value['allow_all_location']) {
@@ -1085,6 +1119,12 @@ export class CopyMenuComponent implements OnInit {
     );
   }
 
+  /**
+   * Updates an existing combo menu item.
+   * - Validates form fields.
+   * - Checks affected prices, branch prices, entities, and other criteria.
+   * - Sends an HTTP PUT request to update the menu item.
+   */
   updateComboMenuItem() {
     // this.ComboEntityValidationCheck();
     this.ComboItemValidityCheck();
@@ -1151,6 +1191,12 @@ export class CopyMenuComponent implements OnInit {
     }
   }
 
+  /**
+   * Updates an existing grouped menu item.
+   * - Validates form fields.
+   * - Checks affected prices, branch prices, entities, and other criteria.
+   * - Sends an HTTP PUT request to update the menu item.
+   */
   UpdateGroupMenuItem() {
     // this.GroupedEntityValidationCheck();
     if (
