@@ -1,39 +1,18 @@
 <div class="modal-wrapper">
- <h2 mat-dialog-title>New Online Order Received </h2>
-    <mat-dialog-content>
-      <div class="row">
-        <div class="col-6">
-          <table class="table">
+  <h2 mat-dialog-title>New Online Order Received</h2>
+  <mat-dialog-content>
+    <div class="row">
+      <div class="col-12">
+        <div class="bordered">
+          <table class="table tableStyleMain">
             <thead>
               <tr>
                 <th scope="col">Staff:</th>
                 <th scope="col">Order No:</th>
-                <th scope="col" *ngIf="data.Orders.order.customer_details">Customer:</th>
+                <th scope="col" *ngIf="data.Orders.order.customer_details">
+                  Customer:
+                </th>
                 <th scope="col" *ngIf="customerAddress">Address:</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{{staff}}</td>
-                <td>{{data.Orders.order.order_number}}</td>
-                <td *ngIf="data.Orders.order.customer_details">
-                  <div >{{data.Orders.order.customer_details.name}}</div>
-                  <div >{{data.Orders.order.customer_details.phone_number}}</div>
-                </td>
-                <td *ngIf="customerAddress">
-                  <div *ngIf="customerAddress.building_or_villa">Building/VIlla: {{customerAddress.building_or_villa}}</div>
-                  <div *ngIf="customerAddress.flat_number">Flat Number: {{customerAddress.flat_number}}</div>
-                  <div *ngIf="customerAddress.street">Street: {{customerAddress.street}}</div>
-                  <div *ngIf="customerAddress.nearest_landmark">Nearest Landmark: {{customerAddress.nearest_landmark}}</div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="col-6">
-          <table class="table">
-            <thead>
-              <tr>
                 <th scope="col">PaidBy</th>
                 <th scope="col">Amount</th>
                 <th scope="col">Collected</th>
@@ -42,23 +21,51 @@
             </thead>
             <tbody>
               <tr>
-                <td *ngIf="data.Orders.invoice.payment_types;else elseblock">
-                  <div *ngFor="let payment of data.Orders.invoice.payment_types">{{payment.payment_name}}<br></div>
+                <td>{{ staff }}</td>
+                <td>{{ data.Orders.order.order_number }}</td>
+                <td *ngIf="data.Orders.order.customer_details">
+                  <div>{{ data.Orders.order.customer_details.name }}</div>
+                  <div>
+                    {{ data.Orders.order.customer_details.phone_number }}
+                  </div>
+                </td>
+                <td *ngIf="customerAddress">
+                  <div *ngIf="customerAddress.building_or_villa">
+                    Building/VIlla: {{ customerAddress.building_or_villa }}
+                  </div>
+                  <div *ngIf="customerAddress.flat_number">
+                    Flat Number: {{ customerAddress.flat_number }}
+                  </div>
+                  <div *ngIf="customerAddress.street">
+                    Street: {{ customerAddress.street }}
+                  </div>
+                  <div *ngIf="customerAddress.nearest_landmark">
+                    Nearest Landmark: {{ customerAddress.nearest_landmark }}
+                  </div>
+                </td>
+                <td *ngIf="data.Orders.invoice.payment_types; else elseblock">
+                  <div
+                    *ngFor="let payment of data.Orders.invoice.payment_types"
+                  >
+                    {{ payment.payment_name }}<br />
+                  </div>
                 </td>
                 <ng-template #elseblock>
                   <td>Not paid</td>
                 </ng-template>
-                <td>{{data.Orders.amount}}</td>
-                <td>{{data.Orders.invoice.amount_received}}</td>
-                <td>{{data.Orders.invoice.balance_amount}}</td>
+                <td>{{ data.Orders.amount }}</td>
+                <td>{{ data.Orders.invoice.amount_received }}</td>
+                <td>{{ data.Orders.invoice.balance_amount }}</td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-      <div class="row">
-        <div class="col-12" *ngIf="showReceipt">
-          <table class="table">
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="bordered">
+          <table class="table tableStyleMain">
             <thead>
               <tr>
                 <th scope="col">Item Name</th>
@@ -70,15 +77,24 @@
             <tbody>
               <tr *ngFor="let item of data.Orders.order.items">
                 <td>
-                  <span>{{item.name}}</span>
+                  <span>{{ item.name }}</span>
                   <div *ngIf="item.modifiers" class="col-12 combo-tree">
                     <div class="tree">
-                      <ul class="tree-holder" *ngFor="let modifier of item.modifiers;let i = index;">
+                      <ul
+                        class="tree-holder"
+                        *ngFor="let modifier of item.modifiers; let i = index"
+                      >
                         <li *ngIf="modifiercheck(modifier.list)">
-                          <span><i class="fa fa-folder-open"></i> {{modifier.name}}</span>
+                          <span
+                            ><i class="fa fa-folder-open"></i>
+                            {{ modifier.name }}</span
+                          >
                           <ul *ngFor="let list of modifier.list">
                             <li *ngIf="list.status">
-                              <span><i class="fa fa-minus-square"></i>{{list.modifier_list}}</span>
+                              <span
+                                ><i class="fa fa-minus-square"></i
+                                >{{ list.modifier_list }}</span
+                              >
                             </li>
                           </ul>
                         </li>
@@ -86,65 +102,105 @@
                     </div>
                   </div>
                 </td>
-                <td>{{item.qty}}</td>
-                <td>{{item.orginal_price}} {{currency_symbol}}</td>
-                <td>{{item.total}} {{currency_symbol}}</td>
+                <td>{{ item.qty }}</td>
+                <td>{{ item.orginal_price }} {{ currency_symbol }}</td>
+                <td>{{ item.total }} {{ currency_symbol }}</td>
               </tr>
             </tbody>
           </table>
-          <div class="d-flex br-btm pb-2">
+          <div class="d-flex br-btm pb-2 px-2">
             <div class="flex-grow-1">Sub Total:</div>
-            <div>{{data.Orders.order.Cart?.subTotal}} {{currency_symbol}}</div>
+            <div>
+              {{ data.Orders.order.Cart?.subTotal }} {{ currency_symbol }}
+            </div>
           </div>
-          <div class="d-flex br-btm pb-2" *ngIf="data.Orders.order.Cart?.tax>0">
+          <div
+            class="d-flex br-btm pb-2 px-2"
+            *ngIf="data.Orders.order.Cart?.tax > 0"
+          >
             <div class="flex-grow-1">Tax Amount:</div>
-            <div>{{data.Orders.order.Cart?.tax}} {{data.Orders.amount !="Not Paid" ? currency_symbol : ''}}</div>
+            <div>
+              {{ data.Orders.order.Cart?.tax }}
+              {{ data.Orders.amount != "Not Paid" ? currency_symbol : "" }}
+            </div>
           </div>
-          <div class="d-flex br-btm pb-2" *ngIf="data.Orders.order.Cart?.discount>0">
+          <div
+            class="d-flex br-btm pb-2 px-2"
+            *ngIf="data.Orders.order.Cart?.discount > 0"
+          >
             <div class="flex-grow-1">Discount:</div>
-            <div>{{data.Orders.order.Cart?.discount}} {{currency_symbol}}</div>
+            <div>
+              {{ data.Orders.order.Cart?.discount }} {{ currency_symbol }}
+            </div>
           </div>
-          <div class="d-flex br-btm pb-2" *ngIf="data.Orders.order.Cart?.otherCharge>0">
+          <div
+            class="d-flex br-btm pb-2 px-2"
+            *ngIf="data.Orders.order.Cart?.otherCharge > 0"
+          >
             <div class="flex-grow-1">Surcharges:</div>
-            <div>{{data.Orders.order.Cart?.otherCharge}} {{currency_symbol}}</div>
+            <div>
+              {{ data.Orders.order.Cart?.otherCharge }} {{ currency_symbol }}
+            </div>
           </div>
-          <div class="d-flex br-btm pb-2" *ngIf="data.Orders.order.coupon_array">
+          <div
+            class="d-flex br-btm pb-2 px-2"
+            *ngIf="data.Orders.order.coupon_array"
+          >
             <div class="flex-grow-1">Coupon Applied:</div>
-            <div>{{data.Orders.order.coupon_array.applied_discount}} {{data.Orders.amount !="Not Paid" ? currency_symbol : ''}}</div>
+            <div>
+              {{ data.Orders.order.coupon_array.applied_discount }}
+              {{ data.Orders.amount != "Not Paid" ? currency_symbol : "" }}
+            </div>
           </div>
-          <div class="d-flex br-btm pb-2" *ngIf="data.Orders.order.delivery_charge>0">
+          <div
+            class="d-flex br-btm pb-2 px-2"
+            *ngIf="data.Orders.order.delivery_charge > 0"
+          >
             <div class="flex-grow-1">Delivery Charge</div>
-            <div>{{data.Orders.order.delivery_charge}} {{data.Orders.amount !="Not Paid" ? currency_symbol : ''}}</div>
+            <div>
+              {{ data.Orders.order.delivery_charge }}
+              {{ data.Orders.amount != "Not Paid" ? currency_symbol : "" }}
+            </div>
           </div>
-          <div class="d-flex br-btm pt-2 pb-2">
+          <div class="d-flex  pt-2 pb-2 px-2">
             <div class="flex-grow-1">Total:</div>
-            <div><strong>{{data.Orders.order.Cart.amount}} {{data.Orders.order.amount !="Not Paid" ? currency_symbol : ''}}</strong></div>
+            <div>
+              <strong
+                >{{ data.Orders.order.Cart.amount }}
+                {{
+                  data.Orders.order.amount != "Not Paid" ? currency_symbol : ""
+                }}</strong
+              >
+            </div>
           </div>
         </div>
       </div>
-      <div class="col-6" *ngIf="showHistory">
-        <div class="text-right">
-          <button class="btn-setup-sucess bg-grey" (click)="showReceiptTag()">
-            <i class="icon-time mr-1"></i>Show Receipt
-          </button>
-        </div>
-      </div>
-    </mat-dialog-content>
-    <mat-dialog-actions>
-     
-      <div class="text-right">
-        <button class="btn-setup-danger commonBtnStyle mr-2 w-px-100" (click)="rejectOreder()" >
-            Reject
-          </button>
-        <button class="btn-setup-sucess commonBtnStyle mr-2"
-          [matMenuTriggerFor]="menu"> <i class="icon-print mr-1"></i>Print</button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="reprint()">Invoice Print</button>
-          <!-- <button mat-menu-item (click)="KOTreprint()">Kot Print</button> -->
-        </mat-menu>
-        <button class="btn-setup-sucess commonBtnStyle mr-2 w-px-100" (click)="acceptOrder()">
-          Accept
-        </button>
-      </div>
-    </mat-dialog-actions>
-  </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <div class="text-right">
+      <button
+        class="btn-setup-danger commonBtnStyle mr-2 w-px-100"
+        (click)="rejectOreder()"
+      >
+        Reject
+      </button>
+      <button
+        class="btn-setup-sucess commonBtnStyle mr-2"
+        [matMenuTriggerFor]="menu"
+      >
+        <i class="icon-print mr-1"></i>Print
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="reprint()">Invoice Print</button>
+        <!-- <button mat-menu-item (click)="KOTreprint()">Kot Print</button> -->
+      </mat-menu>
+      <button
+        class="btn-setup-sucess commonBtnStyle mr-2 w-px-100"
+        (click)="acceptOrder()"
+      >
+        Accept
+      </button>
+    </div>
+  </mat-dialog-actions>
+</div>

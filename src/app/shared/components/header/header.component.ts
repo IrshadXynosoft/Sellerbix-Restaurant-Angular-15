@@ -56,6 +56,8 @@ export class HeaderComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
+    console.log(this.isStatus);
+    
     if (this.isStatus == null || undefined) {
       setTimeout(() => {
         this.subscribeToTopic();
@@ -71,6 +73,8 @@ export class HeaderComponent implements OnInit {
         let item = data.payload.toString();
         let result = JSON.parse(item);
         let message: any;
+        console.log(result);
+        
         if (result.status == 0) {
           this.getOrderDetails(result.order_id);
         }

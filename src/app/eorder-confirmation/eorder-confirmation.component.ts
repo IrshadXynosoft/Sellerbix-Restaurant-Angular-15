@@ -15,8 +15,6 @@ import { SnackBarService } from '../_services/snack-bar.service';
   styleUrls: ['./eorder-confirmation.component.scss']
 })
 export class EorderConfirmationComponent implements OnInit {
-  showReceipt:boolean = true;
-  showHistory:boolean = false;
   staff=this.localservice.get('user1');
   currency_symbol = localStorage.getItem('currency_symbol');
   branch_id = this.localservice.get('branch_id');
@@ -41,14 +39,6 @@ export class EorderConfirmationComponent implements OnInit {
  close() {
   this.dialogRef.close();
  }
- showReceiptTag() {
-  this.showReceipt = true;
-  this.showHistory = false;
- }
- showHistoryTag() {
-   this.showReceipt = false;
-   this.showHistory = true;
- }
  acceptOrder(){
   let postParams:any={
    customer_id:this.data.Orders.order.customer_id,
@@ -58,6 +48,7 @@ export class EorderConfirmationComponent implements OnInit {
   this.httpService.post('online/accept-eorder',postParams)
   .subscribe(result => {
     if (result.status == 200) {
+      this.printKOTorInvoice(result.data);
       this.snackBService.openSnackBar(result.message, "Close");
       this.close();
      } else {
@@ -66,7 +57,18 @@ export class EorderConfirmationComponent implements OnInit {
   });
 
  }
-
+ printKOTorInvoice(data: any) {
+  data.forEach((obj: any) => {
+    let print = this.printMqtt.checkPrinterAvailablity(obj);
+    if (print.status) {
+      this.printMqtt
+        .publish('print', print.printObj)
+        .subscribe((data: any) => {});
+    } else {
+      this.snackBService.openSnackBar(print.message, 'Close');
+    }
+  });
+}
  rejectOreder(){
   const dialogRef = this.dialog.open(OnlineOrderCancellationReasonComponent, {
     width: '500px',data: { 'order_id': this.data.Orders.order_id }
