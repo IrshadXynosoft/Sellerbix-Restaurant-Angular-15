@@ -576,3 +576,13 @@ h4 {
   font-weight: 500 !important;
   font-size: 13px !important;
 }
+.input-container {
+  position: relative;
+}
+
+.mat-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 8px; /* Adjust the right spacing as needed */
+}

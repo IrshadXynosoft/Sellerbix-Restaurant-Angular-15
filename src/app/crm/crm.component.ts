@@ -220,6 +220,13 @@ export class CrmComponent implements OnInit {
       }
     });
   }
+
+  backspaceEvent() {
+    this.customerData.setValue('');
+    this.isCustomerSelected = false;
+    this.isShowCustomerData = false;
+  }
+
   showDetails(orderData: any): void {
     if (orderData.entity_id == 1) {
       const dialogRef = this.dialog.open(DetailComponent, {

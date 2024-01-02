@@ -20,16 +20,29 @@
               </ng-template>
             </div> -->
               <!-- <span class="error-message float-right">{{contactNumberErrorMessage}}</span> -->
-              <input
-                type="text"
-                placeholder="Search Here For Customer Mobile Number"
-                class="form-control mb-0 mr-2"
-                #contactNumber
-                (keyup)="searchContactNumber(contactNumber.value)"
-                matInput
-                [formControl]="customerData"
-                [matAutocomplete]="auto"
-              />
+              <div class="input-container">
+                <input
+                  type="text"
+                  placeholder="Search Here For Customer Mobile Number"
+                  class="form-control mb-0 mr-2"
+                  #contactNumber
+                  (keyup)="searchContactNumber(contactNumber.value)"
+                  matInput
+                  [formControl]="customerData"
+                  [matAutocomplete]="auto"
+                />
+                <mat-icon
+                  *ngIf="customerData.value"
+                  (click)="backspaceEvent()"
+                  class="pointer"
+                  matSuffix
+                  >backspace</mat-icon
+                >
+                <mat-icon *ngIf="!customerData.value" matSuffix
+                  >arrow_drop_down</mat-icon
+                >
+              </div>
+
               <mat-autocomplete
                 autoActiveFirstOption
                 #auto="matAutocomplete"
@@ -51,10 +64,11 @@
               </div>
               <div class="pt-2 mt-50">
                 <ul class="quick-btn">
-                  <li 
-                  routerLink="/setup/delivery_settings"
-                  class="cursor-pointer"
-                  matTooltip="View Delivery Manager">
+                  <li
+                    routerLink="/setup/delivery_settings"
+                    class="cursor-pointer"
+                    matTooltip="View Delivery Manager"
+                  >
                     <p class="cnt">{{ deliveryCount }}</p>
                     <img
                       *ngIf="deliveryCount == null"
@@ -161,7 +175,7 @@
 
     <div
       style="width: 50%; margin: 0 auto"
-      class="row"
+      class="row input-container"
       *ngIf="isCustomerSelected"
     >
       <!-- <span class="error-message float-right">{{contactNumberErrorMessage}}</span> -->
@@ -175,7 +189,13 @@
         [formControl]="customerData"
         [matAutocomplete]="auto"
       />
-
+      <mat-icon
+        *ngIf="customerData.value"
+        (click)="backspaceEvent()"
+        class="pointer"
+        matSuffix
+        >backspace</mat-icon
+      >
       <mat-autocomplete
         autoActiveFirstOption
         #auto="matAutocomplete"
@@ -319,12 +339,12 @@
                 Party Orders
               </button>
               <button
-              *ngIf="customerDetails[0].price_plan_id"
-              class="medium-btn btn-clr-1"
-              (click)="b2bCustomer()"
-            >
-              B2B
-            </button>
+                *ngIf="customerDetails[0].price_plan_id"
+                class="medium-btn btn-clr-1"
+                (click)="b2bCustomer()"
+              >
+                B2B
+              </button>
             </div>
             <div class="btn-grp">
               <button
@@ -346,7 +366,11 @@
               <h4 class="mt-2">CUSTOMER INSIGHTS</h4>
               <div class="row">
                 <div class="col-lg-6">
-                  <mat-card appearance="outlined" class="discount-card" style="height: 80px">
+                  <mat-card
+                    appearance="outlined"
+                    class="discount-card"
+                    style="height: 80px"
+                  >
                     <h5>LOYALTY</h5>
                     <h6>
                       {{
@@ -358,7 +382,11 @@
                   </mat-card>
                 </div>
                 <div class="col-lg-6">
-                  <mat-card appearance="outlined" class="discount-card" style="height: 80px">
+                  <mat-card
+                    appearance="outlined"
+                    class="discount-card"
+                    style="height: 80px"
+                  >
                     <h5>TOTAL BUSINESS</h5>
                     <h6>
                       {{
@@ -371,7 +399,11 @@
                 </div>
 
                 <div class="col-lg-6">
-                  <mat-card appearance="outlined" class="discount-card" style="height: 80px">
+                  <mat-card
+                    appearance="outlined"
+                    class="discount-card"
+                    style="height: 80px"
+                  >
                     <h5>TOTAL AMOUNT</h5>
                     <h6>
                       {{ currency_symbol }}
@@ -384,13 +416,21 @@
                   </mat-card>
                 </div>
                 <div class="col-lg-6">
-                  <mat-card appearance="outlined" class="discount-card" style="height: 80px">
+                  <mat-card
+                    appearance="outlined"
+                    class="discount-card"
+                    style="height: 80px"
+                  >
                     <h5>RUNNING</h5>
                     <h6>{{ runningOrders.length }}</h6>
                   </mat-card>
                 </div>
                 <div class="col-lg-6">
-                  <mat-card appearance="outlined" class="discount-card" style="height: 80px">
+                  <mat-card
+                    appearance="outlined"
+                    class="discount-card"
+                    style="height: 80px"
+                  >
                     <h5>UNPAID ORDERS / Sum</h5>
                     <h6>
                       {{ customerInsights.unpaid_orders }}/{{ currency_symbol }}
@@ -399,7 +439,11 @@
                   </mat-card>
                 </div>
                 <div class="col-lg-6">
-                  <mat-card appearance="outlined" class="discount-card" style="height: 80px">
+                  <mat-card
+                    appearance="outlined"
+                    class="discount-card"
+                    style="height: 80px"
+                  >
                     <h5>Utensil used</h5>
                     <h6>{{ customerInsights.utensil_used }}</h6>
                   </mat-card>
