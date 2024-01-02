@@ -14,6 +14,7 @@ import { IMqttMessage } from 'ngx-mqtt';
 import { EorderConfirmationComponent } from 'src/app/eorder-confirmation/eorder-confirmation.component';
 import { PrintMqttService } from 'src/app/_services/mqtt/print-mqtt.service';
 import { CustomerSupportComponent } from 'src/app/home/customer-support/customer-support.component';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -110,24 +111,32 @@ export class HeaderComponent implements OnInit {
 
   getOrderDetails(item: any) {
     if (this.notification_status == 'true') {
+    if(parseFloat(item) != 0){
       this.httpService.get('order-detail/' + item, false)
-        .subscribe(result => {
-          if (result.status == 200) {
-            const dialogRef = this.dialog.open(EorderConfirmationComponent, {
-              disableClose: true,
-              width: '70%',
-              maxHeight: '100%',
-              data: {
-                Orders: result.data[0]
-              }
-            });
-            dialogRef.afterClosed().subscribe(result => {
+      .subscribe(result => {
+        if (result.status == 200) {
+          const dialogRef = this.dialog.open(EorderConfirmationComponent, {
+            disableClose: true,
+            width: '70%',
+            maxHeight: '100%',
+            data: {
+              Orders: result.data[0]
+            }
+          });
+          dialogRef.afterClosed().subscribe(result => {
 
-            });
-          } else {
-            console.log(result.message);
-          }
-        });
+          });
+        } else {
+          console.log(result.message);
+        }
+      });
+    }
+    else {
+      Swal.fire({
+        title: "You received a new Order!",
+        icon: "success"
+      });
+    }
     }
   }
 

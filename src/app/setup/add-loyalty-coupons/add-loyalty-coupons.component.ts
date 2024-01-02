@@ -15,13 +15,15 @@ export class AddLoyaltyCouponsComponent implements OnInit {
   public validationFloat = "^[+]?[0-9]\\d*(\\.\\d{1,2})?$";
   couponArray: any;
   loyaltyGroups: any = []
+  entityRecords: any = []
   todayDate: any = formatDate(new Date(), 'yyyy-MM-dd', 'en');
   constructor(public dialog: MatDialog, public dialogRef: MatDialogRef<AddLoyaltyCouponsComponent>, private formBuilder: UntypedFormBuilder, private httpService: HttpServiceService, private snackBService: SnackBarService
     , @Inject(MAT_DIALOG_DATA) public data: { id: any, branch_id: string }) { }
 
   ngOnInit(): void {
     this.onBuildForm();
-    this.getloyalty()
+    this.getloyalty();
+    this.getEntity()
     if (this.data.id) {
       this.getCoupon();
     }
@@ -38,6 +40,16 @@ export class AddLoyaltyCouponsComponent implements OnInit {
       });
   }
 
+  getEntity() {
+    this.httpService.get('entities').subscribe((result) => {
+      if (result.status == 200) {
+        this.entityRecords = result.data;
+      } else {
+        this.snackBService.openSnackBar(result.message, 'Close');
+      }
+    });
+  }
+
   onBuildForm() {
     this.couponForm = this.formBuilder.group({
       coupon_code: ['', Validators.compose([Validators.required])],
@@ -48,10 +60,9 @@ export class AddLoyaltyCouponsComponent implements OnInit {
       discount_value: ['', Validators.compose([Validators.required, Validators.pattern(this.validationFloat)])],
       valid_from_date: [this.todayDate],
       valid_to_date: [this.todayDate],
-      start_time: [''],
-      end_time: [''],
       active: [''],
-      loyalty_groups: ['']
+      loyalty_groups: [''],
+      entity_id:['',Validators.required]
     });
   }
 
@@ -101,10 +112,9 @@ export class AddLoyaltyCouponsComponent implements OnInit {
             discount_value: this.couponArray.discount_value,
             valid_from_date: this.couponArray.valid_from_date,
             valid_to_date: this.couponArray.valid_to_date,
-            start_time: this.couponArray.start_time,
-            end_time: this.couponArray.end_time,
             active: this.couponArray.status,
-            loyalty_groups: data
+            loyalty_groups: data,
+            entity_id: this.couponArray.entity_id
           });
 
         } else {

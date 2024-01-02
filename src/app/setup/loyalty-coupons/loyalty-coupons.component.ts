@@ -95,7 +95,7 @@ export class LoyaltyCouponsComponent implements OnInit {
   }
   addCoupons(): void {
     const dialogRef = this.dialog.open(AddLoyaltyCouponsComponent, {
-      width: '700px', data: { 'branch_id': this.branch_id }
+      width: '1200px', data: { 'branch_id': this.branch_id }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -104,7 +104,7 @@ export class LoyaltyCouponsComponent implements OnInit {
   }
   editCoupons(id: any): void {
     const dialogRef = this.dialog.open(AddLoyaltyCouponsComponent, {
-      width: '700px', data: { 'id': id, 'branch_id': this.branch_id }
+      width: '1200px', data: { 'id': id, 'branch_id': this.branch_id }
     });
     dialogRef.afterClosed().subscribe(result => {
       this.getCoupons();

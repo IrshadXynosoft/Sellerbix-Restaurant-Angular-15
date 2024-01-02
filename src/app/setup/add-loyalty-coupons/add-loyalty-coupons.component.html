@@ -56,7 +56,6 @@
         <div class="col-4">
           <div class="formGroup">
             <label>Discount Type</label>
-
             <select class="form-control w-100" aria-label="Discount Type" formControlName="discount_type">
               <option [value]="1">Percentage</option>
               <option [value]="0">Value</option>
@@ -78,7 +77,18 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-6">
+        <div class="col-4">
+          <div class="formGroup">
+            <label>Entity</label>
+            <mat-select multiple class="form-control w-100"  formControlName="entity_id">
+              <mat-option [value]="1">Walkin</mat-option>
+              <mat-option [value]="2">Dinein</mat-option>
+              <mat-option [value]="3">Crm</mat-option>
+              <mat-option [value]="i.id" *ngFor="let i of entityRecords">{{i.name}}</mat-option>
+            </mat-select>
+          </div>
+        </div>
+        <div class="col-4">
           <div class="formGroup">
             <label>Coupon Valid From Date</label>
             <!-- <span class="error-message">*</span>
@@ -87,7 +97,7 @@
               formControlName="valid_from_date" />
           </div>
         </div>
-        <div class="col-6">
+        <div class="col-4">
           <div class="formGroup">
             <label>Coupon Valid Until Date</label>
             <!-- <span class="error-message">*</span>
@@ -97,37 +107,7 @@
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-6">
-          <div class="formGroup">
-            <label>Coupon Valid From Time</label>
-            <!-- <span class="error-message">*</span>
-                        <span class="error-message float-right" *ngIf="couponForm.controls.start_time.hasError('required' ) && couponForm.controls.start_time.touched">required</span> -->
-            <input type="time" class="form-control" placeholder="Coupon Valid From TIme" formControlName="start_time"
-              min='01:30:01' max='02:30:02' />
-          </div>
-        </div>
-        <div class="col-6">
-          <div class="formGroup">
-            <label>Coupon Valid Until Time</label>
-            <!-- <span class="error-message">*</span>
-                         <span class="error-message float-right" *ngIf="couponForm.controls.end_time.hasError('required' ) && couponForm.controls.end_time.touched">required</span> -->
-            <input type="time" class="form-control" placeholder="Coupon Valid To Time" formControlName="end_time"
-              min='01:30:01' max='02:30:02' />
-            <span class="error-message float-right" *ngIf="couponForm.errors">{{
-                            couponForm.errors.dates | json }}</span>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12">
-          <div class="formGroup">
-            <label>Description</label>
-            <textarea type="text" placeholder="Description" formControlName="description" class="form-control"
-              rows="4"></textarea>
-          </div>
-        </div>
-      </div>
+     
     </mat-dialog-content>
     <mat-dialog-actions align="end">
       <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
