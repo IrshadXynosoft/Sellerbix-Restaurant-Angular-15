@@ -1,7 +1,3 @@
-table {
-  width: 100%;
-}
-
 .mat-mdc-form-field {
   font-size: 14px;
   width: 100%;
@@ -34,16 +30,19 @@ table {
 
   th {
     padding: 10px;
-    border-right: 1px #e2e3e3 solid;
+    // border-right: 1px #e2e3e3 solid;
     text-align: center;
   }
 
   td {
     padding: 10px;
-    border-right: 1px #eceeee solid;
+    // border-right: 1px #eceeee solid;
     text-align: center;
   }
+}
 
+.table {
+  border-collapse: unset !important;
 }
 
 .btn-wrp-equal button {
@@ -82,6 +81,7 @@ table {
   padding: 0;
   margin-bottom: 5px;
 }
+
 .mat-column-button {
   width: 25%;
 }

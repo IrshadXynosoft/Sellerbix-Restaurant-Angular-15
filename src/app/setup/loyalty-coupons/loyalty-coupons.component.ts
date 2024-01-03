@@ -32,8 +32,10 @@ export interface Coupons {
   styleUrls: ['./loyalty-coupons.component.scss']
 })
 export class LoyaltyCouponsComponent implements OnInit {
-  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
-  @ViewChild(MatSort, { static: true }) sort!: MatSort;
+  @ViewChild(MatPaginator, {static: false})
+  set paginator(value: MatPaginator) {
+    this.dataSource.paginator = value;
+  }  @ViewChild(MatSort, { static: true }) sort!: MatSort;
   currency_symbol = localStorage.getItem('currency_symbol');
   public displayedColumns: string[] = ['index', 'coupon_code', 'minimum_order_value', 'no_of_coupons_issued', 'discount_type', 'discount_value', 'valid_from_date', 'valid_to_date', 'active', 'button'];
   public dataSource = new MatTableDataSource<Coupons>();

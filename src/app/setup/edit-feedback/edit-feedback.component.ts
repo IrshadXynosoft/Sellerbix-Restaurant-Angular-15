@@ -23,7 +23,7 @@ export class EditFeedbackComponent {
   ngOnInit() {    
     this.questionForm = this.fb.group({
       question: [this.data.editData.question,Validators.required],
-      status:[this.data.editData.status]
+      status:[this.data.editData.status == '1' ? true : false]
     });
   }
 

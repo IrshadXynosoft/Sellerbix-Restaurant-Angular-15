@@ -64,7 +64,7 @@
 
       <mat-tab-group (selectedTabChange)="roleChanged($event.tab.textLabel)">
         <mat-tab *ngFor="let tabname of innerMenuArray; let t = index" label="{{ tabname.name }}">
-          <table mat-table [dataSource]="dataSource" matSort class="mat-z8 tableStyleMain">
+          <table mat-table [dataSource]="dataSource" matSort class="table tableStyleMain bordered">
             <ng-container matColumnDef="index">
               <th mat-header-cell *matHeaderCellDef>
                 #

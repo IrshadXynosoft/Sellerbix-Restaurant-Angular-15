@@ -19,8 +19,10 @@ import { EditFeedbackComponent } from '../edit-feedback/edit-feedback.component'
   styleUrls: ['./feedback.component.scss'],
 })
 export class FeedbackComponent {
-  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
-  @ViewChild(MatSort, { static: true }) sort!: MatSort;
+  @ViewChild(MatPaginator, {static: false})
+  set paginator(value: MatPaginator) {
+    this.dataSource.paginator = value;
+  }  @ViewChild(MatSort, { static: true }) sort!: MatSort;
   currency_symbol = localStorage.getItem('currency_symbol');
   public displayedColumns: string[] = ['index', 'question', 'button'];
   public dataSource = new MatTableDataSource<Coupons>();
