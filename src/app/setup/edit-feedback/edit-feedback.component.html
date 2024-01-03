@@ -1,0 +1,18 @@
+<div class="modal-wrapper">
+  <form [formGroup]="questionForm">
+    <h2 mat-dialog-title>Update Feedback</h2>
+    <mat-dialog-content>
+      <mat-label>Question</mat-label>
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 mb-2">
+          <input class="form-control" placeholder="Add Question" formControlName="question" type="text" />
+        </div>
+      </div>
+      <mat-slide-toggle formControlName="status">Status</mat-slide-toggle>
+    </mat-dialog-content>
+    <div mat-dialog-actions>
+      <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+      <button class="btn-setup-sucess" (click)="addFeedback()">Submit</button>
+    </div>
+  </form>
+</div>

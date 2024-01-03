@@ -1,0 +1,25 @@
+<div class="modal-wrapper">
+    <form [formGroup]="questionForm">
+        <h2 mat-dialog-title>Add Feedback</h2>
+        <mat-dialog-content>
+            <mat-label>Questions</mat-label>
+            <div class="row" *ngFor="let questionControl of questions.controls; let index = index"
+                formArrayName="questions">
+                <div class="col-sm-12 col-md-10 col-lg-10 mb-2" [formGroupName]="index">
+                    <input class="form-control" placeholder="Add Questions" formControlName="questionText" type="text" />
+                </div>
+                <span *ngIf="index == 0"><i (click)="addQuestion()" class="zmdi zmdi-plus plus"
+                        aria-hidden="true"></i></span>
+                <span class="ml-2"><i (click)="removeQuestion(index)" class="zmdi zmdi-minus min"
+                        aria-hidden="true"></i></span>
+            </div>
+        </mat-dialog-content>
+        <div mat-dialog-actions>
+            <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button>
+            <button class="btn-setup-sucess" 
+                (click)="addFeedback()">
+                Submit
+            </button>
+        </div>
+    </form>
+</div>

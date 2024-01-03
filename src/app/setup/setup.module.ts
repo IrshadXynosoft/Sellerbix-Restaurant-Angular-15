@@ -246,6 +246,9 @@ import { DiscountOrderDetailsComponent } from './discount-order-details/discount
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { FeedbackComponent } from './feedback/feedback.component';
+import { AddFeedbackComponent } from './add-feedback/add-feedback.component';
+import { EditFeedbackComponent } from './edit-feedback/edit-feedback.component';
 
 @NgModule({
   declarations: [
@@ -469,7 +472,10 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     ItemAddPricePlanComponent,
     OrderDiscountReportComponent,
     ItemDiscountReportComponent,
-    DiscountOrderDetailsComponent
+    DiscountOrderDetailsComponent,
+    FeedbackComponent,
+    AddFeedbackComponent,
+    EditFeedbackComponent
   ],
   imports: [
     CommonModule,

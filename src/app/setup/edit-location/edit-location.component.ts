@@ -68,4 +68,7 @@ export class EditLocationComponent implements OnInit {
   loyaltyCoupon() {
     this.router.navigate(['setup/location/' + this.id + '/loyaltyCoupon'])
   }
+  feedback() {
+    this.router.navigate(['setup/location/' + this.id + '/feedback'])
+  }
 }

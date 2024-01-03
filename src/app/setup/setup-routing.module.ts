@@ -125,6 +125,7 @@ import { ItemPricePlanComponent } from './item-price-plan/item-price-plan.compon
 import { ItemAddPricePlanComponent } from './item-add-price-plan/item-add-price-plan.component';
 import { OrderDiscountReportComponent } from './order-discount-report/order-discount-report.component';
 import { ItemDiscountReportComponent } from './item-discount-report/item-discount-report.component';
+import { FeedbackComponent } from './feedback/feedback.component';
 
 const routes: Routes = [
   {
@@ -273,6 +274,10 @@ const routes: Routes = [
   {
     path: 'location/:id/online/coupons',
     component: CouponComponent
+  },
+  {
+    path: 'location/:id/feedback',
+    component: FeedbackComponent
   },
   {
     path: 'location/:id/online/onlineSettings',

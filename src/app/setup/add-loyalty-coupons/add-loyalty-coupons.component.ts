@@ -100,8 +100,12 @@ export class AddLoyaltyCouponsComponent implements OnInit {
         if (result.status == 200) {
           this.couponArray = result.data;
           let data: any = [];
+          let entityData:any=[]
           this.couponArray.loyalty_group_coupons?.forEach((element: any) => {
             data.push(element.loyalty_group_id)
+          });
+          this.couponArray.loyalty_coupon_entity?.forEach((element:any) => {
+            entityData.push(element.entity_id)
           });
           this.couponForm.patchValue({
             coupon_code: this.couponArray.coupon_code,
@@ -114,7 +118,7 @@ export class AddLoyaltyCouponsComponent implements OnInit {
             valid_to_date: this.couponArray.valid_to_date,
             active: this.couponArray.status,
             loyalty_groups: data,
-            entity_id: this.couponArray.entity_id
+            entity_id: entityData
           });
 
         } else {
