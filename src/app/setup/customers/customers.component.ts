@@ -44,7 +44,8 @@ export class CustomersComponent implements OnInit {
   customerListArray: any = [];
   customer_filteredOptions: Observable<any[]> | undefined;
   list_options: any = [];
-  customerInsights:any=[]
+  customerInsights:any=[];
+  currency_symbol = localStorage.getItem('currency_symbol');
   constructor(
     private router: Router,
     public dialog: MatDialog,

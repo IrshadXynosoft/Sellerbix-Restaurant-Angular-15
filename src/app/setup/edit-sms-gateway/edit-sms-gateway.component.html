@@ -4,55 +4,78 @@
     <div mat-dialog-content>
       <div class="allDivMain row col-12">
         <div class="col-6">
-          <div class="formGroup">
-            <label>
-              TriggerPoint
-            </label>
-            <span class="error-message">*</span>
-            <span class="error-message float-right"
-              *ngIf="smsGatewayForm.controls.trigger_point.hasError('required' ) && smsGatewayForm.controls.trigger_point.touched">Required</span>
-            <select class="custom-select selectBarMain"
-              [ngClass]="smsGatewayForm.controls.trigger_point.hasError('required' ) && smsGatewayForm.controls.trigger_point.touched ? 'is-invalid' : ''"
-              formControlName="trigger_point">
-              <option value="" selected>Select</option>
-              <option *ngFor="let i of triggers" [selected]="selectedTrigger == i.id ? true : false" value="{{i.id}}">
-                {{i.name}}</option>
-            </select>
+          <div class="row formGroup">
+            <div class="col-6">
+              <label> TriggerPoint </label>
+              <span class="error-message">*</span>
+              <span class="error-message float-right" *ngIf="
+                  smsGatewayForm.controls.trigger_point.hasError('required') &&
+                  smsGatewayForm.controls.trigger_point.touched
+                ">Required</span>
+              <select class="custom-select selectBarMain" [ngClass]="
+                  smsGatewayForm.controls.trigger_point.hasError('required') &&
+                  smsGatewayForm.controls.trigger_point.touched
+                    ? 'is-invalid'
+                    : ''
+                " formControlName="trigger_point">
+                <option value="" selected>Select</option>
+                <option *ngFor="let i of triggers" [selected]="selectedTrigger == i.id ? true : false"
+                  value="{{ i.id }}">
+                  {{ i.name }}
+                </option>
+              </select>
+            </div>
+            <div class="col-6">
+              <label>Entity</label>
+              <span class="error-message">*</span>
+              <span class="error-message float-right" *ngIf="
+                  smsGatewayForm.controls.entity.hasError('required') &&
+                  smsGatewayForm.controls.entity.touched
+                ">Required</span>
+              <mat-select formControlName="entity" multiple class="form-control w-100">
+                <mat-option [value]="1">Walkin</mat-option>
+                <mat-option [value]="2">Dinein</mat-option>
+                <mat-option [value]="3">Crm</mat-option>
+                <mat-option *ngFor="let entity of entityRecords" [value]="entity.id">{{ entity.name }}
+                </mat-option>
+              </mat-select>
+            </div>
           </div>
           <div class="formGroup">
-            <label>
-              Message Template
-            </label>
+            <label> Message Template </label>
             <span class="error-message">*</span>
-            <span class="error-message float-right"
-              *ngIf="smsGatewayForm.controls.message_template.hasError('required' ) && smsGatewayForm.controls.message_template.touched">Required</span>
-            <textarea class="form-control"
-              [ngClass]="smsGatewayForm.controls.message_template.hasError('required' ) && smsGatewayForm.controls.message_template.touched ? 'is-invalid' : ''"
-              style="height: 165px;overflow-y:scroll;" formControlName="message_template"
+            <span class="error-message float-right" *ngIf="
+                smsGatewayForm.controls.message_template.hasError('required') &&
+                smsGatewayForm.controls.message_template.touched
+              ">Required</span>
+            <textarea class="form-control" [ngClass]="
+                smsGatewayForm.controls.message_template.hasError('required') &&
+                smsGatewayForm.controls.message_template.touched
+                  ? 'is-invalid'
+                  : ''
+              " style="height: 165px; overflow-y: scroll" formControlName="message_template"
               (input)="backspaceEvent($event)"></textarea>
           </div>
           <div>
-            <div class="d-flex align-items-center ">
+            <div class="d-flex align-items-center">
               <mat-slide-toggle class="flex-gr-1" formControlName="status">Active</mat-slide-toggle>
-              <div class="d-flex align-items-center justify-content-end">
-              </div>
+              <div class="d-flex align-items-center justify-content-end"></div>
             </div>
           </div>
         </div>
         <div class="col-6">
           <div class="messageTags">
             <label>Message Tags</label>
-            <div clss="col-10" style="border-top:2px rgb(68, 64, 64) solid  ;">
+            <div clss="col-10" style="border-top: 2px rgb(68, 64, 64) solid">
               <mat-chip-listbox #chipList aria-label="areas" class="chipList">
                 <!-- <mat-chip *ngFor="let area of deliveryAreaSelected" (removed)="remove(area)">
                         {{ area.name }} -->
                 <mat-chip-option *ngFor="let template of templates" (click)="selectedOptions(template.name)">
-                  {{template.name}}
+                  {{ template.name }}
                 </mat-chip-option>
                 <!-- <input   placeholder="" [matChipInputFor]="chipList"  class="form-control  example-chip-list"
                       [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
                      class="w-0" /> -->
-
               </mat-chip-listbox>
             </div>
           </div>

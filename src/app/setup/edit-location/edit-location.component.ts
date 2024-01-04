@@ -60,7 +60,7 @@ export class EditLocationComponent implements OnInit {
     this.router.navigate(['setup/location/' + this.id + '/online'])
   }
   settings() {
-    this.router.navigate(['setup/location/' + this.id + '/settings'])
+    this.router.navigate(['setup/location/' + this.id + '/settings/pos'])
   }
   loyaltyGroup() {
     this.router.navigate(['setup/location/' + this.id + '/loyaltyGroup'])

@@ -6,9 +6,9 @@
 
   <!-- Body Wrapper Start -->
   <div class="body_wrapper container-fluid">
-      <!-- Header Start -->
-  <app-header></app-header>
-  <!-- Header End -->
+    <!-- Header Start -->
+    <app-header></app-header>
+    <!-- Header End -->
     <div class="px-4">
       <div class="row pt-4">
         <div class="bgSecMainAll">
@@ -23,33 +23,24 @@
               <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/location">
                 Locations
               </li>
-              <li
-              class="breadcrumb-item cursor-pointer"
-              aria-current="page"
-              routerLink="/setup/{{ id }}/editLocation"
-            >
-              Location Setup
-            </li>
-                <li
-                  class="breadcrumb-item cursor-pointer"
-                  aria-current="page"
-                  routerLink="/setup/location/{{ id }}/online"
-                >
+              <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/{{ id }}/editLocation">
+                Location Setup
+              </li>
+              <li class="breadcrumb-item cursor-pointer" aria-current="page"
+                routerLink="/setup/location/{{ id }}/online">
                 Online Portal Setup
-                </li>
+              </li>
 
-                <li
-                  class="breadcrumb-item active cursor-pointer"
-                  aria-current="page"
-                >
+              <li class="breadcrumb-item active cursor-pointer" aria-current="page">
                 Item Wise Discount
-                </li>
-              </ol>
-            </nav>
+              </li>
+            </ol>
+          </nav>
         </div>
         <div class="col-12">
           <div class="d-flex align-items-center head-tag ">
-            <h4 class="flex-gr-1"><i class="icon-arrow-left cursor-pointer" (click)="back()"></i> Item Wise Discount </h4>
+            <h4 class="flex-gr-1"><i class="icon-arrow-left cursor-pointer" (click)="back()"></i> Item Wise Discount
+            </h4>
             <div class="d-flex">
               <input type="text" class="form-control" placeholder="Search Dish" #menu (keyup)="doFilter(menu.value)" />
             </div>
@@ -57,12 +48,12 @@
 
         </div>
       </div>
-      <div class="col-12">
+      <!-- <div class="col-12">
         <div class="d-flex align-items-center head-tag head-tag-light mt-2">
           <h2 class="fl-basis-100">Menu for {{ branchName }}</h2>
         </div>
-      </div>
-      <div *ngIf="innerMenuArray.length < 1">
+      </div> -->
+      <!-- <div *ngIf="innerMenuArray.length < 1">
         <div class="row px-4">
           <div class="col-12">
             <div class="not-found">
@@ -71,8 +62,27 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
+      <!-- <div class="col-6">
+        <input type="text" placeholder="Search Here For Category" class="form-control mb-0 mr-2" matInput
+          [formControl]="categoryData" [matAutocomplete]="auto" />
+        <mat-icon *ngIf="categoryData.value" (click)="backspaceEvent()" class="pointer" matSuffix>backspace</mat-icon>
+        <mat-icon *ngIf="!categoryData.value" matSuffix>arrow_drop_down</mat-icon>
+        <mat-autocomplete
+        autoActiveFirstOption
+        #auto="matAutocomplete"
+        (optionSelected)="categorySelected($event.option.id)"
+      >
+        <mat-option
+          *ngFor="let list_options of categoryOptions"
+          [value]="list_options.contact_no"
+          [id]="list_options.id"
+        >
+          {{ list_options.contact_no + " - " + list_options.name }}
+        </mat-option>
+      </mat-autocomplete>
 
+      </div> -->
       <mat-tab-group (selectedTabChange)="roleChanged($event.tab.textLabel)">
         <mat-tab *ngFor="let tabname of innerMenuArray; let t = index" label="{{ tabname.name }}">
           <table mat-table [dataSource]="dataSource" matSort class="table tableStyleMain bordered">
@@ -124,8 +134,9 @@
               </th>
               <td mat-cell *matCellDef="let element">
                 <div>
-                  <input type="text" class="inputClass" placeholder="price" value="{{element.discount_value}}" [disabled]="element.selected_discount_type=='none'" #price
-                  (input)="priceChanged(price.value, element)"/>
+                  <input type="text" class="inputClass" placeholder="price" value="{{element.discount_value}}"
+                    [disabled]="element.selected_discount_type=='none'" #price
+                    (input)="priceChanged(price.value, element)" />
                 </div>
               </td>
             </ng-container>
@@ -135,7 +146,8 @@
               </th>
               <td mat-cell *matCellDef="let element">
                 <div class="form-check m-n2">
-                    <input type="text" class="inputClass" placeholder="price" value="{{element.amount_after_discount}}" disabled />
+                  <input type="text" class="inputClass" placeholder="price" value="{{element.amount_after_discount}}"
+                    disabled />
                 </div>
               </td>
             </ng-container>

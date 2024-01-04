@@ -1,8 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { UntypedFormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 import { HttpServiceService } from 'src/app/_services/http-service.service';
 import { LocalStorage } from 'src/app/_services/localstore.service';
 import { SnackBarService } from 'src/app/_services/snack-bar.service';
@@ -33,6 +36,9 @@ export class ItemWiseDiscountComponent implements OnInit {
   public dataSource = new MatTableDataSource<DiscountItems>();
   id: any;
   tabIndex:any;
+  customerData = new UntypedFormControl();
+  customer_filteredOptions: Observable<any[]> | undefined;
+  list_options: any = [];
   constructor(private router: Router, private httpService: HttpServiceService, private snackBService: SnackBarService, private localService: LocalStorage, private route: ActivatedRoute) {
     this.branchName = localService.get('branchname')
     this.isMenuSave = false
@@ -42,6 +48,10 @@ export class ItemWiseDiscountComponent implements OnInit {
   ngOnInit(): void {
     this.getBranchName();
    this.getInnerMenu();
+  //  this.customer_filteredOptions = this.customerData.valueChanges.pipe(
+  //   startWith(''),
+  //   map((value) => this._filtercustomerlist(value))
+  // );
   }
   getBranchName() {
     this.httpService.get('branch', false)
@@ -57,6 +67,10 @@ export class ItemWiseDiscountComponent implements OnInit {
           console.log("Error in Get Branch");
         }
       });
+  }
+
+  backspaceEvent() {
+    this.customerData.setValue('');
   }
 
   getInnerMenu() {

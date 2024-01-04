@@ -28,12 +28,13 @@ export class SmsGatewayComponent implements OnInit {
   @ViewChild(MatSort, { static: false })
   set sort(value: MatSort) {
     this.dataSource.sort = value;
-  } public displayedColumns: string[] = ['index', 'active_trigger_point', 'template', 'status', 'actions'];
+  } public displayedColumns: string[] = ['index', 'active_trigger_point', 'entity','template', 'status', 'actions'];
   public dataSource = new MatTableDataSource<TriggerPoints>();
   public smsGatewayForm!: UntypedFormGroup;
   tagsChoosen: any = [];
   templateRecords: any = [];
   triggers: any = [];
+  entityRecords:any=[]
   templates: any = [
     { name: '#order_number#' }, { name: '#amount#' }, { name: '#organization_name#' }, { name: '#balance_amount#' }, { name: '#due_amount#' }, { name: '#order_status#' }, { name: '#branch_name#' }
   ]
@@ -43,11 +44,13 @@ export class SmsGatewayComponent implements OnInit {
     this.onBuildForm();
     this.getTemplates();
     this.getTriggers();
+    this.getEntity()
   }
   onBuildForm() {
     this.smsGatewayForm = this.formBuilder.group({
       trigger_point: ['', Validators.compose([Validators.required])],
       message_template: ['', Validators.compose([Validators.required])],
+      entity:[''],
       status: false
     });
   }
@@ -59,6 +62,16 @@ export class SmsGatewayComponent implements OnInit {
       width: '900px',
     });
     dialogRef.afterClosed().subscribe(result => {
+    });
+  }
+
+  getEntity() {
+    this.httpService.get('entities').subscribe((result) => {
+      if (result.status == 200) {
+        this.entityRecords = result.data;
+      } else {
+        this.snackBService.openSnackBar(result.message, 'Close');
+      }
     });
   }
 
@@ -99,7 +112,8 @@ export class SmsGatewayComponent implements OnInit {
     let body = {
       template: this.smsGatewayForm.value['message_template'],
       trigger_id: this.smsGatewayForm.value['trigger_point'],
-      status: this.smsGatewayForm.value['status']
+      status: this.smsGatewayForm.value['status'],
+      entity_id: this.smsGatewayForm.value['entity']
     }
     if (this.smsGatewayForm.valid) {
       this.httpService.post('message-template', body)

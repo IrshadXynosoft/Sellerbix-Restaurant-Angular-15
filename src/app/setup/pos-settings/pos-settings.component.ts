@@ -81,7 +81,7 @@ export class PosSettingsComponent implements OnInit {
     });
   }
   back() {
-    this.router.navigate(['setup/location/' + this.id + '/settings'])
+    this.router.navigate(['setup/' + this.id + '/editLocation'])
   }
 
   changeStatus() {

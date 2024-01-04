@@ -1,92 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<body id="page_setup">
-
-
-  <!-- Body Wrapper Start -->
-  <form>
-    <div class="body_wrapper container-fluid">
-      <!-- Header Start -->
-      <app-header></app-header>
-      <!-- Header End -->
-      <div class="px-4">
-        <div class="row pt-4">
-          <div class="bgSecMainAll">
-            <nav aria-label="breadcrumb">
-              <ol class="breadcrumb">
-                <li class="breadcrumb-item cursor-pointer" routerLink="/home/walkin">
-                  Home
-                </li>
-                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup">
-                  Setup
-                </li>
-                <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/location">
-                  Locations
-                </li>
-                <li class="breadcrumb-item cursor-pointer" aria-current="page"
-                  routerLink="/setup/{{ id }}/editLocation">
-                  Location Setup
-                </li>
-                <li class="breadcrumb-item cursor-pointer" aria-current="page"
-                  routerLink="/setup/location/{{ id }}/online">
-                  Online Portal Setup
-                </li>
-                <li class="breadcrumb-item active cursor-pointer" aria-current="page">
-                  Settings
-                </li>
-              </ol>
-            </nav>
-          </div>
-          <div class="col-12">
-            <div class="d-flex align-items-center head-tag ">
-              <h4>
-                <i class="icon-arrow-left mr-1 cursor-pointer" (click)="back()"> </i> Online Settings
-              </h4>
+  <body id="page_setup">
+    <!-- Body Wrapper Start -->
+    <form>
+      <div class="body_wrapper container-fluid">
+        <!-- Header Start -->
+        <app-header></app-header>
+        <!-- Header End -->
+        <div class="px-4">
+          <div class="row pt-4">
+            <div class="bgSecMainAll">
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li
+                    class="breadcrumb-item cursor-pointer"
+                    routerLink="/home/walkin"
+                  >
+                    Home
+                  </li>
+                  <li
+                    class="breadcrumb-item cursor-pointer"
+                    aria-current="page"
+                    routerLink="/setup"
+                  >
+                    Setup
+                  </li>
+                  <li
+                    class="breadcrumb-item cursor-pointer"
+                    aria-current="page"
+                    routerLink="/setup/location"
+                  >
+                    Locations
+                  </li>
+                  <li
+                    class="breadcrumb-item cursor-pointer"
+                    aria-current="page"
+                    routerLink="/setup/{{ id }}/editLocation"
+                  >
+                    Location Setup
+                  </li>
+                  <li
+                    class="breadcrumb-item cursor-pointer"
+                    aria-current="page"
+                    routerLink="/setup/location/{{ id }}/online"
+                  >
+                    Online Portal Setup
+                  </li>
+                  <li
+                    class="breadcrumb-item active cursor-pointer"
+                    aria-current="page"
+                  >
+                    Settings
+                  </li>
+                </ol>
+              </nav>
+            </div>
+            <div class="col-12">
+              <div class="d-flex align-items-center head-tag">
+                <h4>
+                  <i
+                    class="icon-arrow-left mr-1 cursor-pointer"
+                    (click)="back()"
+                  >
+                  </i>
+                  Online Settings
+                </h4>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="row mt-4">
-          <div class="col-12 col-sm-4">
-            <form [formGroup]="posForm">
+          <div class="row mt-4">
+            <div class="col-12">
+              <form [formGroup]="posForm">
+                <div class="custom-crd">
+                  <div class="text-center tg-card">
+                    <span><i class="icon-globe"></i>Order Options</span>
+                  </div>
+                  <div class="mt-2">
+                    <mat-checkbox
+                      class="ml-2"
+                      formControlName="store_pickup"
+                      (change)="saveSettings()"
+                    >
+                      Store Pickup
+                    </mat-checkbox>
+                    <mat-checkbox
+                      class="ml-2"
+                      formControlName="dine_in"
+                      (change)="saveSettings()"
+                    >
+                      Dine In
+                    </mat-checkbox>
+                    <mat-checkbox
+                      class="ml-2"
+                      formControlName="delivery"
+                      (change)="saveSettings()"
+                    >
+                      Delivery
+                    </mat-checkbox>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-12">
               <div class="custom-crd">
                 <div class="text-center tg-card">
-                  <span><i class="icon-globe"></i>Order Options</span>
+                  <span><i class="icon-globe"></i>Payment Options</span>
                 </div>
                 <div class="mt-2">
-                  <mat-checkbox class="ml-2" formControlName="store_pickup" (change)="saveSettings()">
-                    Store Pickup
-                  </mat-checkbox>
-                  <mat-checkbox class="ml-2" formControlName="dine_in" (change)="saveSettings()">
-                    Dine In
-                  </mat-checkbox>
-                  <mat-checkbox class="ml-2" formControlName="delivery" (change)="saveSettings()">
-                    Delivery
-                  </mat-checkbox>
+                  <ng-container *ngFor="let payment of paymentMethods">
+                    <mat-checkbox
+                      class="ml-2"
+                      *ngIf="payment.is_web == 1"
+                      (change)="savePaymentSettings($event, payment.id)"
+                      [checked]="isCheckedPaymentType(payment.id)"
+                    >
+                      {{ payment.name }}
+                    </mat-checkbox>
+                  </ng-container>
                 </div>
-              </div>
-
-            </form>
-          </div>
-          <div class="col-12 col-sm-4">
-            <div class="custom-crd ">
-              <div class="text-center tg-card">
-                <span><i class="icon-globe"></i>Payment Options</span>
-              </div>
-              <div class="mt-2" *ngFor="let payment of paymentMethods">
-                <mat-checkbox class="ml-2" *ngIf="payment.is_web==1" (change)="savePaymentSettings($event,payment.id)"
-                  [checked]="isCheckedPaymentType(payment.id)">
-                  {{ payment.name }}
-                </mat-checkbox>
               </div>
             </div>
           </div>
         </div>
-
-
       </div>
-    </div>
-  </form>
-</body>
-
+    </form>
+  </body>
 </html>

@@ -35,47 +35,76 @@
           <h4 class="flex-gr-1">
             <i class="icon-arrow-left" routerLink="/setup/addons"></i>Activate/Deactivate SMS Gateway
           </h4>
-          <div class="d-flex align-items-center " matTooltip="History">
-            <i class="zmdi zmdi-time" style="font-size: 35px;"></i>
+          <div class="d-flex align-items-center" matTooltip="History">
+            <i class="zmdi zmdi-time" style="font-size: 35px"></i>
           </div>
           <div class="d-flex align-items-center justify-content-end ml-4" (click)="smsSettings()" matTooltip="Settings">
-            <i class="zmdi zmdi-settings" style="font-size: 35px;"></i>
+            <i class="zmdi zmdi-settings" style="font-size: 35px"></i>
           </div>
-
         </div>
       </div>
       <div class="content">
         <form [formGroup]="smsGatewayForm">
           <div class="allDivMain row col-12">
             <div class="col-6">
-              <div class="formGroup">
-                <label>
-                  TriggerPoint
-                </label>
-                <span class="error-message">*</span>
-                <span class="error-message float-right"
-                  *ngIf="smsGatewayForm.controls.trigger_point.hasError('required' ) && smsGatewayForm.controls.trigger_point.touched">Required</span>
-                <select class="custom-select selectBarMain"
-                  [ngClass]="smsGatewayForm.controls.trigger_point.hasError('required' ) && smsGatewayForm.controls.trigger_point.touched ? 'is-invalid' : ''"
-                  formControlName="trigger_point">
-                  <option value="" selected>Select</option>
-                  <option *ngFor="let i of triggers" value="{{i.id}}">{{i.name}}</option>
-                </select>
+              <div class="row formGroup">
+                <div class="col-6">
+                  <label> TriggerPoint </label>
+                  <span class="error-message">*</span>
+                  <span class="error-message float-right" *ngIf="
+                        smsGatewayForm.controls.trigger_point.hasError(
+                          'required'
+                        ) && smsGatewayForm.controls.trigger_point.touched
+                      ">Required</span>
+                  <select class="custom-select selectBarMain" [ngClass]="
+                        smsGatewayForm.controls.trigger_point.hasError(
+                          'required'
+                        ) && smsGatewayForm.controls.trigger_point.touched
+                          ? 'is-invalid'
+                          : ''
+                      " formControlName="trigger_point">
+                    <option value="" selected>Select</option>
+                    <option *ngFor="let i of triggers" value="{{ i.id }}">
+                      {{ i.name }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-6">
+                  <label>Entity</label>
+                  <span class="error-message">*</span>
+                  <span class="error-message float-right" *ngIf="
+                        smsGatewayForm.controls.entity.hasError(
+                          'required'
+                        ) && smsGatewayForm.controls.entity.touched
+                      ">Required</span>
+                  <mat-select formControlName="entity" multiple class="form-control w-100">
+                    <mat-option [value]="1" >Walkin</mat-option>
+                    <mat-option [value]="2" >Dinein</mat-option>
+                    <mat-option [value]="3" >Crm</mat-option>
+                    <mat-option *ngFor="let entity of entityRecords" [value]="entity.id">{{ entity.name }}
+                    </mat-option>
+                  </mat-select>
+                </div>
               </div>
               <div class="formGroup">
-                <label>
-                  Message Template
-                </label>
+                <label> Message Template </label>
                 <span class="error-message">*</span>
-                <span class="error-message float-right"
-                  *ngIf="smsGatewayForm.controls.message_template.hasError('required' ) && smsGatewayForm.controls.message_template.touched">Required</span>
-                <textarea class="form-control"
-                  [ngClass]="smsGatewayForm.controls.message_template.hasError('required' ) && smsGatewayForm.controls.message_template.touched ? 'is-invalid' : ''"
-                  style="height: 165px;overflow-y:scroll;" formControlName="message_template"
+                <span class="error-message float-right" *ngIf="
+                      smsGatewayForm.controls.message_template.hasError(
+                        'required'
+                      ) && smsGatewayForm.controls.message_template.touched
+                    ">Required</span>
+                <textarea class="form-control" [ngClass]="
+                      smsGatewayForm.controls.message_template.hasError(
+                        'required'
+                      ) && smsGatewayForm.controls.message_template.touched
+                        ? 'is-invalid'
+                        : ''
+                    " style="height: 165px; overflow-y: scroll" formControlName="message_template"
                   (input)="backspaceEvent($event)"></textarea>
               </div>
               <div>
-                <div class="d-flex align-items-center ">
+                <div class="d-flex align-items-center">
                   <mat-slide-toggle class="flex-gr-1" formControlName="status">Active</mat-slide-toggle>
                   <div class="d-flex align-items-center justify-content-end">
                     <button class="mt-2 btn-setup-sucess commonBtnStyle" (click)="saveTemplate()">
@@ -88,17 +117,16 @@
             <div class="col-6">
               <div class="messageTags">
                 <label>Message Tags</label>
-                <div clss="col-10" style="border-top:2px rgb(68, 64, 64) solid  ;">
+                <div clss="col-10" style="border-top: 2px rgb(68, 64, 64) solid">
                   <mat-chip-listbox #chipList aria-label="areas" class="chipList">
                     <!-- <mat-chip *ngFor="let area of deliveryAreaSelected" (removed)="remove(area)">
                         {{ area.name }} -->
                     <mat-chip-option *ngFor="let template of templates" (click)="selectedOptions(template.name)">
-                      {{template.name}}
+                      {{ template.name }}
                     </mat-chip-option>
                     <!-- <input   placeholder="" [matChipInputFor]="chipList"  class="form-control  example-chip-list"
                       [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
                      class="w-0" /> -->
-
                   </mat-chip-listbox>
                 </div>
               </div>
@@ -111,29 +139,43 @@
               <div class="not-found">
                 <h3>Sorry :(</h3>
                 <p>There's no Sms Gateways yet at this moment.</p>
-                <p>Please add Sms Gateway. </p>
+                <p>Please add Sms Gateway.</p>
               </div>
             </div>
           </div>
         </ng-template>
-        <div class="col-12 tableStyleMain mt-4">
+        <div class="col-12 mt-4">
           <table mat-table *ngIf="dataSource.data.length > 0; else message" [dataSource]="dataSource" matSort
-            class="mat-z8">
+            class="tableStyleMain table bordered">
             <ng-container matColumnDef="index">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                #
-              </th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>#</th>
               <td mat-cell *matCellDef="let element">
-                {{dataSource.data.indexOf(element) + 1}}
+                {{ dataSource.data.indexOf(element) + 1 }}
               </td>
             </ng-container>
             <ng-container matColumnDef="active_trigger_point">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Trigger Point</th>
-              <td mat-cell *matCellDef="let element">{{ element.active_trigger_point }}</td>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Trigger Point
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.active_trigger_point }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="entity">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Entity
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.entity }}
+              </td>
             </ng-container>
             <ng-container matColumnDef="template">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Template</th>
-              <td mat-cell *matCellDef="let element">{{ element.template }}</td>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Template
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.template }}
+              </td>
             </ng-container>
             <ng-container matColumnDef="status">
               <th mat-header-cell *matHeaderCellDef>Status</th>
@@ -166,7 +208,6 @@
           </mat-paginator>
         </div>
       </div>
-
     </div>
   </div>
 </body>
