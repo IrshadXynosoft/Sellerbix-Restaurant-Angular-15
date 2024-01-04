@@ -39,7 +39,7 @@
               <input type="text" class="form-control" placeholder="Search Entities" #unitFilterText
                 (keyup)="doFilter(unitFilterText.value)" />
             </div>
-            <div class="d-flex d-padding">
+            <div class="d-flex ml-2">
               <button class="btn-setup-sucess" (click)="add()">
                 <i class="icon-plus mr-1"></i>Utilities
               </button>
@@ -58,9 +58,9 @@
           </div>
         </div>
       </ng-template>
-      <div class="col-12 tableStyleMain">
+      <div class="col-12">
         <table mat-table *ngIf="dataSource.data.length > 0; else message" [dataSource]="dataSource" matSort
-          class="mat-z8">
+          class="table tableStyleMain bordered">
           <ng-container matColumnDef="index">
             <th mat-header-cell *matHeaderCellDef>
               #

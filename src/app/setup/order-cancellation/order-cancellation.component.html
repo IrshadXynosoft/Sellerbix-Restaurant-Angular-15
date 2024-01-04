@@ -38,7 +38,7 @@
               <input type="text" class="form-control" placeholder="Search Reasons" #reason
                 (keyup)="doFilter(reason.value)" />
             </div>
-            <div class="d-flex" style="padding-bottom: 15px; padding-left: 5px">
+            <div class="d-flex" style="padding-left: 5px">
               <button class="btn-setup-sucess" (click)="addReason()">
                 <i class="icon-plus mr-1"></i>Add Reason
               </button>
@@ -59,8 +59,7 @@
         </div>
       </div>
       <ng-template #showtable>
-        <div class="tableStyleMain">
-          <table mat-table [dataSource]="dataSource" class="mat-z8">
+          <table mat-table [dataSource]="dataSource" class="table tableStyleMain bordered">
             <ng-container matColumnDef="index">
               <th mat-header-cell *matHeaderCellDef>
                 #
@@ -87,7 +86,6 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
           </table>
-        </div>
       </ng-template>
       <mat-paginator [ngClass]="{ show: dataSource.data.length <= 0 }" [pageSize]="15"
         [pageSizeOptions]="[2, 4, 6, 10, 20]">
