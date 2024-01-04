@@ -44,7 +44,7 @@ export class CustomersComponent implements OnInit {
   customerListArray: any = [];
   customer_filteredOptions: Observable<any[]> | undefined;
   list_options: any = [];
-
+  customerInsights:any=[]
   constructor(
     private router: Router,
     public dialog: MatDialog,
@@ -63,6 +63,7 @@ export class CustomersComponent implements OnInit {
       startWith(''),
       map(value => this._filtercustomerlist(value)),
     );
+    this.getCustomerCards()
   }
 
   private _filtercustomerlist(value: string): string[] {
@@ -106,6 +107,17 @@ export class CustomersComponent implements OnInit {
       this.customerListArray = [];
       this.getCustomers();
     }
+  }
+
+ getCustomerCards() {
+    this.httpService.get('customer-data')
+      .subscribe(async result => {
+        if (result.status == 200) {
+          this.customerInsights = result.data;
+        } else {
+          this.snackBService.openSnackBar(result.message, "Close")
+        }
+      });
   }
 
   customerSelected(id: any) {
