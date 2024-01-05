@@ -28,6 +28,7 @@ import { CommercialInvoicePaymentDialogComponent } from '../setup/commercial-inv
 import { PrintMqttService } from '../_services/mqtt/print-mqtt.service';
 import { DetailComponent } from '../walkin/detail/detail.component';
 import { ShowDetailsComponent } from '../dinein/show-details/show-details.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-crm',
@@ -594,33 +595,31 @@ export class CrmComponent implements OnInit {
   }
 
   getCustomerPastOrders(id: any) {
-    this.httpService
-      .get('orders-by-customer/' + id)
-      .subscribe((result) => {
-        if (result.status == 200) {
-          let customerOrders = result.data;
-          this.pastOrders = [];
-          this.runningOrders = [];
-          this.reservations = [];
-          this.bulkOrders = [];
-          this.unpaidOrders = [];
-          customerOrders.orders.forEach((element: any) => {
-            if (element.status == 1) {
-              this.runningOrders.push(element);
-            }
-            if (element.payment_status == 0) {
-              this.unpaidOrders.push(element);
-            }
-            if (element.status == 2) {
-              this.pastOrders.push(element);
-            }
-          });
-          this.reservations = customerOrders.reservations;
-          this.bulkOrders = customerOrders.bulk_orders;
-        } else {
-          console.log('Error in orders-by-customer');
-        }
-      });
+    this.httpService.get('orders-by-customer/' + id).subscribe((result) => {
+      if (result.status == 200) {
+        let customerOrders = result.data;
+        this.pastOrders = [];
+        this.runningOrders = [];
+        this.reservations = [];
+        this.bulkOrders = [];
+        this.unpaidOrders = [];
+        customerOrders.orders.forEach((element: any) => {
+          if (element.status == 1) {
+            this.runningOrders.push(element);
+          }
+          if (element.payment_status == 0) {
+            this.unpaidOrders.push(element);
+          }
+          if (element.status == 2) {
+            this.pastOrders.push(element);
+          }
+        });
+        this.reservations = customerOrders.reservations;
+        this.bulkOrders = customerOrders.bulk_orders;
+      } else {
+        console.log('Error in orders-by-customer');
+      }
+    });
   }
 
   getCustomerInsights(id: any) {
@@ -664,6 +663,7 @@ export class CrmComponent implements OnInit {
       customer_id: this.customerDetails[0].id,
       customer_contact_no: this.customerDetails[0].contact_no,
       customer_name: this.customerDetails[0].name,
+      loyaltyFlag: this.customerDetails[0].loyalty_group_id ? true : false,
     };
     this.dataservice.setData('Crmdetails', Data);
     this.router.navigate(['home/crm/pickup/new_order']);
@@ -675,15 +675,40 @@ export class CrmComponent implements OnInit {
   }
 
   b2bCustomer() {
-    const dialogRef = this.dialog.open(CustomEntityDialogComponent, {
-      width: '450px',
-      data: {
-        entity: 'B2B',
+    // old
+
+    // const dialogRef = this.dialog.open(CustomEntityDialogComponent, {
+    //   width: '450px',
+    //   data: {
+    //     entity: 'B2B',
+    //   },
+    // });
+    // dialogRef.afterClosed().subscribe((result) => {
+    //   if (result) {
+    //     this.dataservice.setData('CustomEntityOrderNO', result);
+    //     let obj: any = {
+    //       id: this.customerDetails[0].price_plan_id,
+    //       name: this.customerDetails[0].price_plan,
+    //     };
+    //     this.storePickup();
+    //     this.dataservice.setData('pricePlan', obj);
+    //     this.router.navigate(['home/b-b/newOrder']);
+    //   }
+    // });
+
+    Swal.fire({
+      text: 'Please Enter B2B Order Number',
+      // icon: 'question',
+      input: 'text',
+      inputAttributes: {
+        autocapitalize: 'off',
       },
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.dataservice.setData('CustomEntityOrderNO', result);
+      showCancelButton: true,
+      confirmButtonText: 'Ok',
+      showLoaderOnConfirm: true,
+    }).then((result) => {
+      if (result.isConfirmed && result.value) {
+        this.dataservice.setData('CustomEntityOrderNO', result.value);
         let obj: any = {
           id: this.customerDetails[0].price_plan_id,
           name: this.customerDetails[0].price_plan,
@@ -756,6 +781,7 @@ export class CrmComponent implements OnInit {
         customer_id: this.customerDetails[0].id,
         customer_contact_no: this.customerDetails[0].contact_no,
         customer_name: this.customerDetails[0].name,
+        loyaltyFlag: this.customerDetails[0].loyalty_group_id ? true : false,
       };
       this.dataservice.setData('Crmdetails', customerDataForPlaceOrder);
       this.router.navigate(['home/crm/new_order']);
@@ -765,14 +791,45 @@ export class CrmComponent implements OnInit {
   }
 
   entityPlaceNewOrder(entity: any) {
-    const dialogRef = this.dialog.open(CustomEntityDialogComponent, {
-      width: '450px',
-      data: {
-        entity: entity.name,
+    //old
+    // const dialogRef = this.dialog.open(CustomEntityDialogComponent, {
+    //   width: '450px',
+    //   data: {
+    //     entity: entity.name,
+    //   },
+    // });
+    // dialogRef.afterClosed().subscribe((result) => {
+    //   if (result) {
+    //     let locationdetails = {
+    //       branch_id: this.localservice.get('branch_id'),
+    //       branch_name: this.localservice.get('branchname'),
+    //     };
+    //     let Data = {
+    //       locationDetails: locationdetails,
+    //       customer_id: this.customerDetails[0].id,
+    //       customer_contact_no: this.customerDetails[0].contact_no,
+    //       customer_name: this.customerDetails[0].name
+    //         ? this.customerDetails[0].name
+    //         : null,
+    //     };
+    //     this.dataservice.setData('CustomEntityOrderNO', result);
+    //     this.dataservice.setData('Crmdetails', Data);
+    //     this.router.navigate(['home/crm/entity/' + entity.id]);
+    //   }
+    // });
+
+    Swal.fire({
+      text: 'Please enter ' + entity.name + ' number',
+      // icon: 'question',
+      input: 'text',
+      inputAttributes: {
+        autocapitalize: 'off',
       },
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
+      showCancelButton: true,
+      confirmButtonText: 'Ok',
+      showLoaderOnConfirm: true,
+    }).then((result) => {
+      if (result.isConfirmed && result.value) {
         let locationdetails = {
           branch_id: this.localservice.get('branch_id'),
           branch_name: this.localservice.get('branchname'),
@@ -784,8 +841,9 @@ export class CrmComponent implements OnInit {
           customer_name: this.customerDetails[0].name
             ? this.customerDetails[0].name
             : null,
+          loyaltyFlag: this.customerDetails[0].loyalty_group_id ? true : false,
         };
-        this.dataservice.setData('CustomEntityOrderNO', result);
+        this.dataservice.setData('CustomEntityOrderNO', result.value);
         this.dataservice.setData('Crmdetails', Data);
         this.router.navigate(['home/crm/entity/' + entity.id]);
       }

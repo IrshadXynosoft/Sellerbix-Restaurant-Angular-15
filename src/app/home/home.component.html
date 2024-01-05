@@ -43,7 +43,7 @@
           <!-- <i class="zmdi zmdi-plus"></i> -->
           Surcharges
         </button>
-        <button class="medium-button coupon blink" *ngIf="(SelectedItems.length > 0 && !showPrintFlag) && showCoupon == true"
+        <button class="medium-button coupon" [ngClass]="crmRecords.loyaltyFlag == true ? 'blink' : ''" *ngIf="(SelectedItems.length > 0 && !showPrintFlag) && showCoupon == true"
           (click)="getLoyaltyCoupons()">
           <!-- <i class="zmdi zmdi-plus"></i> -->
           Coupons
@@ -111,7 +111,7 @@
                     <span class="pickUpFlagSpan" *ngIf="
                           pickupFlag &&
                           url != '/home/crm/entity/' + this.custom_entity_id
-                        ">pickup from restaurant</span>
+                        ">Storepickup</span>
                   </h2>
                   <h2 *ngIf="editcrmFlag">
                     <span class="tag-h-1" *ngIf="crmRecords.customer_name">{{ crmRecords.customer_name }}

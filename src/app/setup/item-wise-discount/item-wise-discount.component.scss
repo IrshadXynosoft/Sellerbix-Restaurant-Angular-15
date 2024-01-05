@@ -62,20 +62,13 @@
 
 }
 
-.not-found {
-  background: #d7d7d7;
-  padding: 15px;
-  margin-top: 20px;
+.input-container {
+  position: relative;
+}
 
-  h3 {
-    font-size: 30px;
-    color: #565656;
-    font-weight: 600;
-  }
-
-  p {
-    font-size: 16px;
-    color: #727070;
-    font-weight: 400;
-  }
+.mat-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 20px; /* Adjust the right spacing as needed */
 }

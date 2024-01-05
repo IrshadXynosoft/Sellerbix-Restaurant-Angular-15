@@ -27,8 +27,7 @@
                 <li class="breadcrumb-item cursor-pointer" aria-current="page" routerLink="/setup/{{id}}/editLocation">
                   Location Setup
                 </li>
-                <li class="breadcrumb-item active cursor-pointer" aria-current="page"
-                  >
+                <li class="breadcrumb-item active cursor-pointer" aria-current="page">
                   Settings
                 </li>
                 <!-- <li class="breadcrumb-item active cursor-pointer" aria-current="page">
@@ -48,71 +47,59 @@
         </div>
 
         <div class="row">
-          <div class="col-4 col-sm-4">
+          <div class="col-12">
             <form [formGroup]="posForm">
               <div class="custom-crd">
                 <div class="text-center tg-card">
                   <span><i class="icon-briefcase"></i>POS</span>
                 </div>
-                <div class="col-12">
-                  <mat-slide-toggle class="mt-2" (change)="changeStatus()" formControlName="show_utensils">
+                <div class="mt-2">
+                  <mat-slide-toggle class=" mr-2" (change)="changeStatus()" formControlName="show_utensils">
                     Show Utensils</mat-slide-toggle>
-                </div>
-                <div class="col-12">
-                  <mat-slide-toggle class="mt-2" (change)="changeStatus()" formControlName="label_print">
+                  <mat-slide-toggle class=" mr-2" (change)="changeStatus()" formControlName="label_print">
                     Label print</mat-slide-toggle>
-                </div>
-                <div class="col-12">
-                  <mat-slide-toggle class="mt-2" (change)="changeStatus()" formControlName="order_modify_popup">
+                  <mat-slide-toggle class=" mr-2" (change)="changeStatus()" formControlName="order_modify_popup">
                     Order Modify Popup</mat-slide-toggle>
-                </div>
-                <div class="col-12">
-                  <mat-slide-toggle class="mt-2" (change)="changeStatus()" formControlName="assign_waiter">
+                  <mat-slide-toggle class=" mr-2" (change)="changeStatus()" formControlName="assign_waiter">
                     Assign Waiter</mat-slide-toggle>
                 </div>
               </div>
             </form>
           </div>
-          <div class="col-4 col-sm-4">
+        </div>
+        <div class="row mt-4">
+          <div class="col-12">
             <form [formGroup]="notificationForm">
               <div class="custom-crd">
                 <div class="text-center tg-card">
                   <span><i class="icon-globe"></i>Enable Push notifications For</span>
                 </div>
-                <div class="col-12">
-                  <mat-slide-toggle class="mb-2" formControlName="on_order_accepted" (change)="saveSettings()">
+                <div class="mt-2">
+                  <mat-slide-toggle class="mr-2" formControlName="on_order_accepted" (change)="saveSettings()">
                     On order accepted</mat-slide-toggle>
-                </div>
-                <div class="col-12">
-                  <mat-slide-toggle class=" mb-2" formControlName="on_order_rejected" (change)="saveSettings()">
+                  <mat-slide-toggle class=" mr-2" formControlName="on_order_rejected" (change)="saveSettings()">
                     On order rejected</mat-slide-toggle>
-                </div>
-                <div class="col-12">
-                  <mat-slide-toggle class=" mb-2" formControlName="on_order_assigned_to_driver"
+                  <mat-slide-toggle class=" mr-2" formControlName="on_order_assigned_to_driver"
                     (change)="saveSettings()">
                     On order assigned to driver</mat-slide-toggle>
-                </div>
-                <div class="col-12">
-                  <mat-slide-toggle class=" mb-2" formControlName="on_driver_order_accepted" (change)="saveSettings()">
+                  <mat-slide-toggle class=" mr-2" formControlName="on_driver_order_accepted" (change)="saveSettings()">
                     On driver order accepted</mat-slide-toggle>
-                </div>
-                <div class="col-12">
-                  <mat-slide-toggle formControlName="on_driver_order_delivered" (change)="saveSettings()">
+                  <mat-slide-toggle class=" mr-2" formControlName="on_driver_order_delivered" (change)="saveSettings()">
                     On driver order delivered</mat-slide-toggle>
                 </div>
-
               </div>
             </form>
-
           </div>
-          <div class="col-4 col-sm-4">
+        </div>
+        <div class="row mt-4">
+          <div class="col-12">
             <form [formGroup]="kotForm">
               <div class="custom-crd">
                 <div class="text-center tg-card">
                   <span><i class="icon-globe"></i>Kot</span>
                 </div>
-                <div class="col-12">
-                  <mat-slide-toggle class="mb-2" formControlName="new_items_on_kot" (change)="saveSettings()">
+                <div class="mt-2">
+                  <mat-slide-toggle class=" mr-2" formControlName="new_items_on_kot" (change)="saveSettings()">
                     Print only new items on kot</mat-slide-toggle>
                 </div>
 

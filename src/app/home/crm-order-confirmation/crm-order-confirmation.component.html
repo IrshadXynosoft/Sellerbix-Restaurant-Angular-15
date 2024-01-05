@@ -1,71 +1,73 @@
 <div class="modal-wrapper">
-  <button mat-icon-button class="close-button" (click)="close()">
-    <mat-icon class="close-icon" color="warn">close</mat-icon>
-  </button>
   <h2 mat-dialog-title style="text-align: center;">Order Confirmation <br>
+    <button mat-icon-button class="close-button" (click)="close()">
+      <mat-icon class="close-icon" color="warn">close</mat-icon>
+    </button>
     <h3>Please confirm the order below to be delivered:</h3>
   </h2>
   <mat-dialog-content>
     <div class="row">
       <div class="col-lg-7" [ngClass]="data.customEntityFlag ? 'col-lg-12' : ''">
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Item Name</th>
-              <th scope="col">Quantity</th>
-              <th scope="col">Price</th>
-              <th scope="col">Line Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of data.items">
-              <td>
-                <span>{{item.name}}</span>
-                <div *ngIf="item.modifiers" class="col-12 combo-tree">
-                  <div class="tree">
-                    <ul class="tree-holder" *ngFor="let modifier of item.modifiers">
-                      <li *ngIf="modifiercheck(modifier.list)">
-                        <span><i class="fa fa-folder-open"></i>{{modifier.name}}</span>
-                        <ul *ngFor="let list of modifier.list">
-                          <li *ngIf="list.status">
-                            <span><i class="fa fa-minus-square"></i>{{list.modifier_list}}&nbsp;
-                              {{currency_symbol}}{{list.rate}}</span>
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>
+        <div class="bordered">
+          <table class="table tableStyleMain">
+            <thead>
+              <tr>
+                <th scope="col">Item Name</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Price</th>
+                <th scope="col">Line Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of data.items">
+                <td>
+                  <span>{{item.name}}</span>
+                  <div *ngIf="item.modifiers" class="col-12 combo-tree">
+                    <div class="tree">
+                      <ul class="tree-holder" *ngFor="let modifier of item.modifiers">
+                        <li *ngIf="modifiercheck(modifier.list)">
+                          <span><i class="fa fa-folder-open"></i>{{modifier.name}}</span>
+                          <ul *ngFor="let list of modifier.list">
+                            <li *ngIf="list.status">
+                              <span><i class="fa fa-minus-square"></i>{{list.modifier_list}}&nbsp;
+                                {{currency_symbol}}{{list.rate}}</span>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
-                </div>
-              </td>
-              <td>{{item.qty}}</td>
-              <td>{{item.orginal_price}}</td>
-              <td>{{item.total}}</td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="d-flex br-btm pb-2" *ngIf="data.Cart.subTotal">
-          <div class="flex-grow-1">Sub Total:</div>
-          <div>{{data.Cart.subTotal}} {{currency_symbol}}</div>
-        </div>
-        <div class="d-flex br-btm pb-2" *ngIf="data.Cart?.tax>0">
-          <div class="flex-grow-1">Tax Amount:</div>
-          <div>{{data.Cart?.tax}} {{currency_symbol}}</div>
-        </div>
-        <div class="d-flex br-btm pb-2" *ngIf="data.Cart.otherCharge != 0">
-          <div class="flex-grow-1">Surcharges:</div>
-          <div>{{data.Cart.otherCharge}} {{currency_symbol}}</div>
-        </div>
-        <div class="d-flex br-btm pb-2" *ngIf="data.Cart.discount != 0">
-          <div class="flex-grow-1">Discount:</div>
-          <div>{{data.Cart.discount}} {{currency_symbol}}</div>
-        </div>
-        <div class="d-flex br-btm pb-2" *ngIf="data.Cart.loyaltyCoupon">
-          <div class="flex-grow-1">Loyalty Coupon:</div>
-          <div>{{data.Cart.loyaltyCoupon}} {{currency_symbol}}</div>
-        </div>
-        <div class="d-flex br-btm pt-2 pb-2">
-          <div class="flex-grow-1">Total:</div>
-          <div><strong>{{data.total}} {{currency_symbol}}</strong></div>
+                </td>
+                <td>{{item.qty}}</td>
+                <td>{{item.orginal_price}}</td>
+                <td>{{item.total}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="d-flex br-btm pb-2 px-2" *ngIf="data.Cart.subTotal">
+            <div class="flex-grow-1">Sub Total:</div>
+            <div>{{data.Cart.subTotal}} {{currency_symbol}}</div>
+          </div>
+          <div class="d-flex br-btm pb-2 px-2" *ngIf="data.Cart?.tax>0">
+            <div class="flex-grow-1">Tax Amount:</div>
+            <div>{{data.Cart?.tax}} {{currency_symbol}}</div>
+          </div>
+          <div class="d-flex br-btm pb-2 px-2" *ngIf="data.Cart.otherCharge != 0">
+            <div class="flex-grow-1">Surcharges:</div>
+            <div>{{data.Cart.otherCharge}} {{currency_symbol}}</div>
+          </div>
+          <div class="d-flex br-btm pb-2 px-2" *ngIf="data.Cart.discount != 0">
+            <div class="flex-grow-1">Discount:</div>
+            <div>{{data.Cart.discount}} {{currency_symbol}}</div>
+          </div>
+          <div class="d-flex br-btm pb-2 px-2" *ngIf="data.Cart.loyaltyCoupon">
+            <div class="flex-grow-1">Loyalty Coupon:</div>
+            <div>{{data.Cart.loyaltyCoupon}} {{currency_symbol}}</div>
+          </div>
+          <div class="d-flex  pt-2 pb-2 px-2">
+            <div class="flex-grow-1">Total:</div>
+            <div><strong>{{data.total}} {{currency_symbol}}</strong></div>
+          </div>
         </div>
       </div>
       <div class="col-lg-5" *ngIf="!data.customEntityFlag">
@@ -89,7 +91,7 @@
       </div>
     </div>
   </mat-dialog-content>
-  <mat-dialog-actions>
+  <mat-dialog-actions align="end">
     <!-- <div class="text-left p-4">
         <button class="btn-setup-sucess" >
           <i class="icon-time mr-1"></i>Referral
@@ -99,8 +101,8 @@
           </button>
       </div> -->
     <div class="text-right button-sec">
-      <button class="btn-setup-sucess commonBtnStyle"
-        style="position:absolute;left:1.5rem;background: var(--primary) !important; border-color: var(--primary);"
+      <button class="btn-setup-sucess commonBtnStyle mr-2"
+        style="background: var(--primary) !important; border-color: var(--primary);"
         (click)="confirmWithPrint()">Confirm & Print
       </button>
       <!-- <button class="btn-setup-danger mr-2" (click)="close()">Cancel</button> -->

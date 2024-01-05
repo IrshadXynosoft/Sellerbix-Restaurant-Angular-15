@@ -31,7 +31,8 @@
       <div class="row">
         <div class="col-9">
           <mat-hint>Staff</mat-hint>
-          <select *ngIf="role == 1" class="form-control w-50" style="margin-top:20px;" (change)="onChangeStaff($event)">
+          <select *ngIf="role == 1" class="form-control w-50 mb-2" style="margin-top:20px;"
+            (change)="onChangeStaff($event)">
             <option value="" disabled selected>
               Select
             </option>
@@ -48,7 +49,7 @@
             </mat-datepicker-toggle>
             <mat-datepicker #releasedAtPicker [touchUi]="true">
             </mat-datepicker> -->
-          <select class="form-control w-100 mt-4" (change)="filterReport()" [(ngModel)]="selectedBusinessday">
+          <select class="form-control w-100 mt-4 mb-2" (change)="filterReport()" [(ngModel)]="selectedBusinessday">
             <option value="0">Select</option>
             <option value="{{day.id}}" *ngFor="let day of businessdayRecords">{{day.name}}</option>
           </select>
@@ -57,27 +58,27 @@
       <!-- <div *ngIf="detailShownFlag"> -->
       <div class="row" *ngIf="detailShownFlag">
         <div class="col-3">
-          <mat-card appearance="outlined" class="card-details light-green">
-            <h2>{{staffOrders.unpaid_orders}} / {{currency_symbol}} {{staffOrders.unpaid_sum}}</h2>
-            <span>Unpaid Orders</span>
+          <mat-card appearance="outlined" class="card-details ">
+            <h2>Unpaid Orders </h2>
+            <span>{{staffOrders.unpaid_orders}} / {{currency_symbol}} {{staffOrders.unpaid_sum}}</span>
           </mat-card>
         </div>
         <div class="col-3">
-          <mat-card appearance="outlined" class="card-details red">
-            <h2>{{staffOrders.paid_orders}} / {{currency_symbol}} {{staffOrders.paid_sum}}</h2>
-            <span>Paid Orders</span>
+          <mat-card appearance="outlined" class="card-details ">
+            <h2>Paid Orders</h2>
+            <span>{{staffOrders.paid_orders}} / {{currency_symbol}} {{staffOrders.paid_sum}}</span>
           </mat-card>
         </div>
         <div class="col-3">
-          <mat-card appearance="outlined" class="card-details green">
-            <h2> {{currency_symbol}} {{staffOrders.card_payments}}</h2>
-            <span>Card payments</span>
+          <mat-card appearance="outlined" class="card-details ">
+            <h2>Card payments </h2>
+            <span>{{currency_symbol}} {{staffOrders.card_payments}}</span>
           </mat-card>
         </div>
         <div class="col-3">
-          <mat-card appearance="outlined" class="card-details yellow">
-            <h2> {{currency_symbol}} {{staffOrders.cash_payments}}</h2>
-            <span>Cash payments</span>
+          <mat-card appearance="outlined" class="card-details ">
+            <h2>Cash payments </h2>
+            <span>{{currency_symbol}} {{staffOrders.cash_payments}}</span>
           </mat-card>
         </div>
         <!-- <mat-card class="card-details light-orange">
@@ -91,60 +92,61 @@
             <h3>Sorry :(</h3>
             <p>There's no Orders.</p>
           </div>
-          <table #orderTable *ngIf="dataSource.data.length > 0 && detailShownFlag" mat-table [dataSource]="dataSource"
-            matSort class="mat-z8 table tableStyleMain bordered">
-            <ng-container matColumnDef="order_no">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                Order no.
-              </th>
-              <td mat-cell *matCellDef="let element">{{ element.order_no }}</td>
-            </ng-container>
+          <div class="bordered" *ngIf="dataSource.data.length > 0 && detailShownFlag">
+            <table #orderTable  mat-table [dataSource]="dataSource"
+              matSort class="table tableStyleMain ">
+              <ng-container matColumnDef="order_no">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Order no.
+                </th>
+                <td mat-cell *matCellDef="let element">{{ element.order_no }}</td>
+              </ng-container>
 
-            <ng-container matColumnDef="date">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                Date & time
-              </th>
-              <td mat-cell *matCellDef="let element">
-                {{ element.date }} {{element.time}}
-              </td>
-            </ng-container>
+              <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Date & time
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.date }} {{element.time}}
+                </td>
+              </ng-container>
 
-            <ng-container matColumnDef="payment_status">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                Payment Status
-              </th>
-              <td mat-cell *matCellDef="let element">
-                {{ element.payment_status == 1 ? 'Paid' : 'Not paid' }}
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="payment_type">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                Payment Type
-              </th>
-              <td mat-cell *matCellDef="let element">
-                <div *ngFor="let i of element.invoice?.payment_types">
-                  <span>{{i.payment_name}}</span>
-                </div>
-                <span *ngIf="!element.invoice?.payment_types">-</span>
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="amount">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                Amount
-              </th>
-              <td mat-cell *matCellDef="let element">
-                {{element.amount}}
-              </td>
-            </ng-container>
-            <ng-container matColumnDef="paid_by">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                Paid by
-              </th>
-              <td mat-cell *matCellDef="let element">
-                {{element.paid_by ? element.paid_by: '--'}}
-              </td>
-            </ng-container>
-            <!-- <ng-container matColumnDef="staff">
+              <ng-container matColumnDef="payment_status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Payment Status
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.payment_status == 1 ? 'Paid' : 'Not paid' }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="payment_type">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Payment Type
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <div *ngFor="let i of element.invoice?.payment_types">
+                    <span>{{i.payment_name}}</span>
+                  </div>
+                  <span *ngIf="!element.invoice?.payment_types">-</span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="amount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Amount
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.amount}}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="paid_by">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Paid by
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.paid_by ? element.paid_by: '--'}}
+                </td>
+              </ng-container>
+              <!-- <ng-container matColumnDef="staff">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>
                       Created by
                     </th>
@@ -153,9 +155,10 @@
                     </td>
                   </ng-container> -->
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-          </table>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+          </div>
           <mat-paginator #orderTable [ngClass]="{ show: dataSource.data.length <= 0 }" [pageSize]="9"
             [pageSizeOptions]="[2, 4, 6, 10, 20]">
           </mat-paginator>
@@ -194,8 +197,9 @@
         <h2 *ngIf="detailShownFlag && dataSourceHistory.data.length > 0" style="margin-left:20px">Settlement History
         </h2>
         <div class="col-12">
-          <table #historyTable *ngIf="dataSourceHistory.data.length > 0 && detailShownFlag" mat-table
-            [dataSource]="dataSourceHistory" matSort class="mat-z8 table tableStyleMain bordered">
+        <div class="bordered"  *ngIf="dataSourceHistory.data.length > 0 && detailShownFlag">
+            <table #historyTable mat-table
+            [dataSource]="dataSourceHistory" matSort class="mat-z8 table tableStyleMain">
             <ng-container matColumnDef="index">
               <th mat-header-cell *matHeaderCellDef mat-sort-header>
                 #
@@ -227,6 +231,7 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumnHistory"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumnHistory"></tr>
           </table>
+        </div>
           <mat-paginator #historyTable [ngClass]="{ show: dataSourceHistory.data.length <= 0 }" [pageSize]="9"
             [pageSizeOptions]="[2, 4, 6, 10, 20]">
           </mat-paginator>

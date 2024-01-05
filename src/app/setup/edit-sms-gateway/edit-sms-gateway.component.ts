@@ -55,6 +55,7 @@ export class EditSmsGatewayComponent implements OnInit {
       message_template: ['', Validators.compose([Validators.required])],
       status: false,
       entity: [''],
+      min_amount:['',Validators.required],
     });
   }
 
@@ -73,15 +74,16 @@ export class EditSmsGatewayComponent implements OnInit {
       .get('message-template/' + this.data.id, false)
       .subscribe((result) => {
         if (result.status == 200) {
-          // let entityData:any=[]
-          // result.data.entities?.forEach((element: any) => {
-          //   entityData.push(element.loyalty_group_id)
-          // });
+          let entityData:any=[]
+          result.data.message_template_entity?.forEach((element: any) => {
+            entityData.push(element.entity_id)
+          });
           this.smsGatewayForm.patchValue({
             trigger_point: result.data.trigger_id,
             message_template: result.data.template,
             status: result.data.status,
-            entity: result.data.entities
+            entity: entityData,
+            min_amount : result.min_amount
           });
           this.selectedTrigger = result.data.trigger_id;
           this.tagsChoosen.push(result.data.template);
@@ -117,7 +119,8 @@ export class EditSmsGatewayComponent implements OnInit {
       template: this.smsGatewayForm.value['message_template'],
       trigger_id: this.smsGatewayForm.value['trigger_point'],
       status: this.smsGatewayForm.value['status'],
-      entity_id: this.smsGatewayForm.value['entity']
+      entity_id: this.smsGatewayForm.value['entity'],
+      min_amount : this.smsGatewayForm.value['min_amount']
     };
     if (this.smsGatewayForm.valid) {
       this.httpService

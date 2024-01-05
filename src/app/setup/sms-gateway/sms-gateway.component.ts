@@ -28,7 +28,7 @@ export class SmsGatewayComponent implements OnInit {
   @ViewChild(MatSort, { static: false })
   set sort(value: MatSort) {
     this.dataSource.sort = value;
-  } public displayedColumns: string[] = ['index', 'active_trigger_point', 'entity','template', 'status', 'actions'];
+  } public displayedColumns: string[] = ['index', 'active_trigger_point', 'entity','amount','template', 'status', 'actions'];
   public dataSource = new MatTableDataSource<TriggerPoints>();
   public smsGatewayForm!: UntypedFormGroup;
   tagsChoosen: any = [];
@@ -51,6 +51,7 @@ export class SmsGatewayComponent implements OnInit {
       trigger_point: ['', Validators.compose([Validators.required])],
       message_template: ['', Validators.compose([Validators.required])],
       entity:[''],
+      min_amount:['',Validators.required],
       status: false
     });
   }
@@ -97,7 +98,8 @@ export class SmsGatewayComponent implements OnInit {
               id: obj.id,
               active_trigger_point: obj.trigger_name,
               template: obj.template,
-              status: obj.status
+              status: obj.status,
+              min_amount : obj.min_amount
             }
             data.push(Objdata)
           });
@@ -113,7 +115,8 @@ export class SmsGatewayComponent implements OnInit {
       template: this.smsGatewayForm.value['message_template'],
       trigger_id: this.smsGatewayForm.value['trigger_point'],
       status: this.smsGatewayForm.value['status'],
-      entity_id: this.smsGatewayForm.value['entity']
+      entity_id: this.smsGatewayForm.value['entity'],
+      min_amount : this.smsGatewayForm.value['min_amount']
     }
     if (this.smsGatewayForm.valid) {
       this.httpService.post('message-template', body)
