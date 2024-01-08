@@ -114,7 +114,7 @@
                         </option>
                       </select></span> -->
                     <span class="pickUpFlagSpan" *ngIf="!pickupFlag">
-                      <mat-icon style="margin-bottom: -10px" *ngIf="crmRecords.locationDetails?.building_or_villa">home
+                      <mat-icon *ngIf="crmRecords.locationDetails?.building_or_villa">home
                       </mat-icon>
                       {{
                           crmRecords.locationDetails?.building_or_villa

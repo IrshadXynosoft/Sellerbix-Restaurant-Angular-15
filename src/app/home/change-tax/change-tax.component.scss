@@ -1,193 +1,186 @@
 .discount-card {
-    cursor: pointer;
-    background-color: #4c3e95;
-    color: var(--white);
-    text-align: center;
-    margin-bottom: 10px;
-  
-    // border: 3px solid #ddd; padding: 10px;
-    h4 {
-      font-size: 14px !important;
+  cursor: pointer;
+  background-color: #4c3e95;
+  color: var(--white);
+  text-align: center;
+  margin-bottom: 10px;
+  padding: 5px;
+  // border: 3px solid #ddd; padding: 10px;
+  h4 {
+    font-size: 14px !important;
+  }
+}
+
+.cancelBtn {
+  width: 100px;
+  padding: 10px;
+}
+
+.modal-wrapper h2 {
+  border-bottom: 1px solid #d7d7d7;
+  color: #4c3e95;
+  font-size: 25px;
+  padding-bottom: 10px;
+  max-height: 300px;
+}
+
+.active {
+  background-color: rgb(50, 179, 50);
+  color: white;
+}
+
+
+
+.card-disable {
+  pointer-events: none;
+  background-color: grey;
+}
+
+.box {
+  width: 15px;
+  height: 15px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.grey {
+  background: grey;
+}
+
+.orange {
+  background: #4c3e95;
+}
+
+.not-found {
+  background: #d7d7d7;
+  padding: 15px;
+  margin-top: 20px;
+
+  h3 {
+    font-size: 30px;
+    color: #565656;
+    font-weight: 600;
+  }
+
+  p {
+    font-size: 16px;
+    color: #727070;
+    font-weight: 400;
+  }
+}
+
+
+.close-button {
+  float: right;
+  top: 7px;
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+::ng-deep .mat-mdc-tab-label {
+  border-radius: 0px;
+  margin-bottom: 0px !important;
+  color: black;
+  height: 40px !important;
+  min-width: 225px !important;
+  margin-bottom: 0px;
+  border-radius: 0px;
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+::ng-deep .mat-mdc-tab-label-active {
+  border: 1px var(--primary) solid;
+  color: var(--primary);
+  border-bottom: none;
+  background-color: white !important;
+}
+
+.min-scroll {
+  height: 400px;
+  overflow-y: scroll;
+}
+
+:host {
+  >.container {
+    max-width: 1264px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    background: none;
+  }
+
+  ::ng-deep {
+
+    .mat-mdc-tab-header {
+      border-bottom: none;
     }
-  }
-  
-  .cancelBtn {
-    width: 100px;
-    padding: 10px;
-  }
-  
-  .modal-wrapper h2 {
-    border-bottom: 1px solid #d7d7d7;
-    color: #4c3e95;
-    font-size: 25px;
-    padding-bottom: 10px;
-    max-height: 300px;
-  }
-  
-  .close-button {
-    float: right;
-    top: -20px;
-    right: -20px;
-  }
-  
-  .active {
-    background-color: rgb(50, 179, 50);
-    color: white;
-  }
-  
-  .close-icon {
-    transition: 1s ease-in-out;
-  }
-  
-  .close-icon:hover {
-    transform: rotate(180deg);
-  }
-  
-  ::ng-deep .icon-outside .close-button {
-    float: right;
-    top: -52px;
-    right: -52px;
-  }
-  
- 
-  .card-disable {
-    pointer-events: none;
-    background-color: grey;
-  }
-  
-  .box {
-    width: 15px;
-    height: 15px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-  }
-  
-  .grey {
-    background: grey;
-  }
-  
-  .orange {
-    background: #4c3e95;
-  }
-  
-  .not-found {
-    background: #d7d7d7;
-    padding: 15px;
-    margin-top: 20px;
-  
-    h3 {
-      font-size: 30px;
-      color: #565656;
-      font-weight: 600;
+
+    .mat-mdc-ink-bar {
+      display: none;
     }
-  
-    p {
-      font-size: 16px;
-      color: #727070;
-      font-weight: 400;
+
+    /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+    /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+    .mat-mdc-tab-header-pagination {
+      display: none !important;
     }
-  }
-  
-  .discount-card-holder {
-    max-height: 350px;
-    overflow-y: scroll;
-  }
-  
-  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-  ::ng-deep .mat-tab-label {
-    border-radius: 0px;
-    margin-bottom: 0px !important;
-    color: black;
-    height: 40px !important;
-    min-width: 225px !important;
-    margin-bottom: 0px;
-    border-radius: 0px;
-  }
-  
-  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-  ::ng-deep .mat-tab-label-active {
-    border: 1px var(--primary) solid;
-    color: var(--primary);
-    border-bottom: none;
-    background-color: white !important;
-  }
-  
-  .min-scroll {
-    height: 400px;
-    overflow-y: scroll;
-  }
-  :host {
-    > .container {
-      max-width: 1264px;
-      width: 100%;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
+
+    /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+    /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+    .mat-mdc-tab-labels {
+      background: #e1e1e1 !important;
+      border-radius: 5px;
+      padding: 3px;
+      margin-bottom: 10px;
+    }
+
+    /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+    /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+    .mat-mdc-tab-label {
+      height: 40px;
+      min-width: 160px;
+      margin-bottom: 0px;
       background: none;
+      color: #000;
+      opacity: 1;
+      border-radius: 5px;
+      margin-bottom: 0px !important;
+      transition: 0.4s;
+      width: 100%;
+
+      &:hover {
+        color: #000;
+        background: #fff !important;
+      }
     }
-    ::ng-deep {
-      
-      .mat-mdc-tab-header {
-        border-bottom: none;
-      }
-      .mat-ink-bar {
-        display: none;
-      }
-      /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-      /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-      .mat-tab-header-pagination {
-        display: none !important;
-      }
-      /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-      /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-      .mat-tab-labels {
-        background: #e1e1e1 !important;
-        border-radius: 5px;
-        padding: 3px;
-        margin-bottom: 10px;
-      }
-      /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-      /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-      .mat-tab-label {
-        height: 40px;
-        min-width: 160px;
-        margin-bottom: 0px;
-        background: none;
-        color: #000;
-        opacity: 1;
-        border-radius: 5px;
-        margin-bottom: 0px !important;
-        transition: 0.4s;
-        width: 100%;
-        &:hover {
-          color: #000;
-          background: #fff !important;
-        }
-      }
-      /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-      /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-      .mat-tab-label.mat-tab-label-active {
-        background: #fff !important;
-        border: 1px #ddd solid;
-        border-radius: 5px;
-        color: #000;
-        // box-shadow: 5px 5px 5px #888888;
-      }
-      /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-      /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-      .mat-tab-label.mat-tab-label-active:hover {
-        background: #fff !important;
-      }
-      /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-      /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-      .mat-tab-body-wrapper {
-        flex: 1 1 auto;
-      }
-      /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-      /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-      .mat-tab-body-content{
-        overflow: hidden !important;
-      }
+
+    /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+    /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+    .mat-mdc-tab-label.mat-mdc-tab-label-active {
+      background: #fff !important;
+      border: 1px #ddd solid;
+      border-radius: 5px;
+      color: #000;
+      // box-shadow: 5px 5px 5px #888888;
+    }
+
+    /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+    /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+    .mat-mdc-tab-label.mat-mdc-tab-label-active:hover {
+      background: #fff !important;
+    }
+
+    /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+    /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+    .mat-mdc-tab-body-wrapper {
+      flex: 1 1 auto;
+    }
+
+    /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+    /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+    .mat-mdc-tab-body-content {
+      overflow: hidden !important;
     }
   }
+}

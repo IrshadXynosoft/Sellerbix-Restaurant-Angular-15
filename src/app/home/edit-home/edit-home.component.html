@@ -100,7 +100,7 @@
                     /<span class="tag-h-1">{{ crmRecords?.customer_contact_no }}
                     </span>
                     <span class="pickUpFlagSpan" *ngIf="!pickupFlag">
-                      <mat-icon style="margin-bottom: -10px" *ngIf="crmRecords?.locationDetails?.building_or_villa">home
+                      <mat-icon *ngIf="crmRecords?.locationDetails?.building_or_villa">home
                       </mat-icon>
                       {{
                       crmRecords?.locationDetails?.building_or_villa
@@ -358,14 +358,14 @@
               <div class="btn_box">
                 <div class="row no-gutter mx-0">
                   <button type="button" [disabled]="disabledFlag"
-                    [ngClass]="accept_payment == 'false' ? 'col-12' : 'col-6'" class="btn modifyorder" id="place-order"
+                     class="btn modifyorder col-12" id="place-order"
                     (click)="checkWaiterChoosed()">
                     Modify Order
                   </button>
-                  <button type="button" *ngIf="accept_payment == 'true'" class="btn col-6 place_order"
+                  <!-- <button type="button" *ngIf="accept_payment == 'true'" class="btn col-6 place_order"
                     (click)="checkWaiterChoosed()">
                     Make Payment
-                  </button>
+                  </button> -->
                 </div>
               </div>
             </div>
