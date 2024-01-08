@@ -113,12 +113,12 @@ export class HeaderComponent implements OnInit {
       });
     // **
     //  code for old listener
-    this.oldSubscription = this.newOrderMqtt
-      .topic(this.oldMessage)
-      .subscribe((data: IMqttMessage) => {
-        let item = data.payload.toString();
-        this.getOrderDetails(item);
-      });
+    // this.oldSubscription = this.newOrderMqtt
+    //   .topic(this.oldMessage)
+    //   .subscribe((data: IMqttMessage) => {
+    //     let item = data.payload.toString();
+    //     this.getOrderDetails(item);
+    //   });
     //  **
   }
 

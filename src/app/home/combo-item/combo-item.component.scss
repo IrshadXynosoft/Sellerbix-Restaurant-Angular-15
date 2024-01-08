@@ -1,27 +1,9 @@
+
 .close-button {
   float: right;
-  top: -20px;
-  right: -20px;
-  background: #ffff !important;
+  top: 7px;
 }
 
-.close-icon {
-  transition: 1s ease-in-out;
-}
-
-::ng-deep .icon-outside .close-button {
-  float: right;
-  top: -52px;
-  right: -52px;
-}
-
-::ng-deep .icon-outside .mat-mdc-dialog-container {
-  overflow: unset;
-}
-.close-button {
-  float: right;
-  top: -18px;
-}
 
 .btnCancelMain {
   transition: 0.5s;

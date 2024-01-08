@@ -39,29 +39,29 @@
       border-bottom: none;
     }
 
-    .mat-ink-bar {
+    .mat-mdc-ink-bar {
       display: none;
     }
     /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
     /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-    .mat-tab-header-pagination {
+    .mat-mdc-tab-header-pagination {
       display: none !important;
     }
     /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
     /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-    .mat-tab-labels {
+    .mat-mdc-tab-labels {
       flex-direction: column;
 
       // box-shadow: 5px 5px 5px #888888;
     }
     /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
     /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-    .mat-tab-labels {
+    .mat-mdc-tab-labels {
       background: none !important;
     }
     /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
     /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-    .mat-tab-label {
+    .mat-mdc-tab-label {
       height: 50px;
       margin-bottom: 4px;
       background: #d2ccb8;
@@ -72,28 +72,30 @@
     }
     /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
     /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-    .mat-tab-label.mat-tab-label-active {
+    .mat-mdc-tab-label.mat-mdc-tab-label-active {
       background-color: var(--primary) !important;
       color: var(--white);
-      // box-shadow: 5px 5px 5px #888888;
+      box-shadow: 5px 5px 5px #888888;
     }
     /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
     /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-    .mat-tab-label.mat-tab-label-active:hover {
+    .mat-mdc-tab-label.mat-mdc-tab-label-active:hover {
       background-color: var(--primary) !important;
     }
     /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
     /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-    .mat-tab-label:hover {
+    .mat-mdc-tab-label:hover {
       background-color: var(--primary) !important;
     }
     /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
     /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-    .mat-tab-body-wrapper {
+    .mat-mdc-tab-body-wrapper {
       flex: 1 1 auto;
     }
   }
+
 }
+
 
 .button-sec {
   border-top: 1px solid #d7d7d7;

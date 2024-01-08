@@ -1,11 +1,12 @@
 <div class="commonModalMakinDiv">
 <div class="modal-wrapper">
-    <button mat-icon-button class="close-button" (click)="close()">
+   
+    <h1 class="capital" mat-dialog-title>{{data.comboItems.item_name}}
+      <button mat-icon-button class="close-button" (click)="close()">
         <mat-icon class="close-icon" color="warn">close</mat-icon>
-      </button>
-    <h1 class="capital" mat-dialog-title>{{data.comboItems.item_name}}</h1>
+      </button></h1>
     <mat-dialog-content>
-        <mat-list role="list">
+        <mat-list role="list" class="mb-4">
             <mat-list-item role="listitem" class="capital"  *ngFor="let item of data.comboItems.combo_item">{{item.item_name}}</mat-list-item>
           </mat-list>
           

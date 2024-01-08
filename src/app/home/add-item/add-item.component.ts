@@ -17,7 +17,6 @@ export class AddItemComponent implements OnInit {
   modifierSelected: any = [];
   modifiers: any = [];
   public breakException = {};
-
   constructor(private router: Router, @Inject(MAT_DIALOG_DATA) public data: { modifier_group: any, item_name: any, operation: any, item: any }, public dialog: MatDialog, public dialogRef: MatDialogRef<AddItemComponent>, private snackBservice: SnackBarService) {
   }
 
