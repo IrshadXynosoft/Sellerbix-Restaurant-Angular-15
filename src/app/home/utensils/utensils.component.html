@@ -1,8 +1,9 @@
 <div class="modal-wrapper">
-    <button mat-icon-button class="close-button" (click)="close()">
-      <mat-icon class="close-icon" color="warn">close</mat-icon>
-    </button>
-    <h1 mat-dialog-title>Utensil</h1>
+    <h1 mat-dialog-title>Utensil
+      <button mat-icon-button class="close-button" (click)="close()">
+        <mat-icon class="close-icon" color="warn">close</mat-icon>
+      </button>
+    </h1>
   
     <mat-dialog-content>
       <ng-template #nodata>
@@ -16,7 +17,7 @@
       </div>
       </ng-template>
       <mat-selection-list [multiple]="false" *ngIf="utensilArray.length > 0;else nodata">
-        <mat-list-option *ngFor="let item of utensilArray;let index=index;" [value]="item.name"
+        <mat-list-option *ngFor="let item of utensilArray;let index=index;" [value]="item.name" class="custom-list-option"
           (click)=utensilSelect(item,index)>
          <div class="row">
            <div class="col-9">

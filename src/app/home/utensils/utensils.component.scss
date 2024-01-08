@@ -1,26 +1,9 @@
+
 .close-button {
   float: right;
-  top: -24px;
-  right: -24px;
+  top: 7px;
 }
 
-.close-icon {
-  transition: 1s ease-in-out;
-}
-
-.close-icon:hover {
-  transform: rotate(180deg);
-}
-
-::ng-deep .icon-outside .close-button {
-  float: right;
-  top: -52px;
-  right: -52px;
-}
-
-::ng-deep .icon-outside .mat-mdc-dialog-container {
-  overflow: unset;
-}
 h1 {
   color: var(--primary);
   font-size: 36px;
@@ -42,4 +25,47 @@ h1 {
     color: #727070;
     font-weight: 400;
   }
+}
+
+.custom-list-option {
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  border-bottom: 1px solid #ddd; /* Add a bottom line for all items */
+  margin-bottom: 8px; /* Add some space between items */
+}
+
+.custom-list-option:last-child {
+  border-bottom: none; /* Remove bottom line for the last item */
+}
+
+.custom-list-option:hover {
+  background-color: #f0f0f0;
+}
+
+.custom-list-option .row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+}
+
+.custom-list-option .col-9 {
+  flex: 0 0 75%;
+}
+
+.custom-list-option .capital {
+  text-transform: capitalize;
+}
+
+.custom-list-option .col-3 {
+  flex: 0 0 25%;
+  text-align: right;
+}
+
+.mat-selection-list {
+  width: 100%; /* Adjust width as needed */
+}
+
+.mat-list-item {
+  border-bottom: 1px solid #ddd; /* Add a border between list items */
 }
