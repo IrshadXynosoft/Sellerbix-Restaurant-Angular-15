@@ -15,6 +15,7 @@ import { InvoiceKotPrintComponent } from 'src/app/home/invoice-kot-print/invoice
 import { PrintMqttService } from 'src/app/_services/mqtt/print-mqtt.service';
 import { LabelPrintComponent } from 'src/app/home/label-print/label-print.component';
 import moment from 'moment';
+import { SplitBillComponent } from 'src/app/home/split-bill/split-bill.component';
 
 @Component({
   selector: 'app-show-details',
@@ -62,6 +63,19 @@ export class ShowDetailsComponent implements OnInit {
       });
   }
 
+  splitBill() {
+    const dialogRef = this.dialog.open(SplitBillComponent, {
+      // maxWidth: '100vw',
+      width: '90%',
+      // panelClass: 'full-screen-modal',
+      data: {
+        editData: this.orderRecords,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {});
+  }
+  
   close() {
     this.dialogRef.close();
   }

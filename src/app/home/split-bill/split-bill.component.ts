@@ -112,6 +112,8 @@ export class SplitBillComponent implements OnInit {
       }
     }
     this.cdr.detectChanges();
+    console.log(this.taxArray);
+    
   }
 
   deleteBill(index: any) {
@@ -197,7 +199,7 @@ export class SplitBillComponent implements OnInit {
       cart.Total = (
         parseFloat(temp) +
         parseFloat(
-          cart.applied_tax?.effected_price
+          cart.applied_tax?.effected_price && cart.applied_tax.type == 0
             ? cart.applied_tax?.effected_price
             : 0
         ) +

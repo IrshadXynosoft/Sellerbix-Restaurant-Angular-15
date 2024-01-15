@@ -8,16 +8,16 @@
     <mat-tab-group animationDuration="0ms">
       <mat-tab label="Value">
         <div class="row discount-card-holder" *ngIf="valueDiscount.length > 0; else novalueorder">
-          <div class="col-sm-4 mt-2" *ngFor="let discount of valueDiscount">
+          <div class="col-sm-3 mt-2" *ngFor="let discount of valueDiscount">
             <mat-card appearance="outlined" class="discount-card" (click)="addingDiscount(discount)">
-              {{ discount.rate }}
+             
+              <span *ngIf="discount.discount_type == 'percentage'; else value"> {{ discount.rate }} %</span>
+              <ng-template #value>
+                <span> {{ discount.rate }} {{ currency_symbol }}</span>
+              </ng-template>
               <span class="float-right" *ngIf="discount.is_discount_on_total_amount == 1">
                 <h3 style="position: absolute; top: 0px; right: 5px">*</h3>
               </span>
-              <span *ngIf="discount.discount_type == 'percentage'; else value">%</span>
-              <ng-template #value>
-                <span>{{ currency_symbol }}</span>
-              </ng-template>
               <br />
               <h4>{{ discount.name }}</h4>
             </mat-card>
@@ -33,16 +33,15 @@
       </mat-tab>
       <mat-tab label="Percentage">
         <div class="row discount-card-holder" *ngIf="percentageDiscount.length > 0; else nopercentage">
-          <div class="col-sm-4 mt-2" *ngFor="let discount of percentageDiscount">
+          <div class="col-sm-3 mt-2" *ngFor="let discount of percentageDiscount">
             <mat-card appearance="outlined" class="discount-card" (click)="addingDiscount(discount)">
-              {{ discount.rate }}
+              <span *ngIf="discount.discount_type == 'percentage'; else value"> {{ discount.rate }} %</span>
+              <ng-template #value>
+                <span> {{ discount.rate }} {{ currency_symbol }}</span>
+              </ng-template>
               <span class="float-right" *ngIf="discount.is_discount_on_total_amount == 1">
                 <h3 style="position: absolute; top: 0px; right: 5px">*</h3>
               </span>
-              <span *ngIf="discount.discount_type == 'percentage'; else value">%</span>
-              <ng-template #value>
-                <span>{{ currency_symbol }}</span>
-              </ng-template>
               <br />
               <h4>{{ discount.name }}</h4>
             </mat-card>

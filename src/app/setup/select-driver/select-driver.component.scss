@@ -4,40 +4,44 @@
   width: 100%;
   /* The width is the width of the web page */
 }
+
+
 .close-button {
-	float: right;
-	top: -20px;
-	right: -20px;
+  float: right;
+  top: 7px;
+}
+
+.driver-card {
+  cursor: pointer;
+  background-color: var(--primary);
+  color: white;
+  text-align: center;
+  margin-bottom: 10px;
+  // height:100px;
+  width: 100%;
+  padding-top: 15px;
+
+  h4 {
+    font-size: 14px !important;
   }
-  
-  .close-icon {
-	transition: 1s ease-in-out;
-  }
-  .driver-card {
-    cursor: pointer;
-    background-color: var(--primary);
-    color: white;
-    text-align: center;
-    margin-bottom: 10px;
-    // height:100px;
-    width:100%;
-    h4 {
-      font-size: 14px !important;
-    }
-  }
-  .driver-card:hover {
-    background-color: #75ca75;
-    border: 1px solid var(--primary);
-  }
-  .active {
-    background-color: #75ca75;
-    border: 1px solid var(--primary);
-  }
-  .min-scroll{
-    height:400px;
-    overflow-y: scroll;
-  }
-  .not-found {
+}
+
+.driver-card:hover {
+  background-color: #75ca75;
+  border: 1px solid var(--primary);
+}
+
+.active {
+  background-color: #75ca75;
+  border: 1px solid var(--primary);
+}
+
+.min-scroll {
+  height: 400px;
+  overflow-y: scroll;
+}
+
+.not-found {
   background: #d7d7d7;
   padding: 15px;
   margin-top: 20px;
@@ -54,14 +58,17 @@
     font-weight: 400;
   }
 }
-.reload{
+
+.reload {
   margin-bottom: 10px;
 }
+
 .commonBtnStyle {
   height: 40px;
   width: 130px;
   padding: 0;
 }
+
 .my-checkfield {
   border: solid 1px black;
   color: black;
@@ -84,7 +91,10 @@
 }
 
 .my-checkfield-selected::after {
-  content: '\2713';
+  content: "\2713";
+  position: absolute;
+  top: 0 !important;
+  left: -140px !important;
   font-size: 13px;
   line-height: 13px;
   font-weight: bold;
@@ -97,14 +107,17 @@
   border-left-color: green;
   border-top-color: green;
 }
+
 img {
-  width:60px;
+  width: 60px;
   height: 50px;
   margin-right: 10rem;
   // padding-top: 10px;
 }
-.content-card{
+
+.content-card {
   display: grid;
   font-size: 12px;
   text-transform: capitalize;
+  padding: 6px;
 }

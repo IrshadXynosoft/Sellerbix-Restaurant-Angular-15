@@ -16,6 +16,7 @@ import { SnackBarService } from 'src/app/_services/snack-bar.service';
 import { EntityOrdersCancellationComponent } from 'src/app/entity-orders-cancellation/entity-orders-cancellation.component';
 import { SelectDriverComponent } from 'src/app/setup/select-driver/select-driver.component';
 import moment from 'moment';
+import { SplitBillComponent } from 'src/app/home/split-bill/split-bill.component';
 
 @Component({
   selector: 'app-show-crm-details',
@@ -67,6 +68,19 @@ export class ShowCrmDetailsComponent implements OnInit {
           this.snackBService.openSnackBar(result.message, 'Close');
         }
       });
+  }
+
+  splitBill() {
+    const dialogRef = this.dialog.open(SplitBillComponent, {
+      // maxWidth: '100vw',
+      width: '90%',
+      // panelClass: 'full-screen-modal',
+      data: {
+        editData: this.orderRecords,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {});
   }
 
   close() {

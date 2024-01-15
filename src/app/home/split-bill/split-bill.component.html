@@ -1,5 +1,5 @@
 <div class="modal-wrapper">
-  <h2 mat-dialog-title>Split Bill</h2>
+  <h2 mat-dialog-title>Split Bill (Order No:- #{{data.editData.order.order_number}})</h2>
   <mat-dialog-content>
     <div class="row" cdkDropListGroup>
       <div class="col-4" *ngIf="!editFlag">
@@ -98,7 +98,7 @@
       </div>
       <div *ngFor="let i of targetArrays; let index = index" class="col-4">
         <label for>Bill {{ index + 1 }}</label>
-        <span (click)="deleteBill(index)" class="close">
+        <span *ngIf="!i.payments" (click)="deleteBill(index)" class="close">
           <i class="zmdi zmdi-close-circle-o"></i>
         </span>
 

@@ -15,6 +15,7 @@ import { LocalStorage } from '../../_services/localstore.service';
 import { PrintMqttService } from '../../_services/mqtt/print-mqtt.service';
 import { EntityOrdersCancellationComponent } from 'src/app/entity-orders-cancellation/entity-orders-cancellation.component';
 import moment from 'moment';
+import { SplitBillComponent } from 'src/app/home/split-bill/split-bill.component';
 
 @Component({
   selector: 'app-detail',
@@ -66,6 +67,19 @@ export class DetailComponent implements OnInit {
       });
   }
 
+  splitBill() {
+    const dialogRef = this.dialog.open(SplitBillComponent, {
+      // maxWidth: '100vw',
+      width: '90%',
+      // panelClass: 'full-screen-modal',
+      data: {
+        editData: this.orderRecords,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {});
+  }
+  
   editOrder() {
     this.router.navigate(['home/walkin/' + this.orderRecords.order.order_number]);
     this.close();
