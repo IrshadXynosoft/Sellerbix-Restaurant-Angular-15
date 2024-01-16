@@ -1,50 +1,51 @@
 <form [formGroup]="addCustomerForm">
-    <div class="modal-wrapper modal-ht-custom">
-        <div class="px-4">
-            <h2>Edit Customer</h2>
+    <div class="modal-wrapper">
+        <h2 mat-dialog-title>Edit Customer</h2>
+        <mat-dialog-content>
             <div class="col-12 p-0">
                 <h3>General Information</h3>
             </div>
             <div class="row">
                 <div class="col-12 col-lg-3">
                     <label>Name</label>
-                    <input type="text" class="form-control" placeholder="Name" formControlName="name"/>
+                    <input type="text" class="form-control" placeholder="Name" formControlName="name" />
                 </div>
                 <div class="col-12 col-lg-3">
                     <label>Phone Number</label>
-                     <span class="error-message">*</span>
-                    <span class="error-message float-right" *ngIf="addCustomerForm.controls.contact_no.hasError('required' ) && addCustomerForm.controls.contact_no.touched">required</span>
-                    <span class="error-message float-right"  *ngIf="addCustomerForm.controls.contact_no.hasError('pattern' )">invalid input</span>  
-                    <span
-                            class="error-message float-right"
-                            *ngIf="customerErrorArray.contact_no"
-                        ></span>
-                    <input type="text" class="form-control" placeholder="Phone Number" formControlName="contact_no"/>
+                    <span class="error-message">*</span>
+                    <span class="error-message float-right"
+                        *ngIf="addCustomerForm.controls.contact_no.hasError('required' ) && addCustomerForm.controls.contact_no.touched">required</span>
+                    <span class="error-message float-right"
+                        *ngIf="addCustomerForm.controls.contact_no.hasError('pattern' )">invalid input</span>
+                    <span class="error-message float-right" *ngIf="customerErrorArray.contact_no"></span>
+                    <input type="text" class="form-control" placeholder="Phone Number" formControlName="contact_no" />
                 </div>
                 <div class="col-12 col-lg-3">
                     <label>Alternate Phone Number</label>
-                    <input type="text" class="form-control" placeholder="Alternate Phone Number" formControlName="alternate_contact_no"/>
+                    <input type="text" class="form-control" placeholder="Alternate Phone Number"
+                        formControlName="alternate_contact_no" />
                 </div>
                 <div class="col-12 col-lg-3">
                     <label>Customer Group</label>
-                    <select class="form-control w-100"  formControlName="customer_group_id">
-                        <option value="" disabled >Select</option>
+                    <select class="form-control w-100" formControlName="customer_group_id">
+                        <option value="" disabled>Select</option>
                         <option *ngFor="let i of customerGroupArray" value="{{ i.id }}">
-                          {{ i.name }}
+                            {{ i.name }}
                         </option>
                     </select>
                 </div>
                 <div class="col-12 col-lg-3">
                     <label>Email</label>
-                    <span class="error-message float-right"  *ngIf="addCustomerForm.controls.email.hasError('pattern' )">invalid input</span>  
-                    <input type="email" class="form-control" placeholder="Email" formControlName="email"/>
+                    <span class="error-message float-right"
+                        *ngIf="addCustomerForm.controls.email.hasError('pattern' )">invalid input</span>
+                    <input type="email" class="form-control" placeholder="Email" formControlName="email" />
                 </div>
                 <div class="col-12 col-lg-3">
                     <label>Gender</label>
-                    <select class="form-control w-100"  formControlName="gender">
-                        <option value="O" >Others</option>
-                        <option value="M" >Male</option>
-                        <option value="F" >Female</option>
+                    <select class="form-control w-100" formControlName="gender">
+                        <option value="O">Others</option>
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
                     </select>
                 </div>
                 <div class="col-12 col-lg-3">
@@ -52,74 +53,78 @@
                     <input type="date" class="form-control" placeholder="date of birth" formControlName="dob" />
                 </div>
             </div>
-           
-                    <h3 class="mt-2">Delivery Address</h3>
-                    <div class="row mr-0">
-                        <div class="col-12 col-lg-3">
-                            <label>Delivery Area</label>
-                            <span class="error-message">*</span>
-                            <span class="float-right" matTooltip="Add Delivery Area">
-                                <i class="icon-plus mr-1 cursor-pointer" (click)="addDeliveryArea()"></i>
-                              </span>
-                            <span class="error-message float-right" *ngIf="addCustomerForm.controls.delivery_area_id.hasError('required' ) && addCustomerForm.controls.delivery_area_id.touched">required</span>
-                            <!-- <input type="text" class="form-control" placeholder="Delivery Area"  formControlName="delivery_area"/> -->
-                            <select class="form-control w-100"  formControlName="delivery_area_id">
-                                <option value="" disabled>Select</option>
-                                <option *ngFor="let i of deliveryAreaRecords" value="{{ i.id }}">
-                                  {{ i.name }}
-                                </option>
-                            </select>
-                        </div>
-                        <div class="col-12 col-lg-3">
-                            <label>Location/Branch</label>
-                            <span class="error-message">*</span>
-                            <span class="error-message float-right" *ngIf="addCustomerForm.controls.branch_id.hasError('required' ) && addCustomerForm.controls.branch_id.touched">required</span>
-                            <select class="form-control w-100"  formControlName="branch_id">
-                                <option value="" disabled>Select</option>
-                                <option *ngFor="let i of branchRecords" value="{{ i.id }}">
-                                  {{ i.name }}
-                                </option>
-                            </select>
-                           
-                        </div>
-                        <div class="col-12 col-lg-3">
-                            <label>Building / Villa</label>
-                            <input type="text" class="form-control" placeholder="Building/Villa"  formControlName="building_or_villa"/>
-                        </div>
-                        <div class="col-12 col-lg-3">
-                            <label>Street</label>
-                             <input type="text" class="form-control" placeholder="Street"  formControlName="street"/>
-                        </div>
-                        <div class="col-12 col-lg-3">
-                            <label>Zone Number</label>
-                           <input type="text" class="form-control" placeholder="Flat Number"  formControlName="flat_number"/>
-                        </div>
-                        <div class="col-12 col-lg-3">
-                            <label>Nearest Landmark</label>
-                            <input type="text" class="form-control" placeholder="Nearest Landmark"  formControlName="nearest_landmark"/>
-                        </div>
-                        <div class="col-12 col-lg-3">
-                            <label>City</label>
-                           <input type="text" class="form-control" placeholder="City"  formControlName="city"/>
-                        </div>
-                        <div class="col-12 col-lg-3">
-                            <label>Country</label>
-                            <select class="form-control w-100"  formControlName="country_id" >
-                                <option value="" disabled>Select</option>
-                                <option *ngFor="let i of countryRecords" value="{{ i.id }}">
-                                  {{ i.name }}
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="text-right pt-2">
-                        <button class="btn-setup-danger w-px-100 mr-2" (click)="cancel()">Cancel
-                        </button>
-                        <button class="btn-setup-sucess w-px-100" (click)="saveCustomer()">Update
-                        </button>
-                    </div>
 
-        </div>
-     
+            <h3 class="mt-2">Delivery Address</h3>
+            <div class="row mr-0">
+                <div class="col-12 col-lg-3">
+                    <label>Delivery Area</label>
+                    <span class="error-message">*</span>
+                    <span class="float-right" matTooltip="Add Delivery Area">
+                        <i class="icon-plus mr-1 cursor-pointer" (click)="addDeliveryArea()"></i>
+                    </span>
+                    <span class="error-message float-right"
+                        *ngIf="addCustomerForm.controls.delivery_area_id.hasError('required' ) && addCustomerForm.controls.delivery_area_id.touched">required</span>
+                    <!-- <input type="text" class="form-control" placeholder="Delivery Area"  formControlName="delivery_area"/> -->
+                    <select class="form-control w-100" formControlName="delivery_area_id">
+                        <option value="" disabled>Select</option>
+                        <option *ngFor="let i of deliveryAreaRecords" value="{{ i.id }}">
+                            {{ i.name }}
+                        </option>
+                    </select>
+                </div>
+                <div class="col-12 col-lg-3">
+                    <label>Location/Branch</label>
+                    <span class="error-message">*</span>
+                    <span class="error-message float-right"
+                        *ngIf="addCustomerForm.controls.branch_id.hasError('required' ) && addCustomerForm.controls.branch_id.touched">required</span>
+                    <select class="form-control w-100" formControlName="branch_id">
+                        <option value="" disabled>Select</option>
+                        <option *ngFor="let i of branchRecords" value="{{ i.id }}">
+                            {{ i.name }}
+                        </option>
+                    </select>
+
+                </div>
+                <div class="col-12 col-lg-3">
+                    <label>Building / Villa</label>
+                    <input type="text" class="form-control" placeholder="Building/Villa"
+                        formControlName="building_or_villa" />
+                </div>
+                <div class="col-12 col-lg-3">
+                    <label>Street</label>
+                    <input type="text" class="form-control" placeholder="Street" formControlName="street" />
+                </div>
+                <div class="col-12 col-lg-3">
+                    <label>Zone Number</label>
+                    <input type="text" class="form-control" placeholder="Flat Number" formControlName="flat_number" />
+                </div>
+                <div class="col-12 col-lg-3">
+                    <label>Nearest Landmark</label>
+                    <input type="text" class="form-control" placeholder="Nearest Landmark"
+                        formControlName="nearest_landmark" />
+                </div>
+                <div class="col-12 col-lg-3">
+                    <label>City</label>
+                    <input type="text" class="form-control" placeholder="City" formControlName="city" />
+                </div>
+                <div class="col-12 col-lg-3">
+                    <label>Country</label>
+                    <select class="form-control w-100" formControlName="country_id">
+                        <option value="" disabled>Select</option>
+                        <option *ngFor="let i of countryRecords" value="{{ i.id }}">
+                            {{ i.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </mat-dialog-content>
+        <mat-dialog-actions align="end">
+            <button class="btn-setup-danger w-px-100 mr-2" (click)="cancel()">Cancel
+            </button>
+            <button class="btn-setup-sucess w-px-100" (click)="saveCustomer()">Update
+            </button>
+        </mat-dialog-actions>
+
+
     </div>
 </form>
