@@ -90,44 +90,72 @@ export class SplitBillComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  drop(event: CdkDragDrop<string[]>, item: any) {
-    // here 2nd argument item is used to prevent drag and grop if already paid. value will be null from main aray and if payments done it will contain payments object
+  /**
+   * Handles the drop event for drag-and-drop functionality.
+   *
+   * @param event - The drag-and-drop event containing information about the drop operation.
+   * @param item - The item being dragged. This is used to prevent drag-and-drop if the item is already paid.
+   *               If the item is null or does not contain payments, it is eligible for transfer.
+   */
+  drop(event: CdkDragDrop<string[]>, item: any): void {
+    // Check if the drop is within the same container
     if (event.previousContainer === event.container) {
+      // Reorder items within the same container
       moveItemInArray(
         event.container.data,
         event.previousIndex,
         event.currentIndex
       );
     } else {
+      // Check if the item is eligible for transfer based on payment status
       if (item == null || !item?.payments) {
+        // Transfer item from the source container to the destination container
         transferArrayItem(
           event.previousContainer.data,
           event.container.data,
           event.previousIndex,
           event.currentIndex
         );
-      }
-      else{
-        this.snackBService.openSnackBar("Cannot transfer an item that is already paid","Close")
+      } else {
+        // Display a notification if attempting to transfer an already paid item
+        this.snackBService.openSnackBar(
+          'Cannot transfer an item that is already paid',
+          'Close'
+        );
       }
     }
+
+    // Manually detect changes to ensure view is updated after the drop operation
     this.cdr.detectChanges();
-    console.log(this.taxArray);
-    
   }
 
-  deleteBill(index: any) {
+  /**
+   * Deletes a bill from the targetArrays based on the specified index, but only if the bill is empty.
+   *
+   * @param index - The index of the bill to be deleted from the targetArrays array.
+   */
+  deleteBill(index: any): void {
+    // Check if the bill at the specified index is empty
     if (this.targetArrays[index].items.length <= 0) {
+      // Remove the bill from the targetArrays array
       this.targetArrays.splice(index, 1);
     } else {
+      // Display a notification if the bill is not empty and cannot be deleted
       this.snackBService.openSnackBar(
-        'Unable to delete,Please move items from bill',
+        'Unable to delete, please move items from the bill',
         'Close'
       );
     }
   }
 
-  addBill() {
+  /**
+   * Adds a new bill to the targetArrays array based on the orderRecords data.
+   * Initializes the bill with an empty items array and sets the cart details such as discount, surcharge, applied tax, subTotal, and Total.
+   * Detects changes in the component's view after adding a new bill.
+   * Logs the orderRecords for debugging purposes.
+   */
+  addBill(): void {
+    // Create a new bill and push it to the targetArrays array
     this.targetArrays.push({
       items: [],
       cart: {
@@ -146,20 +174,38 @@ export class SplitBillComponent implements OnInit {
         Total: 0.0,
       },
     });
+
+    // Manually detect changes to ensure view is updated after adding a new bill
     this.cdr.detectChanges();
-    console.log(this.orderRecords);
   }
 
-  subTotal(items: any) {
-    // These fn is used for calculating child tables calculation(ie,subtotal,tax etc)
+  /**
+   * Calculates the subTotal and updates cart details for a given set of items.
+   *
+   * @param items - The set of items for which the subTotal and cart details need to be calculated.
+   * @returns - The calculated subTotal value.
+   */
+  subTotal(items: any): string {
+    // Find the index of the items within the targetArrays
     let index = this.targetArrays.indexOf(items);
+
+    // Initialize a temporary variable to accumulate the total value of items
     let temp: any = 0.0;
+
+    // Iterate through each item and accumulate the total value
     for (let i = 0; i < items?.items?.length; i++) {
       temp += parseFloat(items?.items[i]?.total);
     }
+
+    // Retrieve the cart details for the corresponding items
     let cart: any = this.targetArrays[index].cart;
+
+    // Check if there are items in the set
     if (items?.items?.length > 0) {
+      // Update subTotal value
       cart.subTotal = temp.toFixed(2);
+
+      // Update applied_tax details
       cart.applied_tax.effected_price = (
         parseFloat(temp) *
         (parseFloat(cart.applied_tax.rate) / 100)
@@ -170,6 +216,8 @@ export class SplitBillComponent implements OnInit {
           (parseFloat(obj.rate) / 100)
         ).toFixed(2);
       });
+
+      // Update surcharge value based on type (percentage or value)
       if (cart.surcharge?.type == 'percentage') {
         cart.surcharge.value = (
           parseFloat(temp) *
@@ -183,6 +231,8 @@ export class SplitBillComponent implements OnInit {
               ).toFixed(2)
             : 0.0;
       }
+
+      // Update discount value based on type (percentage or value)
       if (cart.discount?.discount_type == 'percentage') {
         cart.discount.effected_value = (
           parseFloat(temp) *
@@ -196,6 +246,8 @@ export class SplitBillComponent implements OnInit {
               ).toFixed(2)
             : 0.0;
       }
+
+      // Calculate the Total value by considering applied_tax, surcharge, and discount
       cart.Total = (
         parseFloat(temp) +
         parseFloat(
@@ -209,88 +261,94 @@ export class SplitBillComponent implements OnInit {
         )
       ).toFixed(2);
     } else {
+      // If there are no items, set Total to 0.0
       cart.Total = 0.0;
     }
+
+    // Return the calculated subTotal value
     return temp.toFixed(2);
   }
 
-  // calculateTax(tax: any, items: any) {
-  //   let taxValue = 0.0;
-  //   let subtotal: any = this.subTotal(items);
-  //   taxValue = parseFloat(subtotal) * (parseFloat(tax.rate) / 100);
-  //   return taxValue.toFixed(2);
-  // }
-
-  // claculateTotal(items: any) {
-  //   let total: any = 0.0;
-  //   if (items.length > 0) {
-  //     let taxValue: any = 0.0;
-  //     let subtotal: any = this.subTotal(items);
-  //     taxValue = parseFloat(subtotal) * (parseFloat(this.taxArray.rate) / 100);
-  //     if (this.taxArray.type == 1) {
-  //       total = subtotal;
-  //     } else {
-  //       total = (parseFloat(taxValue) + parseFloat(subtotal)).toFixed(2);
-  //     }
-  //   }
-  //   return total;
-  // }
-
-  updateOrder() {
+  /**
+   * Updates the order by splitting bills and making a server request to 'split-bill' endpoint.
+   * Validates conditions to ensure there is more than one bill and all bills have items before initiating the update.
+   * If successful, displays a success message, otherwise displays an error message.
+   */
+  updateOrder(): void {
+    // Check if there is more than one bill and all bills have items
     const allItemsExist = this.targetArrays.every(
       (target: { items: string | any[] }) => target.items.length > 0
     );
+
     if (this.targetArrays.length > 1 && allItemsExist) {
+      // Check if there are no items in the main bill
       if (this.items.length <= 0) {
+        // Check if all bills have payments
         let flag: any = this.targetArrays.every(
           (item: { payments: any }) => item.payments !== undefined
         );
+
+        // Prepare the request body
         let body = {
           bills: this.targetArrays,
           order_id: this.orderRecords.order_id,
           payment_status: flag == true ? 1 : 0,
         };
+
+        // Make a POST request to the 'split-bill' endpoint
         this.httpService.post('split-bill', body).subscribe((result) => {
           if (result.status == 200) {
+            // Display a success message and close the operation
             this.snackBService.openSnackBar(result.message, 'Close');
             this.close();
           } else {
+            // Display an error message
             this.snackBService.openSnackBar(result.message, 'Close');
           }
         });
       } else {
+        // Display a message if there are remaining items in the main bill
         this.snackBService.openSnackBar(
-          'Please split all items from main bill',
+          'Please split all items from the main bill',
           'Close'
         );
       }
     } else {
-      this.snackBService.openSnackBar('Please Add more than one bill', 'Close');
+      // Display a message if there is not more than one bill
+      this.snackBService.openSnackBar('Please add more than one bill', 'Close');
     }
   }
 
-  makePayment(amount: any, index: any) {
+  /**
+   * Initiates the payment process for a specific bill by opening the SplitBillPaymentComponent dialog.
+   * Validates that there are no remaining items in the main bill before allowing payment.
+   *
+   * @param amount - The total amount to be paid for the selected bill.
+   * @param index - The index of the targetArrays array corresponding to the bill for which payment is being made.
+   */
+  makePayment(amount: any, index: any): void {
+    // Check if there are no remaining items in the main bill
     if (this.items.length <= 0) {
+      // Open the SplitBillPaymentComponent dialog to facilitate the payment process
       const dialogRef = this.dialog.open(SplitBillPaymentComponent, {
         disableClose: true,
         width: '500px',
         data: {
           Total: amount,
-          // orderId: this.orderID,
-          // invoiceId: this.walkinEditRecords.invoice_id,
-          // customerid: this.customer_id,
-          // entityid: this.entity_Id,
-          // customer_details: this.customerRecords,
         },
       });
+
+      // Subscribe to the dialog's result after it is closed
       dialogRef.afterClosed().subscribe((result) => {
+        // Update the payments property of the selected bill with the payment result
         if (result) {
           this.targetArrays[index].payments = result;
         }
       });
     } else {
+      // Display a message if there are remaining items in the main bill
       this.snackBService.openSnackBar(
-        'Please split all items from main bill to proceed with payment',
+        'Please split all items from the main bill to proceed with payment',
         'Close'
       );
     }
